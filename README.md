@@ -17,7 +17,29 @@ git push -u origin main
 
 
 # Data Safety
+
 need checks - e.g. no data store null?
+
+- falsy : undefined null NaN false 0 ""
+- truthy : true 1 "xyz"
+
+- if(value) to check truthy
+
+- nullish : null undefined
+- not-nullish : false 0 "" NaN true 1 "xyz"
+
+# Overview
+
+- find average grades up to set dates (cumulative) or at set points e.g. TIG, IntEx
+- e.g. for MS 2025 Point1 up to 15/11/23, Point2 15/12/23, Point3 IntEx.
+
+- grade graphs for each subject with small chances graphs
+- click on subject to go into detail and breakdown for each pupil
+
+
+# Assessments
+
+- can't set same ss/sc on same day ! Thus when IntExam created for all, not other asssesment is created.
 
 # pupil keys
 ```
@@ -53,15 +75,14 @@ pupil:[12345,12346]
 ```
 lv
 yr
-an
-ln
+n
 dl 
 ds
 dt
 sc
 ss
 sl
-tag:{open,grade,overview,pupil,internal,archive}
+tag:{open,grade,overview,pupil,archive}
 gd:[{gd:'',pc:0,scr:0,active:true}]
 t:[{t:0,w:0,n:''}]
 ```
