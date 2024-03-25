@@ -28,6 +28,17 @@ need checks - e.g. no data store null?
 - nullish : null undefined
 - not-nullish : false 0 "" NaN true 1 "xyz"
 
+- [checking variables](https://stackoverflow.com/questions/5515310/is-there-a-standard-function-to-check-for-null-undefined-or-blank-variables-in)
+
+```
+function isEmpty(value){
+  return (value == null || value.length === 0);
+}
+
+returns true for undefined (as undefined==null), null, [], ""
+
+```
+
 # Overview
 
 - find average grades up to set dates (cumulative) or at set points e.g. TIG, IntEx
@@ -108,7 +119,7 @@ sr
 g
 pid
 gd
-res:{A:0,B:0}   (null if not available)
+res:{A:0,B:0}   (0, but tag:va true to consider!!!!)
 pre:{A:'',B:''}
 tag:{total:true,kpi:true,va:true}
 log:''
