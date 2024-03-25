@@ -12,7 +12,6 @@ let headers= {
 };
 
 
-// @ts-ignore
 export async function POST({request}) {
 
     const data = await request.json();
