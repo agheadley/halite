@@ -14,7 +14,7 @@
 		"@fontsource/fira-mono": "^4.5.10",
 		"@neoconfetti/svelte": "^1.0.0",
 		"@sveltejs/adapter-auto": "^3.0.0",
-		"@sveltejs/kit": "^2.0.0",
+		"@sveltejs/kit": "^2.5.4",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
 		"@types/eslint": "^8.56.0",
 		"eslint": "^8.56.0",
@@ -29,6 +29,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@azure/msal-browser": "^3.11.0",
 		"@sveltejs/adapter-vercel": "^5.2.0",
 		"chota": "^0.9.2"
 	}

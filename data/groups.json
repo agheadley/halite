@@ -1,0 +1,398 @@
+[{
+  "yr": 2025,
+  "lv": "MS",
+  "sl": "Chemistry",
+  "ss": "C",
+  "sc": "G",
+  "g": "C/1",
+  "log": "2023-12-10",
+  "teacher": [
+    {
+      "tid": "AAA",
+      "id": "AAA12345",
+      "sn": "A",
+      "pn": "A"
+    }
+  ],
+  "pupil": [
+    {
+      "sn": "Alder",
+      "pn": "Alice",
+      "pid": 11111,
+      "id": "1234567890",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    },
+    {
+      "sn": "Beach",
+      "pn": "Barry",
+      "pid": 22222,
+      "id": "2345678901",
+      "gnd": "M",
+      "hse": "Gibbon",
+      "tg": ""
+    },
+    {
+      "sn": "Cherry",
+      "pn": "Charlie",
+      "pid": 33333,
+      "id": "3456789012",
+      "gnd": "M",
+      "hse": "Gibbon",
+      "tg": ""
+    },
+    {
+      "sn": "Dogwood",
+      "pn": "Diana",
+      "pid": 44444,
+      "id": "4567890123",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    },
+    {
+      "sn": "Elm",
+      "pn": "Ellie",
+      "pid": 55555,
+      "id": "5678901234",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    }
+  ]
+},
+{
+  "yr": 2025,
+  "lv": "MS",
+  "sl": "Chemistry",
+  "ss": "C",
+  "sc": "G",
+  "g": "C/2",
+  "log": "2023-12-04",
+  "teacher": [
+    {
+      "tid": "BBB",
+      "id": "BBB12345",
+      "sn": "B",
+      "pn": "B"
+    }
+  ],
+  "pupil": [
+    {
+      "sn": "Jackaranda",
+      "pn": "Jenny",
+      "pid": 12222,
+      "id": "1222222222",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    },
+    {
+      "sn": "Kaki",
+      "pn": "Kieren",
+      "pid": 13333,
+      "id": "1333333333",
+      "gnd": "M",
+      "hse": "Gibbon",
+      "tg": ""
+    },
+    {
+      "sn": "Laurel",
+      "pn": "Larry",
+      "pid": 14444,
+      "id": "1444444444",
+      "gnd": "M",
+      "hse": "Gibbon",
+      "tg": ""
+    }
+  ]
+},
+{
+  "yr": 2025,
+  "lv": "MS",
+  "sl": "Biology",
+  "ss": "B",
+  "sc": "G",
+  "g": "B/3",
+  "log": "2023-12-04",
+  "teacher": [
+    {
+      "tid": "CCC",
+      "id": "CCC12345",
+      "sn": "C",
+      "pn": "C"
+    }
+  ],
+  "pupil": [
+    {
+      "sn": "Alder",
+      "pn": "Alice",
+      "pid": 11111,
+      "id": "1234567890",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    },
+    {
+      "sn": "Beach",
+      "pn": "Barry",
+      "pid": 22222,
+      "id": "2345678901",
+      "gnd": "M",
+      "hse": "Gibbon",
+      "tg": ""
+    },
+    {
+      "sn": "Cherry",
+      "pn": "Charlie",
+      "pid": 33333,
+      "id": "3456789012",
+      "gnd": "M",
+      "hse": "Gibbon",
+      "tg": ""
+    },
+    {
+      "sn": "Dogwood",
+      "pn": "Diana",
+      "pid": 44444,
+      "id": "4567890123",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    },
+    {
+      "sn": "Elm",
+      "pn": "Ellie",
+      "pid": 55555,
+      "id": "5678901234",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    }
+  ]
+},
+{
+  "yr": 2025,
+  "lv": "MS",
+  "sl": "History",
+  "ss": "H",
+  "sc": "G",
+  "g": "H/5",
+  "log": "2023-12-04",
+  "teacher": [
+    {
+      "tid": "DDD",
+      "id": "DDD12345",
+      "sn": "D",
+      "pn": "D"
+    }
+  ],
+  "pupil": [
+    {
+      "sn": "Alder",
+      "pn": "Alice",
+      "pid": 11111,
+      "id": "1234567890",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    },
+    {
+      "sn": "Beach",
+      "pn": "Barry",
+      "pid": 22222,
+      "id": "2345678901",
+      "gnd": "M",
+      "hse": "Gibbon",
+      "tg": ""
+    },
+    {
+      "sn": "Cherry",
+      "pn": "Charlie",
+      "pid": 33333,
+      "id": "3456789012",
+      "gnd": "M",
+      "hse": "Gibbon",
+      "tg": ""
+    },
+    {
+      "sn": "Dogwood",
+      "pn": "Diana",
+      "pid": 44444,
+      "id": "4567890123",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    },
+    {
+      "sn": "Elm",
+      "pn": "Ellie",
+      "pid": 55555,
+      "id": "5678901234",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    }
+  ]
+},
+{
+  "yr": 2024,
+  "lv": "US",
+  "sl": "Biology",
+  "ss": "B",
+  "sc": "A",
+  "g": "B/C",
+  "log": "2023-12-04",
+  "teacher": [
+    {
+      "tid": "CCC",
+      "id": "CCC12345",
+      "sn": "C",
+      "pn": "C"
+    }
+  ],
+  "pupil": [
+    {
+      "sn": "Fir",
+      "pn": "Freddy",
+      "pid": 66666,
+      "id": "6789012345",
+      "gnd": "M",
+      "hse": "Gibbon",
+      "tg": ""
+    },
+    {
+      "sn": "Ginko",
+      "pn": "Gilly",
+      "pid": 77777,
+      "id": "7890123456",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    },
+    {
+      "sn": "Holly",
+      "pn": "Harry",
+      "pid": 88888,
+      "id": "8901234567",
+      "gnd": "M",
+      "hse": "Gibbon",
+      "tg": ""
+    },
+    {
+      "sn": "Ilex",
+      "pn": "Issy",
+      "pid": 99999,
+      "id": "9012345678",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    }
+  ]
+},
+{
+  "yr": 2024,
+  "lv": "US",
+  "sl": "History HL",
+  "ss": "Hh",
+  "sc": "I",
+  "g": "Hh/C",
+  "log": "2023-12-04",
+  "teacher": [
+    {
+      "tid": "DDD",
+      "id": "DDD12345",
+      "sn": "D",
+      "pn": "D"
+    },
+    {
+      "tid": "EEE",
+      "id": "EEE12345",
+      "sn": "E",
+      "pn": "E"
+    }
+  ],
+  "pupil": [
+    {
+      "sn": "Fir",
+      "pn": "Freddy",
+      "pid": 66666,
+      "id": "6789012345",
+      "gnd": "M",
+      "hse": "Gibbon",
+      "tg": ""
+    },
+    {
+      "sn": "Ginko",
+      "pn": "Gilly",
+      "pid": 77777,
+      "id": "7890123456",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    },
+    {
+      "sn": "Ilex",
+      "pn": "Issy",
+      "pid": 99999,
+      "id": "9012345678",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    }
+  ]
+},
+{
+  "yr": 2024,
+  "lv": "US",
+  "sl": "Chemistry",
+  "ss": "C",
+  "sc": "A",
+  "g": "C/D",
+  "log": "2023-12-04",
+  "teacher": [
+    {
+      "tid": "AAA",
+      "id": "AAA12345",
+      "sn": "A",
+      "pn": "A"
+    },
+    {
+      "tid": "FFF",
+      "id": "FFF12345",
+      "sn": "F",
+      "pn": "F"
+    }
+  ],
+  "pupil": [
+    {
+      "sn": "Holly",
+      "pn": "Harry",
+      "pid": 88888,
+      "id": "8901234567",
+      "gnd": "M",
+      "hse": "Gibbon",
+      "tg": ""
+    },
+    {
+      "sn": "Ilex",
+      "pn": "Issy",
+      "pid": 99999,
+      "id": "9012345678",
+      "gnd": "F",
+      "hse": "Donkey",
+      "tg": ""
+    },
+    {
+      "sn": "Fir",
+      "pn": "Freddy",
+      "pid": 66666,
+      "id": "6789012345",
+      "gnd": "M",
+      "hse": "Gibbon",
+      "tg": ""
+    }
+  ]
+}
+]

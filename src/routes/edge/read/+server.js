@@ -21,7 +21,7 @@ export async function POST({request}) {
     let body = {
     
         "collection":data.collection,
-        "database":'occam',
+        "database":'halite',
         "dataSource":process.env.ATLAS_CLUSTER,
         "limit":50000,
         "projection": data.projection,

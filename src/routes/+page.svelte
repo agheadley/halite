@@ -1,21 +1,59 @@
 <script>
 
 import { onMount } from 'svelte';
+import {config,location,pupils} from '$lib/store';
+import { goto } from '$app/navigation';
 
+export let data ;
 
-let test=async()=>{
-	let response = await fetch('/edge/test', {
-        method: 'POST',
-        body: JSON.stringify({collection:'results',filter:{},projection:{}}),
-        headers: {'content-type': 'application/json'}
-    });
-    let res= await response.json();
-	console.log(res);
+let updateGroups=async()=>{
 
 };
 
+let updateConduct=async()=>{
+
+};
+
+let updateContacts=async()=>{
+
+};
+
+
+let getPupils=()=>{
+	$pupils=[];
+	for(let g of data.groups) {
+		for(let p of g.pupil) {
+			if(!$pupils.find(el=>el.pid===p.pid)) {
+				$pupils.push({
+					pid:p.pid,
+					sn:p.sn,
+					pn:p.pn,
+					hse:p.hse,
+					tg:p.tg,
+					gnd:p.gnd
+				});
+			}
+		}
+	}
+
+};
+
+
+
 onMount(async () => {
-	await test();
+	$location='/';
+	console.log(`${$location} mounted`);
+	console.log(data);
+	$config=data.config;
+
+	if(data.config.update.groups) await updateGroups();
+	if(data.config.update.conduct) await updateConduct();
+	if(data.config.update.contacts) await updateContacts();
+	 
+	getPupils();
+	console.log($pupils);
+
+	if(data.user.tag.pupil) goto('/pupil');
 });
 
 
