@@ -116,7 +116,7 @@ ss
 sl
 g
 log
-teacher:[{tid:'',id:'',sn:'',pn:''}]
+teacher:[{tid:'',id:'',sn:'',pn:'',sal:''}]
 pupil:[{id:'',pid:12345,sn:'',pn:'',tg:'',hse:'',gnd:''}]
 ```
 

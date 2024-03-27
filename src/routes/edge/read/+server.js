@@ -32,7 +32,7 @@ export async function POST({request}) {
     let res=await response.json();
     let results=res?.documents?.[0]?res.documents:[];
    
-    console.log(results);
+    //console.log(results);
 
     return json(results);
    

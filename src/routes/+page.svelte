@@ -6,17 +6,24 @@ import { goto } from '$app/navigation';
 
 export let data ;
 
-let updateGroups=async()=>{
-	// add tg to groups
+
+let updateGroupsContacts=async()=>{
+	/* get groups and contact info */
+    let response = await fetch('/edge/mis', {
+        method: 'POST',
+        body: JSON.stringify({cfg:$config}),
+        headers: {'content-type': 'application/json'}
+    });
+    let res= await response.json();
+    
+    console.log(res);
+
 };
 
 let updateConduct=async()=>{
 
 };
 
-let updateContacts=async()=>{
-
-};
 
 
 let getPupils=()=>{
@@ -52,10 +59,12 @@ onMount(async () => {
 	console.log(data);
 	$config=data.config;
 
-	if(data.config.update.groups) await updateGroups();
-	if(data.config.update.conduct) await updateConduct();
-	if(data.config.update.contacts) await updateContacts();
+	//data.config.update.groups=true;
+
+	if(data.config.update.groups || data.config.update.contacts ) await updateGroupsContacts();
+	if(data.config.update.contacts) await updateConduct();
 	 
+	
 	getPupils();
 	console.log($pupils);
 
@@ -72,7 +81,7 @@ onMount(async () => {
 
 <div class="row">
 	<div class="col">
-		<h4>/</h4>
+		<blockquote>Checking user, updating MIS data</blockquote>
 	</div>
 </div>
 

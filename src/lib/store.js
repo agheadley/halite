@@ -6,6 +6,8 @@ export let alert = writable({msg:"",type:'success',ms:3000});
 
 export let location=writable('');
 
-export let config=writable({});
+export let config=writable({
+    update:{contacts:false,groups:false,conduct:false}
+});
 
 export let pupils=writable([]);

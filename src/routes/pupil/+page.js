@@ -1,5 +1,5 @@
-import * as auth from '$lib/auth';
-import { redirect } from '@sveltejs/kit';
+//import * as auth from '$lib/auth';
+//import { redirect } from '@sveltejs/kit';
 
 /** @type {import('./$types').PageLoad} */
 export async function load() {
