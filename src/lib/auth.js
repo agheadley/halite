@@ -33,7 +33,7 @@ export let login = async () =>{
         await msalInstance.loginRedirect();
         accounts = msalInstance.getAllAccounts();
     } 
-    console.log('accounts',accounts);
+    //console.log('accounts',accounts);
 
     let user={name:'',homeAccountId:'',tag:{teacher:false,admin:false,pupil:false}};
 

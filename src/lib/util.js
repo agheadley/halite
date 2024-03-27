@@ -1,3 +1,6 @@
+
+
+
 /**
  * 
  * @param {number} delay 
@@ -5,6 +8,13 @@
  */
 export let wait = (delay) => new Promise((resolve) => setTimeout(resolve, delay));
 
+/**
+ * @param {any} value
+ */
+export let isEmpty=(value)=>{
+    return (value == null || value.length === 0);
+  }
+  
 
 
 /**

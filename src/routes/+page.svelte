@@ -1,7 +1,7 @@
 <script>
 
 import { onMount } from 'svelte';
-import {config,location,pupils} from '$lib/store';
+import {config,location,pupils,groups} from '$lib/store';
 import { goto } from '$app/navigation';
 
 export let data ;
@@ -34,11 +34,11 @@ let getPupils=async()=>{
 		headers: {'content-type': 'application/json'}
 	});
     let intake= await response.json();
-	console.log('intake',intake);
+	//console.log('intake',intake);
     
 
 	let gps=data.groups.map((/** @type {{ lv: any; yr: any; g: any; sc: any; ss: any; pupil: any[]; }} */ el)=>({lv:el.lv,yr:el.yr,g:el.g,sc:el.sc,ss:el.ss,pid:el.pupil.map((/** @type {{ pid: any; }} */ el)=>el.pid)}));
-	console.log(gps);
+	//console.log(gps);
 	
 	/** get conduct data */
 
@@ -48,7 +48,7 @@ let getPupils=async()=>{
 		headers: {'content-type': 'application/json'}
 	});
     let conduct= await response.json();
-	console.log('conduct',conduct);
+	//console.log('conduct',conduct);
     
 
 
@@ -81,7 +81,7 @@ let getPupils=async()=>{
 				let conductArr=[];
 				let c=conduct.find((/** @type {{ pid: any; yr: any; lv: any; }} */ el)=>el.pid===p.pid && el.yr===g.yr && el.lv===g.lv);
 				if(c) {
-					console.log('coduct found',p.pid,c);
+					//console.log('coduct found',p.pid,c);
 					let past7days=new Date().getTime()-(86400*7*1000);
 					for(let item of c.conduct) {
 						let check=item.dt>=past7days ? true : false;
@@ -90,7 +90,7 @@ let getPupils=async()=>{
 				}
 
 
-				console.log(conductArr);
+				//console.log(conductArr);
 
 				$pupils.push({
 					lv:g.lv,
@@ -117,15 +117,17 @@ let getPupils=async()=>{
 onMount(async () => {
 	$location='/';
 	console.log(`${$location} mounted`);
-	console.log(data);
+	//console.log(data);
 	$config=data.config;
-
+	$groups=data.groups;
 
 	if(data.config.update.groups || data.config.update.conduct || data.config.update.contacts) await updateGroupsContactsConduct();
-	 
+	
+
 	
 	await getPupils();
-	console.log($pupils);
+	//console.log($pupils,$groups);
+
 
 	if(data.user.tag.pupil) goto('/pupil');
 	if(data.user.tag.teacher) goto('/assessments');

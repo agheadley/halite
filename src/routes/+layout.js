@@ -32,7 +32,7 @@ export async function load({fetch}) {
     });
     res= await response.json();
     
-    console.log(res);
+    //console.log(res);
 
     /* map to find pid, tid and add $config.subject HoD tid in to check for non-teaching staff */
     let p=res.map((/** @type {{ pupil: any[]; }} */ el)=>el.pupil.map((/** @type {{ pid: any; }} */ el)=>el.pid)).flat();
@@ -56,7 +56,7 @@ export async function load({fetch}) {
     
 
 
-    
+
 
     return {user:user,config:cfg,groups:res};
     

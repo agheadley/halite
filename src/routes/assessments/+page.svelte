@@ -1,7 +1,7 @@
 <script>
 
     import { onMount } from 'svelte';
-    import {config,location,pupils} from '$lib/store';
+    import {config,location,pupils,groups} from '$lib/store';
     import { goto } from '$app/navigation';
     
     export let data ;
@@ -14,6 +14,8 @@
         console.log(`${$location} mounted`);
         console.log(data);
         console.log('pupils',$pupils);
+        console.log('groups',$groups);
+        
     });
     
     

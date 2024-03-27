@@ -46,9 +46,14 @@ returns true for undefined (as undefined==null), null, [], ""
 
 ```
 
-# Startup
+# Startup - /+page.svelte
 
-- grab asssessments and all pupil (add intake) , groups , config into memory
+- checks for new groups, conduct and contacts (depends on config.update)
+
+- $pupils (with conduct, pre, base, overall and tg, hse etc)
+- $groups
+- $config
+
 
 # Overview
 
