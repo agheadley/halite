@@ -23,8 +23,14 @@ let getPupils=()=>{
 	$pupils=[];
 	for(let g of data.groups) {
 		for(let p of g.pupil) {
-			if(!$pupils.find(el=>el.pid===p.pid)) {
+			/** get intake data */
+
+			/** get conduct data */
+			
+			if(!$pupils.find(el=>el.pid===p.pid && el.lv===g.lv && el.yr===g.yr)) {
 				$pupils.push({
+					lv:g.lv,
+					yr:g.yr,
 					pid:p.pid,
 					sn:p.sn,
 					pn:p.pn,
