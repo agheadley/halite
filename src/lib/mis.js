@@ -168,7 +168,7 @@ export let getGroupData=(mis,cfg)=>{
   
     let created = x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');
 
-    if(month>cfg.rollover) currentYear+=1;
+    if(month>cfg.rollover.month) currentYear+=1;
     console.log(month,currentYear);
 
     //let data={setTeachers:[],setMembers:[]};

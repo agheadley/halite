@@ -7,7 +7,7 @@ import { goto } from '$app/navigation';
 export let data ;
 
 
-let updateGroupsContacts=async()=>{
+let updateGroupsContactsConduct=async()=>{
 	/* get groups and contact info */
     let response = await fetch('/edge/mis', {
         method: 'POST',
@@ -20,21 +20,58 @@ let updateGroupsContacts=async()=>{
 
 };
 
-let updateConduct=async()=>{
-
-};
 
 
 
-let getPupils=()=>{
+let getPupils=async()=>{
 	$pupils=[];
+	/** get intake data */
+			
+			
+	let response = await fetch('/edge/read', {
+		method: 'POST',
+		body: JSON.stringify({collection:'intake',filter:{},projection:{}}),
+		headers: {'content-type': 'application/json'}
+	});
+    let intake= await response.json();
+	console.log('intake',intake);
+    
+
+	let gps=data.groups.map(el=>({lv:el.lv,yr:el.yr,g:el.g,sc:el.sc,ss:el.ss,pid:el.pupil.map(el=>el.pid)}));
+	console.log(gps);
+	
+	/** get conduct data */
+
+
+
 	for(let g of data.groups) {
 		for(let p of g.pupil) {
-			/** get intake data */
-
-			/** get conduct data */
-
 			if(!$pupils.find(el=>el.pid===p.pid && el.lv===g.lv && el.yr===g.yr)) {
+				let i=intake.find((/** @type {{ pid: any; yr: any; lv: any; }} */ el)=>el.pid===p.pid && el.yr===g.yr && el.lv===g.lv);
+				let overall={A:0,B:0};
+				/** @type {{sc:string,ss:string,A:number,B:number}[]}*/
+				let pre=[];
+				/** @type {{type:string,A:number,B:number}[]}*/
+				let base=[];
+				if(i) {
+					let f=i.base.find((/** @type {{ type: string; }} */ el)=>el.type==='overall');
+					//console.log(f);
+					if(f) overall={A:f.A,B:f.B};
+					//console.log(i);
+					for(let item of i.base) base.push({type:item.type,A:item.A,B:item.B});
+
+					let g=gps.filter(el=>el.pid.includes(p.pid));
+					//console.log(i);
+					for(let item of g) {
+						let f=i.pre.find(el=>el.sc===item.sc && el.ss===item.ss);
+						if(f) pre.push({ss:f.ss,sc:f.sc,A:f.A,B:f.B});
+					}
+
+				}	
+
+
+
+
 				$pupils.push({
 					lv:g.lv,
 					yr:g.yr,
@@ -43,7 +80,10 @@ let getPupils=()=>{
 					pn:p.pn,
 					hse:p.hse,
 					tg:p.tg,
-					gnd:p.gnd
+					gnd:p.gnd,
+					overall:overall,
+					pre:pre,
+					base:base
 				});
 			}
 		}
@@ -59,16 +99,16 @@ onMount(async () => {
 	console.log(data);
 	$config=data.config;
 
-	//data.config.update.groups=true;
 
-	if(data.config.update.groups || data.config.update.contacts ) await updateGroupsContacts();
-	if(data.config.update.contacts) await updateConduct();
+	if(data.config.update.groups || data.config.update.conduct || data.config.update.contacts) await updateGroupsContactsConduct();
 	 
 	
-	getPupils();
+	await getPupils();
 	console.log($pupils);
 
 	if(data.user.tag.pupil) goto('/pupil');
+	//if(data.user.tag.teacher) goto('/assessments');
+	
 });
 
 
