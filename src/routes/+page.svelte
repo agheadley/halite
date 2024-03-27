@@ -37,11 +37,19 @@ let getPupils=async()=>{
 	console.log('intake',intake);
     
 
-	let gps=data.groups.map(el=>({lv:el.lv,yr:el.yr,g:el.g,sc:el.sc,ss:el.ss,pid:el.pupil.map(el=>el.pid)}));
+	let gps=data.groups.map((/** @type {{ lv: any; yr: any; g: any; sc: any; ss: any; pupil: any[]; }} */ el)=>({lv:el.lv,yr:el.yr,g:el.g,sc:el.sc,ss:el.ss,pid:el.pupil.map((/** @type {{ pid: any; }} */ el)=>el.pid)}));
 	console.log(gps);
 	
 	/** get conduct data */
 
+	response = await fetch('/edge/read', {
+		method: 'POST',
+		body: JSON.stringify({collection:'conduct',filter:{},projection:{}}),
+		headers: {'content-type': 'application/json'}
+	});
+    let conduct= await response.json();
+	console.log('conduct',conduct);
+    
 
 
 	for(let g of data.groups) {
@@ -60,17 +68,29 @@ let getPupils=async()=>{
 					//console.log(i);
 					for(let item of i.base) base.push({type:item.type,A:item.A,B:item.B});
 
-					let g=gps.filter(el=>el.pid.includes(p.pid));
+					let g=gps.filter((/** @type {{ pid: string | any[]; }} */ el)=>el.pid.includes(p.pid));
 					//console.log(i);
 					for(let item of g) {
-						let f=i.pre.find(el=>el.sc===item.sc && el.ss===item.ss);
+						let f=i.pre.find((/** @type {{ sc: any; ss: any; }} */ el)=>el.sc===item.sc && el.ss===item.ss);
 						if(f) pre.push({ss:f.ss,sc:f.sc,A:f.A,B:f.B});
 					}
 
-				}	
+				}
+				
+				/** @type {{dl:string,dt:number,past7:boolean,ss:string,sc:string,reward:boolean,id:string}[]}*/
+				let conductArr=[];
+				let c=conduct.find((/** @type {{ pid: any; yr: any; lv: any; }} */ el)=>el.pid===p.pid && el.yr===g.yr && el.lv===g.lv);
+				if(c) {
+					console.log('coduct found',p.pid,c);
+					let past7days=new Date().getTime()-(86400*7*1000);
+					for(let item of c.conduct) {
+						let check=item.dt>=past7days ? true : false;
+						conductArr.push({dl:item.dl,dt:item.dt,past7:check,ss:item.ss,sc:item.sc,id:item.id,reward:item.reward});
+					}
+				}
 
 
-
+				console.log(conductArr);
 
 				$pupils.push({
 					lv:g.lv,
@@ -83,7 +103,8 @@ let getPupils=async()=>{
 					gnd:p.gnd,
 					overall:overall,
 					pre:pre,
-					base:base
+					base:base,
+					conduct:conductArr
 				});
 			}
 		}
@@ -107,7 +128,7 @@ onMount(async () => {
 	console.log($pupils);
 
 	if(data.user.tag.pupil) goto('/pupil');
-	//if(data.user.tag.teacher) goto('/assessments');
+	if(data.user.tag.teacher) goto('/assessments');
 	
 });
 

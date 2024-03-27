@@ -79,7 +79,7 @@ hse
 tg 
 gnd 
 overall {A:0,B:0}
-conduct:[{reward:true,id:0,dl:'',dt:0,sc:'',ss:''}]
+conduct:[{reward:true,id:0,dl:'',dt:0,sc:'',ss:'',past7:false}]
 base:[{type:'',A:0,B:0}] 
 pre:[{sc:'',ss:'',A:0,B:0}]
 ```

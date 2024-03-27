@@ -13,6 +13,7 @@
         $location='/assessments';
         console.log(`${$location} mounted`);
         console.log(data);
+        console.log('pupils',$pupils);
     });
     
     
