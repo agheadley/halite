@@ -7,7 +7,7 @@ import { goto } from '$app/navigation';
 export let data ;
 
 let updateGroups=async()=>{
-
+	// add tg to groups
 };
 
 let updateConduct=async()=>{
@@ -26,7 +26,7 @@ let getPupils=()=>{
 			/** get intake data */
 
 			/** get conduct data */
-			
+
 			if(!$pupils.find(el=>el.pid===p.pid && el.lv===g.lv && el.yr===g.yr)) {
 				$pupils.push({
 					lv:g.lv,
