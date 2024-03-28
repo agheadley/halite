@@ -35,7 +35,7 @@
                 <legend>Cohort</legend>
                 <p class="grouped">
                 <select  id="cohort" bind:value={$cohorts.assessments.years.index} on:change={update}>
-                    <optgroup label="Level ExamYear">
+                    <optgroup label="Form Level ExamYear">
                             {#each $cohorts.assessments.years.list as item,index}
                                 <option value={index}>F{item.fm} {item.lv} {item.yr}</option>
                             {/each}
