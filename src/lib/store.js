@@ -7,8 +7,22 @@ export let alert = writable({msg:"",type:'success',ms:3000});
 export let location=writable('');
 
 export let config=writable({
-    update:{contacts:false,groups:false,conduct:false}
+    admin:[{tid:''}],
+    rollover:{month:8},
+    update:{contacts:false,groups:false,conduct:false},
+    year:[{lv:'',fm:7,nc:13,x:0}],
+    rag:{red:-1,green:0},
+    std:[{lv:'',A:'',B:''}],
+    grade:[{sc:'',gd:'',scr:0,pc:0,pre:0}],
+    conduct:[{id:0,name:'',reward:false}],
+    subject:[{lv:'',sc:'',ss:'',tid:''}],
+    kpi:[{lv:'',section:'',KPI:'',sc:'',gd:'',sort:0}],
+    regression:[{lv:'',sc:'',ss:'',regressionYear:0,gradient:0,intercept:0,std:''}],
+    tips:['']
+
 });
+
+
 
 export let pupils=writable([
     {
@@ -41,3 +55,19 @@ export let groups=writable([
         teacher:[{id:'',pn:'',sn:'',sal:'',tid:''}]
     }
 ]);
+
+export let cohorts=writable({
+    assessments:{
+        years:{list:[{yr:0,lv:'',fm:0}],index:0},
+        subjects:{list:[{yr:0,lv:'',ss:'',sc:'',sl:''}],index:0},
+        edit:{}
+    },
+    overview:{
+        years:{list:[{yr:0,lv:'',fm:0}],index:0},
+        houses:{list:[{hse:'',lv:'',yr:0}],index:0,all:false}
+    },
+    outcome:{
+        years:{list:[{yr:0,lv:''}],index:0}
+    }
+
+});

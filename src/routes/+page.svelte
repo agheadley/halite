@@ -1,7 +1,7 @@
 <script>
 
 import { onMount } from 'svelte';
-import {config,location,pupils,groups} from '$lib/store';
+import {config,location,pupils,groups,cohorts} from '$lib/store';
 import { goto } from '$app/navigation';
 
 export let data ;
@@ -112,6 +112,56 @@ let getPupils=async()=>{
 
 };
 
+let getCohorts=()=>{
+	/*assessments:{
+        years:{list:[{yr:0,lv:'',fm:0}],index:0},
+        subjects:{list:[{yr:0,lv:'',ss:'',sc:'',sl:''}],index:0},
+        edit:{}
+    },
+    overview:{
+        years:{list:[{yr:0,lv:'',fm:0}],index:0},
+        houses:{list:[{hse:'',lv:'',yr:0}],index:0,all:false}
+    },
+	*/
+
+	/* get distinct by ss,sc, lv, yr */
+	$cohorts.assessments.subjects.list=[];
+	$cohorts.assessments.subjects.index=0;
+	
+	for(let item of $groups) {
+		if(!$cohorts.assessments.subjects.list.find(el=>el.yr===item.yr && el.lv===item.lv && el.sc===item.sc && el.ss===item.ss))
+			$cohorts.assessments.subjects.list.push({yr:item.yr,lv:item.lv,ss:item.ss,sc:item.sc,sl:item.sl});	
+	}
+	$cohorts.assessments.subjects.list=$cohorts.assessments.subjects.list.sort((a,b)=>(a.sc.localeCompare(b.sc)) || (a.sl.localeCompare(b.sl)) );
+    
+	/* refine for yr,lv only and add current fm*/
+	let d=new Date();
+    let m=d.getMonth()+1;
+    let currentYr=m>$config.rollover.month ? d.getFullYear()+1:d.getFullYear();
+	
+	$cohorts.assessments.years.list=[];
+	$cohorts.assessments.years.index=0;
+	for(let item of $cohorts.assessments.subjects.list) {
+	    let f=$config.year.find((/** @type {{ lv: any; x: number; }} */ el)=>el.lv===item.lv && el.x===(item.yr-currentYr));
+        let fm = f ? f.fm : -1;
+        if(!$cohorts.assessments.years.list.find(el=>el.yr==item.yr && el.lv==item.lv)) $cohorts.assessments.years.list.push({lv:item.lv,yr:item.yr,fm:fm});
+    }
+    $cohorts.assessments.years.list=$cohorts.assessments.years.list.sort((a,b)=>b.fm-a.fm);
+
+
+
+
+	$cohorts.overview.houses.list=[];
+	$cohorts.overview.houses.index=0;
+	$cohorts.overview.houses.all=false;
+	for(let item of $pupils) {
+		if(!$cohorts.overview.houses.list.find(el=>el.yr===item.yr && el.lv===item.lv && el.hse===item.hse))
+			$cohorts.overview.houses.list.push({yr:item.yr,lv:item.lv,hse:item.hse})
+	}
+    
+	console.log('$cohorts',$cohorts);
+};
+
 
 
 onMount(async () => {
@@ -126,6 +176,7 @@ onMount(async () => {
 
 	
 	await getPupils();
+	getCohorts();
 	//console.log($pupils,$groups);
 
 

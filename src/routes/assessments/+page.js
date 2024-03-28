@@ -22,9 +22,9 @@ export async function load() {
     /** @type {any} */
     let gps=[];
     groups.subscribe((value) => {gps=value;});
+    console.log(gps,cfg);
 
-
-    if(!gps[0] || !cfg.subject) throw redirect(302, '/');
+    if(!gps[0] || gps[0]?.g==='' || !cfg.subject || cfg.subject[0]?.ss==='') throw redirect(302, '/');
 
     //console.log(cfg,gps);
 
