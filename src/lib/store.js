@@ -68,6 +68,9 @@ export let cohorts=writable({
     },
     outcome:{
         years:{list:[{yr:0,lv:''}],index:0}
+    },
+    archive:{
+        years:{list:[{yr:0,lv:''}],index:0}
     }
 
 });

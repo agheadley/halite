@@ -1,15 +1,30 @@
 <script>
 	import 'chota/dist/chota.css';
+	import {page} from '$app/stores';
+
+	export let data;
+
 </script>
+
 
 
 <div class="app">
 	<nav class="nav">
 		<div class="nav-left">
-		  <a class="brand" href="#">Halite</a>
+		  <a class="brand brand-color" href={'/about'}>Halite</a>
 		  <div class="tabs">
-			<a>Link 1</a>
-			<a class="active">Link 2</a>
+			{#if data.user.tag.teacher}
+			<a href={'/assessments'} class={$page.url.pathname==='/assessments' ? 'active' : ''}>Assessments</a>
+			<a href={'/overview'} class={$page.url.pathname==='/overview' ? 'active' : ''}>Overview</a>
+			<a href={'/reports'} class={$page.url.pathname==='/reports' ? 'active' : ''}>Reports</a>
+			{/if}
+			{#if data.user.tag.admin}
+			<a href={'/admin'} class={$page.url.pathname==='/admin' ? 'active' : ''}>Admin</a>
+			{/if}
+			{#if data.user.tag.pupil}
+			<a href={'/pupil'} class={$page.url.pathname==='/pupil' ? 'active' : ''}>Pupil</a>
+			{/if}
+			
 		  </div>
 		</div>
 		<div class="nav-right">
@@ -28,4 +43,9 @@
 
 
 <style>
-	</style>
+
+.brand-color {
+	color:#14854f;
+}
+
+</style>

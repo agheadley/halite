@@ -5,7 +5,7 @@
     
     <div class="row">
         <div class="col">
-            <h4>Error</h4>
+            <h4>Page not Found</h4>
         </div>
     </div>
     
@@ -17,7 +17,7 @@
     
     <div class="row">
         <div class="col">
-            <blockquote>Oh no!</blockquote>
+            <blockquote>Sorry. This page doesn't exist.</blockquote>
         </div>
     </div>
     
@@ -25,7 +25,7 @@
     
     <div class="row">
         <div class="col">
-            <p>{$page.error && $page.error.message ? $page.error.message : ''}</p>
+          <!--  <p>{$page.error && $page.error.message ? $page.error.message : ''}</p>-->
         </div>
     </div>
     
