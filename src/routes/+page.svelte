@@ -112,19 +112,9 @@ let getPupils=async()=>{
 
 };
 
-let getCohorts=()=>{
-	/*assessments:{
-        years:{list:[{yr:0,lv:'',fm:0}],index:0},
-        subjects:{list:[{yr:0,lv:'',ss:'',sc:'',sl:''}],index:0},
-        edit:{}
-    },
-    overview:{
-        years:{list:[{yr:0,lv:'',fm:0}],index:0},
-        houses:{list:[{hse:'',lv:'',yr:0}],index:0,all:false}
-    },
-	*/
-
-	/* get distinct by ss,sc, lv, yr */
+let getAssessmentsCohorts=()=>{
+	
+	/* Asssessments - get distinct by ss,sc, lv, yr */
 	$cohorts.assessments.subjects.list=[];
 	$cohorts.assessments.subjects.index=0;
 	
@@ -134,7 +124,7 @@ let getCohorts=()=>{
 	}
 	$cohorts.assessments.subjects.list=$cohorts.assessments.subjects.list.sort((a,b)=>(a.sc.localeCompare(b.sc)) || (a.sl.localeCompare(b.sl)) );
     
-	/* refine for yr,lv only and add current fm*/
+	/* Assessments - refine for yr,lv only and add current fm*/
 	let d=new Date();
     let m=d.getMonth()+1;
     let currentYr=m>$config.rollover.month ? d.getFullYear()+1:d.getFullYear();
@@ -144,13 +134,17 @@ let getCohorts=()=>{
 	for(let item of $cohorts.assessments.subjects.list) {
 	    let f=$config.year.find((/** @type {{ lv: any; x: number; }} */ el)=>el.lv===item.lv && el.x===(item.yr-currentYr));
         let fm = f ? f.fm : -1;
-        if(!$cohorts.assessments.years.list.find(el=>el.yr==item.yr && el.lv==item.lv)) $cohorts.assessments.years.list.push({lv:item.lv,yr:item.yr,fm:fm});
+        if(!$cohorts.assessments.years.list.find(el=>el.yr==item.yr && el.lv==item.lv)) 
+			$cohorts.assessments.years.list.push({lv:item.lv,yr:item.yr,fm:fm});
     }
     $cohorts.assessments.years.list=$cohorts.assessments.years.list.sort((a,b)=>b.fm-a.fm);
 
+};
 
+let getOverviewCohorts=()=>{
 
-
+	/* Houses - get distinct by hse, lv, yr */
+	
 	$cohorts.overview.houses.list=[];
 	$cohorts.overview.houses.index=0;
 	$cohorts.overview.houses.all=false;
@@ -158,9 +152,55 @@ let getCohorts=()=>{
 		if(!$cohorts.overview.houses.list.find(el=>el.yr===item.yr && el.lv===item.lv && el.hse===item.hse))
 			$cohorts.overview.houses.list.push({yr:item.yr,lv:item.lv,hse:item.hse})
 	}
+	$cohorts.overview.houses.list=$cohorts.overview.houses.list.sort((a,b)=>a.hse.localeCompare(b.hse));
     
-	console.log('$cohorts',$cohorts);
+	/* Houses - refine for yr,lv only and add current fm */
+	let d=new Date();
+    let m=d.getMonth()+1;
+    let currentYr=m>$config.rollover.month ? d.getFullYear()+1:d.getFullYear();
+	
+	$cohorts.overview.years.list=[];
+	$cohorts.overview.years.index=0;
+	for(let item of $cohorts.overview.houses.list) {
+		let f=$config.year.find((/** @type {{ lv: any; x: number; }} */ el)=>el.lv===item.lv && el.x===(item.yr-currentYr));
+        let fm = f ? f.fm : -1;
+		if(!$cohorts.overview.years.list.find(el=>el.yr==item.yr && el.lv==item.lv))
+			$cohorts.overview.years.list.push({lv:item.lv,yr:item.yr,fm:fm});
+	}
+	
 };
+
+let getOutcomeCohorts=()=>{
+
+	/* $lib/store.js
+	export let cohorts=writable({
+   
+		outcome:{
+        years:{list:[{yr:0,lv:''}],index:0}
+		},
+		archive:{
+			years:{list:[{yr:0,lv:''}],index:0}
+		}
+
+	});
+
+
+	*/
+};
+
+let getArchiveCohorts=()=>{
+	/* $lib/store.js
+	export let cohorts=writable({
+    	archive:{
+        	years:{list:[{yr:0,lv:''}],index:0}
+    	}
+
+	});
+
+
+	*/
+};
+
 
 
 
@@ -176,9 +216,13 @@ onMount(async () => {
 
 	
 	await getPupils();
-	getCohorts();
-	//console.log($pupils,$groups);
-
+	
+	getAssessmentsCohorts();
+	getOverviewCohorts();
+	
+	/* to do */
+	getOutcomeCohorts();
+	getArchiveCohorts();
 
 	if(data.user.tag.pupil) goto('/pupil');
 	if(data.user.tag.teacher) goto('/assessments');

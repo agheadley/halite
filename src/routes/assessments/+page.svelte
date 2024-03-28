@@ -1,7 +1,7 @@
 <script>
 
     import { onMount } from 'svelte';
-    import {config,location,pupils,groups} from '$lib/store';
+    import {config,location,pupils,groups,cohorts} from '$lib/store';
     import { goto } from '$app/navigation';
     
     export let data ;
@@ -15,6 +15,7 @@
         console.log(data);
         console.log('pupils',$pupils);
         console.log('groups',$groups);
+        console.log('cohorts',$cohorts);
         
     });
     
