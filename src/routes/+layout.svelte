@@ -18,7 +18,9 @@
 		  </a>
 		</div>
 	  </nav>
+
 	<div class="container">
+		<div class="row">&nbsp;</div>
 		<slot />
 	</div>
 		
