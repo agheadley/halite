@@ -52,7 +52,7 @@
                 <legend>Subject</legend>
                 <p class="grouped">
                 <select id="subject" bind:value={$cohorts.assessments.subjects.index} on:change={update}>
-                    <optgroup label="Subject">
+                    <optgroup label="Subject (Course)">
                             {#each $cohorts.assessments.subjects.list as item,index}
                                 {#if item.yr===$cohorts.assessments.years.list[$cohorts.assessments.years.index].yr && item.lv===$cohorts.assessments.years.list[$cohorts.assessments.years.index].lv}
                                 <option value={index}>{item.sl} ({item.sc})</option>
