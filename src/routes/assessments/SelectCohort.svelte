@@ -1,27 +1,47 @@
 <script>
 
-    import {cohorts,config,groups} from '$lib/store';
+    import {cohorts,config,groups,pupils} from '$lib/store';
     import { onMount } from 'svelte';
     import * as util from '$lib/util';
 	import { goto } from '$app/navigation';
+	import { getConductData } from '$lib/mis';
     
     /** @type {any}*/
     export let status;
    
     
     let update=async()=>{
-        let c=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
+        let y=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
         let s=$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index];
        
         /* adjust subjects.index if necessary */
-        if(!(c.lv===s.lv && c.yr===s.yr)) $cohorts.assessments.subjects.index=$cohorts.assessments.subjects.list.findIndex(el=>el.lv===c.lv && el.yr===c.yr);
+        if(!(y.lv===s.lv && y.yr===s.yr)) $cohorts.assessments.subjects.index=$cohorts.assessments.subjects.list.findIndex(el=>el.lv===y.lv && el.yr===y.yr);
+        s=$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index];
        
+
+        let gps=$groups.filter(el=>el.lv===y.lv && el.yr===y.yr && el.sc===s.sc && el.ss===s.ss );
+      
+        status.table=[];
+
+        for(let g of gps) {
+            /** @type {any}*/
+            let pup=[];
+            for(let p of g.pupil) {
+                let f=$pupils.find(el=>el.pid==p.pid);
+                pup.push({g:g.g,pid:p.pid,sn:p.sn,pn:p.pn,tg:p.tg,hse:p.hse,cols:[],overall:f?f.overall:{A:0,B:0},groups:f?f.groups:[],conduct:f?f.conduct:[]})
+            }
+            status.table.push({g:g.g,sc:g.sc,ss:g.ss,sl:g.sl,cols:[],conduct:[],pupil:pup});
+        }
+
+        console.log('status.table',status.table);
+
         /* reactive for parent +page.js  $:{} */
         status.select=true;
     };
 
     onMount(async () => {
            console.log('SelectCohort.svelte mounted');
+           console.log($pupils);
            await update();
     });
     

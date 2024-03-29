@@ -111,7 +111,7 @@ sn
 pn
 test
 base:[{type:'',A:0,B:0}] 
-pre:[{sc:'',ss:'',A:0,B:0}]
+groups:[{sl:'',sc:'',ss:'',pre:{A:0,B:0}}]
 ```
 # group keys
 ```

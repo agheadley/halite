@@ -6,8 +6,12 @@ import { goto } from '$app/navigation';
 
 export let data ;
 
+/** @type {string}*/
+let msg='Checking user, updating MIS data';
 
 let updateGroupsContactsConduct=async()=>{
+
+	msg='Updating pupil data from the MIS ...';
 	/* get groups and contact info */
     let response = await fetch('/edge/mis', {
         method: 'POST',
@@ -25,8 +29,8 @@ let updateGroupsContactsConduct=async()=>{
 
 let getPupils=async()=>{
 	$pupils=[];
+	
 	/** get intake data */
-			
 			
 	let response = await fetch('/edge/read', {
 		method: 'POST',
@@ -37,7 +41,7 @@ let getPupils=async()=>{
 	//console.log('intake',intake);
     
 
-	let gps=data.groups.map((/** @type {{ lv: any; yr: any; g: any; sc: any; ss: any; pupil: any[]; }} */ el)=>({lv:el.lv,yr:el.yr,g:el.g,sc:el.sc,ss:el.ss,pid:el.pupil.map((/** @type {{ pid: any; }} */ el)=>el.pid)}));
+	let gps=data.groups.map((/** @type {{ lv: any; yr: any; g: any; sc: any; ss: any;sl: any; pupil: any[]; }} */ el)=>({lv:el.lv,yr:el.yr,g:el.g,sc:el.sc,sl:el.sl,ss:el.ss,pid:el.pupil.map((/** @type {{ pid: any; }} */ el)=>el.pid)}));
 	//console.log(gps);
 	
 	/** get conduct data */
@@ -53,12 +57,13 @@ let getPupils=async()=>{
 
 
 	for(let g of data.groups) {
+		g.pupil=g.pupil.sort((/** @type {{ sn: string; pn: string; }} */ a,/** @type {{ sn: any; pn: any; }} */ b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn) )
 		for(let p of g.pupil) {
 			if(!$pupils.find(el=>el.pid===p.pid && el.lv===g.lv && el.yr===g.yr)) {
 				let i=intake.find((/** @type {{ pid: any; yr: any; lv: any; }} */ el)=>el.pid===p.pid && el.yr===g.yr && el.lv===g.lv);
 				let overall={A:0,B:0};
-				/** @type {{sc:string,ss:string,A:number,B:number}[]}*/
-				let pre=[];
+				/** @type {{g:string,sc:string,sl:string,ss:string,pre:{A:number,B:number}}[]}*/
+				let groups=[];
 				/** @type {{type:string,A:number,B:number}[]}*/
 				let base=[];
 				if(i) {
@@ -69,10 +74,11 @@ let getPupils=async()=>{
 					for(let item of i.base) base.push({type:item.type,A:item.A,B:item.B});
 
 					let g=gps.filter((/** @type {{ pid: string | any[]; }} */ el)=>el.pid.includes(p.pid));
-					//console.log(i);
+					g=g.sort((/** @type {{ sc: string; sl: string; }} */ a,/** @type {{ sc: any; sl: any; }} */ b)=>a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl));
 					for(let item of g) {
 						let f=i.pre.find((/** @type {{ sc: any; ss: any; }} */ el)=>el.sc===item.sc && el.ss===item.ss);
-						if(f) pre.push({ss:f.ss,sc:f.sc,A:f.A,B:f.B});
+						//if(f) pre.push({ss:f.ss,sc:f.sc,A:f.A,B:f.B});
+						groups.push({g:item.g,sc:item.sc,sl:item.sl,ss:item.ss,pre:{A:f?f.A:0,B:f?f.B:0}});
 					}
 
 				}
@@ -102,13 +108,15 @@ let getPupils=async()=>{
 					tg:p.tg,
 					gnd:p.gnd,
 					overall:overall,
-					pre:pre,
+					groups:groups,
 					base:base,
 					conduct:conductArr
 				});
 			}
 		}
 	}
+
+	$pupils=$pupils.sort((a,b)=>b.yr-a.yr || b.lv.localeCompare(a.lv) || a.pn.localeCompare(b.pn)  );
 
 };
 
@@ -209,13 +217,15 @@ onMount(async () => {
 	console.log(`${$location} mounted`);
 	//console.log(data);
 	$config=data.config;
-	$groups=data.groups;
-
+	
 	if(data.config.update.groups || data.config.update.conduct || data.config.update.contacts) await updateGroupsContactsConduct();
 	
 
-	
+	msg='Building pupil data ...';
 	await getPupils();
+	$groups=data.groups;
+
+	msg='Building cohort data ...';
 	
 	getAssessmentsCohorts();
 	getOverviewCohorts();
@@ -224,6 +234,8 @@ onMount(async () => {
 	getOutcomeCohorts();
 	getArchiveCohorts();
 
+	msg='Searching for user entry points ...';
+	
 	if(data.user.tag.pupil) goto('/pupil');
 	if(data.user.tag.teacher) goto('/assessments');
 	
@@ -239,7 +251,7 @@ onMount(async () => {
 
 <div class="row">
 	<div class="col">
-		<blockquote>Checking user, updating MIS data</blockquote>
+		<blockquote>{msg}</blockquote>
 	</div>
 </div>
 

@@ -8,7 +8,7 @@
         "yr":2025,
         "test":"M",
         "base":[
-            {"type":"overall","A":100,"B":100},
+            {"type":"overall","A":120,"B":120},
             {"type":"math","A":100,"B":100},
             {"type":"vocab","A":100,"B":100}
         ],

@@ -5,7 +5,7 @@
     import { goto } from '$app/navigation';
     import SelectCohort from './SelectCohort.svelte';
 
-    
+    /** @type {any}*/    
     let status={
         table:[],
         select:false
@@ -44,7 +44,55 @@
             <a href={'/assessments/create'} class="button dark">Create</a>
         </div>
     </div>
+
+    <div class="responsive">
+        {#each status.table as group,groupIndex}
+        <table>
+            <thead>
+                <tr>
+                    <th>{group.g}</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                {#each group.pupil as row,rowIndex}
+                    <tr>
+                        <td class="pupil-name">{row.sn} {row.pn}</td>
+                        <td>{row.overall.A}</td>
+                        <td>{row.overall.B}</td>
+                    </tr>
+                {/each}
+            </tbody>
+        </table>
+        {/each}
+    </div>
+
     
     <style>
+
+.responsive {
+        overflow-x:auto;
+    }
+
+    td {
+        padding:0.2rem;
+    }
+
+    th {
+        border-bottom: 1px solid gray;
+        padding:0.2rem;
+    }
+
+   
+    .pupil-name {
+        min-width:15rem;
+        max-width:15rem;
+        overflow:hidden;
+        white-space:nowrap;
+    }
+    
     </style>
     
