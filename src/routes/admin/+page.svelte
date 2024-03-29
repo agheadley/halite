@@ -6,7 +6,6 @@
     
     
     let status={
-        table:[],
         select:false
     };
 

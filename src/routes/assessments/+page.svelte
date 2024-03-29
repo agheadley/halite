@@ -4,10 +4,13 @@
     import {config,location,pupils,groups,cohorts} from '$lib/store';
     import { goto } from '$app/navigation';
     import SelectCohort from './SelectCohort.svelte';
+    import IntakeBar from '$lib/_IntakeBar.svelte';
+    import ConductBar from '$lib/_ConductBar.svelte';
 
     /** @type {any}*/    
     let status={
         table:[],
+        std:{A:0,B:0},
         select:false
     };
 
@@ -15,6 +18,7 @@
         if(status.select) {
             console.log('changed cohort...');
             status.select=false;
+            status.table=status.table;
         }
     }
     
@@ -51,8 +55,8 @@
             <thead>
                 <tr>
                     <th>{group.g}</th>
-                    <th></th>
-                    <th></th>
+                    <th>{status.std.A}</th>
+                    <th>{status.std.B}</th>
                     <th></th>
                     
                 </tr>
@@ -61,14 +65,21 @@
                 {#each group.pupil as row,rowIndex}
                     <tr>
                         <td class="pupil-name">{row.sn} {row.pn}</td>
-                        <td>{row.overall.A}</td>
-                        <td>{row.overall.B}</td>
+                        <td><IntakeBar result={row.overall.A} std={status.std.A}/></td>
+                        <td><IntakeBar result={row.overall.B} std={status.std.B}/></td>
+                        <td><ConductBar 
+                            reward={row.conduct.filter((/** @type {{ reward: boolean; sc: string; ss: string; }} */ el)=>el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
+                            sanction={row.conduct.filter((/** @type {{ reward: boolean; sc: string; ss: string; }} */ el)=>el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
+                           
+                            />
+                        </td>
                     </tr>
                 {/each}
             </tbody>
         </table>
         {/each}
     </div>
+
 
     
     <style>

@@ -4,7 +4,7 @@
         "rollover":{"month":8},
         "rag":{"red:":-1,"green":0},
         "update":{"groups":false,"conduct":false,"contacts":false},
-        "std":[{"lv":"MS","A":"NAT","B":"IND"},{"lv":"US","A":"GCSE","B":"ALIS"},{"lv":"L1","A":"","B":""}],
+        "std":{"US":{"A":"GCSE","B":"ALIS"},"MS":{"A":"NAT","B":"IND"},"L1":{"A":"","B":""}},
         "grade": [
             {
               "sc": "A",
