@@ -1,6 +1,7 @@
 <script>
 	import 'chota/dist/chota.css';
 	import {page} from '$app/stores';
+	import Alert from '$lib/_Alert.svelte';
 
 	export let data;
 
@@ -9,6 +10,7 @@
 
 
 <div class="app">
+	<Alert/>
 	<nav class="nav">
 		<div class="nav-left">
 		  <a class="brand brand-color" href={'/about'}>Halite</a>

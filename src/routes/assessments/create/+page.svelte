@@ -1,11 +1,17 @@
 <script>
 
-    import {cohorts,groups,location} from '$lib/store';
+    import {cohorts,groups,location,alert} from '$lib/store';
     import { onMount } from 'svelte';
     import * as util from '$lib/util';
 	import { goto } from '$app/navigation';
     
     
+    let test=()=>{
+        console.log('alert ...');
+        $alert.msg="Hello";
+    
+
+    };
     
 
     onMount(async () => {
@@ -23,6 +29,7 @@
         </div>
     </div>
     
+    <button on:click={test}>test</button>
     <style>
 
     </style>
