@@ -12,7 +12,7 @@ export let config=writable({
     update:{contacts:false,groups:false,conduct:false},
     year:[{lv:'',fm:7,nc:13,x:0}],
     rag:{red:-1,green:0},
-    std:[{lv:'',A:'',B:''}],
+    std:{US:{A:'GCSE',B:'ALIS'},MS:{A:'NAT',B:'IND'},L1:{A:'',B:''}},
     grade:[{sc:'',gd:'',scr:0,pc:0,pre:0}],
     conduct:[{id:0,name:'',reward:false}],
     subject:[{lv:'',sc:'',ss:'',tid:''}],

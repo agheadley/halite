@@ -65,11 +65,17 @@
                 {#each group.pupil as row,rowIndex}
                     <tr>
                         <td class="pupil-name">{row.sn} {row.pn}</td>
-                        <td><IntakeBar result={row.overall.A} std={status.std.A}/></td>
-                        <td><IntakeBar result={row.overall.B} std={status.std.B}/></td>
+                        <td><IntakeBar r={row.overall.A} std={status.std.A}/></td>
+                        <td><IntakeBar r={row.overall.B} std={status.std.B}/></td>
                         <td><ConductBar 
                             reward={row.conduct.filter((/** @type {{ reward: boolean; sc: string; ss: string; }} */ el)=>el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
                             sanction={row.conduct.filter((/** @type {{ reward: boolean; sc: string; ss: string; }} */ el)=>el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
+                           
+                            />
+                        </td>
+                        <td><ConductBar 
+                            reward={row.conduct.filter((/** @type {{ past7:boolean;reward: boolean; sc: string; ss: string; }} */ el)=>el.past7===true && el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
+                            sanction={row.conduct.filter((/** @type {{ past7:boolean;reward: boolean; sc: string; ss: string; }} */ el)=>el.past7===true && el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
                            
                             />
                         </td>

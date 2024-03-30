@@ -1,59 +1,91 @@
 <script>
+    import { onMount} from 'svelte';
 
-    /** @type {{type:string,score:number}}*/
-
+   
     /** @type {number}*/
-    export let result;
+    export let r;
 
     /** @type {string}*/
     export let std;
 
-    let config = {
-        colors:{white:'#fff',bg:'#bbb',red:'rgba(178,34,34,0.5)',green:'rgba(34,139,34,0.5)',text:'#333',blue:'#1E90FF88'},
-        max:140,
-        min:60,
-        height:30,
-        width:50
-
-    };
-
+    const red='rgba(178,34,34,0.5)';
+    const green='rgba(34,139,34,0.5)';
+    const text='#333';
+    const blue='#1E90FF88';
+    const bg='#ddd';
+    
     let x=0;
 
-    
+    let min=60;
+    let max=140;
+    let h=30;
+    let w=50;
 
-    if(std==='GCSE') {
-      config.max=9;
-      config.min=0;
-    }
+    let gmin=0;
+    let gmax=9;
 
-    
 
-  
-    
-
-    let score = result<config.min ? 0 : result>config.max ? (config.max-config.min) : result-config.min;
-    x = config.width*score / (config.max-config.min);
-
-    
     </script>
     
     
         <svg width="5rem" height="2rem"xmlns="http://www.w3.org/2000/svg">
             <g>
               
-              <rect x="0" y="12" width="80" height="8" fill={config.colors.bg}></rect>
+              <rect x="0" y="12" width="50" height="8" fill={bg}></rect>
+              <text x="0" y="10" font-size="10" font-weight="600" fill={text}>{String(Math.round(10*r)/10)}</text>
+              {#if std==='GCSE'}
+
+              <rect 
+                x="0" 
+                y="12" 
+                width={w*r/gmax} 
+                height="8" 
+                fill={blue}></rect>
+
+
+
+              {:else}
+
+
+                {#if r>=100}
+                    <rect 
+                    x="0" 
+                    y="12" 
+                    width={w*(r-min)/(max-min)} 
+                    height="8" 
+                    fill={green}></rect>
+
+
+                {:else}
+
+                    <rect 
+                    x="0" 
+                    y="12" 
+                    width={w*(r-min)/(max-min)} 
+                    height="8" 
+                    fill={red}></rect>
+
+
+                {/if}
+
+
+
+              {/if}
+
+
+              <!--
               {#if result!==null}
                 {#if std==="GCSE"}
-                  <rect x="0" y="12" width={x} height="8" fill={config.colors.blue}></rect>
+                  <rect x="0" y="12" width={(w*(result<min?0:result>max ? (max-min) : min )/(max-min))} height="8" fill={config.colors.blue}></rect>
                 {:else}
-                  <rect x="0" y="12" width={x} height="8" fill={result<100 ? config.colors.red : config.colors.green }></rect>
+                  <rect x="0" y="12" width={(w*(result<min?0:result>max ? (max-min) : min )/(max-min))} height="8" fill={result<100 ? config.colors.red : config.colors.green }></rect>
                 {/if}
-                <text x="0" y="10" font-size="10" font-weight="600" fill={config.colors.text}>{String(Math.round(10*result)/10)}</text>
               {/if}
+              -->
             </g>
           </svg>
+          
        
-    
     
     <style>
     
