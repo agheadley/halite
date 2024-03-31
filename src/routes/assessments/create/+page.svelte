@@ -1,10 +1,11 @@
 <script>
 
-    import {cohorts,groups,location,alert} from '$lib/store';
+    import {cohorts,groups,location,alert,config} from '$lib/store';
     import { onMount } from 'svelte';
     import * as util from '$lib/util';
 	import { goto } from '$app/navigation';
     
+    export let data;
     
     let test=()=>{
         console.log('alert ...');
@@ -15,7 +16,6 @@
     };
 
     let status={
-        list:[],
         name:'',
         max:15,
         dl:'0000-00-00'
@@ -32,7 +32,97 @@
     
     };
 
+    /*
+# results
+```
+aoid (assessment oid)
+pid
+t:[0,0,0]
+gd
+pc
+scr
+fb
+```
+*/
+
+
     let save=async()=>{
+        let ds=status.dl?.length===10 ? status.dl[5]+status.dl[6]+"/" +status.dl[2]+status.dl[3]: '00/00';
+        let dt=new Date(status.dl).getTime();
+    
+        let s=$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index];
+        let y=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
+    
+        let grades=[];
+        let gds=$config.grade.filter(el=>el.sc===s.sc).sort((a,b)=>b.scr-a.scr)
+        for(let item of gds) grades.push({gd:item.gd,pc:item.pc,scr:item.scr,active:true});
+    
+        let document={
+            lv:y.lv,
+            yr:y.yr,
+            n:status.name,
+            dl:status.dl,
+            ds:ds,
+            dt:dt,
+            sc:s.sc,
+            sl:s.sl,
+            ss:s.ss,
+            tag:{open:true,grade:false,overview:false,pupil:false,archive:false},
+            t:[{t:100,w:100,n:'P1'}],
+            gd:grades,
+            log:`${data.user.name}|${util.getDate()}`
+
+        };
+
+        console.log(document);
+        let response = await fetch('/edge/insert', {
+		    method: 'POST',
+		    body: JSON.stringify({collection:'assessments',documents:[document]}),
+		    headers: {'content-type': 'application/json'}
+	    });
+
+        let res= await response.json();
+        console.log(res);
+
+        let documents=[];
+        if(res.length===1 && res[0]!=='') {
+            let gps=$groups.filter(el=>el.yr===y.yr && el.lv===y.lv && el.sc===s.sc && el.ss===s.ss);
+            for(let gp of gps) {
+                for(let p of gp.pupil) {
+                    documents.push({
+                        aoid:res[0],
+                        pid:p.pid,
+                        t:[0],
+                        gd:'U',
+                        pc:0,
+                        scr:0,
+                        fb:''
+                    });
+                }
+            }
+
+            console.log(documents);
+            let response = await fetch('/edge/insert', {
+		        method: 'POST',
+		        body: JSON.stringify({collection:'results',documents:documents}),
+		        headers: {'content-type': 'application/json'}
+	        });
+
+            res= await response.json();
+            if(res.length && res.length===documents.length) {
+                $alert.msg=`'assessments' and 'results' documents created`;
+            } else {
+                $alert.type='error';
+                $alert.msg=`Error creating 'records' documents`;
+            }
+
+
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error creating 'assessments' documents`;
+
+        }
+
 
     };
 
@@ -40,16 +130,7 @@
         $location='/assessments/create';
         console.log(`${$location} mounted`);
         let y=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
-       
-        let response = await fetch('/edge/distinct', {
-            method: 'POST',
-            body: JSON.stringify({collection:'results',match:{lv:y.lv,yr:y.yr},aggregate:['ss','sc','dl']}),
-            headers: {'content-type': 'application/json'}
-         });
-         status.list=await response.json();
-         //console.log(status.list);
-
-         status.dl=util.getDate();
+        status.dl=util.getDate();
 
        
     });
@@ -61,13 +142,6 @@
         <div class="col">
             <h4>
                 Create Assessment 
-                <span class="tag">
-                    {$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sl}
-                    ({$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc})
-                    {$cohorts.assessments.years.list[$cohorts.assessments.years.index].lv}
-                    {$cohorts.assessments.years.list[$cohorts.assessments.years.index].yr}
-                    
-                </span>
             </h4>
         </div>
         <div class="col">
@@ -77,9 +151,23 @@
     
     <div class="row">
         <div class="col">
+            <h4>
+                <span class="tag">
+                    {$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sl}
+                    ({$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc})
+                    {$cohorts.assessments.years.list[$cohorts.assessments.years.index].lv}
+                    {$cohorts.assessments.years.list[$cohorts.assessments.years.index].yr}
+                    
+                </span>
+            </h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
             &nbsp;
         </div>
     </div>
+    
     
     <div class="row">
         <div class="col is-vertical-align">
