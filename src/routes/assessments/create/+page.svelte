@@ -111,6 +111,7 @@ fb
             res= await response.json();
             if(res.length && res.length===documents.length) {
                 $alert.msg=`'assessments' and 'results' documents created`;
+                goto('/assessments');
             } else {
                 $alert.type='error';
                 $alert.msg=`Error creating 'records' documents`;

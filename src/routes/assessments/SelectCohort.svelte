@@ -24,6 +24,35 @@
         
         let gps=$groups.filter(el=>el.lv===y.lv && el.yr===y.yr && el.sc===s.sc && el.ss===s.ss );
       
+
+        /* get assessments */
+
+
+        let response = await fetch('/edge/read', {
+		    method: 'POST',
+		    body: JSON.stringify({collection:'assessments',filter:{lv:y.lv,yr:y.yr,sc:s.sc,ss:s.ss,"tag.archive":false},projection:{}}),
+		    headers: {'content-type': 'application/json'}
+	    });
+
+        let assessments= await response.json();
+
+        for(let item of assessments) {
+            let response = await fetch('/edge/read', {
+		        method: 'POST',
+		        body: JSON.stringify({collection:'results',filter:{aoid:item._id},projection:{}}),
+		        headers: {'content-type': 'application/json'}
+	        });
+            item.pupil=await response.json();
+
+        }
+
+        console.log('assessment data',assessments); 
+
+
+
+
+        /* build table */
+
         status.table=[];
 
         for(let g of gps) {
