@@ -8,6 +8,7 @@
     
     let test=()=>{
         console.log('alert ...');
+        $alert.type='error';
         $alert.msg="Hello";
     
 
@@ -29,7 +30,9 @@
         </div>
     </div>
     
-    <button on:click={test}>test</button>
+    <button class="button error" on:click={test}>test</button>
+    <button class="button" on:click={()=>$alert.msg='back to normal!'}>test</button>
+    
     <style>
 
     </style>
