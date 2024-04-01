@@ -1,13 +1,13 @@
 import * as auth from '$lib/auth';
 import { error } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
-import {config,groups} from '$lib/store';
+import {config,groups,cohorts} from '$lib/store';
 
 /* execute layout.js only in the browser - msal browser! */ 
 export const ssr = false;
 
 /** @type {import('./$types').PageLoad} */
-export async function load() {
+export async function load({fetch}) {
 
 
     
@@ -21,6 +21,10 @@ export async function load() {
     /** @type {any} */
     let gps=[];
     groups.subscribe((value) => {gps=value;});
+    /** @type {any} */
+    let chts=[];
+    cohorts.subscribe((value) => {chts=value;});
+    
     console.log(gps,cfg);
 
     if(!gps[0] || gps[0]?.g==='' || !cfg.subject || cfg.subject[0]?.ss==='') throw redirect(302, '/');
@@ -53,7 +57,16 @@ export async function load() {
 
     
 
-    return {user:user};
+    let response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'assessments',filter:{"_id": { "$oid": chts.assessments.edit._id } },projection:{}}),
+        headers: {'content-type': 'application/json'}
+    });
+    let res= await response.json();
+    
+    console.log('/assessments/edit/+page.js',res,chts.assessments.edit);
+    
+    return {user:user,assessment:res[0]?res[0]:{}};
     
       
 }

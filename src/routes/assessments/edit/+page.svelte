@@ -1,10 +1,48 @@
 <script>
 
+import {cohorts,groups,location,alert,config, pupils} from '$lib/store';
+import { onMount } from 'svelte';
+import * as util from '$lib/util';
+import { goto } from '$app/navigation';
+
+export let data;
 
 </script>
 
 
-<pre>
+<div class="row">
+    <div class="col">
+        <h4>
+            <span class="tag">
+                {$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sl}
+                ({$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc})
+                {$cohorts.assessments.years.list[$cohorts.assessments.years.index].lv}
+                {$cohorts.assessments.years.list[$cohorts.assessments.years.index].yr}
+                
+            </span>
+        </h4>
+    </div>
+    <div class="col">
+        <a href={'/assessments'} class="button outline">Close</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <h4>{data.assessment.n} {data.assessment.ds}</h4>
+    </div>
+    <div class="col">
+        <button class="button dark">Manage</button>
+    </div>
+</div>
+
+<h4>Edit each pupil entry ...</h4>
+<p>filter : "pupils.pid":1111</p>
+
+
+<p>{JSON.stringify(data.assessment)}</p>
+<!--
+
 
 {
     _id: ...,
@@ -27,4 +65,4 @@
   // Execute the update operation
   const result = await myColl.updateOne(query, updateDocument);
 
-</pre>
+-->

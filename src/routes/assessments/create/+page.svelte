@@ -53,6 +53,7 @@
                         pid:p.pid,
                         sn:p.sn,
                         pn:p.pn,
+                        g:gp.g,
                         t:[0],
                         gd:'U',
                         pc:0,

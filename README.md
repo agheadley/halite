@@ -143,7 +143,7 @@ tag:{open,grade,overview,pupil,archive}
 grade:[{gd:'',pc:0,scr:0,active:true}]
 log:''
 total:[{t:0,w:0,n:''}]
-pupil:[pid:0,sn:'',pn:'',t:[0,0,0],gd:'',pc:0,scr:0,fb:'']
+pupil:[pid:0,sn:'',pn:'',g:'',t:[0,0,0],gd:'',pc:0,scr:0,fb:'']
 ```
 
 # exams
