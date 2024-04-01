@@ -85,7 +85,7 @@
                     
                 </tr>
                 <tr>
-                    <th>{group.g}</th>
+                    <td></td>
                     <td><span class="tag">{status.std.A}</span></td>
                     <td><span class="tag">{status.std.B}</span></td>
                     {#each group.cols as col,colIndex}
@@ -103,6 +103,29 @@
                     {/each}
                     <td><span class="tag">R/S 365</span></td>
                     <td><span class="tag">R/S 7</span></td>
+                    <td></td>
+                    
+                
+                </tr>
+                <tr>
+                    <th>{group.g}</th>
+                    <td><span class="tag">{status.std.A}</span></td>
+                    <td><span class="tag">{status.std.B}</span></td>
+                    {#each group.cols as col,colIndex}
+                        <td><GradeCell>{col.gd}</GradeCell></td>
+                    {/each}
+                    <td><ConductBar 
+                        reward={group.conduct.filter((/** @type {{ reward: boolean; sc: string; ss: string; }} */ el)=>el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
+                        sanction={group.conduct.filter((/** @type {{ reward: boolean; sc: string; ss: string; }} */ el)=>el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
+                       
+                        />
+                    </td>
+                    <td><ConductBar 
+                        reward={group.conduct.filter((/** @type {{ past7:boolean;reward: boolean; sc: string; ss: string; }} */ el)=>el.past7===true && el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
+                        sanction={group.conduct.filter((/** @type {{ past7:boolean;reward: boolean; sc: string; ss: string; }} */ el)=>el.past7===true && el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
+                       
+                        />
+                    </td>
                     <td></td>
                     
                 

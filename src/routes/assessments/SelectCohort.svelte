@@ -56,7 +56,10 @@
 
         status.table=[];
 
+
         for(let g of gps) {
+            /** @type {any}*/
+            let cond=[];
             /** @type {any}*/
             let pup=[];
             for(let p of g.pupil) {
@@ -68,9 +71,18 @@
                     pcols.push(f ? {gd:f.gd,pc:f.pc,scr:f.scr} : {gd:'X',pc:0,scr:0});
 
                 }
+                if(f) cond=cond.concat(f.conduct);
                 pup.push({g:g.g,pid:p.pid,sn:p.sn,pn:p.pn,tg:p.tg,hse:p.hse,cols:pcols,overall:f?f.overall:{A:0,B:0},groups:f?f.groups:[],conduct:f?f.conduct:[]})
             }
-            status.table.push({g:g.g,sc:g.sc,ss:g.ss,sl:g.sl,cols:cols,conduct:[],pupil:pup});
+            let i=0;
+            for(let col of cols) {
+                let f=pup.filter((/** @type {{ cols: { gd: string; }[]; }} */ el)=>el.cols[i].gd!=='X').map((/** @type {{ cols: { scr: any; }[]; }} */ el)=>el.cols[i].scr);
+                let scr=f?.length>0?f.reduce((/** @type {any} */ a,/** @type {any} */ v)=>a+v)/f.length:0;
+                col.gd=f?.length>0 ? util.getClosestGrade(scr,s.sc,$config.grade):'X';
+                i+=1;
+
+            }
+            status.table.push({g:g.g,sc:g.sc,ss:g.ss,sl:g.sl,cols:cols,conduct:cond,pupil:pup});
         }
 
         console.log('status.table',status.table);
