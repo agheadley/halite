@@ -138,21 +138,13 @@ sc
 ss
 sl
 tag:{open,grade,overview,pupil,archive}
-gd:[{gd:'',pc:0,scr:0,active:true}]
-t:[{t:0,w:0,n:''}]
-```
-# results
-```
-aoid (assessment oid)
-pid
-t:[0,0,0]
-gd
-pc
-scr
-fb
+grade:[{gd:'',pc:0,scr:0,active:true}]
+log:''
+total:[{t:0,w:0,n:''}]
+pupil:[pid:0,sn:'',pn:'',t:[0,0,0],gd:'',pc:0,scr:0,fb:'']
 ```
 
-# outcome
+# exams
 ```
 yr
 lv

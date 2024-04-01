@@ -29,16 +29,15 @@ export let getDate=() =>{
 
 /**
  * 
- * @param {any} results 
- * @param {{tid:string}[]} teachers
- * @param {string} name 
+ * @param {any} assessments
+ * @param {string[]} teachers
+ * @param {string} user 
  */
-export let getAssessmentColumns=(results,teachers,name)=>{
+export let getAssessmentCols=(assessments,teachers,user)=>{
   let cols=[];
-  for(let item of results) {
-    let isEdit=teachers.find(el=>el.tid===name) && item.isOpen ? true:false;
-    let f=cols.find(el=>el.dt===item.dt && el.an===item.an);
-    if(!f) cols.push({_id:item._id?item._id:'',an:item.an,ln:item.ln,ds:item.ds,dl:item.dl,dt:item.dt,isDept:item.isDept,isPupil:item.isPupil,isView:item.isView,isOpen:item.isOpen,isEdit:isEdit,gd:'X'});
+  for(let item of assessments) {
+    let isEdit=teachers.find(el=>el===user) && item.tag.open ? true:false;
+    cols.push({_id:item._id,n:item.n,ds:item.ds,dl:item.dl,dt:item.dt,tag:{edit:isEdit,open:item.tag.open,grade:item.tag.grade,overview:item.tag.overview,pupil:item.tag.pupil,archive:item.tag.archive},gd:'X'});
   }
   cols=cols.sort((a,b)=>a.dt-b.dt);
   return cols;

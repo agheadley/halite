@@ -36,18 +36,17 @@
 
         let assessments= await response.json();
 
-        for(let item of assessments) {
-            let response = await fetch('/edge/read', {
-		        method: 'POST',
-		        body: JSON.stringify({collection:'results',filter:{aoid:item._id},projection:{}}),
-		        headers: {'content-type': 'application/json'}
-	        });
-            item.pupil=await response.json();
-
-        }
-
-        console.log('assessment data',assessments); 
-
+        /* find all teachers for editing - check groups, admin and HoDs in $config.subject*/
+        /** @type {string[]}*/
+        let teachers=[];
+        for(let gp of gps) teachers=teachers.concat(gp.teacher.map(el=>el.tid))
+        teachers=teachers.concat($config.admin.map(el=>el.tid));
+        teachers=teachers.concat($config.subject.filter(el=>el.ss===s.ss && el.sc===s.sc).map(el=>el.tid));
+        
+        let cols=util.getAssessmentCols(assessments,teachers,status.user);
+        
+        let results=assessments.map((/** @type {{ _id: any; pupil: any[]; }} */ el)=>({_id:el._id,pupil:el.pupil.map((/** @type {{ pid: any; gd: any; pc: any; scr: any; }} */ el)=>({pid:el.pid,gd:el.gd,pc:el.pc,scr:el.scr}))}));
+        
 
 
 
@@ -60,9 +59,17 @@
             let pup=[];
             for(let p of g.pupil) {
                 let f=$pupils.find(el=>el.pid==p.pid);
-                pup.push({g:g.g,pid:p.pid,sn:p.sn,pn:p.pn,tg:p.tg,hse:p.hse,cols:[],overall:f?f.overall:{A:0,B:0},groups:f?f.groups:[],conduct:f?f.conduct:[]})
+                /**@type {any[]}*/
+                let pcols=[];
+                for(let col of cols) {
+                    let rs=results.find((/** @type {{ _id: any; }} */ el)=>el._id===col._id);
+                    let rp=rs ? rs.pupil.find((/** @type {{ pid: number; }} */ el)=>el.pid===p.pid) :null;
+                    pcols.push(rs && p ? {gd:rp.gd,pc:rp.pc,scr:rp.scr} : {gd:'X',pc:0,scr:0})
+
+                }
+                pup.push({g:g.g,pid:p.pid,sn:p.sn,pn:p.pn,tg:p.tg,hse:p.hse,cols:pcols,overall:f?f.overall:{A:0,B:0},groups:f?f.groups:[],conduct:f?f.conduct:[]})
             }
-            status.table.push({g:g.g,sc:g.sc,ss:g.ss,sl:g.sl,cols:[],conduct:[],pupil:pup});
+            status.table.push({g:g.g,sc:g.sc,ss:g.ss,sl:g.sl,cols:cols,conduct:[],pupil:pup});
         }
 
         console.log('status.table',status.table);

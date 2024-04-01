@@ -42,7 +42,7 @@ let getPupils=async()=>{
     
 
 	let gps=data.groups.map((/** @type {{ lv: any; yr: any; g: any; sc: any; ss: any;sl: any; pupil: any[]; }} */ el)=>({lv:el.lv,yr:el.yr,g:el.g,sc:el.sc,sl:el.sl,ss:el.ss,pid:el.pupil.map((/** @type {{ pid: any; }} */ el)=>el.pid)}));
-	//console.log(gps);
+	console.log(gps);
 	
 	/** get conduct data */
 

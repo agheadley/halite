@@ -32,18 +32,6 @@
     
     };
 
-    /*
-# results
-```
-aoid (assessment oid)
-pid
-t:[0,0,0]
-gd
-pc
-scr
-fb
-```
-*/
 
 
     let save=async()=>{
@@ -57,6 +45,23 @@ fb
         let gds=$config.grade.filter(el=>el.sc===s.sc).sort((a,b)=>b.scr-a.scr)
         for(let item of gds) grades.push({gd:item.gd,pc:item.pc,scr:item.scr,active:true});
     
+        let pupils=[];
+        let gps=$groups.filter(el=>el.yr===y.yr && el.lv===y.lv && el.sc===s.sc && el.ss===s.ss);
+            for(let gp of gps) {
+                for(let p of gp.pupil) {
+                    pupils.push({
+                        pid:p.pid,
+                        sn:p.sn,
+                        pn:p.pn,
+                        t:[0],
+                        gd:'U',
+                        pc:0,
+                        scr:0,
+                        fb:''
+                    });
+                }
+            }
+
         let document={
             lv:y.lv,
             yr:y.yr,
@@ -70,7 +75,8 @@ fb
             tag:{open:true,grade:false,overview:false,pupil:false,archive:false},
             t:[{t:100,w:100,n:'P1'}],
             gd:grades,
-            log:`${data.user.name}|${util.getDate()}`
+            log:`${data.user.name}|${util.getDate()}`,
+            pupil:pupils
 
         };
 
@@ -84,46 +90,16 @@ fb
         let res= await response.json();
         console.log(res);
 
-        let documents=[];
-        if(res.length===1 && res[0]!=='') {
-            let gps=$groups.filter(el=>el.yr===y.yr && el.lv===y.lv && el.sc===s.sc && el.ss===s.ss);
-            for(let gp of gps) {
-                for(let p of gp.pupil) {
-                    documents.push({
-                        aoid:res[0],
-                        pid:p.pid,
-                        t:[0],
-                        gd:'U',
-                        pc:0,
-                        scr:0,
-                        fb:''
-                    });
-                }
-            }
-
-            console.log(documents);
-            let response = await fetch('/edge/insert', {
-		        method: 'POST',
-		        body: JSON.stringify({collection:'results',documents:documents}),
-		        headers: {'content-type': 'application/json'}
-	        });
-
-            res= await response.json();
-            if(res.length && res.length===documents.length) {
-                $alert.msg=`'assessments' and 'results' documents created`;
+        if(res.length && res.length===1) {
+                $alert.msg=`'assessments' document created`;
                 goto('/assessments');
-            } else {
-                $alert.type='error';
-                $alert.msg=`Error creating 'records' documents`;
-            }
-
-
         } else {
             $alert.type='error';
-            $alert.msg=`Error creating 'assessments' documents`;
-
+            $alert.msg=`Error creating 'assessments' document`;
         }
 
+
+        
 
     };
 

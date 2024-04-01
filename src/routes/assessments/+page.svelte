@@ -7,11 +7,14 @@
     import IntakeBar from '$lib/_IntakeBar.svelte';
     import ConductBar from '$lib/_ConductBar.svelte';
 
+    export let data;
+
     /** @type {any}*/    
     let status={
         table:[],
         std:{A:0,B:0},
-        select:false
+        select:false,
+        user:''
     };
 
     $:{
@@ -29,7 +32,8 @@
         console.log('pupils',$pupils);
         console.log('groups',$groups);
         console.log('cohorts',$cohorts);
-        
+        status.user=data.user.name;
+       
     });
     
     
@@ -55,9 +59,11 @@
             <thead>
                 <tr>
                     <th>{group.g}</th>
-                    <th>{status.std.A}</th>
-                    <th>{status.std.B}</th>
-                    <th></th>
+                    <td><span class="tag">{status.std.A}</span></td>
+                    <td><span class="tag">{status.std.B}</span></td>
+                    <td><span class="tag">R/S 365</span></td>
+                    <td><span class="tag">R/S 7</span></td>
+                 
                     
                 </tr>
             </thead>
