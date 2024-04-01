@@ -66,7 +66,9 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Assessments
 
-- can't set same ss/sc on same day ! Thus when IntExam created for all, not other asssesment is created.
+- edit [find by pid to edit](https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/write-operations/embedded-arrays/#:~:text=To%20update%20the%20first%20array,use%20the%20filtered%20positional%20operator.)
+
+
 
 # Admin
 
