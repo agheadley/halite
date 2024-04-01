@@ -1,5 +1,4 @@
 <script>
-
     import {cohorts,config,groups,pupils} from '$lib/store';
     import { onMount } from 'svelte';
     import * as util from '$lib/util';
@@ -45,7 +44,10 @@
         
         let cols=util.getAssessmentCols(assessments,teachers,status.user);
         
-        let results=assessments.map((/** @type {{ _id: any; pupil: any[]; }} */ el)=>({_id:el._id,pupil:el.pupil.map((/** @type {{ pid: any; gd: any; pc: any; scr: any; }} */ el)=>({pid:el.pid,gd:el.gd,pc:el.pc,scr:el.scr}))}));
+
+        let results=assessments.map((/** @type {{ pupil: any[]; _id: any; }} */ el)=>el.pupil.map((/** @type {{ pid: any; gd: any; scr: any; pc: any; }} */ cel)=>({_id:el._id,pid:cel.pid,gd:cel.gd,scr:cel.scr,pc:cel.pc}))).flat();
+        //console.log('***',x);
+        //let results=assessments.map((/** @type {{ _id: any; pupil: any[]; }} */ el)=>({_id:el._id,pupil:el.pupil.map((/** @type {{ pid: any; gd: any; pc: any; scr: any; }} */ el)=>({pid:el.pid,gd:el.gd,pc:el.pc,scr:el.scr}))}));
         
 
 
@@ -62,9 +64,8 @@
                 /**@type {any[]}*/
                 let pcols=[];
                 for(let col of cols) {
-                    let rs=results.find((/** @type {{ _id: any; }} */ el)=>el._id===col._id);
-                    let rp=rs ? rs.pupil.find((/** @type {{ pid: number; }} */ el)=>el.pid===p.pid) :null;
-                    pcols.push(rs && p ? {gd:rp.gd,pc:rp.pc,scr:rp.scr} : {gd:'X',pc:0,scr:0})
+                    let f=results.find( (/** @type {{ _id: any; pid: number; }} */ el)=>el._id===col._id && el.pid===p.pid);
+                    pcols.push(f ? {gd:f.gd,pc:f.pc,scr:f.scr} : {gd:'X',pc:0,scr:0});
 
                 }
                 pup.push({g:g.g,pid:p.pid,sn:p.sn,pn:p.pn,tg:p.tg,hse:p.hse,cols:pcols,overall:f?f.overall:{A:0,B:0},groups:f?f.groups:[],conduct:f?f.conduct:[]})

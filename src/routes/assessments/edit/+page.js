@@ -56,6 +56,7 @@ export async function load({fetch}) {
     console.log(user);
 
     
+    /* find data */
 
     let response = await fetch('/edge/read', {
         method: 'POST',
@@ -64,6 +65,12 @@ export async function load({fetch}) {
     });
     let res= await response.json();
     
+
+    /* check missing pupils against $groups */
+
+    /* insert missing pupils */
+
+
     console.log('/assessments/edit/+page.js',res,chts.assessments.edit);
     
     return {user:user,assessment:res[0]?res[0]:{}};

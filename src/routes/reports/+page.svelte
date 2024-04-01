@@ -27,6 +27,10 @@
         
     });
     
+
+    let x=[
+        [{x:2},{x:3},{x:2,y:1}],[{x:3},{y:7},{x:6,y:9}]
+    ];
     
     </script>
     
@@ -41,6 +45,12 @@
         </div>
     </div>
     
+
+
+    <p>{JSON.stringify(x)}</p>
+
+    <p>{JSON.stringify(x.flat())}</p>
+
     <style>
     </style>
     
