@@ -109,8 +109,9 @@
                 </tr>
                 <tr>
                     <th>{group.g}</th>
-                    <td><span class="tag">{status.std.A}</span></td>
-                    <td><span class="tag">{status.std.B}</span></td>
+                    <td><IntakeBar r={group.overall.A} std={status.std.A}/></td>
+                    <td><IntakeBar r={group.overall.B} std={status.std.B}/></td>
+                        
                     {#each group.cols as col,colIndex}
                         <td><GradeCell>{col.gd}</GradeCell></td>
                     {/each}
@@ -159,6 +160,9 @@
                 {/each}
             </tbody>
         </table>
+        <div class="row">
+            <div class="col">&nbsp;</div>
+        </div>
         {/each}
     </div>
 
