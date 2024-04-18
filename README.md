@@ -46,6 +46,8 @@ returns true for undefined (as undefined==null), null, [], ""
 
 ```
 
+# Backups - mongo tools required ?
+
 # Startup - /+page.svelte
 
 - checks for new groups, conduct and contacts (depends on config.update)
@@ -65,6 +67,8 @@ returns true for undefined (as undefined==null), null, [], ""
 
 
 # Assessments
+
+- need to add archive button, list of assessments to include archive data so you can downloads
 
 - edit [find by pid to edit](https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/write-operations/embedded-arrays/#:~:text=To%20update%20the%20first%20array,use%20the%20filtered%20positional%20operator.)
 
