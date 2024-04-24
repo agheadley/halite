@@ -3,7 +3,7 @@
     import { onMount } from 'svelte';
     import {config,location,pupils,groups,cohorts} from '$lib/store';
     import { goto } from '$app/navigation';
-    
+    import Import from './Import.svelte';
     
     let status={
         select:false
@@ -34,11 +34,8 @@
         <meta name="description" content="Svelte demo app" />
     </svelte:head>
     
-    <div class="row">
-        <div class="col is-vertical-align">
-           <h4>/admin</h4>
-        </div>
-    </div>
+    <Import/>
+    <hr/>
     
     <style>
     </style>

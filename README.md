@@ -177,19 +177,22 @@ sl
 ss
 sr
 g
+id
 pid
 sn
 pn
 gnd
 hse
 gd
-res:{A:0,B:0}   (0, but tag:va true to consider!!!!)
-pre:{A:'',B:''}
+res:{A:0,B:0}
 tag:{total:true,kpi:true,va:true}
 sen:{iep:false,gt:false,eal:false} 
 log:''
 ```
 
+
+
+```
 # contacts
 ```
 email
