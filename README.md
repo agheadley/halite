@@ -117,7 +117,7 @@ sn
 pn
 test
 base:[{type:'',A:0,B:0}] 
-groups:[{sl:'',sc:'',ss:'',pre:{A:0,B:0}}]
+pre:[{sc:'',ss:'',A:0,B:0}]
 ```
 # group keys
 ```
@@ -143,7 +143,7 @@ dt
 sc
 ss
 sl
-tag:{open,grade,overview,pupil,exam,archive}  // editable, grade only, overview viewable, pupil viewable,exam for all year group, archive
+tag:{open,grade,overview,pupil,parent,exam,archive}  // editable, grade only, overview viewable, pupil viewable,parent viewable,exam for all year group, archive
 grade:[{gd:'',pc:0,scr:0,active:true}]
 log:''
 total:[{t:0,w:0,n:''}]
