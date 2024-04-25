@@ -39,6 +39,8 @@
 			<a href={'/reports'} class={$page.url.pathname==='/reports' ? 'active' : ''}>Reports</a>
 			{:else}
 			<a href={'/results'} class={$page.url.pathname==='/results' ? 'active' : ''}>Results</a>
+			<a href={'/totals'} class={$page.url.pathname==='/totals' ? 'active' : ''}>Totals</a>
+			<a href={'/va'} class={$page.url.pathname==='/va' ? 'active' : ''}>VA</a>
 			{/if}
 			{/if}
 			{#if data.user.tag.admin}

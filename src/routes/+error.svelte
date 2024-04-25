@@ -15,11 +15,7 @@
         </div>
     </div>
     
-    <div class="row">
-        <div class="col">
-            <blockquote>Sorry. This page doesn't exist.</blockquote>
-        </div>
-    </div>
+
     
     
     
@@ -31,6 +27,6 @@
     
     <div class="row">
         <div class="col">
-            <a class="button dark" href="/">Occam Home</a>
+            <a class="button dark" href="/">Halite Home</a>
         </div>
     </div>
