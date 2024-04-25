@@ -41,7 +41,7 @@ export async function load() {
     user.tag.pupil = p.includes(Number(user.name)) && !user.tag.teacher ? true : false;
     
     //console.log(user);
-    if (user.name=='' || (!user.tag.teacher && !user.tag.pupil)) {
+    if (user.name=='' || (!user.tag.admin)) {
 		error(404, {
 			message: 'User not authorised!'
 		});
