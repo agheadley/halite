@@ -188,7 +188,6 @@ let getOutcomeCohorts=async()=>{
     let res= await response.json();
 	res=res.sort((/** @type {{ yr: number; lv: any; }} */ a,/** @type {{ yr: number; lv: string; }} */ b)=>b.yr-a.yr || b.lv.localeCompare(a.lv));
 	console.log('outcome',res);
-	
 	/* $lib/store.js
 	export let cohorts=writable({
    
