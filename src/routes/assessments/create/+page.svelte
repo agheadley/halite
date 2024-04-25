@@ -45,23 +45,7 @@
         let gds=$config.grade.filter(el=>el.sc===s.sc).sort((a,b)=>b.scr-a.scr)
         for(let item of gds) grades.push({gd:item.gd,pc:item.pc,scr:item.scr,active:true});
     
-        let pupils=[];
-        let gps=$groups.filter(el=>el.yr===y.yr && el.lv===y.lv && el.sc===s.sc && el.ss===s.ss);
-            for(let gp of gps) {
-                for(let p of gp.pupil) {
-                    pupils.push({
-                        pid:p.pid,
-                        sn:p.sn,
-                        pn:p.pn,
-                        g:gp.g,
-                        t:[0],
-                        gd:'U',
-                        pc:0,
-                        scr:0,
-                        fb:''
-                    });
-                }
-            }
+       
 
         let document={
             lv:y.lv,
@@ -73,11 +57,10 @@
             sc:s.sc,
             sl:s.sl,
             ss:s.ss,
-            tag:{open:true,grade:false,overview:false,pupil:false,archive:false},
+            tag:{open:true,grade:false,overview:false,pupil:false,parent:false,exam:false,archive:false},
             t:[{t:100,w:100,n:'P1'}],
             gd:grades,
-            log:`${data.user.name}|${util.getDate()}`,
-            pupil:pupils
+            log:`${data.user.name}|${util.getDate()}`
 
         };
 
@@ -92,8 +75,53 @@
         console.log(res);
 
         if(res.length && res.length===1) {
+                let aoid=res[0];
                 $alert.msg=`'assessments' document created`;
-                goto('/assessments');
+
+                let pupils=[];
+                let gps=$groups.filter(el=>el.yr===y.yr && el.lv===y.lv && el.sc===s.sc && el.ss===s.ss);
+                for(let gp of gps) {
+                    for(let p of gp.pupil) {
+                        pupils.push({
+                            aoid:aoid,
+                            lv:y.lv,
+                            yr:y.yr,
+                            n:status.name,
+                            dl:status.dl,
+                            sc:s.sc,
+                            ss:s.ss,
+                            pid:p.pid,
+                            sn:p.sn,
+                            pn:p.pn,
+                            g:gp.g,
+                            t:[0],
+                            gd:'U',
+                            pc:0,
+                            scr:0,
+                            fb:''
+                        });
+                    }
+                }
+
+                response = await fetch('/edge/insert', {
+                    method: 'POST',
+                    body: JSON.stringify({collection:'results',documents:pupils}),
+                    headers: {'content-type': 'application/json'}
+	            });
+
+                res= await response.json();
+                console.log(res);
+                if(res.length && res.length>0) {
+                    $alert.msg=`${res.length} pupil 'results' documents created`;
+                    goto('/assessments');
+                } else {
+                    $alert.type='error';
+                    $alert.msg=`Error creating 'results' documents`;
+                }
+
+
+
+                
         } else {
             $alert.type='error';
             $alert.msg=`Error creating 'assessments' document`;
