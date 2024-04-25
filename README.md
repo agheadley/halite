@@ -90,22 +90,12 @@ hse
 tg 
 gnd 
 overall {A:0,B:0}
-conduct:[{reward:true,id:0,dl:'',dt:0,sc:'',ss:'',past7:false}]
 base:[{type:'',A:0,B:0}] 
 pre:[{sc:'',ss:'',A:0,B:0}]
 ```
 
 # Key Collections
 
-# conduct 
-```
-lv
-yr
-pid
-sn
-pn
-conduct:[{reward:true,id:0,dl:'',dt:0,sc:'',ss:''}]
-```
 
 # intake keys
 ```
@@ -158,6 +148,8 @@ lv
 yr
 sc
 ss
+n
+dl
 sn
 pn
 g
@@ -208,7 +200,6 @@ id
     rag:{red:-1,green:0},
     std:[{lv:'',A:'',B:''}],
     grade:[{sc:'',gd:'',scr:0,pc:0,pre:0}],
-    conduct:[{id:0,name:'',reward:false}],
     subject:[{lv:'',sc:'',ss:'',tid:''}],
     kpi:[{lv:'',section:'',KPI:'',sc:'',gd:'',sort:0}],
     regression:[{lv:'',sc:'',ss:'',regressionYear:0,gradient:0,intercept:0,std:''}],

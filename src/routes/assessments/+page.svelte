@@ -101,8 +101,10 @@
                             {/if}
                         </td>
                     {/each}
+                    <!--
                     <td><span class="tag">R/S 365</span></td>
                     <td><span class="tag">R/S 7</span></td>
+                    -->
                     <td></td>
                     
                 
@@ -115,6 +117,7 @@
                     {#each group.cols as col,colIndex}
                         <td><GradeCell>{col.gd}</GradeCell></td>
                     {/each}
+                    <!--
                     <td><ConductBar 
                         reward={group.conduct.filter((/** @type {{ reward: boolean; sc: string; ss: string; }} */ el)=>el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
                         sanction={group.conduct.filter((/** @type {{ reward: boolean; sc: string; ss: string; }} */ el)=>el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
@@ -127,6 +130,7 @@
                        
                         />
                     </td>
+                    -->
                     <td></td>
                     
                 
@@ -143,6 +147,7 @@
                             <GradeCell>{col.gd}</GradeCell>
                         </td>
                         {/each}
+                        <!--
                         <td><ConductBar 
                             reward={row.conduct.filter((/** @type {{ reward: boolean; sc: string; ss: string; }} */ el)=>el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
                             sanction={row.conduct.filter((/** @type {{ reward: boolean; sc: string; ss: string; }} */ el)=>el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
@@ -155,6 +160,7 @@
                            
                             />
                         </td>
+                        -->
                         <td></td>
                     </tr>
                 {/each}

@@ -34,6 +34,16 @@
 	    });
 
         let assessments= await response.json();
+        console.log(assessments);
+
+        response = await fetch('/edge/read', {
+		    method: 'POST',
+		    body: JSON.stringify({collection:'results',filter:{lv:y.lv,yr:y.yr,sc:s.sc,ss:s.ss},projection:{}}),
+		    headers: {'content-type': 'application/json'}
+	    });
+
+        let results= await response.json();
+        console.log(results);
 
         /* find all teachers for editing - check groups, admin and HoDs in $config.subject*/
         /** @type {string[]}*/
@@ -45,7 +55,8 @@
         let cols=util.getAssessmentCols(assessments,teachers,status.user);
         
 
-        let results=assessments.map((/** @type {{ pupil: any[]; _id: any; }} */ el)=>el.pupil.map((/** @type {{ pid: any; gd: any; scr: any; pc: any; }} */ cel)=>({_id:el._id,pid:cel.pid,gd:cel.gd,scr:cel.scr,pc:cel.pc}))).flat();
+        console.log(cols);
+        //let results=assessments.map((/** @type {{ pupil: any[]; _id: any; }} */ el)=>el.pupil.map((/** @type {{ pid: any; gd: any; scr: any; pc: any; }} */ cel)=>({_id:el._id,pid:cel.pid,gd:cel.gd,scr:cel.scr,pc:cel.pc}))).flat();
         //console.log('***',x);
         //let results=assessments.map((/** @type {{ _id: any; pupil: any[]; }} */ el)=>({_id:el._id,pupil:el.pupil.map((/** @type {{ pid: any; gd: any; pc: any; scr: any; }} */ el)=>({pid:el.pid,gd:el.gd,pc:el.pc,scr:el.scr}))}));
         
@@ -67,7 +78,7 @@
                 /**@type {any[]}*/
                 let pcols=[];
                 for(let col of cols) {
-                    let f=results.find( (/** @type {{ _id: any; pid: number; }} */ el)=>el._id===col._id && el.pid===p.pid);
+                    let f=results.find( (/** @type {{ aoid: any; pid: number; }} */ el)=>el.aoid===col._id && el.pid===p.pid);
                     pcols.push(f ? {gd:f.gd,pc:f.pc,scr:f.scr} : {gd:'X',pc:0,scr:0});
 
                 }

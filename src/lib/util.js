@@ -37,7 +37,7 @@ export let getAssessmentCols=(assessments,teachers,user)=>{
   let cols=[];
   for(let item of assessments) {
     let isEdit=teachers.find(el=>el===user) && item.tag.open ? true:false;
-    cols.push({_id:item._id,n:item.n,ds:item.ds,dl:item.dl,dt:item.dt,tag:{edit:isEdit,open:item.tag.open,grade:item.tag.grade,overview:item.tag.overview,pupil:item.tag.pupil,archive:item.tag.archive},gd:'X'});
+    cols.push({_id:item._id,n:item.n,ds:item.ds,dl:item.dl,dt:item.dt,tag:{edit:isEdit,open:item.tag.open,grade:item.tag.grade,overview:item.tag.overview,pupil:item.tag.pupil,parent:item.tag.parent,exam:item.tag.exam,archive:item.tag.archive},gd:'X'});
   }
   cols=cols.sort((a,b)=>a.dt-b.dt);
   return cols;
