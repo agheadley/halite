@@ -178,8 +178,17 @@ let getOverviewCohorts=()=>{
 	
 };
 
-let getOutcomeCohorts=()=>{
+let getOutcomeCohorts=async()=>{
 
+	let response = await fetch('/edge/distinct', {
+		method: 'POST',
+		body: JSON.stringify({collection:'exams',match:{},aggregate:['yr','lv']}),
+		headers: {'content-type': 'application/json'}
+	});
+    let res= await response.json();
+	res=res.sort((/** @type {{ yr: number; lv: any; }} */ a,/** @type {{ yr: number; lv: string; }} */ b)=>b.yr-a.yr || b.lv.localeCompare(a.lv));
+	console.log('outcome',res);
+	
 	/* $lib/store.js
 	export let cohorts=writable({
    
@@ -196,7 +205,7 @@ let getOutcomeCohorts=()=>{
 	*/
 };
 
-let getArchiveCohorts=()=>{
+let getArchiveCohorts=async()=>{
 	/* $lib/store.js
 	export let cohorts=writable({
     	archive:{
@@ -231,8 +240,8 @@ onMount(async () => {
 	getOverviewCohorts();
 	
 	/* to do */
-	getOutcomeCohorts();
-	getArchiveCohorts();
+	await getOutcomeCohorts();
+	await getArchiveCohorts();
 
 	msg='Searching for user entry points ...';
 	
