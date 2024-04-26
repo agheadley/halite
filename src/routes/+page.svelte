@@ -187,34 +187,22 @@ let getOutcomeCohorts=async()=>{
 	});
     let res= await response.json();
 	res=res.sort((/** @type {{ yr: number; lv: any; }} */ a,/** @type {{ yr: number; lv: string; }} */ b)=>b.yr-a.yr || b.lv.localeCompare(a.lv));
-	console.log('outcome',res);
-	/* $lib/store.js
-	export let cohorts=writable({
-   
-		outcome:{
-        years:{list:[{yr:0,lv:''}],index:0}
-		},
-		archive:{
-			years:{list:[{yr:0,lv:''}],index:0}
-		}
-
-	});
-
-
-	*/
+	$cohorts.exams.years.list=res;
+	$cohorts.exams.years.index=0;
+      
 };
 
 let getArchiveCohorts=async()=>{
-	/* $lib/store.js
-	export let cohorts=writable({
-    	archive:{
-        	years:{list:[{yr:0,lv:''}],index:0}
-    	}
-
+	let response = await fetch('/edge/distinct', {
+		method: 'POST',
+		body: JSON.stringify({collection:'assessments',match:{"tag.archive":true},aggregate:['yr','lv']}),
+		headers: {'content-type': 'application/json'}
 	});
+    let res= await response.json();
+	res=res.sort((/** @type {{ yr: number; lv: any; }} */ a,/** @type {{ yr: number; lv: string; }} */ b)=>b.yr-a.yr || b.lv.localeCompare(a.lv));
 
-
-	*/
+	$cohorts.archive.years.list=res;
+	$cohorts.archive.years.index=0;
 };
 
 
@@ -241,6 +229,8 @@ onMount(async () => {
 	/* to do */
 	await getOutcomeCohorts();
 	await getArchiveCohorts();
+
+	console.log('$cohorts',$cohorts);
 
 	msg='Searching for user entry points ...';
 	
