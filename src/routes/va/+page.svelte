@@ -29,6 +29,7 @@
         console.log('std',status.std);
         console.log('tab',status.tab);
         let out=[];
+
         if(status.tab==="Overall VA" && status.overallVA[0]) {
            console.log(status.overallVA);
            out[0]=[`[${status.stds[status.std]}] COURSE`,'SUBJECT','ALL'];
@@ -49,7 +50,44 @@
            }
 
         }
-        
+        if(status.tab==="Group VA" && status.groupVA[0]) {
+            console.log(status.groupVA);
+            out[0]=[`[${status.stds[status.std]}] COURSE`,'SUBJECT','GROUPS'];
+            for(let row of status.groupVA) {
+                let line=[row.sc,row.sl];
+                for(let x of row.groups[status.std]) line.push(x.g);
+                out.push(line);
+                line=['VA',''];
+                for(let x of row.groups[status.std]) line.push(`${x.va.v} ${x.va.s!==0 ? '@'+x.va.s+'se' :''}`);
+                out.push(line);
+                line=['PUPIL','COMPARISON'];
+                for(let x of row.groups[status.std]) line.push(`${x.cf.v} ${x.cf.s!==0 ? '@'+x.cf.s+'se' :''}`);
+                out.push(line);
+            }
+
+        }
+        if(status.tab==="Intake VA" && status.intakeVA[0]) {
+            console.log(status.intakeVA);
+            out[0]=[`[${status.stds[status.std]}] COURSE`,'SUBJECT','ALL'];
+            for(let x of status.intakeVA[0].ALL[status.std]) out[0].push(x.band);
+            out[0].push('MALE');
+            for(let x of status.intakeVA[0].ALL[status.std]) out[0].push(x.band);
+            out[0].push('FEMALE');
+            for(let x of status.intakeVA[0].ALL[status.std]) out[0].push(x.band);
+            for(let row of status.intakeVA) {
+                let line=[];
+                line.push(row.sc,row.sl,'ALL');
+                for(let x of row.ALL[status.std]) line.push(`${x.va.v} ${x.va.s!==0 ? '@'+x.va.s+'se' :''}`);
+                line.push('MALE');
+                for(let x of row.M[status.std]) line.push(`${x.va.v} ${x.va.s!==0 ? '@'+x.va.s+'se' :''}`);
+                line.push('FEMALE');
+                for(let x of row.F[status.std]) line.push(`${x.va.v} ${x.va.s!==0 ? '@'+x.va.s+'se' :''}`);
+                out.push(line);
+            }
+
+        }
+
+
         file.csvDownload(out,'VA.csv');
     };
 
@@ -254,8 +292,8 @@
         let f=results.filter((/** @type {{ pid: number; ss: string; sc: string; }} */ el)=>el.pid===pupil && (el.ss!==ss || el.sc!==sc));
         for(let x of f) cf.push(x);
     }
-    console.log(sc,ss,va,pupils,cf);
-    for(let item of va) console.log(item.res.A,item.res.B);
+    //console.log(sc,ss,va,pupils,cf);
+    //for(let item of va) console.log(item.res.A,item.res.B);
     res.A.push({g:'ALL',va:getVA(va.map((/** @type {{ res: { A: any; }; }} */ el)=>el.res.A)),cf:getVA(cf.map(el=>el.res.A))});
     res.B.push({g:'ALL',va:getVA(va.map((/** @type {{ res: { B: any; }; }} */ el)=>el.res.B)),cf:getVA(cf.map(el=>el.res.B))});
 
@@ -269,7 +307,7 @@
             for(let x of f) cf.push(x);
         }
         console.log(sc,ss,group,va,pupils,cf);
-        for(let item of va) console.log(item.res.A,item.res.B);
+        //for(let item of va) console.log(item.res.A,item.res.B);
         res.A.push({g:group,va:getVA(va.map((/** @type {{ res: { A: any; }; }} */ el)=>el.res.A)),cf:getVA(cf.map(el=>el.res.A))});
         res.B.push({g:group,va:getVA(va.map((/** @type {{ res: { B: any; }; }} */ el)=>el.res.B)),cf:getVA(cf.map(el=>el.res.B))});
 
