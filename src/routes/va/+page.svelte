@@ -3,6 +3,7 @@
     import { onMount } from 'svelte';
     import {config,location,pupils,groups,cohorts} from '$lib/store';
     import  Graph from './_Graph.svelte';
+    import * as file from '$lib/file';
 
     /** @type {any}*/    
     let status = {
@@ -24,7 +25,32 @@
     };
 
     let download=()=>{
+        console.log('download...');
+        console.log('std',status.std);
+        console.log('tab',status.tab);
+        let out=[];
+        if(status.tab==="Overall VA" && status.overallVA[0]) {
+           console.log(status.overallVA);
+           out[0]=[`[${status.stds[status.std]}] COURSE`,'SUBJECT','ALL'];
+           for(let x of status.overallVA[0].ALL[status.std]) out[0].push(x.yr);
+           out[0].push('MALE');
+           for(let x of status.overallVA[0].ALL[status.std]) out[0].push(x.yr);
+           out[0].push('FEMALE');
+           for(let x of status.overallVA[0].ALL[status.std]) out[0].push(x.yr);
+           for(let row of status.overallVA) {
+                let line=[];
+                line.push(row.sc,row.sl,'ALL');
+                for(let x of row.ALL[status.std]) line.push(`${x.va.v} ${x.va.s!==0 ? '@'+x.va.s+'se' :''}`);
+                line.push('MALE');
+                for(let x of row.M[status.std]) line.push(`${x.va.v} ${x.va.s!==0 ? '@'+x.va.s+'se' :''}`);
+                line.push('FEMALE');
+                for(let x of row.F[status.std]) line.push(`${x.va.v} ${x.va.s!==0 ? '@'+x.va.s+'se' :''}`);
+                out.push(line);
+           }
 
+        }
+        
+        file.csvDownload(out,'VA.csv');
     };
 
     /**
@@ -146,8 +172,8 @@
            
 
             if(status.extras.includes(sc) && (ss==='YES' || ss==='NO')) {
-                let bool=ss==='YES' ? true : false;
-                f=item.results.filter((/** @type {{ tag: { [x: string]: boolean; }; }} */ el)=>el.tag[sc]===bool);
+                let bool= ss==='YES' ? true : false;
+                f=item.results.filter((/** @type {{ sen: { [x: string]: boolean; }; }} */ el)=>el.sen[sc]===bool);
             }
 
             //console.log(item.yr,f?f.length:0);
@@ -191,7 +217,7 @@
         for(let extra of status.extras) {
             //console.log(extra,'YES');
             let x=getOverallData(extra,'YES');
-            let row={sc:extra,sl:'NO',ALL:x.ALL,M:x.M,F:x.F};
+            let row={sc:extra,sl:'YES',ALL:x.ALL,M:x.M,F:x.F};
             //let row={sc:extra.toUpperCase(),sl:'YES',ALL:{A:[],B:[]},M:{A:[],B:[]},F:{A:[],B:[]}};
             status.overallVA.push(row);
             //console.log(extra,'NO');
