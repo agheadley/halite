@@ -13,9 +13,17 @@ let status = {
     assessment:{},
     edit:false,
     g:'',
+    selected:false,
     tab:'group',    // 'group' || 'all'
     user:''
 
+};
+
+let toggleIntakeData=()=>{
+    status.selected=status.selected?false:true;
+    for(let g of status.table) {
+        for(let p of g.pupil) p.selected=status.selected;
+    }
 };
 
 onMount(async () => {
@@ -75,7 +83,7 @@ onMount(async () => {
 {#if status.tab==='all' || (status.tab==='group' && group.g===status.g)}
 <table>
     <thead>
-        <th></th>
+        <th><button class="button clear" on:click={toggleIntakeData}>Pupil</button></th>
         <th></th>
         {#each status.assessment.total as col,colIndex}
             <th>/{col.t}</th>
@@ -83,11 +91,12 @@ onMount(async () => {
         <th>&nbsp;%&nbsp;</th>
         <th>GRD</th>
         <th>Abs?</th>
+        <th>Feedback</th>
     </thead>
     <tbody>
        {#each group.pupil as row,rowIndex}
         <tr>
-            <td>{row.pn} {row.sn}</td>
+            <td><button class="button clear" on:click={()=>row.selected=row.selected?false:true}>{row.pn} {row.sn}</button></td>
             <td>{group.g}</td>
             {#each row.t as t,tIndex}
             <td>{t}</td>
@@ -95,7 +104,17 @@ onMount(async () => {
             <td>{row.pc}</td>
             <td>{row.gd}</td>
             <td>X</td>
+            <td>{row.fb}</td>
         </tr>
+        {#if row.selected}
+        <tr>
+            <td colspan={row.t[0] ? 6+row.t.length : 6}>
+                <div class="card">
+                    {JSON.stringify(row.overall)}
+                </div>
+            </td>
+        </tr>
+        {/if}
         {/each}
     </tbody>
 </table>
