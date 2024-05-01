@@ -1,7 +1,7 @@
 import * as auth from '$lib/auth';
 import { error } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
-import {config,groups,cohorts} from '$lib/store';
+import {config,groups,cohorts,pupils} from '$lib/store';
 
 /* execute layout.js only in the browser - msal browser! */ 
 export const ssr = false;
@@ -14,6 +14,9 @@ export async function load({fetch}) {
     /** @type {{name:string,homeAccountId:string,tag:{teacher:boolean,admin:boolean,pupil:boolean}}} */
     let user=await auth.login();
     
+    /** @type {any} */
+    let pups=[];
+    pupils.subscribe((value) => {pups=value;});
     
     /** @type {any} */
     let cfg={};
@@ -99,7 +102,7 @@ export async function load({fetch}) {
                     sc:c.sc,
                     ss:c.ss,
                     g:g.g,
-                    t:res[0].total[0]?res[0].total.map(el=>0):[0],
+                    t:res[0].total[0]?res[0].total.map((/** @type {any} */ el)=>0):[0],
                     gd:'U',
                     pc:0,
                     scr:0,
@@ -137,10 +140,22 @@ export async function load({fetch}) {
     results= await response.json();
 
 
+
     console.log('/assessments/edit/+page.js',res,chts.assessments.edit);
     
-    return {user:user,assessment:res[0]?res[0]:{},groups:gps,results:results};
+    for(let g of gs ) {
+        for(let p of g.pupil) {
+            console.log(`${p.pid} ${p.sn} ${g.g}`);
+            let r=results.find(el=>el.pid===p.pid);
+            console.log(r.t,r.gd,r.aoid);
+            let f=pups.find(el=>el.lv===res[0].lv && el.yr===res[0].yr && el.pid===p.pid);
+            console.log(f);
+        }
+    }
+
+
+    return {user:user,assessment:res[0]?res[0]:{},groups:gs,results:results};
     
-      
+    
 }
 	
