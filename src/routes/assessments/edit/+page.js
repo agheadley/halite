@@ -22,7 +22,7 @@ export async function load({fetch}) {
     let gps=[];
     groups.subscribe((value) => {gps=value;});
     /** @type {any} */
-    let chts=[];
+    let chts={};
     cohorts.subscribe((value) => {chts=value;});
     
     console.log(gps,cfg);
@@ -46,9 +46,7 @@ export async function load({fetch}) {
     
     //console.log(user);
     if (user.name=='' || (!user.tag.teacher && !user.tag.pupil)) {
-		error(404, {
-			message: 'User not authorised!'
-		});
+		error(404, {message: 'User not authorised!'});
         
 	}
 
@@ -64,16 +62,84 @@ export async function load({fetch}) {
         headers: {'content-type': 'application/json'}
     });
     let res= await response.json();
+
+    //let gs=gps.filter();
+    let c=chts.assessments.subjects.list[chts.assessments.subjects.index];
+    let gs=gps.filter((/** @type {{ lv: any; yr: any; sc: any; ss: any; }} */ el)=>el.lv===c.lv && el.yr===c.yr && el.sc===c.sc && el.ss===c.ss);
+
+    console.log(gs);
+
+     
+    /**@type {any} */
+    let results=[];
+
+    if(res[0]) {
+        let response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'results',filter:{aoid:res[0]._id },projection:{}}),
+            headers: {'content-type': 'application/json'}
+        });
+        results= await response.json();
+    }
+
+    console.log(results);
+    console.log(res[0].total);
     
+    /* check missing pupils against $groups data */
 
-    /* check missing pupils against $groups */
+    for(let g of gs) {
+        for(let p of g.pupil) {
+            if(!results.find((/** @type {{ pid: any; }} */ el)=>el.pid===p.pid)) {
+                console.log(`${p.pid} ${p.sn} ${g.g}  TO ADD ...`);
 
-    /* insert missing pupils */
+                let document={
+                    aoid:res[0]._id,
+                    lv:c.lv,
+                    yr:c.yr,
+                    sc:c.sc,
+                    ss:c.ss,
+                    g:g.g,
+                    t:res[0].total[0]?res[0].total.map(el=>0):[0],
+                    gd:'U',
+                    pc:0,
+                    scr:0,
+                    fb:'',
+                    pid:p.pid,
+                    sn:p.sn,
+                    pn:p.pn,
+                    n:res[0].n,
+                    dl:res[0].dl
+                };
+
+                console.log(document);
+
+                response = await fetch('/edge/insert', {
+                    method: 'POST',
+                    body: JSON.stringify({collection:'results',documents:[document]}),
+                    headers: {'content-type': 'application/json'}
+	            });
+                let ires=await response.json();
+                //console.log(ires);
+                if(!ires.length || ires.length!==1) error(404, {message: `Error creating missing ${document.pid} ${document.sn} `});
+                else console.log(`ADDED ${ires[0]} OK`);
+
+            } else {
+                console.log(`${p.pid} ${p.sn} ${g.g}   OK`);
+            }
+        }
+    }
+
+    response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'results',filter:{aoid:res[0]._id },projection:{}}),
+        headers: {'content-type': 'application/json'}
+    });
+    results= await response.json();
 
 
     console.log('/assessments/edit/+page.js',res,chts.assessments.edit);
     
-    return {user:user,assessment:res[0]?res[0]:{}};
+    return {user:user,assessment:res[0]?res[0]:{},groups:gps,results:results};
     
       
 }
