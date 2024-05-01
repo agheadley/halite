@@ -7,6 +7,28 @@ import { goto } from '$app/navigation';
 
 export let data;
 
+/** @type {any}*/
+let status = {
+    table:[],
+    assessment:{},
+    edit:false,
+    g:'',
+    tab:'group',    // 'group' || 'all'
+    user:''
+
+};
+
+onMount(async () => {
+        $location='/assessments';
+        console.log(`/assessments/edit mounted`);
+        status.user=data.user.name;
+        status.table=data.table;
+        status.assessment=data.assessment;
+        status.edit=data.edit.edit;
+        status.g=data.edit.g;
+       
+    });
+
 </script>
 
 
@@ -23,24 +45,64 @@ export let data;
         </h4>
     </div>
     <div class="col">
+        &nbsp;
+    </div>
+    <div class="col">
         <a href={'/assessments'} class="button outline">Close</a>
     </div>
 </div>
 
 <div class="row">
-    <div class="col">
+    <div class="col is-vertical-align">
         <h4>{data.assessment.n} {data.assessment.ds}</h4>
     </div>
-    <div class="col">
+    <div class="col is-vertical-align">
         <button class="button dark">Manage</button>
+    </div>
+    <div class="col is-vertical-align">
+        <div class="tabs">
+            <a class={status.tab==='group'?'active':''} on:click={()=>status.tab='group'} href={'#'}>{status.g}</a>
+            <a class={status.tab==='all'?'active':''} on:click={()=>status.tab='all'} href={'#'}>ALL</a>
+        </div>
     </div>
 </div>
 
-<h4>Edit each pupil entry ...</h4>
-<p>filter : "pupils.pid":1111</p>
 
 
-<p>{JSON.stringify(data.assessment)}</p>
+
+{#each status.table as group,groupIndex}
+
+{#if status.tab==='all' || (status.tab==='group' && group.g===status.g)}
+<table>
+    <thead>
+        <th></th>
+        <th></th>
+        {#each status.assessment.total as col,colIndex}
+            <th>/{col.t}</th>
+        {/each}
+        <th>&nbsp;%&nbsp;</th>
+        <th>GRD</th>
+        <th>Abs?</th>
+    </thead>
+    <tbody>
+       {#each group.pupil as row,rowIndex}
+        <tr>
+            <td>{row.pn} {row.sn}</td>
+            <td>{group.g}</td>
+            {#each row.t as t,tIndex}
+            <td>{t}</td>
+            {/each}
+            <td>{row.pc}</td>
+            <td>{row.gd}</td>
+            <td>X</td>
+        </tr>
+        {/each}
+    </tbody>
+</table>
+<p>&nbsp;</p>
+{/if}
+{/each}
+
 <!--
 
 

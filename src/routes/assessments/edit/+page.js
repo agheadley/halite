@@ -102,6 +102,7 @@ export async function load({fetch}) {
                     sc:c.sc,
                     ss:c.ss,
                     g:g.g,
+                    // eslint-disable-next-line no-unused-vars
                     t:res[0].total[0]?res[0].total.map((/** @type {any} */ el)=>0):[0],
                     gd:'U',
                     pc:0,
@@ -143,18 +144,52 @@ export async function load({fetch}) {
 
     console.log('/assessments/edit/+page.js',res,chts.assessments.edit);
     
+
+    /**
+     * @typedef {{_id:string,pid:number,sn:string,pn:string,pc:number,gd:string,scr:number,t:number[],overall:{A:number,B:number},pre:{sc:string,ss:string,A:number,B:number}}} Pupil
+     * @type {{g:string,pupil:Pupil[]}[]} 
+    */
+    let data=[];
+
+
     for(let g of gs ) {
+        /** @type {Pupil[]} */
+        let pupilData=[];
         for(let p of g.pupil) {
             console.log(`${p.pid} ${p.sn} ${g.g}`);
-            let r=results.find(el=>el.pid===p.pid);
+            let r=results.find((/** @type {{ pid: any; }} */ el)=>el.pid===p.pid);
             console.log(r.t,r.gd,r.aoid);
-            let f=pups.find(el=>el.lv===res[0].lv && el.yr===res[0].yr && el.pid===p.pid);
+            let f=pups.find((/** @type {{ lv: any; yr: any; pid: any; }} */ el)=>el.lv===res[0].lv && el.yr===res[0].yr && el.pid===p.pid);
             console.log(f);
+            if(r) {
+                let pre={ss:'',sc:'',A:0,B:0};
+                if(f) {
+                    let x=f.groups.find((/** @type {{ ss: any; sc: any; }} */ el)=>el.ss===c.ss && el.sc===c.sc);
+                    if(x) pre={ss:x.ss,sc:x.sc,A:x.pre.A,B:x.pre.B};
+                }
+
+                pupilData.push({
+                    _id:r._id,
+                    pid:r.pid,
+                    sn:p.sn,
+                    pn:p.pn,
+                    pc:r.pc,
+                    gd:r.gd,
+                    scr:r.scr,
+                    t:r.t,
+                    overall:f?{A:f.overall.A,B:f.overall.B}:{A:0,B:0},
+                    pre:pre
+
+                });
+            }
+
         }
+        data.push({g:g.g,pupil:pupilData});
     }
 
 
-    return {user:user,assessment:res[0]?res[0]:{},groups:gs,results:results};
+    console.log(data);
+    return {user:user,assessment:res[0]?res[0]:{},edit:chts.assessments.edit,table:data};
     
     
 }
