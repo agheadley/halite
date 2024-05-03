@@ -11,15 +11,10 @@
     
     /** @type {any}*/
     let status = {
-        table:[],
-        assessment:{},
-        edit:false,
-        g:'',
-        selected:false,
-        tab:'group',    // 'group' || 'all'
-        user:'',
-        std:{A:'',B:''}
-    
+      n:'',
+      tag:{open:false,parent:false,pupil:false,overview:false,exam:false,grade:false,archive:false},
+      total:[],
+      grade:[]
     };
     
     let toggleIntakeData=()=>{
@@ -33,6 +28,26 @@
         $location='/assessments';
         console.log(`/assessments/edit mounted`);
         status.user=data.user.name;
+        if(data.assessment.tag) {
+            status.tag={
+                open:data.assessment.tag.open,
+                parent:data.assessment.tag.parent,
+                pupil:data.assessment.tag.pupil,
+                overview:data.assessment.tag.overview,
+                exam:data.assessment.tag.exam,
+                grade:data.assessment.tag.grade,
+                archive:data.assessment.tag.archive,
+            };
+        }
+        status.n=data.assessment.n ? data.assessment.n : '';
+        if(data.assessment.total) {
+            status.total=[];
+            for(let x of data.assessment.total) status.total.push({t:x.t,w:x.w,n:x.n});
+        } 
+        if(data.assessment.grade) {
+            status.grade=[];
+            for(let x of data.assessment.grade) status.total.push({gd:x.gd,pc:x.pc,scr:x.scr,active:x.active});
+        } 
          
     });
     
@@ -40,7 +55,21 @@
     
     
     <div class="row">
-        <h4>Manage</h4>
+        <div class="col is-vertical-align">
+
+        </div>
+        <div class="col is-vertical-align">
+            
+        </div>
+        <div class="col is-vertical-align">
+            <a href='/assessments/edit' class="button outline">Close</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            {JSON.stringify(status)}
+        </div>
     </div>
     
     <style>
