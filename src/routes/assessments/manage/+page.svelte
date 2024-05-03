@@ -46,7 +46,7 @@
         } 
         if(data.assessment.grade) {
             status.grade=[];
-            for(let x of data.assessment.grade) status.total.push({gd:x.gd,pc:x.pc,scr:x.scr,active:x.active});
+            for(let x of data.assessment.grade) status.grade.push({gd:x.gd,pc:x.pc,scr:x.scr,active:x.active});
         } 
          
     });
@@ -56,10 +56,10 @@
     
     <div class="row">
         <div class="col is-vertical-align">
-
+            Name edit
         </div>
         <div class="col is-vertical-align">
-            
+            TAG edit
         </div>
         <div class="col is-vertical-align">
             <a href='/assessments/edit' class="button outline">Close</a>
@@ -68,7 +68,36 @@
 
     <div class="row">
         <div class="col">
-            {JSON.stringify(status)}
+            <hh>Section Totals</hh>
+            <table>
+                <thead><tr><th>Section Name</th><th>Total</th><th>Weight</th></tr></thead>
+            <tbody>
+           {#each status.total as row,rowIndex}
+                <tr>
+                    <td>{row.n}</td>
+                    <td>{row.t}</td>
+                    <td>{row.w}</td>
+
+                </tr>
+           {/each}
+            </tbody>
+            </table>
+        </div>
+        <div class="col">
+            <hh>Boundaries</hh>
+            <table>
+                <thead><tr><th>Active?</th><th>Grade</th><th>Percentage</th></tr></thead>
+            <tbody>
+           {#each status.grade as row,rowIndex}
+                <tr>
+                    <td>{row.active}</td>
+                    <td>{row.gd}</td>
+                    <td>{row.pc}</td>
+
+                </tr>
+           {/each}
+            </tbody>
+            </table>
         </div>
     </div>
     
