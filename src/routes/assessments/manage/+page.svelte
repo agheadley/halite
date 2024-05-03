@@ -68,7 +68,7 @@
 
     <div class="row">
         <div class="col">
-            <hh>Section Totals</hh>
+            <h4>Section Totals</h4>
             <table>
                 <thead><tr><th>Section Name</th><th>Total</th><th>Weight</th></tr></thead>
             <tbody>
@@ -84,7 +84,7 @@
             </table>
         </div>
         <div class="col">
-            <hh>Boundaries</hh>
+            <h4>Boundaries</h4>
             <table>
                 <thead><tr><th>Active?</th><th>Grade</th><th>Percentage</th></tr></thead>
             <tbody>
