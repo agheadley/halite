@@ -73,7 +73,7 @@ onMount(async () => {
         <h4>{data.assessment.n} {data.assessment.ds}</h4>
     </div>
     <div class="col is-vertical-align">
-        <button class="button dark">Manage</button>
+        <a href='/assessments/manage' class="button dark">Manage</a>
     </div>
     <div class="col is-vertical-align">
         <div class="tabs">
