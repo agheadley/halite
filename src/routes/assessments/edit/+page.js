@@ -156,11 +156,11 @@ export async function load({fetch}) {
         /** @type {Pupil[]} */
         let pupilData=[];
         for(let p of g.pupil) {
-            console.log(`${p.pid} ${p.sn} ${g.g}`);
+            //console.log(`${p.pid} ${p.sn} ${g.g}`);
             let r=results.find((/** @type {{ pid: any; }} */ el)=>el.pid===p.pid);
-            console.log(r.t,r.gd,r.aoid);
+            //console.log(r.t,r.gd,r.aoid);
             let f=pups.find((/** @type {{ lv: any; yr: any; pid: any; }} */ el)=>el.lv===res[0].lv && el.yr===res[0].yr && el.pid===p.pid);
-            console.log(f);
+            //console.log(f);
             if(r) {
                 let pre={ss:'',sc:'',A:0,B:0};
                 if(f) {
@@ -190,7 +190,7 @@ export async function load({fetch}) {
     }
 
 
-    console.log(data);
+    //console.log(data);
     return {user:user,assessment:res[0]?res[0]:{},edit:chts.assessments.edit,table:data};
     
     

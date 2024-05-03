@@ -13,7 +13,7 @@
     /** @type {any}*/    
     let status={
         table:[],
-        std:{A:0,B:0},
+        std:{A:'',B:''},
         select:false,
         user:''
     };
@@ -55,7 +55,7 @@
         <title>Assessments</title>
         <meta name="description" content="Svelte demo app" />
     </svelte:head>
-    
+
     <div class="row">
         <div class="col is-vertical-align">
             <SelectCohort bind:status={status}/>
