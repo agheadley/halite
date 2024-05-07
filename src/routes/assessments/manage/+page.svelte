@@ -76,7 +76,15 @@
             </fieldset>
         </div>
         <div class="col is-vertical-align">
-            TAG edit
+            <fieldset>
+                <!--<legend>Assessment Name (max {max})</legend>-->
+                <legend>Viewable ?</legend>
+                <p class="grouped">
+                <input id="view" type=checkbox bind:checked={status.tag.open} />Open&nbsp&nbsp;
+                <input id="view" type=checkbox bind:checked={status.tag.overview} />Overview&nbsp&nbsp;
+                <input id="view" type=checkbox bind:checked={status.tag.pupil} />Pupil&nbsp&nbsp;
+                <input id="view" type=checkbox bind:checked={status.parent} />&nbsp;Parent&nbsp&nbsp;
+            </fieldset>
         </div>
         <div class="col is-vertical-align">
             <a href='/assessments/edit' class="button outline">Close</a>
