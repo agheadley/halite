@@ -12,9 +12,20 @@
     /** @type {any}*/
     let status = {
       n:'',
+      max:15,
+      isValidName:true,
       tag:{open:false,parent:false,pupil:false,overview:false,exam:false,grade:false,archive:false},
       total:[],
       grade:[]
+    };
+
+    let validateName=()=>{
+  
+        status.isValidName=true;
+        status.n =  status.n.replace(/\W+/g, " ");
+        status.n =  status.n.length &&  status.n.length>status.max ?  status.n.slice(0,(status.max-1)) : status.n;
+        status.isValidName=status.n==='' ? false :true;
+
     };
     
     let toggleIntakeData=()=>{
@@ -56,7 +67,13 @@
     
     <div class="row">
         <div class="col is-vertical-align">
-            Name edit
+            <fieldset>
+                <!--<legend>Assessment Name (max {max})</legend>-->
+                <legend>Assessment Name ({data.assessment.n})</legend>
+                <p class="grouped">
+                <input disabled='{!data.assessment.tag.open}' type=text size=10 bind:value={status.n} class={status.isValidName ? 'success' : 'error'} on:input={validateName}/>
+                </p>
+            </fieldset>
         </div>
         <div class="col is-vertical-align">
             TAG edit
