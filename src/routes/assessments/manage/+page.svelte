@@ -57,7 +57,7 @@
         } 
         if(data.assessment.grade) {
             status.grade=[];
-            for(let x of data.assessment.grade) status.grade.push({gd:x.gd,pc:x.pc,scr:x.scr,active:x.active});
+            for(let x of data.assessment.grade) status.grade.push({gd:x.gd,pc:x.pc,scr:x.scr,active:x.active,isValid:true});
         } 
          
     });
@@ -71,7 +71,7 @@
                 <!--<legend>Assessment Name (max {max})</legend>-->
                 <legend>Assessment Name ({data.assessment.n})</legend>
                 <p class="grouped">
-                <input disabled='{!data.assessment.tag.open}' type=text size=10 bind:value={status.n} class={status.isValidName ? 'success' : 'error'} on:input={validateName}/>
+                <input disabled='{!$cohorts.assessments.edit.edit}' type=text size=10 bind:value={status.n} class={status.isValidName ? 'success' : 'error'} on:input={validateName}/>
                 </p>
             </fieldset>
         </div>
@@ -115,9 +115,10 @@
             <tbody>
            {#each status.grade as row,rowIndex}
                 <tr>
-                    <td>{row.active}</td>
-                    <td>{row.gd}</td>
-                    <td>{row.pc}</td>
+                    <td><input type=checkbox bind:checked={row.atctive}/></td>
+                    <td><span class="tag bg-light fw">{row.gd}</span></td>
+                    <td><input disabled='{! $cohorts.assessments.edit.edit}' type=text bind:value={row.pc} class={row.isValid ? 'ip success' : 'ip error'} on:blur={()=>blur(rowIndex)} on:input={()=>validate(rowIndex)}/></td>
+            
 
                 </tr>
            {/each}
