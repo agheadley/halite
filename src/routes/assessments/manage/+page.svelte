@@ -14,19 +14,21 @@
     let status = {
       n:'',
       max:15,
-      isValidName:true,
+      validName:true,
       tag:{open:false,parent:false,pupil:false,overview:false,exam:false,grade:false,archive:false},
       total:[],
       grade:[],
-      isTotalRemove:false
+      isTotalRemove:false,
+      isSave:false,
+      valid:true
     };
 
     let validateName=()=>{
   
-        status.isValidName=true;
+        status.validName=true;
         status.n =  status.n.replace(/\W+/g, " ");
         status.n =  status.n.length &&  status.n.length>status.max ?  status.n.slice(0,(status.max-1)) : status.n;
-        status.isValidName=status.n==='' ? false :true;
+        status.validName=status.n==='' ? false :true;
 
     };
     
@@ -48,10 +50,16 @@
      * @param {number} index
      */
     let validateTotal=(index)=>{
+
+        status.total[index].n = status.total[index].n.replace(/\W+/g, " ");
+        status.total[index].n = status.total[index].n.length && status.total[index].n.length>status.max ? status.total[index].nn.slice(0,(status.max-1)) : status.total[index].n;
+        status.total[index].n = status.total[index].n==='' ?  status.total.length ? `P${index+1}`: 'Px' : status.total[index].n;
+
         let x=status.total[index].t>=0 ? status.total[index].t : 0;
         status.total[index].t=Math.round(x);
         x=status.total[index].w>=0 ? status.total[index].w : 0;
         status.total[index].w=Math.round(x);
+
     };
     
  
@@ -67,15 +75,49 @@
      * @param {number} index
      */
      let validateGrade=(index)=>{
+        let x=status.grade[index].pc>=0 ? status.grade[index].pc : 0;
+        x = x>100 ? 100 : x;
+        status.grade[index].pc=Math.round(100*x)/100;
 
+       
+        for(let item of status.grade) item.valid=true;
+    
+        let currentValue=100;
+        for(let i=0;i<status.grade.length;i++) {
+            if(i>0) {
+                if(status.grade[i].pc >= currentValue) status.grade[i].valid=false;
+            } else  if(status.grade[i].pc > currentValue) status.grade[i].valid=false;
+        
+            currentValue= status.grade[i].pc;
+
+        }
+
+    
+       
     };
 
-    /**
-     * 
-     * @param {number} index
-     */
-    let blurGrade=(index)=>{
 
+    let openSave=()=>{
+      
+
+        status.valid=true;
+        for(let x of status.grade) status.valid = x.valid ? status.valid : false;
+        status.valid = status.validName ? status.valid : false;
+
+        status.isSave=true;
+       
+    };
+
+    let save=async()=>{
+        console.log('saving ...',$cohorts.assessments.edit);
+        console.log(status.total,status.grade,status.n);
+        status.isSave=false;
+
+
+        //filter:{"_id": { "$oid": chts.assessments.edit._id } }
+
+
+         //goto('/assessments/edit');
     };
         
     onMount(async () => {
@@ -96,7 +138,7 @@
         status.n=data.assessment.n ? data.assessment.n : '';
         if(data.assessment.total) {
             status.total=[];
-            for(let x of data.assessment.total) status.total.push({valid:true,t:x.t,w:x.w,n:x.n});
+            for(let x of data.assessment.total) status.total.push({t:x.t,w:x.w,n:x.n});
         } 
         if(data.assessment.grade) {
             status.grade=[];
@@ -107,6 +149,36 @@
     
     </script>
     
+    {#if status.isSave}
+    <Modal bind:open={status.isSave}>
+        <header>
+         
+                <h4>{data.assessment.sl} ({data.assessment.sc}) {status.n} {data.assessment.ds}</h4>
+        
+        </header>
+        <p>
+                {#if !status.valid}
+                <span class="tag bg-error text-white">
+                    Please correct grade / assessment name errors
+                </span>
+                {:else}
+                <span class="tag text-success">
+                    Grades will be recalculated
+                </span>
+                {/if}
+        </p>
+        <p>EDITABLE ? {status.tag.open?'YES':'NO'}</p>
+        <p>VISIBLE IN OVERVIEW ? {status.tag.overview?'YES':'NO'}</p>
+        <p>PUPIL VIEWBALE ? {status.tag.overview?'YES':'NO'}</p>
+        <p>PARENT VIEWABLE ?  {status.tag.parent?'YES':'NO'}</p>
+        <footer>
+                <button disabled='{!$cohorts.assessments.edit.edit || !status.valid}' class="button error" on:click={save}>Save</button>
+         
+                <button class="button outline" on:click={()=>status.isSave=false}>Cancel</button>
+        </footer>
+    </Modal>
+    {/if}
+
     {#if status.isTotalRemove}
     <Modal bind:open={status.isTotalRemove}>
         <div class="row">
@@ -133,7 +205,7 @@
                 <!--<legend>Assessment Name (max {max})</legend>-->
                 <legend>Assessment Name ({data.assessment.n})</legend>
                 <p class="grouped">
-                <input disabled='{!$cohorts.assessments.edit.edit}' type=text size=10 bind:value={status.n} class={status.isValidName ? 'success' : 'error'} on:input={validateName}/>
+                <input disabled='{!$cohorts.assessments.edit.edit}' type=text size=10 bind:value={status.n} class={status.validName ? 'success' : 'error'} on:input={validateName}/>
                 </p>
             </fieldset>
         </div>
@@ -145,7 +217,7 @@
                 <input id="view" type=checkbox bind:checked={status.tag.open} />Open&nbsp&nbsp;
                 <input id="view" type=checkbox bind:checked={status.tag.overview} />Overview&nbsp&nbsp;
                 <input id="view" type=checkbox bind:checked={status.tag.pupil} />Pupil&nbsp&nbsp;
-                <input id="view" type=checkbox bind:checked={status.parent} />&nbsp;Parent&nbsp&nbsp;
+                <input id="view" disabled type=checkbox bind:checked={status.parent} />&nbsp;Parent&nbsp&nbsp;
             </fieldset>
         </div>
         <div class="col is-vertical-align">
@@ -155,7 +227,7 @@
 
     <div class="row">
         <div class="col">
-            <h4>Section Totals</h4>
+            <h4>Section/Totals {data.assessment.n} {data.assessment.ds}</h4>
             <div class="responsive">
             <table>
                 <thead><tr><th></th><th>Section Name</th><th>Total</th><th>Weight</th></tr></thead>
@@ -164,14 +236,14 @@
                 <tr>
                     <td>
                     {#if status.total.length && rowIndex===status.total.length-1}
-                    <button class="button error icon-only" on:click={()=>status.isTotalRemove=true}>         
+                    <button disabled='{status.total.length<2}' class="button error icon-only" on:click={()=>status.isTotalRemove=true}>         
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                     </button>
                     {/if}
                     </td>
-                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=text bind:value={row.n} class={row.valid ? 'success' : 'error'}  on:input={()=>validateTotal(rowIndex)}/></td>
-                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=number min=0 step=1 bind:value={row.t} class={row.valid ? 'success' : 'error'} on:input={()=>validateTotal(rowIndex)}/></td>
-                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=number min=0 step=1 bind:value={row.w} class={row.valid ? 'success' : 'error'}  on:input={()=>validateTotal(rowIndex)}/></td>
+                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=text bind:value={row.n}  on:input={()=>validateTotal(rowIndex)}/></td>
+                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=number min=0 step=1 bind:value={row.t} on:input={()=>validateTotal(rowIndex)}/></td>
+                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=number min=0 step=1 bind:value={row.w}  on:input={()=>validateTotal(rowIndex)}/></td>
                    
 
                 </tr>
@@ -186,9 +258,15 @@
             </tbody>
             </table>
             </div>
+
+            <div>&nbsp;</div>
+            <div>
+                <button on:click={openSave} disabled='{!$cohorts.assessments.edit.edit}' class="button error">Save / Calculate</button>
+            </div>
+
         </div>
         <div class="col">
-            <h4>Boundaries</h4>
+            <h4>Boundaries {data.assessment.n} {data.assessment.ds}</h4>
             <div class="responsive">
             <table>
                 <thead><tr><th>Active?</th><th>Grade</th><th>Percentage</th></tr></thead>
@@ -197,7 +275,7 @@
                 <tr>
                     <td><input type=checkbox bind:checked={row.active}/></td>
                     <th>{row.gd}</th>
-                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=number bind:value={row.pc} class={row.valid ? 'success' : 'error'} on:blur={()=>blurGrade(rowIndex)} on:input={()=>validateGrade(rowIndex)}/></td>
+                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=number max=100 min=0 step=1 bind:value={row.pc} class={row.valid ? 'success' : 'error'}  on:input={()=>validateGrade(rowIndex)}/></td>
                 </tr>
            {/each}
             </tbody>
