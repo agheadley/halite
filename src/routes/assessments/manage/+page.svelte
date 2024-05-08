@@ -5,7 +5,8 @@
     import * as util from '$lib/util';
     import { goto } from '$app/navigation';
     import IntakeBar from '$lib/_IntakeBar.svelte';
-    import Chance from '$lib/_Chance.svelte';
+    import Modal from '$lib/_Modal.svelte';
+    
     
     export let data;
     
@@ -16,7 +17,8 @@
       isValidName:true,
       tag:{open:false,parent:false,pupil:false,overview:false,exam:false,grade:false,archive:false},
       total:[],
-      grade:[]
+      grade:[],
+      isTotalRemove:false
     };
 
     let validateName=()=>{
@@ -36,7 +38,9 @@
     };
 
     let removeRowTotal=()=>{
-
+        status.total.pop();
+        status.isTotalRemove=false;
+        status.total=status.total;
     };
 
     /**
@@ -44,19 +48,18 @@
      * @param {number} index
      */
     let validateTotal=(index)=>{
-
+        let x=status.total[index].t>=0 ? status.total[index].t : 0;
+        status.total[index].t=Math.round(x);
+        x=status.total[index].w>=0 ? status.total[index].w : 0;
+        status.total[index].w=Math.round(x);
     };
     
-    /**
-     * 
-     * @param {number} index
-     */
-    let blurTotal=(index)=>{
-
-    };
+ 
 
     let addTotal=()=>{
-
+        console.log('add total record');
+        status.total.push({valid:true,t:0,w:0,n:status.total.length?`P${status.total.length+1}`:'Px'});
+        status.total=status.total;
     };
 
      /**
@@ -104,6 +107,25 @@
     
     </script>
     
+    {#if status.isTotalRemove}
+    <Modal bind:open={status.isTotalRemove}>
+        <div class="row">
+            <div class="col">
+                <h4>Delete Section?</h4>
+            </div>
+        </div>
+      
+        <div class="row">
+            <div class="col">
+                <button disabled='{!$cohorts.assessments.edit.edit}' class="button error" on:click={removeRowTotal}>Delete</button>
+            </div>
+          
+            <div class="col is-right">
+                <button class="button outline" on:click={()=>status.isTotalRemove=false}>Cancel</button>
+            </div>
+        </div>
+    </Modal>
+    {/if}
     
     <div class="row">
         <div class="col is-vertical-align">
@@ -142,14 +164,14 @@
                 <tr>
                     <td>
                     {#if status.total.length && rowIndex===status.total.length-1}
-                    <button class="button error icon-only" on:click={removeRowTotal}>         
+                    <button class="button error icon-only" on:click={()=>status.isTotalRemove=true}>         
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                     </button>
                     {/if}
                     </td>
-                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=text bind:value={row.n} class={row.valid ? 'success' : 'error'} on:blur={()=>blurTotal(rowIndex)} on:input={()=>validateTotal(rowIndex)}/></td>
-                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=number bind:value={row.t} class={row.valid ? 'success' : 'error'} on:blur={()=>blurTotal(rowIndex)} on:input={()=>validateTotal(rowIndex)}/></td>
-                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=number bind:value={row.w} class={row.valid ? 'success' : 'error'} on:blur={()=>blurTotal(rowIndex)} on:input={()=>validateTotal(rowIndex)}/></td>
+                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=text bind:value={row.n} class={row.valid ? 'success' : 'error'}  on:input={()=>validateTotal(rowIndex)}/></td>
+                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=number min=0 step=1 bind:value={row.t} class={row.valid ? 'success' : 'error'} on:input={()=>validateTotal(rowIndex)}/></td>
+                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=number min=0 step=1 bind:value={row.w} class={row.valid ? 'success' : 'error'}  on:input={()=>validateTotal(rowIndex)}/></td>
                    
 
                 </tr>
