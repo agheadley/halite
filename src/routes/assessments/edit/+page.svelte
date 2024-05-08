@@ -59,6 +59,7 @@ onMount(async () => {
             for(let g=0;g<status.table.length;g++) {
                 for(let p=0;p<status.table[g].pupil.length;p++) await calculate(g,p);
             }
+            $cohorts.assessments.edit.recalculate=false;
         }
         console.log();
     });
