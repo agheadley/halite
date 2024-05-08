@@ -34,7 +34,47 @@
             for(let p of g.pupil) p.selected=status.selected;
         }
     };
+
+    let removeRowTotal=()=>{
+
+    };
+
+    /**
+     * 
+     * @param {number} index
+     */
+    let validateTotal=(index)=>{
+
+    };
     
+    /**
+     * 
+     * @param {number} index
+     */
+    let blurTotal=(index)=>{
+
+    };
+
+    let addTotal=()=>{
+
+    };
+
+     /**
+     * 
+     * @param {number} index
+     */
+     let validateGrade=(index)=>{
+
+    };
+
+    /**
+     * 
+     * @param {number} index
+     */
+    let blurGrade=(index)=>{
+
+    };
+        
     onMount(async () => {
         $location='/assessments';
         console.log(`/assessments/edit mounted`);
@@ -53,11 +93,11 @@
         status.n=data.assessment.n ? data.assessment.n : '';
         if(data.assessment.total) {
             status.total=[];
-            for(let x of data.assessment.total) status.total.push({t:x.t,w:x.w,n:x.n});
+            for(let x of data.assessment.total) status.total.push({valid:true,t:x.t,w:x.w,n:x.n});
         } 
         if(data.assessment.grade) {
             status.grade=[];
-            for(let x of data.assessment.grade) status.grade.push({gd:x.gd,pc:x.pc,scr:x.scr,active:x.active,isValid:true});
+            for(let x of data.assessment.grade) status.grade.push({gd:x.gd,pc:x.pc,scr:x.scr,active:x.active,valid:true});
         } 
          
     });
@@ -94,42 +134,63 @@
     <div class="row">
         <div class="col">
             <h4>Section Totals</h4>
+            <div class="responsive">
             <table>
-                <thead><tr><th>Section Name</th><th>Total</th><th>Weight</th></tr></thead>
+                <thead><tr><th></th><th>Section Name</th><th>Total</th><th>Weight</th></tr></thead>
             <tbody>
            {#each status.total as row,rowIndex}
                 <tr>
-                    <td>{row.n}</td>
-                    <td>{row.t}</td>
-                    <td>{row.w}</td>
+                    <td>
+                    {#if status.total.length && rowIndex===status.total.length-1}
+                    <button class="button error icon-only" on:click={removeRowTotal}>         
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    </button>
+                    {/if}
+                    </td>
+                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=text bind:value={row.n} class={row.valid ? 'success' : 'error'} on:blur={()=>blurTotal(rowIndex)} on:input={()=>validateTotal(rowIndex)}/></td>
+                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=number bind:value={row.t} class={row.valid ? 'success' : 'error'} on:blur={()=>blurTotal(rowIndex)} on:input={()=>validateTotal(rowIndex)}/></td>
+                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=number bind:value={row.w} class={row.valid ? 'success' : 'error'} on:blur={()=>blurTotal(rowIndex)} on:input={()=>validateTotal(rowIndex)}/></td>
+                   
 
                 </tr>
            {/each}
+           <tr>
+            <td colspan=2>
+                <button class="button dark icon-only" on:click={addTotal}>         
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                </button>
+            </td>
+           </tr>
             </tbody>
             </table>
+            </div>
         </div>
         <div class="col">
             <h4>Boundaries</h4>
+            <div class="responsive">
             <table>
                 <thead><tr><th>Active?</th><th>Grade</th><th>Percentage</th></tr></thead>
             <tbody>
            {#each status.grade as row,rowIndex}
                 <tr>
-                    <td><input type=checkbox bind:checked={row.atctive}/></td>
-                    <td><span class="tag bg-light fw">{row.gd}</span></td>
-                    <td><input disabled='{! $cohorts.assessments.edit.edit}' type=text bind:value={row.pc} class={row.isValid ? 'ip success' : 'ip error'} on:blur={()=>blur(rowIndex)} on:input={()=>validate(rowIndex)}/></td>
-            
-
+                    <td><input type=checkbox bind:checked={row.active}/></td>
+                    <th>{row.gd}</th>
+                    <td><input disabled='{! $cohorts.assessments.edit.edit}'  type=number bind:value={row.pc} class={row.valid ? 'success' : 'error'} on:blur={()=>blurGrade(rowIndex)} on:input={()=>validateGrade(rowIndex)}/></td>
                 </tr>
            {/each}
             </tbody>
             </table>
+            </div>
         </div>
     </div>
     
     <style>
         td {
             padding:0.2rem;
+        }
+
+        .responsive {
+            overflow-x:auto;
         }
     </style>
     
