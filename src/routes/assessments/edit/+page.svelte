@@ -29,6 +29,15 @@ let toggleIntakeData=()=>{
     }
 };
 
+/**
+ * 
+ * @param {number} groupIndex
+ * @param {number} pupilIndex
+ */
+let calculate=async(groupIndex,pupilIndex)=>{
+    console.log(status.table[groupIndex].pupil[pupilIndex]);
+};
+
 onMount(async () => {
         $location='/assessments';
         console.log(`/assessments/edit mounted`);
@@ -43,6 +52,15 @@ onMount(async () => {
         status.std.B=(y.lv==='US' || y.lv==='MS' || y.lv==='L1') ? $config.std[y.lv].B : '';
 
         console.log(status.table);
+
+        if($cohorts.assessments.edit.recalculate) {
+            console.log('recalculating grades ....');
+            $alert.msg='Recalculating grades, please wait';
+            for(let g=0;g<status.table.length;g++) {
+                for(let p=0;p<status.table[g].pupil.length;p++) await calculate(g,p);
+            }
+        }
+        console.log();
     });
 
 </script>
