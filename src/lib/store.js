@@ -60,7 +60,7 @@ export let cohorts=writable({
     assessments:{
         years:{list:[{yr:0,lv:'',fm:0}],index:0},
         subjects:{list:[{yr:0,lv:'',ss:'',sc:'',sl:''}],index:0},
-        edit:{_id:'',edit:false,g:''}
+        edit:{_id:'',edit:false,g:'',recalculate:false}
     },
     overview:{
         years:{list:[{yr:0,lv:'',fm:0}],index:0},
