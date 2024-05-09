@@ -31,11 +31,55 @@ let toggleIntakeData=()=>{
 
 /**
  * 
+ * @param {number} pc
+ */
+ let getGrade=(pc)=>{
+        let grade=status.assessment.grade.filter((/** @type {{ active: any; }} */ el)=>el.active);
+        let result=grade[0] ? {gd:grade[0].gd,scr:grade[0].scr} : {gd:'U',scr:0};
+
+        for(let item of grade) {
+                if(pc>=item.pc)  result={gd:item.gd,scr:item.scr};
+        }
+        return result;
+};
+
+
+
+/**
+ * 
+ * @param {string[]} total
+ */
+let getPercentage=(total)=>{
+        //console.log(total);
+        let t=total.map(el=>parseInt(el));
+        //console.log(t);
+        let f=status.total.filter((/** @type {{ t: number; }} */ el)=>el.t>0);
+        //console.log(f);
+        let tw=f[0]?f.map((/** @type {{ w: any; }} */ el)=>el.w).reduce((/** @type {any} */ a,/** @type {any} */ v)=>a+v):0;
+        //console.log(tw);
+        let pc=0;
+        t.forEach((v,i)=>pc+=status.assessment.total[i].t>0 && tw>0 ? (v/status.assesment.total[i].t)*(status.assessment.total[i].w/tw) : 0);
+        //console.log(pc);
+        return Math.round(100*100*pc)/100;
+};
+
+/**
+ * 
  * @param {number} groupIndex
  * @param {number} pupilIndex
  */
 let calculate=async(groupIndex,pupilIndex)=>{
     console.log(status.table[groupIndex].pupil[pupilIndex]);
+    let total=[];
+    console.log(status.assessment.total,status.table[groupIndex].pupil[pupilIndex].t);
+    for(let i=0;i<status.assessment.total.length;i++) total.push(status.table[groupIndex].pupil[pupilIndex].t[i]);
+    status.table[groupIndex].pupil[pupilIndex].t=total;
+    console.log(total);
+    status.table[groupIndex].pupil[pupilIndex].pc=getPercentage(total);
+    let r=getGrade( status.table[groupIndex].pupil[pupilIndex].pc);
+    status.table[groupIndex].pupil[pupilIndex].gd=r.gd;
+    status.table[groupIndex].pupil[pupilIndex].scr=r.scr;
+
 };
 
 onMount(async () => {
@@ -61,7 +105,6 @@ onMount(async () => {
             }
             $cohorts.assessments.edit.recalculate=false;
         }
-        console.log();
     });
 
 </script>
