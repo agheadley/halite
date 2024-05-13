@@ -31,7 +31,29 @@ let toggleIntakeData=()=>{
 };
                         
                                         
+/**
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ */
+let validateScore=(rowIndex,colIndex)=>{
 
+};
+
+/**
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ */
+ let focusScore=async(rowIndex,colIndex)=>{
+
+};
+
+/**
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ */
+ let blurScore=async(rowIndex,colIndex)=>{
+
+};
 
 
 
@@ -129,8 +151,40 @@ onMount(async () => {
         }
     });
 
+/* https://svelte.dev/repl/253993c0325a4b1b8ff38b4c4ecd2285?version=3.24.1*/
+// @ts-ignore
+let handleKeydown=(event)=>{
+        event.preventDefault();
+        let keyCode=event.keyCode;
+        //console.log(keyCode);
+        /** @type {any}*/
+        const current = document.activeElement;
+        const currentIndex = status.cells.indexOf(current);
+				
+        let l=status.assessment.total.length ? status.assessment.total.length: 0; 
+        let d=currentIndex;
+
+        if(keyCode===38) d-=l;
+        
+        
+        if(keyCode===40 || keyCode===13)    d+=l;
+         
+        if(keyCode===39)   d+=1;
+            
+        if(keyCode===37)  d-=1;
+           
+        if(status.cells[d]) {
+                current.blur();
+                status.cells[d].focus(); 
+               
+        }
+
+       		  
+};
+
 </script>
 
+<svelte:window on:keydown={handleKeydown} />
 
 <div class="row">
     <div class="col">
@@ -200,7 +254,9 @@ onMount(async () => {
             </td>
             <td>{group.g}</td>
             {#each row.t as t,tIndex}
-            <td>{t}</td>
+            <td>
+                <input tabindex={(tIndex+1)*data.table.length+rowIndex+1} disabled='{!$cohorts.assessments.edit.edit || row.x}' class={'score'} min=0 step=1 type=number bind:value={t} on:input={()=>validateScore(rowIndex,tIndex)} on:focus={()=>focusScore(rowIndex,tIndex)} on:blur={()=>blurScore(rowIndex,tIndex)}/>
+            </td>
             {/each}
             <td>{row.pc}</td>
             <td>{row.gd}</td>
@@ -250,6 +306,11 @@ onMount(async () => {
 <style>
     td {
         padding:0.2rem;
+    }
+
+    .score {
+        width:7rem;
+        max-width:7rem;
     }
 </style>
 
