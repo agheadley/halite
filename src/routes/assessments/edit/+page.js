@@ -146,7 +146,7 @@ export async function load({fetch}) {
     
 
     /**
-     * @typedef {{_id:string,pid:number,sn:string,pn:string,pc:number,gd:string,scr:number,t:number[],overall:{A:number,B:number},pre:{sc:string,ss:string,A:number,B:number},fb:string,selected:boolean}} Pupil
+     * @typedef {{_id:string,pid:number,sn:string,pn:string,pc:number,gd:string,scr:number,x:boolean,t:number[],overall:{A:number,B:number},pre:{sc:string,ss:string,A:number,B:number},fb:string,selected:boolean}} Pupil
      * @type {{g:string,pupil:Pupil[]}[]} 
     */
     let data=[];
@@ -180,7 +180,8 @@ export async function load({fetch}) {
                     overall:f?{A:f.overall.A,B:f.overall.B}:{A:0,B:0},
                     pre:pre,
                     selected:false,
-                    fb:r.fb
+                    fb:r.fb,
+                    x:r.gd==='X'?true:false
 
                 });
             }
