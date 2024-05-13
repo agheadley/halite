@@ -19,7 +19,8 @@ let status = {
     tab:'group',    // 'group' || 'all'
     user:'',
     std:{A:'',B:''},
-    fb:{row:1,col:50}
+    fb:{row:1,col:50},
+    cells:[],
 
 };
 
@@ -149,37 +150,45 @@ onMount(async () => {
             }
             $cohorts.assessments.edit.recalculate=false;
         }
+
+        status.cells =  [...document.getElementsByClassName('score')];
     });
 
-/* https://svelte.dev/repl/253993c0325a4b1b8ff38b4c4ecd2285?version=3.24.1*/
+
 // @ts-ignore
 let handleKeydown=(event)=>{
-        event.preventDefault();
-        let keyCode=event.keyCode;
-        //console.log(keyCode);
-        /** @type {any}*/
-        const current = document.activeElement;
-        const currentIndex = status.cells.indexOf(current);
-				
-        let l=status.assessment.total.length ? status.assessment.total.length: 0; 
-        let d=currentIndex;
-
-        if(keyCode===38) d-=l;
-        
-        
-        if(keyCode===40 || keyCode===13)    d+=l;
-         
-        if(keyCode===39)   d+=1;
+    let keyCode=event.keyCode;
+    console.log(status.cells);
+    const current = document.activeElement;
+    const currentIndex = status.cells.indexOf(current);
             
-        if(keyCode===37)  d-=1;
-           
-        if(status.cells[d]) {
+    let l=status.assessment.total.length ? status.assessment.total.length : 0; 
+    let d=currentIndex;
+
+    if (keyCode === 38) {
+        event.preventDefault();
+        d-=l;
+    }
+    if(keyCode===40 || keyCode===13) {
+        event.preventDefault();
+        d+=l;
+    }
+    if(keyCode===39) {
+        event.preventDefault();
+        d+=1;
+    } 
+            
+    if(keyCode===37)  {
+        event.preventDefault();
+        d-=1;
+    }
+
+    if(status.cells[d]) {
                 current.blur();
                 status.cells[d].focus(); 
+                
                
         }
-
-       		  
 };
 
 </script>
@@ -311,7 +320,20 @@ let handleKeydown=(event)=>{
     .score {
         width:7rem;
         max-width:7rem;
+
+      
+         -moz-appearance: textfield;
+      
+      
+     
+      
     }
+
+    .score::-webkit-outer-spin-button,
+      .score::-webkit-inner-spin-button {
+         -webkit-appearance: none;
+         margin: 0;
+      }
 </style>
 
 
