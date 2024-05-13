@@ -98,7 +98,8 @@
                             gd:'U',
                             pc:0,
                             scr:0,
-                            fb:''
+                            fb:'',
+                            log:`${data.user.name}|${util.getDate()}`
                         });
                     }
                 }

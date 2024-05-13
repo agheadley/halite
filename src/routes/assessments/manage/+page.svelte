@@ -115,7 +115,7 @@
 
         let response = await fetch('/edge/update', {
 		    method: 'POST',
-		    body: JSON.stringify({collection:'assessments',filter:{"_id":{"$oid": $cohorts.assessments.edit._id}},update:{n:status.n,grade:status.grade,total:status.total,tag:status.tag,log:`${status.user}|${util.getDate}`}}),
+		    body: JSON.stringify({collection:'assessments',filter:{"_id":{"$oid": $cohorts.assessments.edit._id}},update:{n:status.n,grade:status.grade,total:status.total,tag:status.tag,log:`${status.user}|${util.getDate()}`}}),
 		    headers: {'content-type': 'application/json'}
 	    });
 
