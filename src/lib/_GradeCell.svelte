@@ -1,5 +1,9 @@
 <script>
 
+/** @type {boolean}*/
+export let color;
+
+
 </script>
 
 <div  class="cell">

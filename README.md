@@ -68,9 +68,10 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Assessments
 
+- add RAG to GradeCell
 - need to add archive button, list of assessments to include archive data so you can downloads
+- add Pupil link - same file as for pupils, parents, but they have no RAGs etc
 
-- edit [find by pid to edit](https://www.mongodb.com/docs/drivers/node/current/fundamentals/crud/write-operations/embedded-arrays/#:~:text=To%20update%20the%20first%20array,use%20the%20filtered%20positional%20operator.)
 
 
 

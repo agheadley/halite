@@ -33,7 +33,7 @@
      */
     let openEdit=(gpIndex,colIndex)=>{
         console.log(status.table[gpIndex]);
-        $cohorts.assessments.edit={_id:status.table[gpIndex].cols[colIndex]._id,g:status.table[gpIndex].g,edit:status.table[gpIndex].cols[colIndex].tag.edit};
+        $cohorts.assessments.edit={_id:status.table[gpIndex].cols[colIndex]._id,g:status.table[gpIndex].g,edit:status.table[gpIndex].cols[colIndex].tag.edit,recalculate:false};
         goto('/assessments/edit/');
     };
     
@@ -144,7 +144,7 @@
                         <td><IntakeBar r={row.overall.B} std={status.std.B}/></td>
                         {#each row.cols as col,colIndex}
                         <td>
-                            <GradeCell>{col.gd}</GradeCell>
+                            <GradeCell color={true} >{col.gd}</GradeCell>
                         </td>
                         {/each}
                         <!--
