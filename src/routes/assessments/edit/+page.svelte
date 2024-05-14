@@ -70,6 +70,26 @@ let validateScore=(groupIndex,rowIndex,colIndex)=>{
  };
 
 
+ /**
+ * @param {number} groupIndex
+ * @param {number} rowIndex
+ */
+ let validateGrade=async(groupIndex,rowIndex)=>{
+    if(!status.assessment.grade.find((/** @type {{ gd: any; }} */ el)=>el.gd===status.table[groupIndex].pupil[rowIndex].gd)) {
+        status.table[groupIndex].pupil[rowIndex].gd='';
+    }
+    console.log('validate',status.table[groupIndex].pupil[rowIndex].gd);
+};
+
+/**
+ * @param {number} groupIndex
+ * @param {number} rowIndex
+ */
+ let blurGrade=async(groupIndex,rowIndex)=>{
+    console.log('blur',groupIndex,rowIndex);
+    console.log(status.assessment.tag);
+    await calculate(groupIndex,rowIndex);
+ };
 
 
 /**
@@ -132,8 +152,18 @@ let calculate=async(groupIndex,pupilIndex)=>{
     
     status.table[groupIndex].pupil[pupilIndex].pc=getPercentage(total);
     let r=getGrade( status.table[groupIndex].pupil[pupilIndex].pc);
-    status.table[groupIndex].pupil[pupilIndex].gd=r.gd;
-    status.table[groupIndex].pupil[pupilIndex].scr=r.scr;
+    if(!status.assessment.tag.grade) { /* calc with totals */
+        status.table[groupIndex].pupil[pupilIndex].gd=r.gd;
+        status.table[groupIndex].pupil[pupilIndex].scr=r.scr;
+    } else { /* grade only calc */
+        let f=status.assessment.grade.find((/** @type {{ gd: any; }} */ el)=>el.gd=== status.table[groupIndex].pupil[pupilIndex].gd);
+
+        status.table[groupIndex].pupil[pupilIndex].scr=f ? f.scr : 0;
+        status.table[groupIndex].pupil[pupilIndex].gd=f ? f.gd : 'X';
+        status.table[groupIndex].pupil[pupilIndex].x=status.table[groupIndex].pupil[pupilIndex].gd==='X' ? true : false;
+
+    }
+   
     console.log(status.table[groupIndex].pupil[pupilIndex]);
 
     /* is pupil absent 'X' */
@@ -141,6 +171,8 @@ let calculate=async(groupIndex,pupilIndex)=>{
         status.table[groupIndex].pupil[pupilIndex].gd='X';
         status.table[groupIndex].pupil[pupilIndex].scr=0;
     }
+
+    
 
     /* store data */
     let x=status.table[groupIndex].pupil[pupilIndex];
@@ -404,7 +436,7 @@ let handleKeydown=(event)=>{
                 </button>
             </td>
             <td>{group.g}</td>
-            <td>{row.gd}</td>
+            <td><input disabled='{row.x}' type=text id={`G${groupIndex}R${rowIndex}C${0}`} bind:value={row.gd} on:input={()=>validateGrade(groupIndex,rowIndex)} on:blur={()=>blurGrade(groupIndex,rowIndex)}/></td>
             <td><input type=checkbox bind:checked={row.x} on:change={()=>calculate(groupIndex,rowIndex)}/></td>
         </tr>
         {#if row.selected}
@@ -442,6 +474,7 @@ let handleKeydown=(event)=>{
         {/each}
     </tbody>
 </table>
+
 <p>&nbsp;</p>
 {/if}
 {/if} <!-- / assessment tag.grade===true-->
@@ -452,6 +485,9 @@ let handleKeydown=(event)=>{
 
 
 <style>
+
+   
+
     td {
         padding:0.2rem;
     }
