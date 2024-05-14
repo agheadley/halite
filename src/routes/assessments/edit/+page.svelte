@@ -38,13 +38,17 @@ let toggleIntakeData=()=>{
  * @param {number} colIndex
  */
 let validateScore=(groupIndex,rowIndex,colIndex)=>{
+    console.log(status.assessment.total);
     console.log('score',status.table[groupIndex].pupil[rowIndex].t[colIndex]);
     if(status.table[groupIndex].pupil[rowIndex].t[colIndex]<0 || status.table[groupIndex].pupil[rowIndex].t[colIndex]===null)
         status.table[groupIndex].pupil[rowIndex].t[colIndex]=0;
     else 
         status.table[groupIndex].pupil[rowIndex].t[colIndex]=Math.round(status.table[groupIndex].pupil[rowIndex].t[colIndex]);
 
-    console.log('score',status.table[groupIndex].pupil[rowIndex].t[colIndex]);
+        status.table[groupIndex].pupil[rowIndex].t[colIndex]=status.table[groupIndex].pupil[rowIndex].t[colIndex]>status.assessment.total[colIndex].t ?
+            status.assessment.total[colIndex].t : status.table[groupIndex].pupil[rowIndex].t[colIndex];
+        
+        console.log('score',status.table[groupIndex].pupil[rowIndex].t[colIndex]);
 };
 
 /**
@@ -53,7 +57,7 @@ let validateScore=(groupIndex,rowIndex,colIndex)=>{
  * @param {number} colIndex
  */
  let focusScore=async(groupIndex,rowIndex,colIndex)=>{
-
+    console.log('editing _id',status.table[groupIndex].pupil[rowIndex]._id);
 };
 
 /**
@@ -62,8 +66,9 @@ let validateScore=(groupIndex,rowIndex,colIndex)=>{
  * @param {number} colIndex
  */
  let blurScore=async(groupIndex,rowIndex,colIndex)=>{
+    await calculate(groupIndex,rowIndex);
+ };
 
-};
 
 
 
@@ -73,10 +78,12 @@ let validateScore=(groupIndex,rowIndex,colIndex)=>{
  */
  let getGrade=(pc)=>{
         let grade=status.assessment.grade.filter((/** @type {{ active: any; }} */ el)=>el.active);
+        //console.log(grade,pc);
         let result=grade[0] ? {gd:grade[0].gd,scr:grade[0].scr} : {gd:'U',scr:0};
 
-        for(let item of grade) {
+        for(let item of grade.sort((/** @type {{ pc: number; }} */ a,/** @type {{ pc: number; }} */ b)=>a.pc-b.pc)) {
                 if(pc>=item.pc)  result={gd:item.gd,scr:item.scr};
+                //console.log(result);
         }
         return result;
 };
@@ -88,6 +95,7 @@ let validateScore=(groupIndex,rowIndex,colIndex)=>{
  * @param {string[]} total
  */
 let getPercentage=(total)=>{
+        
         //console.log('total',total);
         //console.log('status.total',status.total);
         let t=total.map(el=>parseInt(el));
@@ -108,22 +116,48 @@ let getPercentage=(total)=>{
  * @param {number} pupilIndex
  */
 let calculate=async(groupIndex,pupilIndex)=>{
-    //console.log(status.table[groupIndex].pupil[pupilIndex]);
+    console.log(status.table[groupIndex].pupil[pupilIndex]);
+    /* total array */
     let total=[];
-   
     for(let i=0;i<status.assessment.total.length;i++) total.push(status.table[groupIndex].pupil[pupilIndex].t[i] ? status.table[groupIndex].pupil[pupilIndex].t[i]:0);
+    
+    /* check totals are not > paper totals, if so set to paper max */
+    for(let i=0;i<status.assessment.total.length;i++) {
+        //console.log(total[i],status.assessment.total[i]);
+        total[i]=total[i]>status.assessment.total[i].t ? status.assessment.total[i].t : total[i];
+        //console.log(total[i]);
+    }
+    /* set display */
     status.table[groupIndex].pupil[pupilIndex].t=total;
-    //console.log(total);
+    
     status.table[groupIndex].pupil[pupilIndex].pc=getPercentage(total);
     let r=getGrade( status.table[groupIndex].pupil[pupilIndex].pc);
     status.table[groupIndex].pupil[pupilIndex].gd=r.gd;
     status.table[groupIndex].pupil[pupilIndex].scr=r.scr;
     console.log(status.table[groupIndex].pupil[pupilIndex]);
 
+    /* is pupil absent 'X' */
+    if(status.table[groupIndex].pupil[pupilIndex].x) {
+        status.table[groupIndex].pupil[pupilIndex].gd='X';
+        status.table[groupIndex].pupil[pupilIndex].scr=0;
+    }
+
+    /* store data */
     let x=status.table[groupIndex].pupil[pupilIndex];
     let response = await fetch('/edge/update', {
 		    method: 'POST',
-		    body: JSON.stringify({collection:'results',filter:{"_id":{"$oid": x._id}},update:{t:x.t,gd:x.gd,scr:x.scr,pc:x.pc,log:`${status.user}|${util.getDate()}`}}),
+		    body: JSON.stringify({
+                collection:'results',
+                filter:{"_id":{"$oid": x._id}},
+                update:{
+                    t:x.t,
+                    gd:x.gd,
+                    scr:x.scr,
+                    pc:x.pc,
+                    fb:x.fb,
+                    log:`${status.user}|${util.getDate()}`
+                }
+            }),
 		    headers: {'content-type': 'application/json'}
 	    });
     let res= await response.json();
@@ -132,7 +166,7 @@ let calculate=async(groupIndex,pupilIndex)=>{
     if(res.matchedCount!==1) {
         $alert.type='error';
         $alert.msg=`Error updating result ${x.pid} ${x.sn} ${x.pn}`;
-    }
+    } else  $alert.msg=`Modified ${res.modifiedCount} result`; 
 
 };
 
@@ -266,9 +300,10 @@ let handleKeydown=(event)=>{
 
 
 
-
+<p>{JSON.stringify(status.assessment.tag)}</p>
 {#each status.table as group,groupIndex}
 
+{#if !status.assessment.tag.grade}
 {#if status.tab==='all' || (status.tab==='group' && group.g===status.g)}
 <table>
     <thead>
@@ -282,8 +317,8 @@ let handleKeydown=(event)=>{
             <th>/{col.t}</th>
         {/each}
         <th>&nbsp;%&nbsp;</th>
-        <th>GRD</th>
-        <th>Abs?</th>
+        <th>Grade</th>
+        <th>Absent</th>
         <th>Feedback</th>
     </thead>
     <tbody>
@@ -303,8 +338,8 @@ let handleKeydown=(event)=>{
             {/each}
             <td>{row.pc}</td>
             <td>{row.gd}</td>
-            <td>X</td>
-            <td><textarea id={`textarea-fb-${rowIndex}`} bind:value={row.fb} /></td>
+            <td><input type=checkbox bind:checked={row.x} on:change={()=>calculate(groupIndex,rowIndex)}/></td>
+            <td><textarea id={`textarea-fb-${rowIndex}`} bind:value={row.fb} on:blur={()=>calculate(groupIndex,rowIndex)} /></td>
         </tr>
         {#if row.selected}
         <tr>
@@ -343,6 +378,76 @@ let handleKeydown=(event)=>{
 </table>
 <p>&nbsp;</p>
 {/if}
+{/if} <!-- / assessment tag.grade===false-->
+
+
+{#if status.assessment.tag.grade} 
+{#if status.tab==='all' || (status.tab==='group' && group.g===status.g)}
+<table>
+    <thead>
+        <th>
+            <button class="button clear" on:click={toggleIntakeData}>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                &nbsp;Pupil
+            </button></th>
+        <th></th>
+        <th>Grade</th>
+        <th>Absent</th>
+    </thead>
+    <tbody>
+       {#each group.pupil as row,rowIndex}
+        <tr>
+            <td>
+                <button class="button clear" on:click={()=>row.selected=row.selected?false:true}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    &nbsp;{row.pn} {row.sn}
+                </button>
+            </td>
+            <td>{group.g}</td>
+            <td>{row.gd}</td>
+            <td><input type=checkbox bind:checked={row.x} on:change={()=>calculate(groupIndex,rowIndex)}/></td>
+        </tr>
+        {#if row.selected}
+        <tr>
+            <td colspan={4}>
+                <div class="card">
+                    <div class="row">
+                        <div class="col">
+                            <span class="tag">{status.std.A}</span>
+                        </div>
+                        <div class="col">
+                            <span class="tag">{status.std.B}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <IntakeBar r={row.overall.A} std={status.std.A}/>
+                        </div>
+                        <div class="col">
+                            <IntakeBar r={row.overall.B} std={status.std.B}/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <Chance grades={$config.grade.filter(el=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc).sort((a,b)=>b.pre-a.pre)} score={row.pre.A ? row.pre.A : 0}/>
+                        </div>
+                        <div class="col">
+                            <Chance grades={$config.grade.filter(el=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc).sort((a,b)=>b.pre-a.pre)} score={row.pre.B ? row.pre.B : 0}/>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {/if}
+        {/each}
+    </tbody>
+</table>
+<p>&nbsp;</p>
+{/if}
+{/if} <!-- / assessment tag.grade===true-->
+
+
+
 {/each}
 
 
