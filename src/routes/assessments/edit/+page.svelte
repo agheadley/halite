@@ -151,49 +151,64 @@ onMount(async () => {
             $cohorts.assessments.edit.recalculate=false;
         }
 
+        /*
+        console.log(document.getElementsByClassName('score'));
         status.cells =  [...document.getElementsByClassName('score')];
+        console.log(status.cells);
+
+        status.cells=[];
+        status.cells.push(document.getElementById('score-0'));
+        console.log(status.cells);
+        */
     });
 
 
 // @ts-ignore
 let handleKeydown=(event)=>{
+
+    console.log(document.getElementById('score-0'));
     let keyCode=event.keyCode;
     console.log(status.cells);
-    const current = document.activeElement;
-    const currentIndex = status.cells.indexOf(current);
+    const current = document.activeElement ? document.activeElement.id : '';
+    console.log(current);
+    if(current) {
+        const currentIndex = status.cells.indexOf(current);
             
-    let l=status.assessment.total.length ? status.assessment.total.length : 0; 
-    let d=currentIndex;
-
-    if (keyCode === 38) {
-        event.preventDefault();
-        d-=l;
+            let l=status.assessment.total.length ? status.assessment.total.length : 0; 
+            let d=currentIndex;
+        
+            if (keyCode === 38) {
+                event.preventDefault();
+                d-=l;
+            }
+            if(keyCode===40 || keyCode===13) {
+                event.preventDefault();
+                d+=l;
+            }
+            if(keyCode===39) {
+                event.preventDefault();
+                d+=1;
+            } 
+                    
+            if(keyCode===37)  {
+                event.preventDefault();
+                d-=1;
+            }
+        
+            if(status.cells[d]) {
+                        current.blur();
+                        status.cells[d].focus(); 
+                        
+                       
+                }
     }
-    if(keyCode===40 || keyCode===13) {
-        event.preventDefault();
-        d+=l;
-    }
-    if(keyCode===39) {
-        event.preventDefault();
-        d+=1;
-    } 
-            
-    if(keyCode===37)  {
-        event.preventDefault();
-        d-=1;
-    }
-
-    if(status.cells[d]) {
-                current.blur();
-                status.cells[d].focus(); 
-                
-               
-        }
+   
 };
 
 </script>
 
 <svelte:window on:keydown={handleKeydown} />
+
 
 <div class="row">
     <div class="col">
@@ -264,7 +279,7 @@ let handleKeydown=(event)=>{
             <td>{group.g}</td>
             {#each row.t as t,tIndex}
             <td>
-                <input tabindex={(tIndex+1)*data.table.length+rowIndex+1} disabled='{!$cohorts.assessments.edit.edit || row.x}' class={'score'} min=0 step=1 type=number bind:value={t} on:input={()=>validateScore(rowIndex,tIndex)} on:focus={()=>focusScore(rowIndex,tIndex)} on:blur={()=>blurScore(rowIndex,tIndex)}/>
+                <input id={`score-${rowIndex*row.t.length+tIndex}`} tabindex={(tIndex+1)*data.table.length+rowIndex+1} disabled='{!$cohorts.assessments.edit.edit || row.x}' class={'score'} min=0 step=1 type=number bind:value={t} on:input={()=>validateScore(rowIndex,tIndex)} on:focus={()=>focusScore(rowIndex,tIndex)} on:blur={()=>blurScore(rowIndex,tIndex)}/>
             </td>
             {/each}
             <td>{row.pc}</td>
@@ -320,12 +335,7 @@ let handleKeydown=(event)=>{
     .score {
         width:7rem;
         max-width:7rem;
-
-      
-         -moz-appearance: textfield;
-      
-      
-     
+        -moz-appearance: textfield;
       
     }
 
