@@ -33,26 +33,35 @@ let toggleIntakeData=()=>{
                         
                                         
 /**
+ * @param {number} groupIndex
  * @param {number} rowIndex
  * @param {number} colIndex
  */
-let validateScore=(rowIndex,colIndex)=>{
+let validateScore=(groupIndex,rowIndex,colIndex)=>{
+    console.log('score',status.table[groupIndex].pupil[rowIndex].t[colIndex]);
+    if(status.table[groupIndex].pupil[rowIndex].t[colIndex]<0 || status.table[groupIndex].pupil[rowIndex].t[colIndex]===null)
+        status.table[groupIndex].pupil[rowIndex].t[colIndex]=0;
+    else 
+        status.table[groupIndex].pupil[rowIndex].t[colIndex]=Math.round(status.table[groupIndex].pupil[rowIndex].t[colIndex]);
+
+    console.log('score',status.table[groupIndex].pupil[rowIndex].t[colIndex]);
+};
+
+/**
+ * @param {number} groupIndex
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ */
+ let focusScore=async(groupIndex,rowIndex,colIndex)=>{
 
 };
 
 /**
+ * @param {number} groupIndex
  * @param {number} rowIndex
  * @param {number} colIndex
  */
- let focusScore=async(rowIndex,colIndex)=>{
-
-};
-
-/**
- * @param {number} rowIndex
- * @param {number} colIndex
- */
- let blurScore=async(rowIndex,colIndex)=>{
+ let blurScore=async(groupIndex,rowIndex,colIndex)=>{
 
 };
 
@@ -151,56 +160,66 @@ onMount(async () => {
             $cohorts.assessments.edit.recalculate=false;
         }
 
-        /*
-        console.log(document.getElementsByClassName('score'));
-        status.cells =  [...document.getElementsByClassName('score')];
-        console.log(status.cells);
-
-        status.cells=[];
-        status.cells.push(document.getElementById('score-0'));
-        console.log(status.cells);
-        */
+       
     });
 
+
+/**
+ * 
+ * @param {string} id
+ * @returns {{g:number,r:number,c:number}|null}
+ */
+let getCellPosition=(id)=>{
+    let g=id.indexOf('G');
+    let r=id.indexOf('R');
+    let c=id.indexOf('C');
+    if(g>=0 && r>=0 && c>=0 && r>g && c>r) {
+
+        return {g:Number(id.substring(g+1,r)),r:Number(id.substring(r+1,c)),c:Number(id.substring(c+1))};
+    } else return null;
+};
 
 // @ts-ignore
 let handleKeydown=(event)=>{
 
-    console.log(document.getElementById('score-0'));
-    let keyCode=event.keyCode;
-    console.log(status.cells);
-    const current = document.activeElement ? document.activeElement.id : '';
-    console.log(current);
-    if(current) {
-        const currentIndex = status.cells.indexOf(current);
+    let cell=getCellPosition(document.activeElement ? document.activeElement.id : '');
+    //console.log(cell);
+
+    if(cell) {
+       
             
-            let l=status.assessment.total.length ? status.assessment.total.length : 0; 
-            let d=currentIndex;
-        
-            if (keyCode === 38) {
+            if (event.keyCode === 38) {
                 event.preventDefault();
-                d-=l;
+                if(status.table[cell.g].pupil[cell.r-1]) {
+                    document.getElementById(`G${cell.g}R${cell.r-1}C${cell.c}`)?.focus();
+                }
+
             }
-            if(keyCode===40 || keyCode===13) {
+            if(event.keyCode===40 || event.keyCode===13) {
                 event.preventDefault();
-                d+=l;
+                if(status.table[cell.g].pupil[cell.r+1]) {
+                    document.getElementById(`G${cell.g}R${cell.r+1}C${cell.c}`)?.focus();
+                  
+                }
+          
             }
-            if(keyCode===39) {
+            if(event.keyCode===39) {
                 event.preventDefault();
-                d+=1;
+                if(status.table[cell.g].pupil[cell.r].t[cell.c+1]!==undefined) {
+                    document.getElementById(`G${cell.g}R${cell.r}C${cell.c+1}`)?.focus();
+                }
+               
+               
+         
             } 
                     
-            if(keyCode===37)  {
+            if(event.keyCode===37)  {
                 event.preventDefault();
-                d-=1;
+                if(status.table[cell.g].pupil[cell.r].t[cell.c-1]!==undefined) {
+                    document.getElementById(`G${cell.g}R${cell.r}C${cell.c-1}`)?.focus();
+                }          
             }
         
-            if(status.cells[d]) {
-                        current.blur();
-                        status.cells[d].focus(); 
-                        
-                       
-                }
     }
    
 };
@@ -279,7 +298,7 @@ let handleKeydown=(event)=>{
             <td>{group.g}</td>
             {#each row.t as t,tIndex}
             <td>
-                <input id={`score-${rowIndex*row.t.length+tIndex}`} tabindex={(tIndex+1)*data.table.length+rowIndex+1} disabled='{!$cohorts.assessments.edit.edit || row.x}' class={'score'} min=0 step=1 type=number bind:value={t} on:input={()=>validateScore(rowIndex,tIndex)} on:focus={()=>focusScore(rowIndex,tIndex)} on:blur={()=>blurScore(rowIndex,tIndex)}/>
+                <input id={`G${groupIndex}R${rowIndex}C${tIndex}`} tabindex={(tIndex+1)*data.table.length+rowIndex+1} disabled='{!$cohorts.assessments.edit.edit || row.x}' class={'score'} min=0 step=1 type=number bind:value={t} on:input={()=>validateScore(groupIndex,rowIndex,tIndex)} on:focus={()=>focusScore(groupIndex,rowIndex,tIndex)} on:blur={()=>blurScore(groupIndex,rowIndex,tIndex)}/>
             </td>
             {/each}
             <td>{row.pc}</td>
@@ -336,6 +355,7 @@ let handleKeydown=(event)=>{
         width:7rem;
         max-width:7rem;
         -moz-appearance: textfield;
+        appearance: textfield;
       
     }
 
