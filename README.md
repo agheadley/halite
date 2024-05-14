@@ -68,7 +68,7 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Assessments
 
-- add RAG to GradeCell
+- add exports
 - need to add archive button, list of assessments to include archive data so you can downloads
 - add Pupil link - same file as for pupils, parents, but they have no RAGs etc
 

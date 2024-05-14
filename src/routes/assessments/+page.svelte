@@ -146,7 +146,7 @@
                         <td><IntakeBar r={row.overall.B} std={status.std.B}/></td>
                         {#each row.cols as col,colIndex}
                         <td>
-                            <GradeCell color={colIndex===0 ? false :true} base={group.cols[0].gd} grade={col.gd} grades={$config.grade.filter(el=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc)}>{col.gd}</GradeCell>
+                            <GradeCell color={colIndex===0 ? false :true} base={row.cols[0].gd} grade={col.gd} grades={$config.grade.filter(el=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc)}>{col.gd}</GradeCell>
                         </td>
                         {/each}
                         <!--

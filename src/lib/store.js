@@ -11,7 +11,7 @@ export let config=writable({
     rollover:{month:8},
     update:{contacts:false,groups:false,conduct:false},
     year:[{lv:'',fm:7,nc:13,x:0}],
-    rag:{red:0,green:0},
+    rag:{red:-1,green:1},
     std:{US:{A:'GCSE',B:'ALIS'},MS:{A:'NAT',B:'IND'},L1:{A:'',B:''}},
     grade:[{sc:'',gd:'',scr:0,pc:0,pre:0}],
     conduct:[{id:0,name:'',reward:false}],
