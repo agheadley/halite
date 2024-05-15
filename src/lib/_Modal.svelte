@@ -46,6 +46,7 @@
     transform: translate(-50%, -50%);
     min-width:20rem;
     /*max-width:50rem;*/
+    max-width:90vw;
     min-height:20rem;
     background-color: white;
     border-radius:0.3rem;

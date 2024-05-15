@@ -83,7 +83,7 @@
 
                 }
                 if(f) cond=cond.concat(f.conduct);
-                pup.push({g:g.g,pid:p.pid,sn:p.sn,pn:p.pn,tg:p.tg,hse:p.hse,cols:pcols,overall:f?f.overall:{A:0,B:0},groups:f?f.groups:[],conduct:f?f.conduct:[]})
+                pup.push({g:g.g,pid:p.pid,sn:p.sn,pn:p.pn,tg:p.tg,hse:p.hse,cols:pcols,overall:f?f.overall:{A:0,B:0},groups:f?f.groups:[],conduct:f?f.conduct:[],show:false})
             }
             let i=0;
             for(let col of cols) {

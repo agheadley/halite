@@ -9,6 +9,7 @@
     import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
     import GradeCell from '$lib/_GradeCell.svelte';
     import Modal from '$lib/_Modal.svelte';
+    import Pupil from '$lib/_Pupil.svelte';
     export let data;
 
     /** @type {any}*/    
@@ -168,7 +169,20 @@
                     </tr>
                     {#if row.show}
                     <Modal bind:open={row.show}>
-                        {JSON.stringify(row)}
+                        <Pupil 
+                            status={{
+                                pid:row.pid,
+                                sn:row.sn,
+                                pn:row.pn,
+                                hse:row.hse,
+                                gnd:row.gnd,
+                                tg:row.tg,
+                                lv:$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].lv,
+                                yr:$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].yr,
+                                context:'assessments'
+                            }}>
+                        </Pupil>
+                        
                     </Modal>
                     {/if}
                 {/each}
