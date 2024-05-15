@@ -8,6 +8,7 @@
     import ConductBar from '$lib/_ConductBar.svelte';
     import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
     import GradeCell from '$lib/_GradeCell.svelte';
+    import Modal from '$lib/_Modal.svelte';
     export let data;
 
     /** @type {any}*/    
@@ -141,7 +142,7 @@
             <tbody>
                 {#each group.pupil as row,rowIndex}
                     <tr>
-                        <td class="pupil-name">{row.sn} {row.pn}</td>
+                        <td class="pupil-name"><button class="button clear primary" on:click={()=>row.show=true}>{row.sn} {row.pn}</button></td>
                         <td><IntakeBar r={row.overall.A} std={status.std.A}/></td>
                         <td><IntakeBar r={row.overall.B} std={status.std.B}/></td>
                         {#each row.cols as col,colIndex}
@@ -165,6 +166,11 @@
                         -->
                         <td></td>
                     </tr>
+                    {#if row.show}
+                    <Modal bind:open={row.show}>
+                        {JSON.stringify(row)}
+                    </Modal>
+                    {/if}
                 {/each}
             </tbody>
         </table>
