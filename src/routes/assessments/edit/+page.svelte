@@ -187,6 +187,7 @@ let calculate=async(groupIndex,pupilIndex)=>{
                     scr:x.scr,
                     pc:x.pc,
                     fb:x.fb,
+                    n:status.assessment.n,
                     log:`${status.user}|${util.getDate()}`
                 }
             }),

@@ -49,7 +49,7 @@ export async function load({fetch}) {
     //console.log(user);
     if (user.name=='' || (!user.tag.teacher && !user.tag.pupil)) {
 		error(404, {
-			message: 'User not authroized!'
+			message: 'User not authorised!'
 		});
 	}
 

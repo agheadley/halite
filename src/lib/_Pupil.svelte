@@ -1,24 +1,108 @@
 <script>
+
 import { onMount } from 'svelte';
+import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 
 /** @type {{pid:number,sn:string,pn:string,gnd:string,hse:string,tg:string,lv:string,yr:number,context:string}}*/ 
 export let status;
 
+/** @type {any}*/
+let data={
+    groups:[],
+    assessments:[],
+    results:[],
+    intake:{},
+    table:[]
+};
 import {fade} from 'svelte/transition';
 
 /* inner modal for boundaries/totals/feedback */
 /** @type {boolean} */
 export let detail = false;
 
+/**
+ * 
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ */
+let showDetail=(rowIndex,colIndex)=>{
+    detail=true;
+};
 
 onMount(async () => {
        
     /* get groups */
-    /* get assessments by status.context */
-    /* get results by status.pid */
+    let response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'groups',filter:{"pupil.pid":status.pid,lv:status.lv,yr:status.yr} ,projection:{g:1,sc:1,sl:1,ss:1}}),
+        headers: {'content-type': 'application/json'}
+    });
+    let res= await response.json();
+    data.groups = res[0] ? res.sort((/** @type {{ sl: string; }} */ a,/** @type {{ sl: any; }} */ b)=>a.sl.localeCompare(b.sl)) : [];
+    //console.log(data.groups);
 
+    /* get assessments by status.context */
+    
+    /* testing */
+    //status.context='parent';
+    
+    /** @type {any}*/
+    let filter={"tag.archive":false,lv:status.lv,yr:status.yr};
+    if(status.context==='overview') filter["tag.overview"]=true;
+    if(status.context==='pupil') filter["tag.pupil"]=true;
+    if(status.context==='parent') filter["tag.parent"]=true;
+    //console.log(filter);
+    response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'assessments',filter:filter ,projection:{g:1,sc:1,sl:1,ss:1,dt:1,ds:1,total:1,grade:1,n:1,tag:1}}),
+        headers: {'content-type': 'application/json'}
+    });
+    res= await response.json();
+    data.assessments=res[0] ? res.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt) : [];
+    //console.log(data.assessments);
+    
+    /* get results by status.pid */
+    response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'results',filter:{pid:status.pid,lv:status.lv,yr:status.yr} ,projection:{pid:1,aoid:1,sc:1,sl:1,ss:1,gd:1,scr:1,pc:1,t:1}}),
+        headers: {'content-type': 'application/json'}
+    });
+    data.results= await response.json();
+
+     /* get intake by status.pid */
+     response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'intake',filter:{pid:status.pid,lv:status.lv,yr:status.yr} ,projection:{pid:1,base:1,pre:1}}),
+        headers: {'content-type': 'application/json'}
+    });
+    res= await response.json();
+    data.intake=res[0] && res[0].pre ? res[0].pre : [];
+
+    console.log(data.intake);
     /* build table with n,ds,gd,pc, grade (assesment.grade),total (t,assessment totals) vs ss,sl,sc from groups */
 
+    for(let group of data.groups) {
+       
+
+        let col=[];
+        for(let assessment of data.assessments.filter((/** @type {{ sc: any; ss: any; }} */ el)=>el.sc===group.sc && el.ss===group.ss)) {
+            let f=data.results.find((/** @type {{ aoid: any; }} */ el)=>el.aoid===assessment._id);
+            
+            /** @type {any[]} */
+            let total=[];
+            assessment.total.forEach((/** @type {{ n: any; t: any; w: any; }} */ item,/** @type {string | number} */ i)=>{total.push({scr:f&&f.t[i] ? f.t[i] : 0,n:item.n,t:item.t,w:item.w})});
+            let a={gd:f?f.gd:'X',scr:f?f.scr:0,pc:f?f.pc:0,n:assessment.n,ds:assessment.ds,dt:assessment.dt,grade:assessment.grade,total:total,tag:assessment.tag}
+            
+            col.push(a);
+        }
+        let f=data.intake.find((/** @type {{ sc: any; ss: any; }} */ el)=>el.sc===group.sc && el.ss===group.ss);
+
+
+        let row={sl:group.sl,ss:group.ss,sc:group.sc,g:group.g,col:col,pre:{A:f?f.A:0,B:f?f.B:0}};
+        data.table.push(row);
+    }
+
+    console.log(data.table);
        
 });
 
@@ -42,15 +126,43 @@ onMount(async () => {
 <div class="container">
 <div class="row">
     <div class="col">
-        <div class="responsive">
-            <button on:click={()=>detail=true}></button>
-            <p>The quick brown fox jumps over the lazy dog.The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog. The quick brown fox jumps over the lazy dog.</p>
-            <p>{status.context}</p>
-        </div>
+        <h4>{status.pn} {status.sn} ({status.hse})</h4>
       
     </div>
 </div>
-</div>
+<hr/>
+
+{#if data.table[0] && data.table.length}
+{#each data.table as row,rowIndex}
+
+<table>
+    <tbody>
+        <tr>
+            <th></th>
+            {#each row.col as col,colIndex}
+            <td> <AssessmentTitle title={col.n} subtitle={col.ds}/></td>
+            {/each}
+        </tr>
+        <tr>
+            <td>{row.sl} ({row.sc})</td>
+            {#each row.col as col,colIndex}
+
+            <td><div><button on:click={()=>showDetail(rowIndex,colIndex)}></button></div><div>{col.gd}</div></td>
+            {/each}
+        </tr>
+    
+    </tbody>
+</table>
+
+{/each}
+
+{:else}
+<p>harvesting data ...</p>
+{/if}
+
+
+</div> <!--/container-->
+
 
 
 <style>
@@ -91,5 +203,15 @@ onMount(async () => {
     background-color: white;
     border-radius:0.3rem;
     border:1px solid #333;
+}
+
+.name {
+    max-width:20rem;
+    width:20rem;
+}
+
+.group {
+    max-width:5rem;
+    width:5rem;
 }
 </style>
