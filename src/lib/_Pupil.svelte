@@ -16,13 +16,18 @@ let data={
     results:[],
     intake:{},
     table:[],
-    std:{A:'',B:''}
+    std:{A:'',B:''},
+    detail:{n:'',ds:'',gd:'',pc:0,scr:0,dt:0,tag:{},fb:'',grade:[],total:[]}
 };
 import {fade} from 'svelte/transition';
 
 /* inner modal for boundaries/totals/feedback */
 /** @type {boolean} */
-export let detail = false;
+let detail = false;
+
+/** close down main modal!*/
+/** @type {boolean} */
+export let open;
 
 /**
  * 
@@ -30,6 +35,7 @@ export let detail = false;
  * @param {number} colIndex
  */
 let showDetail=(rowIndex,colIndex)=>{
+    data.detail=data.table[rowIndex].col[colIndex];
     detail=true;
 };
 
@@ -74,7 +80,7 @@ onMount(async () => {
     /* get results by status.pid */
     response = await fetch('/edge/read', {
         method: 'POST',
-        body: JSON.stringify({collection:'results',filter:{pid:status.pid,lv:status.lv,yr:status.yr} ,projection:{pid:1,aoid:1,sc:1,sl:1,ss:1,gd:1,scr:1,pc:1,t:1}}),
+        body: JSON.stringify({collection:'results',filter:{pid:status.pid,lv:status.lv,yr:status.yr} ,projection:{pid:1,aoid:1,sc:1,sl:1,ss:1,gd:1,scr:1,pc:1,t:1,fb:1}}),
         headers: {'content-type': 'application/json'}
     });
     data.results= await response.json();
@@ -101,7 +107,7 @@ onMount(async () => {
             /** @type {any[]} */
             let total=[];
             assessment.total.forEach((/** @type {{ n: any; t: any; w: any; }} */ item,/** @type {string | number} */ i)=>{total.push({scr:f&&f.t[i] ? f.t[i] : 0,n:item.n,t:item.t,w:item.w})});
-            let a={gd:f?f.gd:'X',scr:f?f.scr:0,pc:f?f.pc:0,n:assessment.n,ds:assessment.ds,dt:assessment.dt,grade:assessment.grade,total:total,tag:assessment.tag}
+            let a={gd:f?f.gd:'X',scr:f?f.scr:0,pc:f?f.pc:0,n:assessment.n,ds:assessment.ds,dt:assessment.dt,grade:assessment.grade,total:total,tag:assessment.tag,fb:f?f.fb:''}
             
             col.push(a);
         }
@@ -127,9 +133,83 @@ onMount(async () => {
 <div class="parent" transition:fade={{ duration: 200 }}>
     <div role="cell" tabindex=0 class="background" on:keydown={()=>detail=false} on:click={()=>detail=false}/>
     <div class="modal">
-        <slot>
-            XYZ
-        </slot>
+            <div class="row">
+                <div class="col">
+                    <h4>{data.detail.n} {data.detail.ds}</h4>
+                </div>
+                <div class="col">
+                    <button class="button outline" on:click={()=>detail=false}>Close</button>
+                </div>
+            </div>
+           
+          
+            <div class="row">
+                <div class="col">
+                    Grade <span class="bold">{data.detail.gd}</span>
+                </div>
+                {#if !data.detail.tag.grade && data.detail.gd!=='X'}
+                    <div class="col">
+                        {data.detail.pc}%
+                    </div>
+                {/if}
+            </div>
+
+            {#if data.detail.fb!==''}
+            <div class="row">
+                <fieldset id="fb" class="is-full-width">
+                    <legend>Feedback</legend>
+                        <textarea disabled>{data.detail.fb}</textarea>
+                    </fieldset>
+            </div>
+            {/if}
+           
+            {#if !data.detail.tag.grade}
+            <div class="row">
+                <div class="col">
+                    <table class="striped">
+                        <thead>
+                            <tr>
+                                <th>Section</th>
+                                <th>Score</th>
+                                <th>Weighting</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {#each data.detail.total as row,rowIndex}
+                            <tr>
+                                <td>{row.n}</td>
+                                <td>{row.scr} / {row.t}</td>
+                                <td>{row.w}</td>
+                            </tr>
+                            {/each}
+                          
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col">
+                    <table class="striped">
+                        <thead>
+                            <tr>
+                                <th>Grade</th>
+                                <th> % </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {#each data.detail.grade as row,rowIndex}
+                            <tr>
+                                <td>{row.gd}</td>
+                                <td>{row.pc}</td>
+                              
+                            </tr>
+                            {/each}
+                          
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {/if}
+
+              
     </div>
 </div>
 {/if}
@@ -139,6 +219,10 @@ onMount(async () => {
 <div class="row">
     <div class="col">
         <h4>{status.pn} {status.sn} ({status.hse})</h4>
+      
+    </div>
+    <div class="col">
+        <button class="button outline" on:click={()=>open=false}>Close</button>
       
     </div>
 </div>
@@ -252,7 +336,7 @@ onMount(async () => {
     transform: translate(-50%, -50%);
     min-width:20rem;
     /*max-width:50rem;*/
-    max-width:90vw;
+    max-width:80vw;
     min-height:20rem;
     background-color: white;
     border-radius:0.3rem;

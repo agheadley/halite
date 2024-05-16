@@ -88,7 +88,7 @@
             item['h'] = maxH*item['p']/max;
             item['y']=startY+maxH-item['h'];
         }
-        console.log('Chances',score,points,total);
+        //console.log('Chances',score,points,total);
       
     };
 

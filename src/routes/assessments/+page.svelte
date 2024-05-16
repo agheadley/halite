@@ -170,6 +170,8 @@
                     {#if row.show}
                     <Modal bind:open={row.show}>
                         <Pupil 
+                            bind:open={row.show}
+
                             status={{
                                 pid:row.pid,
                                 sn:row.sn,
@@ -180,7 +182,8 @@
                                 lv:$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].lv,
                                 yr:$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].yr,
                                 context:'assessments'
-                            }}>
+                            }}
+                            >
                         </Pupil>
                         
                     </Modal>
