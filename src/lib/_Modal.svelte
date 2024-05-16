@@ -48,8 +48,10 @@
     /*max-width:50rem;*/
     max-width:90vw;
     min-height:20rem;
+    max-height:90vh;
     background-color: white;
     border-radius:0.3rem;
     border:1px solid white;
+    overflow:auto;
 }
 </style>

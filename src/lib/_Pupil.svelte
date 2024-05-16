@@ -15,7 +15,8 @@ let data={
     assessments:[],
     results:[],
     intake:{},
-    table:[]
+    table:[],
+    std:{A:'',B:''}
 };
 import {fade} from 'svelte/transition';
 
@@ -33,7 +34,13 @@ let showDetail=(rowIndex,colIndex)=>{
 };
 
 onMount(async () => {
-       
+    
+    if(status.lv==='US') data.std={A:$config.std.US.A,B:$config.std.US.B};
+    else if (status.lv==='MS') data.std={A:$config.std.MS.A,B:$config.std.MS.B};
+    else if (status.lv==='L1') data.std={A:$config.std.L1.A,B:$config.std.L1.B};
+
+   
+    
     /* get groups */
     let response = await fetch('/edge/read', {
         method: 'POST',
@@ -114,6 +121,8 @@ onMount(async () => {
 </script>
 
 
+
+
 {#if detail}
 <div class="parent" transition:fade={{ duration: 200 }}>
     <div role="cell" tabindex=0 class="background" on:keydown={()=>detail=false} on:click={()=>detail=false}/>
@@ -135,6 +144,7 @@ onMount(async () => {
 </div>
 <hr/>
 
+
 {#if data.table[0] && data.table.length}
 {#each data.table as row,rowIndex}
 <div class="container">
@@ -147,7 +157,7 @@ onMount(async () => {
             {/each}
         </tr>
         <tr>
-            <td>{row.sl} ({row.sc})</td>
+            <td><span class="bold">{row.sl} ({row.sc})</span></td>
             {#each row.col as col,colIndex}
 
             <td>
@@ -168,17 +178,33 @@ onMount(async () => {
     
     </tbody>
 </table>
+{#if status.context!=='parent'}
+<div class="row">
+    &nbsp;
+</div>
 <div class="row">
     <div class="col">
-        CHANCES
+        CHANCES ({data.std.A})
     </div>
     <div class="col">
-        <Chance grades={$config.grade.filter(el=>el.sc===row.sc)} score={row.pre.A ? row.pre.A : 0}/>
-    </div>
+        <div>
+            <span class="tag">{data.std.A}</span>
+        </div>
+        <div>
+            <Chance grades={$config.grade.filter(el=>el.sc===row.sc)} score={row.pre.A ? row.pre.A : 0}/>
+        </div>
+        </div>
+   
     <div class="col">
-        <Chance grades={$config.grade.filter(el=>el.sc===row.sc)} score={row.pre.B ? row.pre.B : 0}/>
+        <div>
+            <span class="tag">{data.std.B}</span>
+        </div>
+        <div>
+            <Chance grades={$config.grade.filter(el=>el.sc===row.sc)} score={row.pre.B ? row.pre.B : 0}/>
+        </div>
     </div>
 </div>
+{/if}
 </div>
 
 {/each}
@@ -195,11 +221,10 @@ onMount(async () => {
 
 <style>
 
-.responsive {
-    overflow-x:auto;
-    overflow-y:auto;
-}
+.bold {
+    font-weight:600;
 
+}
 .parent{
     position:fixed;
     top:0px;
