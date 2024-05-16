@@ -30,7 +30,7 @@
 	<Alert/>
 	<nav class="nav">
 		<div class="nav-left">
-		  <a class="brand brand-color" href={'/about'}>Halite</a>
+		  <a class="brand brand-color" href={'/about'}>Ostia Halite</a>
 		  <div class="tabs">
 			{#if data.user.tag.teacher}
 			{#if status.menu==='internal'}
