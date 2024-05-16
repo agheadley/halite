@@ -2,6 +2,9 @@
 
 import { onMount } from 'svelte';
 import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
+import GradeCell from '$lib/_GradeCell.svelte';
+import Chance from '$lib/_Chance.svelte';
+import {config} from '$lib/store';
 
 /** @type {{pid:number,sn:string,pn:string,gnd:string,hse:string,tg:string,lv:string,yr:number,context:string}}*/ 
 export let status;
@@ -134,7 +137,7 @@ onMount(async () => {
 
 {#if data.table[0] && data.table.length}
 {#each data.table as row,rowIndex}
-
+<div class="container">
 <table>
     <tbody>
         <tr>
@@ -147,18 +150,43 @@ onMount(async () => {
             <td>{row.sl} ({row.sc})</td>
             {#each row.col as col,colIndex}
 
-            <td><div><button on:click={()=>showDetail(rowIndex,colIndex)}></button></div><div>{col.gd}</div></td>
+            <td>
+                <div>
+                    <!--<button on:click={()=>showDetail(rowIndex,colIndex)}></button>-->
+                    <a href={'#'} on:click={()=>showDetail(rowIndex,colIndex)} on:keydown={()=>showDetail(rowIndex,colIndex)} class="button clear icon-only">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                      </a>
+                </div>
+                <div>
+                {#if status.context==='assessments'}
+                <GradeCell color={colIndex===0 ? false :true} base={row.col[0].gd} grade={col.gd} grades={$config.grade.filter(el=>el.sc===row.sc)}>{col.gd}</GradeCell>
+                {/if}
+                </div>
+            </td>
             {/each}
         </tr>
     
     </tbody>
 </table>
+<div class="row">
+    <div class="col">
+        CHANCES
+    </div>
+    <div class="col">
+        <Chance grades={$config.grade.filter(el=>el.sc===row.sc)} score={row.pre.A ? row.pre.A : 0}/>
+    </div>
+    <div class="col">
+        <Chance grades={$config.grade.filter(el=>el.sc===row.sc)} score={row.pre.B ? row.pre.B : 0}/>
+    </div>
+</div>
+</div>
 
 {/each}
 
 {:else}
 <p>harvesting data ...</p>
 {/if}
+
 
 
 </div> <!--/container-->
@@ -168,7 +196,8 @@ onMount(async () => {
 <style>
 
 .responsive {
-    overflow:auto;
+    overflow-x:auto;
+    overflow-y:auto;
 }
 
 .parent{
