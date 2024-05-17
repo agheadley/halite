@@ -73,7 +73,10 @@ returns true for undefined (as undefined==null), null, [], ""
 - add Pupil link - same file as for pupils, parents, but they have no RAGs etc
 
 
+# _Pupil.svelte
 
+- get own config for file
+- add view context=pupil,parent,teacher to config, to switch on view of chances, rags, results 
 
 # Admin
 
