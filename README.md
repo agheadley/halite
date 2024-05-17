@@ -134,7 +134,7 @@ dt
 sc
 ss
 sl
-tag:{open,grade,overview,pupil,parent,exam,archive}  // editable, grade only, overview viewable, pupil viewable,parent viewable,exam for all year group, archive
+tag:{open,grade,overview,pupil,parent,exam,archive,pupiledit}  // editable, grade only, overview viewable, pupil viewable,parent viewable,exam for all year group, archive,pupiledit
 grade:[{gd:'',pc:0,scr:0,active:true}]
 log:''
 total:[{t:0,w:0,n:''}]

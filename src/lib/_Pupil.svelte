@@ -4,7 +4,9 @@ import { onMount } from 'svelte';
 import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 import GradeCell from '$lib/_GradeCell.svelte';
 import Chance from '$lib/_Chance.svelte';
-import {config} from '$lib/store';
+import {config,alert} from '$lib/store';
+import * as util from '$lib/util';
+
 
 /** @type {{pid:number,sn:string,pn:string,gnd:string,hse:string,tg:string,lv:string,yr:number,context:string}}*/ 
 export let status;
@@ -38,6 +40,51 @@ let showDetail=(rowIndex,colIndex)=>{
     data.detail=data.table[rowIndex].col[colIndex];
     detail=true;
 };
+
+let validateGrade=()=>{
+    console.log(data.detail);
+    if(!data.detail.grade.find((/** @type {{ gd: any; }} */ el)=>el.gd===data.detail.gd)) {
+        data.detail.gd='';
+    }
+};
+
+let blurGrade=async()=>{
+    let x={gd:'X',scr:0,pc:0};
+    if(data.detail.gd!=='') {
+        let f=data.detail.grade.find((/** @type {{ gd: any; }} */ el)=>el.gd===data.detail.gd);
+        if(f) {
+            x.gd=data.detail.gd;
+            x.scr=f.scr;
+            x.pc=x.pc;
+        }
+    } 
+
+    console.log('blurGrade',x);
+
+    let response = await fetch('/edge/update', {
+		    method: 'POST',
+		    body: JSON.stringify({
+                collection:'results',
+                filter:{"_id":{"$oid": data.detail._id}},
+                update:{
+                    gd:data.detail.gd,
+                    scr:x.scr,
+                    pc:x.pc,
+                    log:`${status.pid}|${util.getDate()}`
+                }
+            }),
+		    headers: {'content-type': 'application/json'}
+	    });
+    let res= await response.json();
+    console.log(res);
+    if(res.matchedCount!==1) {
+        $alert.type='error';
+        $alert.msg=`Error updating result`;
+    } else  $alert.msg=`Modified ${res.modifiedCount} result`; 
+
+};
+
+
 
 onMount(async () => {
     
@@ -80,7 +127,7 @@ onMount(async () => {
     /* get results by status.pid */
     response = await fetch('/edge/read', {
         method: 'POST',
-        body: JSON.stringify({collection:'results',filter:{pid:status.pid,lv:status.lv,yr:status.yr} ,projection:{pid:1,aoid:1,sc:1,sl:1,ss:1,gd:1,scr:1,pc:1,t:1,fb:1}}),
+        body: JSON.stringify({collection:'results',filter:{pid:status.pid,lv:status.lv,yr:status.yr} ,projection:{_id:1,pid:1,aoid:1,sc:1,sl:1,ss:1,gd:1,scr:1,pc:1,t:1,fb:1}}),
         headers: {'content-type': 'application/json'}
     });
     data.results= await response.json();
@@ -107,7 +154,7 @@ onMount(async () => {
             /** @type {any[]} */
             let total=[];
             assessment.total.forEach((/** @type {{ n: any; t: any; w: any; }} */ item,/** @type {string | number} */ i)=>{total.push({scr:f&&f.t[i] ? f.t[i] : 0,n:item.n,t:item.t,w:item.w})});
-            let a={gd:f?f.gd:'X',scr:f?f.scr:0,pc:f?f.pc:0,n:assessment.n,ds:assessment.ds,dt:assessment.dt,grade:assessment.grade,total:total,tag:assessment.tag,fb:f?f.fb:''}
+            let a={ss:assessment.ss,sc:assessment.sc,gd:f?f.gd:'X',scr:f?f.scr:0,pc:f?f.pc:0,_id:f?f._id:'',n:assessment.n,ds:assessment.ds,dt:assessment.dt,grade:assessment.grade,total:total,tag:assessment.tag,fb:f?f.fb:''}
             
             col.push(a);
         }
@@ -145,7 +192,14 @@ onMount(async () => {
           
             <div class="row">
                 <div class="col">
-                    Grade <span class="bold">{data.detail.gd}</span>
+                    Grade 
+                        {#if data.detail.tag.grade && data.detail.tag.open && data.detail.tag.pupiledit}
+                        <input  type=text bind:value={data.detail.gd} on:input={validateGrade} on:blur={blurGrade}/>
+                        {:else}
+                            <span class="bold">{data.detail.gd}</span>
+                        {/if}
+                        
+                        
                 </div>
                 {#if !data.detail.tag.grade && data.detail.gd!=='X'}
                     <div class="col">
@@ -247,10 +301,17 @@ onMount(async () => {
             <td>
                 <div>
                     <!--<button on:click={()=>showDetail(rowIndex,colIndex)}></button>-->
+                    {#if col.tag.pupiledit && col.tag.grade && col.tag.open}
                     <a href={'#'} on:click={()=>showDetail(rowIndex,colIndex)} on:keydown={()=>showDetail(rowIndex,colIndex)} class="button clear icon-only">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                       </a>
-                </div>
+                    {:else}
+                      <a href={'#'} on:click={()=>showDetail(rowIndex,colIndex)} on:keydown={()=>showDetail(rowIndex,colIndex)} class="button clear icon-only">
+                     
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </a>
+                    {/if}
+                    </div>
                 <div>
                 {#if status.context==='assessments'}
                 <GradeCell color={colIndex===0 ? false :true} base={row.col[0].gd} grade={col.gd} grades={$config.grade.filter(el=>el.sc===row.sc)}>{col.gd}</GradeCell>
