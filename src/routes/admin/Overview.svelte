@@ -11,14 +11,13 @@
     let data={
         rows:[],
         assessments:[],
-        aIndex:0,
         cohorts:[],
         cIndex:0
     };
     
     let addRow=()=>{
         data.rows.push(
-            {lv:data.cohorts[data.cIndex].lv,yr:data.cohorts[data.cIndex].yr,exam:false,from:"0000-00-00",to:"0000-00-00",n:"",dl:""}
+            {aIndex:0,lv:data.cohorts[data.cIndex].lv,yr:data.cohorts[data.cIndex].yr,exam:false,from:"0000-00-00",to:"0000-00-00",n:"",dl:""}
         );
         data.rows=data.rows;
     };
@@ -31,6 +30,18 @@
         console.log(index,data.rows[index]);
         data.rows.splice(index, 1);
         data.rows=data.rows;
+    };
+
+     /**
+     * 
+     * @param {number} index
+     */
+     let addAssessment=(index)=>{
+        console.log(index,data.rows[index].aIndex);
+        data.rows[index].n=data.assessments[data.rows[index].aIndex].n;
+        data.rows[index].dl=data.assessments[data.rows[index].aIndex].dl;
+        
+        console.log(data.rows);
     };
         
     onMount(async () => {
@@ -68,6 +79,13 @@
         });
         res= await response.json();
         $config=res[0] ? res[0] : {};
+
+        data.rows=[];
+        for(let row of $config.overview) {
+            data.rows.push(row);
+
+        }   
+        for(let row of data.rows) row.aIndex=0;
 
         console.log(data);
         
@@ -119,10 +137,12 @@
                             <p class="grouped">
                             <input type=checkbox bind:checked={row.exam}>
                                 {#if row.exam}
-                                <select  id="cohort" bind:value={data.aIndex}>
+                                <select  id="cohort" bind:value={row.aIndex} on:change={()=>addAssessment(rowIndex)}>
                                     <optgroup label="Level ExamYear">
-                                            {#each data.assessments.filter((/** @type {{ lv: any; yr: any; }} */ el)=>el.lv===data.cohorts[data.cIndex].lv && el.yr===data.cohorts[data.cIndex].yr) as item,index}
+                                            {#each data.assessments as item,index}
+                                                {#if item.lv===data.cohorts[data.cIndex].lv && item.yr===data.cohorts[data.cIndex].yr}
                                                 <option value={index}>{item.n} {item.dl} ({item.lv} {item.yr})</option>
+                                                {/if}
                                             {/each}
                                     </optgroup>
                                   </select>
