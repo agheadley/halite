@@ -11,14 +11,25 @@
     let data={
         rows:[],
         assessments:[],
+        aIndex:0,
         cohorts:[],
-        index:0
+        cIndex:0
     };
     
     let addRow=()=>{
         data.rows.push(
-            {lv:data.cohorts[data.index].lv,yr:data.cohorts[data.index].yr,exam:false,from:"0000-00-00",to:"0000-00-00",n:"",dl:""}
+            {lv:data.cohorts[data.cIndex].lv,yr:data.cohorts[data.cIndex].yr,exam:false,from:"0000-00-00",to:"0000-00-00",n:"",dl:""}
         );
+        data.rows=data.rows;
+    };
+
+    /**
+     * 
+     * @param {number} index
+     */
+    let removeRow=(index)=>{
+        console.log(index,data.rows[index]);
+        data.rows.splice(index, 1);
         data.rows=data.rows;
     };
         
@@ -72,7 +83,7 @@
             <fieldset id="cohort" class="is-full-width">
                 <legend>Cohort</legend>
                 <p class="grouped">
-                <select  id="cohort" bind:value={data.index}>
+                <select  id="cohort" bind:value={data.cIndex}>
                     <optgroup label="Level ExamYear">
                             {#each data.cohorts as item,index}
                                 <option value={index}>{item.lv} {item.yr}</option>
@@ -86,45 +97,62 @@
         </div>
     </div>
    
-    <table>
-        <thead>
-            <tr>
-                <th>Cohort</th>
-                <td>Date Range / Single Exam</td>
-                <th>From</th>
-                <th>To</th>
-                <th>Exam</th>
-            </tr>
-        </thead>
-        <tbody>
+  
             {#each data.rows as row,rowIndex}
-                {#if row.lv===data.cohorts[data.index].lv && row.yr===data.cohorts[data.index].yr}
-                <tr>
-                    <td>
+                {#if row.lv===data.cohorts[data.cIndex].lv && row.yr===data.cohorts[data.cIndex].yr}
+                <div class="row">
+                   
+                    <div class="col-2  is-vertical-align">
+                        <button class="button error icon-only" on:click={()=>removeRow(rowIndex)}>         
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                        </button>
+                        &nbsp;
+                        <fieldset id="cohort">
+                            <legend>Cohort</legend>
                         {row.lv} {row.yr}
-                    </td>
-                    <td>
+                    </fieldset>
+                    </div>
+                   
+                    <div class="col-5  is-vertical-align">
+                        <fieldset id="cohort" class="is-full-width">
+                            <legend>Single Assessment?</legend>
+                            <p class="grouped">
+                            <input type=checkbox bind:checked={row.exam}>
+                                {#if row.exam}
+                                <select  id="cohort" bind:value={data.aIndex}>
+                                    <optgroup label="Level ExamYear">
+                                            {#each data.assessments.filter((/** @type {{ lv: any; yr: any; }} */ el)=>el.lv===data.cohorts[data.cIndex].lv && el.yr===data.cohorts[data.cIndex].yr) as item,index}
+                                                <option value={index}>{item.n} {item.dl} ({item.lv} {item.yr})</option>
+                                            {/each}
+                                    </optgroup>
+                                  </select>
+                                {/if}
+                            </p>
+                        </fieldset>
+                    </div>
+                    <div class="col-5  is-vertical-align">
+                        <fieldset id="cohort" class="is-full-width">
+                            <legend>Assessment Range (From / To)</legend>
+                            <p class="grouped">
+                                <input disabled={row.exam} type=date bind:value={row.from} class={row.from!=='' ? 'success' : 'error'}/>
+                                <input disabled={row.exam} type=date bind:value={row.to} class={row.to!==''? 'success' : 'error'}/>
+                            </p>
+                        </fieldset>
+                    </div>
 
-                    </td>
-                    <td>
-                        <input type=date bind:value={row.from} class={row.from!=='' ? 'success' : 'error'}/>
-                    </td>
-                    <td>
-                        <input type=date bind:value={row.to} class={row.to!==''? 'success' : 'error'}/>
-                    </td>
+                 
 
-                </tr>
+               
+                </div>
                 {/if}
             {/each}
-            <tr>
-                <td colspan=5>
+            <div class="row">
+                <div class="col">
                     <button class="button dark icon-only" on:click={addRow}>         
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+            </div>
+            </div>
    
     
     <style>
