@@ -5,6 +5,9 @@ import * as util from '$lib/util';
 import {alert} from '$lib/store';
 
 /** @type {any}*/
+export let status;
+
+/** @type {any}*/
 let files;
 
 /** @type {string[]}*/
@@ -138,6 +141,7 @@ let upload=async()=>{
     
     onMount(async () => {
         console.log('/admin Import.svelte');
+        console.log(status);
      
        
     });

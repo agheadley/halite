@@ -21,7 +21,7 @@ export async function load({fetch}) {
     let res= await response.json();
     
     /** @type {any} */
-    let cfg=res[0] ? res[0] : [];
+    let cfg=res[0] ? res[0] : {};
     
     
     /* get group details to find teachers, pupils */
