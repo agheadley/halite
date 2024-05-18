@@ -19,13 +19,17 @@ let data={
     intake:{},
     table:[],
     std:{A:'',B:''},
-    detail:{n:'',ds:'',gd:'',pc:0,scr:0,dt:0,tag:{},fb:'',grade:[],total:[]}
+    detail:{n:'',ds:'',gd:'',pc:0,scr:0,dt:0,tag:{},fb:'',grade:[],total:[]},
+    view:{context:'',rag:false,chance:false}
 };
 import {fade} from 'svelte/transition';
 
 /* inner modal for boundaries/totals/feedback */
 /** @type {boolean} */
 let detail = false;
+
+ /** @type {any} */
+ let cfg= [];
 
 /** close down main modal!*/
 /** @type {boolean} */
@@ -88,19 +92,35 @@ let blurGrade=async()=>{
 
 onMount(async () => {
     
-    if(status.lv==='US') data.std={A:$config.std.US.A,B:$config.std.US.B};
-    else if (status.lv==='MS') data.std={A:$config.std.MS.A,B:$config.std.MS.B};
-    else if (status.lv==='L1') data.std={A:$config.std.L1.A,B:$config.std.L1.B};
 
-   
+     /* get cfg */
+     let response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'config',filter:{},projection:{_id:0}}),
+        headers: {'content-type': 'application/json'}
+    });
+    let res= await response.json();
     
+    cfg=res[0] ? res[0] : [];
+
+    /* get CEM stds */
+    if(status.lv==='US') data.std={A:cfg.std.US.A,B:cfg.std.US.B};
+    else if (status.lv==='MS') data.std={A:cfg.std.MS.A,B:cfg.std.MS.B};
+    else if (status.lv==='L1') data.std={A:cfg.std.L1.A,B:cfg.std.L1.B};
+
+    /* set context for rag and chances graphs view */
+    let c=cfg.view.find((/** @type {{ context: string; }} */ el)=>el.context===status.context);
+
+    if(c) data.view=c;
+  
+   
     /* get groups */
-    let response = await fetch('/edge/read', {
+    response = await fetch('/edge/read', {
         method: 'POST',
         body: JSON.stringify({collection:'groups',filter:{"pupil.pid":status.pid,lv:status.lv,yr:status.yr} ,projection:{g:1,sc:1,sl:1,ss:1}}),
         headers: {'content-type': 'application/json'}
     });
-    let res= await response.json();
+    res= await response.json();
     data.groups = res[0] ? res.sort((/** @type {{ sl: string; }} */ a,/** @type {{ sl: any; }} */ b)=>a.sl.localeCompare(b.sl)) : [];
     //console.log(data.groups);
 
@@ -276,7 +296,9 @@ onMount(async () => {
       
     </div>
     <div class="col">
+        {#if status.context!=='pupil'}
         <button class="button outline" on:click={()=>open=false}>Close</button>
+        {/if}
       
     </div>
 </div>
@@ -303,7 +325,7 @@ onMount(async () => {
                     <!--<button on:click={()=>showDetail(rowIndex,colIndex)}></button>-->
                     {#if col.tag.pupiledit && col.tag.grade && col.tag.open}
                     <a href={'#'} on:click={()=>showDetail(rowIndex,colIndex)} on:keydown={()=>showDetail(rowIndex,colIndex)} class="button clear icon-only">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                       </a>
                     {:else}
                       <a href={'#'} on:click={()=>showDetail(rowIndex,colIndex)} on:keydown={()=>showDetail(rowIndex,colIndex)} class="button clear icon-only">
@@ -314,7 +336,11 @@ onMount(async () => {
                     </div>
                 <div>
                 {#if status.context==='assessments'}
-                <GradeCell color={colIndex===0 ? false :true} base={row.col[0].gd} grade={col.gd} grades={$config.grade.filter(el=>el.sc===row.sc)}>{col.gd}</GradeCell>
+                    {#if data.view.rag}
+                    <GradeCell color={colIndex===0 ? false :true} base={row.col[0].gd} grade={col.gd} grades={cfg.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===row.sc)}>{col.gd}</GradeCell>
+                    {:else}
+                    <GradeCell color={false} base={row.col[0].gd} grade={col.gd} grades={cfg.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===row.sc)}>{col.gd}</GradeCell>
+                    {/if}
                 {/if}
                 </div>
             </td>
@@ -323,7 +349,7 @@ onMount(async () => {
     
     </tbody>
 </table>
-{#if status.context!=='parent'}
+{#if data.view.chance}
 <div class="row">
     &nbsp;
 </div>
@@ -336,7 +362,7 @@ onMount(async () => {
             <span class="tag">{data.std.A}</span>
         </div>
         <div>
-            <Chance grades={$config.grade.filter(el=>el.sc===row.sc)} score={row.pre.A ? row.pre.A : 0}/>
+            <Chance grades={cfg.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===row.sc)} score={row.pre.A ? row.pre.A : 0}/>
         </div>
         </div>
    
@@ -345,7 +371,7 @@ onMount(async () => {
             <span class="tag">{data.std.B}</span>
         </div>
         <div>
-            <Chance grades={$config.grade.filter(el=>el.sc===row.sc)} score={row.pre.B ? row.pre.B : 0}/>
+            <Chance grades={cfg.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===row.sc)} score={row.pre.B ? row.pre.B : 0}/>
         </div>
     </div>
 </div>
@@ -404,6 +430,7 @@ onMount(async () => {
     border:1px solid #333;
 }
 
+/*
 .name {
     max-width:20rem;
     width:20rem;
@@ -413,4 +440,5 @@ onMount(async () => {
     max-width:5rem;
     width:5rem;
 }
+*/
 </style>

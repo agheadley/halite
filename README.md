@@ -75,8 +75,8 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # _Pupil.svelte
 
-- get own config for file
-- add view context=pupil,parent,teacher to config, to switch on view of chances, rags, results 
+- export let open - closes modal - but not shown if pupil - as single page - so no modal used for display !
+- need to check this for parent, pupil and teachers !!!!
 
 # Admin
 

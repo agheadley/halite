@@ -18,7 +18,14 @@ export let config=writable({
     subject:[{lv:'',sc:'',ss:'',tid:''}],
     kpi:[{lv:'',section:'',KPI:'',sc:'',gd:'',sort:0}],
     regression:[{lv:'',sc:'',ss:'',regressionYear:0,gradient:0,intercept:0,std:''}],
-    tips:['']
+    tips:[''],
+    view:[
+        {context:'parent',rag:false,chance:false},
+        {context:'pupil',rag:false,chance:true},
+        {context:'assessments',rag:true,chance:true},
+        {context:'overview',rag:true,chance:true}
+        
+    ]
 
 });
 

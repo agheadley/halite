@@ -4939,12 +4939,18 @@
               "ss": "XXX",
               "tid": "AGH"
             }
-          ]
+          ],
 
-
+          "view":[
+            {"context":"parent","rag":false,"chance":false},
+            {"context":"pupil","rag":false,"chance":true},
+            {"context":"assessments","rag":true,"chance":true},
+            {"context":"overview","rag":true,"chance":true}
+        ]
 
 
 
 
     }
+    
 ]
