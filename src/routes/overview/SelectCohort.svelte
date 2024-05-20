@@ -1,5 +1,5 @@
 <script>
-import {cohorts,config,groups,pupils} from '$lib/store';
+import {cohorts,config,pupils} from '$lib/store';
 import { onMount } from 'svelte';
 import * as util from '$lib/util';
 
@@ -8,22 +8,93 @@ export let status;
 
 
 let update=async()=>{
-    let y=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
-    let s=$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index];
+    let y=$cohorts.overview.years.list[$cohorts.overview.years.index];
+    let h=$cohorts.overview.houses.list[$cohorts.overview.houses.index];
    
-    /* adjust subjects.index if necessary */
-    if(!(y.lv===s.lv && y.yr===s.yr)) $cohorts.assessments.subjects.index=$cohorts.assessments.subjects.list.findIndex(el=>el.lv===y.lv && el.yr===y.yr);
-    s=$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index];
+    /* adjust houses.index if necessary */
+    if(!(y.lv===h.lv && y.yr===h.yr)) $cohorts.overview.houses.index=$cohorts.overview.houses.list.findIndex(el=>el.lv===y.lv && el.yr===y.yr);
+    h=$cohorts.overview.houses.list[$cohorts.overview.houses.index];
+
+
+    status.std.A=(y.lv==='US' || y.lv==='MS' || y.lv==='L1') ? $config.std[y.lv].A : '';
+    status.std.B=(y.lv==='US' || y.lv==='MS' || y.lv==='L1') ? $config.std[y.lv].B : '';
+
+    status.table=[];
+
+    /* get cohort results */
+    let response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'results',filter:{lv:y.lv,yr:y.yr},projection:{}}),
+        headers: {'content-type': 'application/json'}
+    });
+    let results= await response.json();
+
+    console.log(results);
+
+    /* get cohort assessments */
+    response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'assessments',filter:{lv:y.lv,yr:y.yr,"tag.archive":false},projection:{}}),
+        headers: {'content-type': 'application/json'}
+    });
+
+    let assessments= await response.json();
+    console.log(assessments);
+
+
+
+    for(let pupil of $pupils.filter(el=>el.lv===y.lv && el.yr===y.yr)) {
+        status.table.push({
+            show:true,
+            sn:pupil.sn,
+            pn:pupil.pn,
+            pid:pupil.pid,
+            hse:pupil.hse,
+            tg:pupil.tg,
+            gnd:pupil.gnd,
+            overall:{A:pupil.overall.A,B:pupil.overall.B},
+            cols:[]
+        });
+    }
+
+    let sections=$config.overview.filter(el=>el.lv===y.lv && el.yr===y.yr);
+
+    for(let section of sections) {
+        if(section.exam) {
+            console.log(`searching results for ... assessment ${section.n} ${section.dl} ${section.dt}`);
+        } else {
+            let from=new Date(section.from).getTime();
+            let to=new Date(section.to).getTime();
+
+            console.log(`searching results for ... assessments ${section.from} ${from} ${section.to} ${to}`);
+        }
+    }
+
+
+    updateDisplay();
+   
+   
+
+
    
 };
 
 let updateDisplay=()=>{
+    status.pid=[];
+    for(let row of status.table) {
+        if($cohorts.overview.houses.all || $cohorts.overview.houses.list[$cohorts.overview.houses.index].hse===row.hse) 
+            row.show=true
+        else row.show=false;
+    }
+    console.log(status.pid);
+
+    status.select=true;
 
 };
 
 onMount(async () => {
     console.log('overview/SelectCohort.svelte mounted');
-    console.log($pupils);
+    //console.log($pupils);
     await update();
 });
 
