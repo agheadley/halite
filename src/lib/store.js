@@ -27,7 +27,7 @@ export let config=writable({
         
     ],
     overview:[
-        {lv:"",yr:0,exam:false,from:"0000-00-00",to:"0000-00-00",n:"",dl:""}
+        {lv:"",yr:0,exam:false,from:"0000-00-00",to:"0000-00-00",n:"",dl:"",dt:0}
     ]
 
 });
