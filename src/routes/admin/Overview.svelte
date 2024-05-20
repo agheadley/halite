@@ -125,7 +125,7 @@
         for(let row of $config.overview) {
             let obj={aIndex:0,lv:row.lv,yr:row.yr,exam:row.exam,from:row.from,to:row.to,n:row.n,dl:row.dl,dt:row.dt};
             if(row.exam) {
-                let i=data.assessments.findIndex(el=>el.lv===row.lv && el.yr===row.yr && el.n===row.n && el.dl===row.dl);
+                let i=data.assessments.findIndex((/** @type {{ lv: string; yr: number; n: string; dl: string; }} */ el)=>el.lv===row.lv && el.yr===row.yr && el.n===row.n && el.dl===row.dl);
                 if(i>-1) obj.aIndex=i;
             }
             data.rows.push(obj);
@@ -180,7 +180,7 @@
             <fieldset id="cohort" class="is-full-width">
                 <legend>Cohort</legend>
                 <p class="grouped">
-                <select  id="cohort" bind:value={data.index} on:change={update}>
+                <select  id="cohort" bind:value={data.index}>
                     <optgroup label="Level ExamYear">
                             {#each data.cohorts as item,index}
                                 <option value={index}>{item.lv} {item.yr}</option>

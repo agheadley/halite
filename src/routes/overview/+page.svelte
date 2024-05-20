@@ -2,7 +2,7 @@
 
     import { onMount } from 'svelte';
     import {config,location,pupils,groups,cohorts} from '$lib/store';
-    import { goto } from '$app/navigation';
+    import SelectCohort from './SelectCohort.svelte';
     
     
     let status={
@@ -35,9 +35,13 @@
         <meta name="description" content="Svelte demo app" />
     </svelte:head>
     
+   
+
     <div class="row">
+      
+            <SelectCohort bind:status={status}/>
         <div class="col is-vertical-align">
-           <h4>/overview</h4>
+            <a href={''} class="button dark">My Lists</a>
         </div>
     </div>
     
