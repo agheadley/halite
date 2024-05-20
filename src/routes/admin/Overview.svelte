@@ -3,7 +3,8 @@
     import * as file from '$lib/file';
     import * as util from '$lib/util';
     import {alert,config} from '$lib/store';
-    
+    import Modal from '$lib/_Modal.svelte';
+
     /** @type {any}*/
     export let status;
 
@@ -12,14 +13,17 @@
         rows:[],
         assessments:[],
         cohorts:[],
-        cIndex:0
+        index:0,
+        confirm:false,
+        valid:true
     };
     
     let addRow=()=>{
         data.rows.push(
-            {aIndex:0,lv:data.cohorts[data.cIndex].lv,yr:data.cohorts[data.cIndex].yr,exam:false,from:"0000-00-00",to:"0000-00-00",n:"",dl:""}
+            {aIndex:0,lv:data.cohorts[data.index].lv,yr:data.cohorts[data.index].yr,exam:false,from:"",to:"",n:"",dl:""}
         );
         data.rows=data.rows;
+        console.log(data.rows);
     };
 
     /**
@@ -32,16 +36,52 @@
         data.rows=data.rows;
     };
 
-     /**
-     * 
-     * @param {number} index
-     */
-     let addAssessment=(index)=>{
-        console.log(index,data.rows[index].aIndex);
-        data.rows[index].n=data.assessments[data.rows[index].aIndex].n;
-        data.rows[index].dl=data.assessments[data.rows[index].aIndex].dl;
-        
+
+     let confimOverview=()=>{
+        data.valid=true;
+        for(let row of data.rows) {
+            if(row.exam) {
+                row.n=data.assessments[row.aIndex].n;
+                row.dl=data.assessments[row.aIndex].dl;
+                row.dt=data.assessments[row.aIndex].dt;
+                row.from='';
+                row.to='';
+            } else {
+                if(row.from==='' || row.to==='') data.valid=false;
+            }
+        }
         console.log(data.rows);
+        data.confirm=true;
+
+    };
+
+    let saveOverview=async()=>{
+        let update=[];
+        for(let row of data.rows) {
+            update.push({lv:row.lv,yr:row.yr,exam:row.exam,from:row.from,to:row.to,n:row.n,dl:row.dl,dt:row.dt});
+        }
+
+        let response = await fetch('/edge/update', {
+		    method: 'POST',
+		    body: JSON.stringify({
+                collection:'config',
+                filter:{},
+                update:{overview:update}
+                }),
+		    headers: {'content-type': 'application/json'}
+	    });
+
+        let res= await response.json();
+        console.log(res);
+
+        if(res.matchedCount===1) {
+            $alert.msg=`Overivew Configuration saved -  ${res.modifiedCount===1 ? 'changes made' :'no changes'}`;
+            
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error updating overview configuration.`;
+        }
+       
     };
         
     onMount(async () => {
@@ -80,6 +120,7 @@
         res= await response.json();
         $config=res[0] ? res[0] : {};
 
+        console.log($config.overview);
         data.rows=[];
         for(let row of $config.overview) {
             data.rows.push(row);
@@ -87,12 +128,45 @@
         }   
         for(let row of data.rows) row.aIndex=0;
 
+
         console.log(data);
         
     });
     
     </script>
     
+    <Modal bind:open={data.confirm}>
+        <div class="row">
+            <div class="col">
+                <h4>Save Overview Display Columns</h4>
+            </div>
+        </div>
+      
+       
+        <div class="row">
+            <div class="col">
+               {#if data.valid}
+                    <span class="tag">All valid</span>
+               {:else}
+                <span class="tag bg-error text-white">Complete either exam or from/to dates for each entry. CHECK ALL COHORTS.</span>
+               {/if}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+               &nbsp;
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col">
+                <button class="button error" disabled={!data.valid} on:click={saveOverview}>Save</button>
+            </div>
+            <div class="col">
+                <button class="button outline" on:click={()=>data.confirm=false}>Cancel</button>
+            </div>
+        </div>
+    </Modal>
     
     <div class="row">
         <div class="col is-vertical-align"><h4>Edit Overview Display Columns</h4></div> 
@@ -101,7 +175,7 @@
             <fieldset id="cohort" class="is-full-width">
                 <legend>Cohort</legend>
                 <p class="grouped">
-                <select  id="cohort" bind:value={data.cIndex}>
+                <select  id="cohort" bind:value={data.index}>
                     <optgroup label="Level ExamYear">
                             {#each data.cohorts as item,index}
                                 <option value={index}>{item.lv} {item.yr}</option>
@@ -114,10 +188,23 @@
             
         </div>
     </div>
+
+    <div class="row">
+        <div class="col">
+            <span class="tag">Complete either exam or from/to dates for each entry. Date ranges are inclusive.</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+           &nbsp;
+        </div>
+    </div>
+
    
   
             {#each data.rows as row,rowIndex}
-                {#if row.lv===data.cohorts[data.cIndex].lv && row.yr===data.cohorts[data.cIndex].yr}
+                {#if row.lv===data.cohorts[data.index].lv && row.yr===data.cohorts[data.index].yr}
                 <div class="row">
                    
                     <div class="col-2  is-vertical-align">
@@ -137,10 +224,10 @@
                             <p class="grouped">
                             <input type=checkbox bind:checked={row.exam}>
                                 {#if row.exam}
-                                <select  id="cohort" bind:value={row.aIndex} on:change={()=>addAssessment(rowIndex)}>
+                                <select  id="cohort" bind:value={row.aIndex}>
                                     <optgroup label="Level ExamYear">
                                             {#each data.assessments as item,index}
-                                                {#if item.lv===data.cohorts[data.cIndex].lv && item.yr===data.cohorts[data.cIndex].yr}
+                                                {#if item.lv===data.cohorts[data.index].lv && item.yr===data.cohorts[data.index].yr}
                                                 <option value={index}>{item.n} {item.dl} ({item.lv} {item.yr})</option>
                                                 {/if}
                                             {/each}
@@ -154,8 +241,8 @@
                         <fieldset id="cohort" class="is-full-width">
                             <legend>Assessment Range (From / To)</legend>
                             <p class="grouped">
-                                <input disabled={row.exam} type=date bind:value={row.from} class={row.from!=='' ? 'success' : 'error'}/>
-                                <input disabled={row.exam} type=date bind:value={row.to} class={row.to!==''? 'success' : 'error'}/>
+                                <input disabled={row.exam} type=date bind:value={row.from} class={row.from==='' && !row.exam ? 'error' : ''}/>
+                                <input disabled={row.exam} type=date bind:value={row.to} class={row.to==='' && !row.exam ? 'error' : ''}/>
                             </p>
                         </fieldset>
                     </div>
@@ -172,6 +259,9 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     </button>
             </div>
+                <div class="col">
+                    <button class="button dark" on:click={confimOverview}>Save</button>
+                </div>
             </div>
    
     
