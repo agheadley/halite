@@ -115,7 +115,8 @@
         response = await fetch('/edge/read', {
             method: 'POST',
             body: JSON.stringify({collection:'config',filter:{},projection:{_id:0}}),
-            headers: {'content-type': 'application/json'}
+            headers: {'
+            content-type': 'application/json'}
         });
         res= await response.json();
         $config=res[0] ? res[0] : {};
