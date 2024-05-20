@@ -115,8 +115,7 @@
         response = await fetch('/edge/read', {
             method: 'POST',
             body: JSON.stringify({collection:'config',filter:{},projection:{_id:0}}),
-            headers: {'
-            content-type': 'application/json'}
+            headers: {'content-type': 'application/json'}
         });
         res= await response.json();
         $config=res[0] ? res[0] : {};
@@ -124,10 +123,15 @@
         console.log($config.overview);
         data.rows=[];
         for(let row of $config.overview) {
-            data.rows.push(row);
+            let obj={aIndex:0,lv:row.lv,yr:row.yr,exam:row.exam,from:row.from,to:row.to,n:row.n,dl:row.dl,dt:row.dt};
+            if(row.exam) {
+                let i=data.assessments.findIndex(el=>el.lv===row.lv && el.yr===row.yr && el.n===row.n && el.dl===row.dl);
+                if(i>-1) obj.aIndex=i;
+            }
+            data.rows.push(obj);
 
         }   
-        for(let row of data.rows) row.aIndex=0;
+
 
 
         console.log(data);
@@ -176,7 +180,7 @@
             <fieldset id="cohort" class="is-full-width">
                 <legend>Cohort</legend>
                 <p class="grouped">
-                <select  id="cohort" bind:value={data.index}>
+                <select  id="cohort" bind:value={data.index} on:change={update}>
                     <optgroup label="Level ExamYear">
                             {#each data.cohorts as item,index}
                                 <option value={index}>{item.lv} {item.yr}</option>
