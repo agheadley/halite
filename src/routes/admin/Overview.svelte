@@ -20,7 +20,7 @@
     
     let addRow=()=>{
         data.rows.push(
-            {aIndex:0,lv:data.cohorts[data.index].lv,yr:data.cohorts[data.index].yr,exam:false,from:"",to:"",n:"",dl:""}
+            {aIndex:0,lv:data.cohorts[data.index].lv,yr:data.cohorts[data.index].yr,exam:false,from:"",to:"",n:"",dl:"",dt:0}
         );
         data.rows=data.rows;
         console.log(data.rows);

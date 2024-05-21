@@ -51,7 +51,7 @@
         status.table=status.table;
         $cohorts.overview.list.name=control.lists[index].name;
         $cohorts.overview.list.pid=[...new Set($cohorts.overview.list.pid)];
-        //status.list=false;
+        status.list=false;
 
     };
 

@@ -175,6 +175,8 @@ let getOverviewCohorts=()=>{
 		if(!$cohorts.overview.years.list.find(el=>el.yr==item.yr && el.lv==item.lv))
 			$cohorts.overview.years.list.push({lv:item.lv,yr:item.yr,fm:fm});
 	}
+
+	$cohorts.overview.list={name:'',pid:[]};
 	
 };
 

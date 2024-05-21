@@ -16,7 +16,8 @@
         table:[],
         select:false,
         list:false,
-        user:''
+        user:'',
+        update:false,
     };
 
     $:{
@@ -24,9 +25,31 @@
             console.log('changed cohort...');
             status.select=false;
         }
+
+        if(status.update) {
+            console.log('clearing list.');
+            $cohorts.overview.list={name:'',pid:[]};
+            status.update=false;
+            status.pid=[];
+            for(let row of status.table) {
+                if($cohorts.overview.houses.all || $cohorts.overview.houses.list[$cohorts.overview.houses.index].hse===row.hse) {
+                    row.show=true;
+                    row.select=true;
+                } else {
+                    row.show=false;
+                    row.select=false;
+                }
+            }
+            console.log(status.pid);
+
+            
+        }
+       
        
     }
-    
+
+  
+
     
     onMount(async () => {
         $location='/overview';
@@ -51,7 +74,11 @@
    
     {#if !status.list}
     <div class="row">
+        {#if $cohorts.overview.list.name===''}
             <SelectCohort bind:status={status}/>
+    {:else}
+        <span class="tag">{$cohorts.overview.list.name}</span>&nbsp;<button on:click={()=>status.update=true} class="button outline">Clear</button>
+    {/if}
         <div class="col is-vertical-align">
             <button class="button dark" on:click={()=>status.list=true}>My Lists</button>
         </div>

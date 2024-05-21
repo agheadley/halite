@@ -97,6 +97,8 @@ let updateDisplay=()=>{
 
 };
 
+
+
 onMount(async () => {
     console.log('overview/SelectCohort.svelte mounted');
     //console.log($pupils);
@@ -145,7 +147,7 @@ onMount(async () => {
           </select>
           <label for='all'>All?</label>
           <input id='add' type=checkbox bind:checked={$cohorts.overview.houses.all} on:change={updateDisplay}/>
-        </p>
+         </p>
       
     </fieldset>
 </div>
