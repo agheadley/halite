@@ -24,6 +24,7 @@
             console.log('changed cohort...');
             status.select=false;
         }
+       
     }
     
     

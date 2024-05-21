@@ -38,6 +38,8 @@
     let choose=(index)=>{
         for(let row of status.table) {
             if(control.lists[index].pid.includes(row.pid)) {
+
+                //console.log('row.pid');
                 row.show=true;
                 row.select=true;
             } else {
@@ -45,6 +47,12 @@
                 row.select=false;
             }
         }
+
+        status.table=status.table;
+        $cohorts.overview.list.name=control.lists[index].name;
+        $cohorts.overview.list.pid=[...new Set($cohorts.overview.list.pid)];
+        //status.list=false;
+
     };
 
     /**
