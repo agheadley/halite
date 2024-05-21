@@ -74,11 +74,14 @@
    
     {#if !status.list}
     <div class="row">
-        {#if $cohorts.overview.list.name===''}
+        <div class="col is-vertical-align">
+            {#if $cohorts.overview.list.name===''}
             <SelectCohort bind:status={status}/>
-    {:else}
-        <span class="tag">{$cohorts.overview.list.name}</span>&nbsp;<button on:click={()=>status.update=true} class="button outline">Clear</button>
-    {/if}
+        {:else}
+            <span class="tag">{$cohorts.overview.list.name}</span>&nbsp;<button on:click={()=>status.update=true} class="button outline">Clear</button>
+        {/if}
+            </div>
+        
         <div class="col is-vertical-align">
             <button class="button dark" on:click={()=>status.list=true}>My Lists</button>
         </div>
