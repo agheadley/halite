@@ -46,6 +46,7 @@ let update=async()=>{
     for(let pupil of $pupils.filter(el=>el.lv===y.lv && el.yr===y.yr)) {
         status.table.push({
             show:true,
+            select:true,
             sn:pupil.sn,
             pn:pupil.pn,
             pid:pupil.pid,
@@ -82,9 +83,13 @@ let update=async()=>{
 let updateDisplay=()=>{
     status.pid=[];
     for(let row of status.table) {
-        if($cohorts.overview.houses.all || $cohorts.overview.houses.list[$cohorts.overview.houses.index].hse===row.hse) 
-            row.show=true
-        else row.show=false;
+        if($cohorts.overview.houses.all || $cohorts.overview.houses.list[$cohorts.overview.houses.index].hse===row.hse) {
+            row.show=true;
+            row.select=true;
+        } else {
+            row.show=false;
+            row.select=false;
+        }
     }
     console.log(status.pid);
 

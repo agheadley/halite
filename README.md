@@ -57,27 +57,39 @@ returns true for undefined (as undefined==null), null, [], ""
 - $config
 
 
+- F1,F2 now as GCSE LS ? Use % 
+
+
 # Overview
 
 - find average grades up to set dates (cumulative) or at set points e.g. TIG, IntEx
 - e.g. for MS 2025 Point1 up to 15/11/23, Point2 15/12/23, Point3 IntEx.
 - assessments in store > filter by dt, map oid > filter pupil results if asssessments oid includes the result
-- grade graphs for each subject with small chances graphs
-- click on subject to go into detail and breakdown for each pupil
 
+
+- click on subject to go into detail and breakdown for each pupil
+- calculate residuals for gd vs TIG within Select Cohort so _GradeCell.svelte can be simpler.
+
+- admin page to see which assessments are live
 
 # Assessments
 
+- add % / grade switch (with average grades)
+- add {#if} statements to deal with $config.view
+- calculate residuals for gd vs TIG within Select Cohort so _GradeCell.svelte can be simpler.
 - add exports
 - need to add archive button, list of assessments to include archive data so you can downloads
 - add Pupil link - same file as for pupils, parents, but they have no RAGs etc
-- add delete assessments record and links results records in mdal from manage/
+- add delete assessments record and links results records in modal from manage/
 
 
 # _Pupil.svelte
 
 - export let open - closes modal - but not shown if pupil - as single page - so no modal used for display !
 - need to check this for parent, pupil and teachers !!!!
+
+- no f/b for pupils / parents !!!!
+- can it be added to $config.view
 
 # Admin
 

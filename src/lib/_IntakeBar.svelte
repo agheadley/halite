@@ -40,7 +40,8 @@
                 y="12" 
                 width={w*r/gmax} 
                 height="8" 
-                fill={blue}></rect>
+                fill={blue}>
+              </rect>
 
 
 
@@ -51,7 +52,7 @@
                     <rect 
                     x="0" 
                     y="12" 
-                    width={w*(r-min)/(max-min)} 
+                    width={(w*(r-min)/(max-min))>0 ? (w*(r-min)/(max-min)) : 0} 
                     height="8" 
                     fill={green}></rect>
 
@@ -61,7 +62,7 @@
                     <rect 
                     x="0" 
                     y="12" 
-                    width={w*(r-min)/(max-min)} 
+                    width={(w*(r-min)/(max-min))>0 ? (w*(r-min)/(max-min)) : 0} 
                     height="8" 
                     fill={red}></rect>
 

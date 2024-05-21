@@ -4,13 +4,19 @@
     import {config,location,pupils,groups,cohorts} from '$lib/store';
     import SelectCohort from './SelectCohort.svelte';
     import IntakeBar from '$lib/_IntakeBar.svelte';
-    
+    import List from './List.svelte';
+
+    /** @type {any}*/
+    export let data;
+
     /** @type {any}*/
     let status={
         std:{A:'',B:''},
         pid:[],
         table:[],
-        select:false
+        select:false,
+        list:false,
+        user:''
     };
 
     $:{
@@ -26,6 +32,7 @@
         console.log(`${$location} mounted`);
         console.log('pupils',$pupils);
         console.log('cohorts',$cohorts);
+        status.user=data.user.name;
         
     });
     
@@ -37,12 +44,15 @@
         <meta name="description" content="Svelte demo app" />
     </svelte:head>
     
+    {#if status.list}
+        <List bind:status={status}/>
+    {/if} <!--/list display-->
    
-
+    {#if !status.list}
     <div class="row">
             <SelectCohort bind:status={status}/>
         <div class="col is-vertical-align">
-            <a href={''} class="button dark">My Lists</a>
+            <button class="button dark" on:click={()=>status.list=true}>My Lists</button>
         </div>
     </div>
    
@@ -70,6 +80,7 @@
         </table>
 
     </div>
+    {/if} <!--/main display-->
     
     <style>
 
