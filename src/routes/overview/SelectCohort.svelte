@@ -150,6 +150,7 @@ let update=async()=>{
         status.table.push({
             show:true,
             select:true,
+            pupilShow:false,
             sn:pupil.sn,
             pn:pupil.pn,
             pid:pupil.pid,

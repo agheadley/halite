@@ -9,6 +9,7 @@
     import Modal from '$lib/_Modal.svelte';
     import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
     import Cell from '$lib/_Cell.svelte';
+    import Pupil from '$lib/_Pupil.svelte';
 
     /** @type {any}*/
     export let data;
@@ -25,6 +26,14 @@
         download:false,
         view:'grade', /* grade/percentage */
         rag:false
+    };
+
+    /**
+     * 
+     * @param {number} index
+     */
+    let export2D=(index)=>{
+
     };
 
     $:{
@@ -141,11 +150,13 @@
                     <td>Tut</td>
                     <td><span class="tag">{status.std.A}</span></td>
                     <td><span class="tag">{status.std.B}</span></td>
-                    <!--
-                          <a href={'#'} on:click={()=>export2D(colIndex)} on:keydown={()=>export2D(colIndex)} class="button clear icon-only"> 
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-            </a>
-                    -->
+                    {#each status.table[0].cols as col,colIndex}
+                    <td>
+                    <a href={'#'} on:click={()=>export2D(colIndex)} on:keydown={()=>export2D(colIndex)} class="button clear icon-only"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    </a>
+                </td>
+                    {/each}
                 </tr>
             </thead>
             <tbody>
@@ -153,7 +164,7 @@
                     {#if row.show}
                     <tr>
                        
-                        <td class="pupil-name"><button class="button clear primary" on:click={()=>row.show=true}>{row.sn} {row.pn}</button></td>
+                        <td class="pupil-name"><button class="button clear primary" on:click={()=>row.pupilShow=true}>{row.sn} {row.pn}</button></td>
                         <td>{row.hse}</td>
                         <td>{row.tg}</td>
                         <td><IntakeBar r={row.overall.A} std={status.std.A}/></td>
@@ -171,6 +182,27 @@
                         {/each}
 
                     </tr>
+                    {#if row.pupilShow}
+                    <Modal bind:open={row.pupilShow}>
+                        <Pupil 
+                            bind:open={row.pupilShow}
+
+                            status={{
+                                pid:row.pid,
+                                sn:row.sn,
+                                pn:row.pn,
+                                hse:row.hse,
+                                gnd:row.gnd,
+                                tg:row.tg,
+                                lv:$cohorts.overview.years.list[$cohorts.overview.years.index].lv,
+                                yr:$cohorts.overview.years.list[$cohorts.overview.years.index].yr,
+                                context:'overview'
+                            }}
+                            >
+                        </Pupil>
+                        
+                    </Modal>
+                    {/if}
                     {/if}
                 {/each}
             </tbody>
