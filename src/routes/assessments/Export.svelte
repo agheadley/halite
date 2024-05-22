@@ -57,9 +57,23 @@ let exportIntake=()=>{
 
     for(let group of status.table) {
         for(let pupil of group.pupil) {
-            let row=[pupil.pid,pupil.sn,pupil.pn,pupil.hse,pupil.gnd,pupil.g];
-            out.push(row);
+            let f=$pupils.find(el=>el.pid===pupil.pid);
+            if(f?.base?.[0]) {
+                for(let item of f.base) {
+                    /** @type {number|''}*/
+                    let a=item.A;
+                    if(status.std.A==='GCSE' && item.type!=='overall') a='';
+                    let row=[pupil.pid,pupil.sn,pupil.pn,pupil.hse,pupil.gnd,group.g,item.type,a,item.B];
+                    out.push(row);
+                }
+            } else {
+                let row=[pupil.pid,pupil.sn,pupil.pn,pupil.hse,pupil.gnd,group,"TBC","",""];
+                out.push(row);
+            }
+               
         }
+            
+        
 
     }
 
