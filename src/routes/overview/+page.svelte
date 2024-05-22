@@ -5,6 +5,8 @@
     import SelectCohort from './SelectCohort.svelte';
     import IntakeBar from '$lib/_IntakeBar.svelte';
     import List from './List.svelte';
+    import Export from './Export.svelte';
+    import Modal from '$lib/_Modal.svelte';
 
     /** @type {any}*/
     export let data;
@@ -18,6 +20,7 @@
         list:false,
         user:'',
         update:false,
+        download:false
     };
 
     $:{
@@ -67,6 +70,10 @@
         <title>Overview</title>
         <meta name="description" content="Svelte demo app" />
     </svelte:head>
+
+    <Modal bind:open={status.download}>
+        <Export bind:status={status}/>
+    </Modal>
     
     {#if status.list}
         <List bind:status={status}/>
@@ -75,15 +82,28 @@
     {#if !status.list}
     <div class="row">
         <div class="col is-vertical-align">
-            {#if $cohorts.overview.list.name===''}
-            <SelectCohort bind:status={status}/>
-        {:else}
-            <span class="tag">{$cohorts.overview.list.name}</span>&nbsp;<button on:click={()=>status.update=true} class="button outline">Clear</button>
-        {/if}
+            <div class="row">
+                {#if $cohorts.overview.list.name===''}
+                <div class="col is-vertical-align">
+                <SelectCohort bind:status={status}/>
+                </div>
+                {:else}
+                <div class="col-8 is-vertical-align">
+                    <h4>{$cohorts.overview.list.name}&nbsp;({$cohorts.overview.years.list[$cohorts.overview.years.index].yr} {$cohorts.overview.years.list[$cohorts.overview.years.index].lv})</h4>
+                </div>
+                <div class="col-4 is-vertical-align">
+                    <button on:click={()=>status.update=true} class="button outline">Clear</button>
+                </div>
+                {/if}
             </div>
+           
+        </div>
         
         <div class="col is-vertical-align">
             <button class="button dark" on:click={()=>status.list=true}>My Lists</button>
+            <button on:click={()=>status.download=true} class="button icon-only outline">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+            </button>
         </div>
     </div>
    

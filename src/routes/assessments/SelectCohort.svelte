@@ -100,7 +100,7 @@
             let gcols=[];
             
             for(let col of cols) {
-                let xcol={dl:cols[i].dl,ds:cols[i].ds,dt:cols[i].dt,tag:cols[i].tag,n:cols[i].n,gd:'X',pc:0,r:0};
+                let xcol={_id:cols[i]._id,dl:cols[i].dl,ds:cols[i].ds,dt:cols[i].dt,tag:cols[i].tag,n:cols[i].n,gd:'X',pc:0,r:0};
                 let f=pup.filter((/** @type {{ cols: { gd: string; }[]; }} */ el)=>el.cols[i].gd!=='X').map((/** @type {{ cols: { scr: any; }[]; }} */ el)=>el.cols[i].scr);
                 let scr=f?.length>0?f.reduce((/** @type {any} */ a,/** @type {any} */ v)=>a+v)/f.length:0;
                 xcol.gd=f?.length>0 ? util.getClosestGrade(scr,s.sc,$config.grade):'X';

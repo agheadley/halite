@@ -20,7 +20,8 @@
       grade:[],
       isTotalRemove:false,
       isSave:false,
-      valid:true
+      valid:true,
+      delete:false
     };
 
     let validateName=()=>{
@@ -164,6 +165,25 @@
     
     </script>
     
+    {#if status.delete}
+        <Modal bind:open={status.delete}>
+            <header>
+         
+                <h4>Delete All Data {$cohorts.assessments.edit.n} {$cohorts.assessments.dl} ?</h4>
+        
+        </header>
+        <p>
+             
+        </p>
+      
+        <footer>
+                <button class="button error" on:click={save}>Save</button>
+         
+                <button class="button outline" on:click={()=>status.delete=false}>Cancel</button>
+        </footer>
+        </Modal>
+    {/if}
+
     {#if status.isSave}
     <Modal bind:open={status.isSave}>
         <header>
@@ -223,6 +243,9 @@
                 <input disabled='{!$cohorts.assessments.edit.edit}' type=text size=10 bind:value={status.n} class={status.validName ? 'success' : 'error'} on:input={validateName}/>
                 </p>
             </fieldset>
+        </div>
+        <div class="col is-vertical-align">
+            <button class="button error" on:click={()=>status.delete=true}>Delete</button>
         </div>
         <div class="col is-vertical-align">
             <fieldset>

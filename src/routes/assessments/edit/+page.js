@@ -20,15 +20,15 @@ export async function load({fetch}) {
     
     /** @type {any} */
     let cfg={};
-    config.subscribe((value) => {cfg=value;});
+    config.subscribe((/** @type {any} */ value) => {cfg=value;});
     /** @type {any} */
     let gps=[];
     groups.subscribe((value) => {gps=value;});
     /** @type {any} */
     let chts={};
-    cohorts.subscribe((value) => {chts=value;});
+    cohorts.subscribe((/** @type {any} */ value) => {chts=value;});
     
-    console.log(gps,cfg);
+    console.log(gps,cfg,chts);
 
     if(!gps[0] || gps[0]?.g==='' || !cfg.subject || cfg.subject[0]?.ss==='') throw redirect(302, '/');
 
@@ -65,7 +65,7 @@ export async function load({fetch}) {
         headers: {'content-type': 'application/json'}
     });
     let res= await response.json();
-
+    console.log(res,chts.assessments.edit._id );
     //let gs=gps.filter();
     let c=chts.assessments.subjects.list[chts.assessments.subjects.index];
     let gs=gps.filter((/** @type {{ lv: any; yr: any; sc: any; ss: any; }} */ el)=>el.lv===c.lv && el.yr===c.yr && el.sc===c.sc && el.ss===c.ss);
@@ -86,7 +86,7 @@ export async function load({fetch}) {
     }
 
     console.log(results);
-    console.log(res[0].total);
+    //console.log(res[0].total);
     
     /* check missing pupils against $groups data */
 
