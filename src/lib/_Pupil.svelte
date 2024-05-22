@@ -3,8 +3,9 @@
 import { onMount } from 'svelte';
 import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 import GradeCell from '$lib/_GradeCell.svelte';
+import Cell from '$lib/_Cell.svelte';
 import Chance from '$lib/_Chance.svelte';
-import {config,alert} from '$lib/store';
+import {alert} from '$lib/store';
 import * as util from '$lib/util';
 
 
@@ -174,12 +175,20 @@ onMount(async () => {
             /** @type {any[]} */
             let total=[];
             assessment.total.forEach((/** @type {{ n: any; t: any; w: any; }} */ item,/** @type {string | number} */ i)=>{total.push({scr:f&&f.t[i] ? f.t[i] : 0,n:item.n,t:item.t,w:item.w})});
-            let a={ss:assessment.ss,sc:assessment.sc,gd:f?f.gd:'X',scr:f?f.scr:0,pc:f?f.pc:0,_id:f?f._id:'',n:assessment.n,ds:assessment.ds,dt:assessment.dt,grade:assessment.grade,total:total,tag:assessment.tag,fb:f?f.fb:''}
+            let a={ss:assessment.ss,sc:assessment.sc,gd:f?f.gd:'X',scr:f?f.scr:0,pc:f?f.pc:0,r:0,_id:f?f._id:'',n:assessment.n,ds:assessment.ds,dt:assessment.dt,grade:assessment.grade,total:total,tag:assessment.tag,fb:f?f.fb:''}
             
             col.push(a);
         }
         let f=data.intake.find((/** @type {{ sc: any; ss: any; }} */ el)=>el.sc===group.sc && el.ss===group.ss);
 
+        let gds=cfg.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===group.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
+       
+        
+        let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col[0].gd);
+        for(let c of col) {
+            let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===c.gd); 
+            c.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+        }
 
         let row={sl:group.sl,ss:group.ss,sc:group.sc,g:group.g,col:col,pre:{A:f?f.A:0,B:f?f.B:0}};
         data.table.push(row);
@@ -335,13 +344,7 @@ onMount(async () => {
                     {/if}
                     </div>
                 <div>
-                {#if status.context==='assessments'}
-                    {#if data.view.rag}
-                    <GradeCell color={colIndex===0 ? false :true} base={row.col[0].gd} grade={col.gd} grades={cfg.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===row.sc)}>{col.gd}</GradeCell>
-                    {:else}
-                    <GradeCell color={false} base={row.col[0].gd} grade={col.gd} grades={cfg.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===row.sc)}>{col.gd}</GradeCell>
-                    {/if}
-                {/if}
+                    <Cell color={data.view.rag} residual={col.r}>{col.gd}</Cell>
                 </div>
             </td>
             {/each}

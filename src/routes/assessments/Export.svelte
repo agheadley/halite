@@ -1,14 +1,73 @@
 <script>
 import * as file from '$lib/file';
+import {pupils} from '$lib/store';
+
 /** @type {any}*/
 export let status;
 
 let exportResults=()=>{
 
+
+
+    let out=[];
+    out[0]=['pid','sn','pn','hse','gnd','g'];
+    out[0].push(status.std.A);
+    out[0].push(status.std.B);
+
+
+    for(let col of status.table[0].cols) {
+        out[0].push(`${col.n} ${col.ds}`);
+        out[0].push(`${col.n} ${col.ds} (%)`);
+    }
+
+    for(let group of status.table) {
+        let row=['[MEAN]','','','','',group.g,Math.round(100*group.overall.A)/100,Math.round(100*group.overall.B)/100];
+        for(let col of group.cols) {
+            row.push(`${col.gd}`);
+            row.push(col.pc!==null ? `${Math.round(100*col.pc)/100}` : '');
+        }
+        out.push(row);
+
+        for(let pupil of group.pupil) {
+            let row=[pupil.pid,pupil.sn,pupil.pn,pupil.hse,pupil.gnd,pupil.g,Math.round(100*pupil.overall.A)/100,Math.round(100*pupil.overall.B)/100];
+            for(let col of group.cols) {
+                row.push(`${col.gd}`);
+                row.push(col.pc!==null ? `${Math.round(100*col.pc)/100}` : '');
+            }
+            out.push(row);
+        }
+
+    }
+
+
+
+
+        console.log(out);
+        file.csvDownload(out,"RESULTS.csv");
 };
 
 let exportIntake=()=>{
+    console.log($pupils);
+    let out=[];
+    out[0]=['pid','sn','pn','hse','gnd','g','type'];
+    out[0].push(status.std.A);
+    out[0].push(status.std.B);
 
+
+
+    for(let group of status.table) {
+        for(let pupil of group.pupil) {
+            let row=[pupil.pid,pupil.sn,pupil.pn,pupil.hse,pupil.gnd,pupil.g];
+            out.push(row);
+        }
+
+    }
+
+
+
+
+        console.log(out);
+        file.csvDownload(out,"INTAKE.csv");
 };
 
 </script>

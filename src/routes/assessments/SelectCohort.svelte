@@ -80,7 +80,7 @@
                 let pcols=[];
                 for(let col of cols) {
                     let f=results.find( (/** @type {{ aoid: any; pid: number; }} */ el)=>el.aoid===col._id && el.pid===p.pid);
-                    pcols.push(f ? {gd:f.gd,pc:f.pc,scr:f.scr} : {gd:'X',pc:0,scr:0,r:0});
+                    pcols.push(f ? {gd:f.gd,pc:col.tag.grade ? null :f.pc,scr:f.scr} : {gd:'X',pc:0,scr:0,r:0});
 
                 }
                 /* populate grade residuals cf first col grade */
@@ -106,7 +106,8 @@
                 xcol.gd=f?.length>0 ? util.getClosestGrade(scr,s.sc,$config.grade):'X';
                 f=pup.filter((/** @type {{ cols: { gd: string; }[]; }} */ el)=>el.cols[i].gd!=='X').map((/** @type {{ cols: { pc: any; }[]; }} */ el)=>el.cols[i].pc);
                 //console.log(g.g,i,f);
-                xcol.pc=f?.length>0 && !cols[i].tag.grade?f.reduce((/** @type {any} */ a,/** @type {any} */ v)=>a+v)/f.length:0;
+                // @ts-ignore
+                xcol.pc=f?.length>0 && !cols[i].tag.grade?f.reduce((/** @type {any} */ a,/** @type {any} */ v)=>a+v)/f.length:null;
                 gcols.push(xcol);
                 console.log(g.g,i,f,f.length,cols[i].pc);
                 i+=1;

@@ -72,9 +72,6 @@
     </Modal>
 
 
-    <p>{JSON.stringify($config.view)}</p>
-    <p>{JSON.stringify(status.rag)}</p>
-
     <div class="row">
         <div class="col-6 is-vertical-align">
             <SelectCohort bind:status={status}/>
@@ -144,7 +141,12 @@
                         
                     {#each group.cols as col,colIndex}
                         <td>
-                            <Cell color={status.rag} residual={col.r}>{col.gd}</Cell>
+                            {#if status.view==='grade'}
+                                <Cell color={status.rag} residual={col.r}>{col.gd}</Cell>
+                            {:else}
+                                <Cell color={false} residual={col.r}>{col.pc===null ? '' : Math.round(col.pc)}</Cell>
+                            {/if}
+                           
                             <!--
                             <GradeCell color={colIndex===0 ? false :true} base={group.cols[0].gd} grade={col.gd} grades={$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc)}>{col.gd}</GradeCell>
                                 -->
@@ -177,7 +179,11 @@
                         <td><IntakeBar r={row.overall.B} std={status.std.B}/></td>
                         {#each row.cols as col,colIndex}
                         <td>
+                            {#if status.view==='grade'}
                             <Cell color={status.rag} residual={col.r}>{col.gd}</Cell>
+                            {:else}
+                                <Cell color={false} residual={col.r}>{col.pc===null ? '' : Math.round(col.pc)}</Cell>
+                            {/if}
                             <!--
                             <GradeCell color={colIndex===0 ? false :true} base={row.cols[0].gd} grade={col.gd} grades={$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc)}>{col.gd}</GradeCell>
                             -->
