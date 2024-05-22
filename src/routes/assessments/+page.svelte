@@ -8,6 +8,7 @@
     import ConductBar from '$lib/_ConductBar.svelte';
     import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
     import GradeCell from '$lib/_GradeCell.svelte';
+    import Cell from '$lib/_Cell.svelte';
     import Modal from '$lib/_Modal.svelte';
     import Pupil from '$lib/_Pupil.svelte';
     import Export from './Export.svelte';
@@ -21,7 +22,8 @@
         select:false,
         user:'',
         view:'grade', /* grade/percentage */
-        download:false
+        download:false,
+        rag:false
     };
 
     $:{
@@ -51,6 +53,9 @@
         console.log('groups',$groups);
         console.log('cohorts',$cohorts);
         status.user=data.user.name;
+
+        let f=$config.view.find((/** @type {{ context: string; }} */ el)=>el.context==='assessments');
+        status.rag = f ? f.rag : false;
        
     });
     
@@ -66,6 +71,9 @@
         <Export bind:status={status}/>
     </Modal>
 
+
+    <p>{JSON.stringify($config.view)}</p>
+    <p>{JSON.stringify(status.rag)}</p>
 
     <div class="row">
         <div class="col-6 is-vertical-align">
@@ -136,7 +144,10 @@
                         
                     {#each group.cols as col,colIndex}
                         <td>
+                            <Cell color={status.rag} residual={col.r}>{col.gd}</Cell>
+                            <!--
                             <GradeCell color={colIndex===0 ? false :true} base={group.cols[0].gd} grade={col.gd} grades={$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc)}>{col.gd}</GradeCell>
+                                -->
                         </td>
                     {/each}
                     <!--
@@ -166,7 +177,10 @@
                         <td><IntakeBar r={row.overall.B} std={status.std.B}/></td>
                         {#each row.cols as col,colIndex}
                         <td>
+                            <Cell color={status.rag} residual={col.r}>{col.gd}</Cell>
+                            <!--
                             <GradeCell color={colIndex===0 ? false :true} base={row.cols[0].gd} grade={col.gd} grades={$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc)}>{col.gd}</GradeCell>
+                            -->
                         </td>
                         {/each}
                         <!--
