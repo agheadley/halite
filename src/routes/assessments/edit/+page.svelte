@@ -396,10 +396,10 @@ let handleKeydown=(event)=>{
                     </div>
                     <div class="row">
                         <div class="col">
-                            <Chance grades={$config.grade.filter(el=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc).sort((a,b)=>b.pre-a.pre)} score={row.pre.A ? row.pre.A : 0}/>
+                            <Chance grades={$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc).sort((/** @type {{ pre: number; }} */ a,/** @type {{ pre: number; }} */ b)=>b.pre-a.pre)} score={row.pre.A ? row.pre.A : 0}/>
                         </div>
                         <div class="col">
-                            <Chance grades={$config.grade.filter(el=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc).sort((a,b)=>b.pre-a.pre)} score={row.pre.B ? row.pre.B : 0}/>
+                            <Chance grades={$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc).sort((/** @type {{ pre: number; }} */ a,/** @type {{ pre: number; }} */ b)=>b.pre-a.pre)} score={row.pre.B ? row.pre.B : 0}/>
                         </div>
                     </div>
                 </div>
@@ -462,10 +462,10 @@ let handleKeydown=(event)=>{
                     </div>
                     <div class="row">
                         <div class="col">
-                            <Chance grades={$config.grade.filter(el=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc).sort((a,b)=>b.pre-a.pre)} score={row.pre.A ? row.pre.A : 0}/>
+                            <Chance grades={$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc).sort((/** @type {{ pre: number; }} */ a,/** @type {{ pre: number; }} */ b)=>b.pre-a.pre)} score={row.pre.A ? row.pre.A : 0}/>
                         </div>
                         <div class="col">
-                            <Chance grades={$config.grade.filter(el=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc).sort((a,b)=>b.pre-a.pre)} score={row.pre.B ? row.pre.B : 0}/>
+                            <Chance grades={$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc).sort((/** @type {{ pre: number; }} */ a,/** @type {{ pre: number; }} */ b)=>b.pre-a.pre)} score={row.pre.B ? row.pre.B : 0}/>
                         </div>
                     </div>
                 </div>

@@ -7,7 +7,6 @@
     import IntakeBar from '$lib/_IntakeBar.svelte';
     import ConductBar from '$lib/_ConductBar.svelte';
     import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
-    import GradeCell from '$lib/_GradeCell.svelte';
     import Cell from '$lib/_Cell.svelte';
     import Modal from '$lib/_Modal.svelte';
     import Pupil from '$lib/_Pupil.svelte';

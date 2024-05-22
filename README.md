@@ -68,19 +68,23 @@ returns true for undefined (as undefined==null), null, [], ""
 
 
 - click on subject to go into detail and breakdown for each pupil
-- calculate residuals for gd vs TIG within Select Cohort so _GradeCell.svelte can be simpler.
+
 
 - admin page to see which assessments are live
 
+
 # Assessments
 
-- add % / grade switch (with average grades)
-- add {#if} statements to deal with $config.view
-- calculate residuals for gd vs TIG within Select Cohort so _GradeCell.svelte can be simpler.
-- add exports
+
+
+
+
 - need to add archive button, list of assessments to include archive data so you can downloads
 - add Pupil link - same file as for pupils, parents, but they have no RAGs etc
-- add delete assessments record and links results records in modal from manage/
+
+# Assessments/edit
+
+- export scatter and results
 
 
 # _Pupil.svelte
@@ -88,8 +92,7 @@ returns true for undefined (as undefined==null), null, [], ""
 - export let open - closes modal - but not shown if pupil - as single page - so no modal used for display !
 - need to check this for parent, pupil and teachers !!!!
 
-- no f/b for pupils / parents !!!!
-- can it be added to $config.view
+
 
 # Admin
 
@@ -201,7 +204,6 @@ log:''
 
 
 
-```
 # contacts
 ```
 email
@@ -223,4 +225,17 @@ id
     tips:[''] // startup tips
    
 }
+```
+
+# lists
+```
+name
+type 'overview'|'report' (report can have lv:'',yr:0 - as TCRs may need all years)
+lv
+yr
+user
+pid:[]
+dl
+dt
+
 ```

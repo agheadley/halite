@@ -2,7 +2,7 @@
 
 import { onMount } from 'svelte';
 import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
-import GradeCell from '$lib/_GradeCell.svelte';
+
 import Cell from '$lib/_Cell.svelte';
 import Chance from '$lib/_Chance.svelte';
 import {alert} from '$lib/store';
@@ -21,7 +21,7 @@ let data={
     table:[],
     std:{A:'',B:''},
     detail:{n:'',ds:'',gd:'',pc:0,scr:0,dt:0,tag:{},fb:'',grade:[],total:[]},
-    view:{context:'',rag:false,chance:false}
+    view:{context:'',rag:false,chance:false,fb:false}
 };
 import {fade} from 'svelte/transition';
 
@@ -237,7 +237,7 @@ onMount(async () => {
                 {/if}
             </div>
 
-            {#if data.detail.fb!==''}
+            {#if data.detail.fb!=='' && data.view.fb}
             <div class="row">
                 <fieldset id="fb" class="is-full-width">
                     <legend>Feedback</legend>

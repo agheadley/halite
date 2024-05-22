@@ -21,7 +21,8 @@
       isTotalRemove:false,
       isSave:false,
       valid:true,
-      delete:false
+      delete:false,
+      deleteText:''
     };
 
     let validateName=()=>{
@@ -135,6 +136,44 @@
 
          
     };
+
+
+    let remove=async()=>{
+        console.log('deleting assessments document and associated results documents');
+        console.log(data.assessment);
+
+          
+        let response = await fetch('/edge/delete', {
+		    method: 'POST',
+		    body: JSON.stringify({collection:'assessments',filter:{"_id": { "$oid": data.assessment._id } }}),
+		    headers: {'content-type': 'application/json'}
+	    });
+
+        let res= await response.json();
+        console.log(res);
+        if(res.deletedCount && res.deletedCount===1 ) {
+            $alert.msg=`Deleted assessment`;  
+            let response = await fetch('/edge/delete', {
+                method: 'POST',
+                body: JSON.stringify({collection:'results',filter:{"aoid":data.assessment._id}}),
+                headers: {'content-type': 'application/json'}
+	        });
+            let res2= await response.json();
+            if(res2.deletedCount && res2.deletedCount>0 ) {
+                $alert.msg=`Deleted assessment & ${res2.deletedCount} results records`;
+                goto('/assessments');
+            } else {
+                $alert.type='error';
+                $alert.msg=`Assessment deleted. Error deleting results`;
+            }
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error deleting assesment`;
+        }
+        status.delete=false;
+
+
+    };
         
     onMount(async () => {
         $location='/assessments';
@@ -169,15 +208,14 @@
         <Modal bind:open={status.delete}>
             <header>
          
-                <h4>Delete All Data {$cohorts.assessments.edit.n} {$cohorts.assessments.dl} ?</h4>
+                <h4>Delete All Data  ?</h4>
         
         </header>
-        <p>
-             
-        </p>
-      
+        <p><span class="tag bg-error text-white">Warning this can't be undone!</span></p>
+        <p>Type <span class="bold">DELETE {data.assessment.n}</span> to confirm</p>
+        <p><input type=text bind:value={status.deleteText} class={status.deleteText===`DELETE ${data.assessment.n}` ? 'success' : 'error'}/></p>
         <footer>
-                <button class="button error" on:click={save}>Save</button>
+                <button disabled={status.deleteText!==`DELETE ${data.assessment.n}`}  class="button error" on:click={remove}>Delete</button>
          
                 <button class="button outline" on:click={()=>status.delete=false}>Cancel</button>
         </footer>
@@ -243,10 +281,9 @@
                 <input disabled='{!$cohorts.assessments.edit.edit}' type=text size=10 bind:value={status.n} class={status.validName ? 'success' : 'error'} on:input={validateName}/>
                 </p>
             </fieldset>
+          
         </div>
-        <div class="col is-vertical-align">
-            <button class="button error" on:click={()=>status.delete=true}>Delete</button>
-        </div>
+      
         <div class="col is-vertical-align">
             <fieldset>
                 <!--<legend>Assessment Name (max {max})</legend>-->
@@ -259,6 +296,7 @@
             </fieldset>
         </div>
         <div class="col is-vertical-align">
+            <button class="button error" disabled='{!$cohorts.assessments.edit.edit || data.assessment.tag.exam}' on:click={()=>status.delete=true}>Delete</button>&nbsp;
             <a href='/assessments/edit' class="button outline">Close</a>
         </div>
     </div>
