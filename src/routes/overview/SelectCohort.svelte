@@ -12,7 +12,7 @@ let update=async()=>{
     let h=$cohorts.overview.houses.list[$cohorts.overview.houses.index];
    
     /* adjust houses.index if necessary */
-    if(!(y.lv===h.lv && y.yr===h.yr)) $cohorts.overview.houses.index=$cohorts.overview.houses.list.findIndex(el=>el.lv===y.lv && el.yr===y.yr);
+    if(!(y.lv===h.lv && y.yr===h.yr)) $cohorts.overview.houses.index=$cohorts.overview.houses.list.findIndex((/** @type {{ lv: any; yr: any; }} */ el)=>el.lv===y.lv && el.yr===y.yr);
     h=$cohorts.overview.houses.list[$cohorts.overview.houses.index];
 
 
@@ -34,16 +34,117 @@ let update=async()=>{
     /* get cohort assessments */
     response = await fetch('/edge/read', {
         method: 'POST',
-        body: JSON.stringify({collection:'assessments',filter:{lv:y.lv,yr:y.yr,"tag.archive":false},projection:{}}),
+        body: JSON.stringify({collection:'assessments',filter:{lv:y.lv,yr:y.yr,"tag.archive":false,"tag.overview":true},projection:{}}),
         headers: {'content-type': 'application/json'}
     });
 
     let assessments= await response.json();
     console.log(assessments);
 
+    /* get results data */  
 
+    /** @type {{pid:number,gd:string,pc:number,scr:number,dt:number,n:string,dl:string,sc:string,tag:{exam:boolean,grade:boolean}}[]}*/
+    let data=[];
+    for(let result of results) {
+        let f=assessments.find((/** @type {{ _id: any; }} */ el)=>el._id===result.aoid);
+        if(f) {
+            data.push({
+                pid:result.pid,
+                gd:result.gd,
+                pc:result.pc,
+                scr:result.scr,
+                dt:f.dt,
+                n:f.n,
+                dl:f.dl,
+                tag:{exam:f.tag.exam,grade:f.tag.grade},
+                sc:f.sc
+            });
+        }
+    };
+
+    /* grab columns / section */
+    let sections=$config.overview.filter((/** @type {{ lv: any; yr: any; }} */ el)=>el.lv===y.lv && el.yr===y.yr);
+    for(let section of sections) {
+        section.ds=section.dl?.length===10 ? section.dl[5]+section.dl[6]+"/" +section.dl[2]+section.dl[3]: '00/00';
+        section.dsFrom=section.from?.length===10 ? section.from[5]+section.from[6]+"/" +section.from[2]+section.from[3]: '00/00';
+        section.dsTo=section.to?.length===10 ? section.to[5]+section.to[6]+"/" +section.to[2]+section.to[3]: '00/00';
+    }
+
+    console.log(sections);
+
+    /* cycle through each pupil */
 
     for(let pupil of $pupils.filter(el=>el.lv===y.lv && el.yr===y.yr)) {
+
+        /** @type {{gd:string,pc:number|null,scr:number,r:number,title:string,date:string,sc:string}[]}*/
+        let cols=[];
+
+        for(let section of sections) {
+            let from=new Date(section.from).getTime();
+            let to=new Date(section.to).getTime();
+
+            /* find all the results matching the overview column for each pupil */
+            let f = section.exam ?
+                data.filter(el=>el.pid===pupil.pid && el.n===section.n && el.dl===section.dl && el.tag.exam===true && el.gd!=='X') :
+                data.filter(el=>el.pid===pupil.pid &&el.dt>=from && el.dt<=to && el.tag.exam===false && el.gd!=='X');
+
+            /* find mean grade,pc and scr and residuals */
+
+            let t=section.exam ? section.n : 'ASSESSMENTS';
+            let d=section.exam ? section.ds : `${section.dsFrom}-${section.dsTo}`; 
+
+            /** @type {{gd:string,pc:number|null,scr:number,r:number,title:string,date:string,sc:string}} */
+            let col={gd:'X',pc:0,scr:0,r:0,title:t,date:d,sc:'A'};
+
+            if(f) {
+
+                // find correct course for closest grade
+                let sc=f.map(el=>el.sc);
+                let course='A';
+                if(y.lv==='US' && sc.includes('A')) course='A';
+                if(y.lv==='US' && sc.includes('I')) course='I';
+                if(y.lv==='US' && sc.includes('I') && !sc.includes('I') && !sc.includes('A')) course='B';
+                if(y.lv==='MS') course='G';
+                
+                col.sc=course;
+
+                let scrs=f.map(el=>el.scr);
+                let scr=scrs?.length>0?scrs.reduce((/** @type {any} */ a,/** @type {any} */ v)=>a+v)/scrs.length:0;
+
+                
+
+                let gd=scrs?.length>0 ? util.getClosestGrade(scr,course,$config.grade):'X';
+                let pcs=f.map(el=>el.pc);
+                let pc=pcs?.length>0 && !f[0].tag.grade?pcs.reduce((/** @type {any} */ a,/** @type {any} */ v)=>a+v)/pcs.length:null;
+                
+
+
+                if(section.n==='TIG') console.log(scrs,scr,gd);
+
+                col.pc=pc;
+                col.scr=scr;
+                col.gd=gd;
+
+
+
+
+            }
+            cols.push(col);
+
+            
+
+
+            //console.log(pupil.sn,pupil.pn,from,to,section.n,section.dt,f.length);
+        }
+
+         /* add grade residuals from first col of set averages */
+         let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===cols[0].sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
+        let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===cols[0].gd);
+        for(let col of cols) {
+            let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd); 
+            col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+        }
+
         status.table.push({
             show:true,
             select:true,
@@ -54,23 +155,18 @@ let update=async()=>{
             tg:pupil.tg,
             gnd:pupil.gnd,
             overall:{A:pupil.overall.A,B:pupil.overall.B},
-            cols:[]
+            cols:cols
         });
+
+
+        
     }
 
-    let sections=$config.overview.filter(el=>el.lv===y.lv && el.yr===y.yr);
 
-    for(let section of sections) {
-        if(section.exam) {
-            console.log(`searching results for ... assessment ${section.n} ${section.dl} ${section.dt}`);
-        } else {
-            let from=new Date(section.from).getTime();
-            let to=new Date(section.to).getTime();
+   
 
-            console.log(`searching results for ... assessments ${section.from} ${from} ${section.to} ${to}`);
-        }
-    }
-
+  
+    console.log(status.table);
 
     updateDisplay();
    
