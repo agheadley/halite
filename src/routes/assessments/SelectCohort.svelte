@@ -14,7 +14,7 @@
         let s=$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index];
        
         /* adjust subjects.index if necessary */
-        if(!(y.lv===s.lv && y.yr===s.yr)) $cohorts.assessments.subjects.index=$cohorts.assessments.subjects.list.findIndex(el=>el.lv===y.lv && el.yr===y.yr);
+        if(!(y.lv===s.lv && y.yr===s.yr)) $cohorts.assessments.subjects.index=$cohorts.assessments.subjects.list.findIndex((/** @type {{ lv: any; yr: any; }} */ el)=>el.lv===y.lv && el.yr===y.yr);
         s=$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index];
        
         status.std.A=(y.lv==='US' || y.lv==='MS' || y.lv==='L1') ? $config.std[y.lv].A : '';
@@ -49,9 +49,10 @@
         /** @type {string[]}*/
         let teachers=[];
         for(let gp of gps) teachers=teachers.concat(gp.teacher.map(el=>el.tid))
-        teachers=teachers.concat($config.admin.map(el=>el.tid));
-        teachers=teachers.concat($config.subject.filter(el=>el.ss===s.ss && el.sc===s.sc).map(el=>el.tid));
+        teachers=teachers.concat($config.admin.map((/** @type {{ tid: any; }} */ el)=>el.tid));
+        teachers=teachers.concat($config.subject.filter((/** @type {{ ss: any; sc: any; }} */ el)=>el.ss===s.ss && el.sc===s.sc).map((/** @type {{ tid: any; }} */ el)=>el.tid));
         
+        /** @type {any} */
         let cols=util.getAssessmentCols(assessments,teachers,status.user);
         
 
@@ -79,26 +80,54 @@
                 let pcols=[];
                 for(let col of cols) {
                     let f=results.find( (/** @type {{ aoid: any; pid: number; }} */ el)=>el.aoid===col._id && el.pid===p.pid);
-                    pcols.push(f ? {gd:f.gd,pc:f.pc,scr:f.scr} : {gd:'X',pc:0,scr:0});
+                    pcols.push(f ? {gd:f.gd,pc:f.pc,scr:f.scr} : {gd:'X',pc:0,scr:0,r:0});
 
                 }
+                /* populate grade residuals cf first col grade */
+                let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===g.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
+                let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===pcols[0].gd);
+                for(let col of pcols) {
+                    let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd); 
+                    col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+                }
+               
+
                 if(f) cond=cond.concat(f.conduct);
                 pup.push({g:g.g,pid:p.pid,sn:p.sn,pn:p.pn,tg:p.tg,hse:p.hse,cols:pcols,overall:f?f.overall:{A:0,B:0},groups:f?f.groups:[],conduct:f?f.conduct:[],show:false})
             }
+
             let i=0;
+            let gcols=[];
+            
             for(let col of cols) {
+                let xcol={dl:cols[i].dl,ds:cols[i].ds,dt:cols[i].dt,tag:cols[i].tag,n:cols[i].n,gd:'X',pc:0,r:0};
                 let f=pup.filter((/** @type {{ cols: { gd: string; }[]; }} */ el)=>el.cols[i].gd!=='X').map((/** @type {{ cols: { scr: any; }[]; }} */ el)=>el.cols[i].scr);
                 let scr=f?.length>0?f.reduce((/** @type {any} */ a,/** @type {any} */ v)=>a+v)/f.length:0;
-                col.gd=f?.length>0 ? util.getClosestGrade(scr,s.sc,$config.grade):'X';
+                xcol.gd=f?.length>0 ? util.getClosestGrade(scr,s.sc,$config.grade):'X';
+                f=pup.filter((/** @type {{ cols: { gd: string; }[]; }} */ el)=>el.cols[i].gd!=='X').map((/** @type {{ cols: { pc: any; }[]; }} */ el)=>el.cols[i].pc);
+                //console.log(g.g,i,f);
+                xcol.pc=f?.length>0 && !cols[i].tag.grade?f.reduce((/** @type {any} */ a,/** @type {any} */ v)=>a+v)/f.length:0;
+                gcols.push(xcol);
+                console.log(g.g,i,f,f.length,cols[i].pc);
                 i+=1;
 
             }
+
+            /* add grade residuals from first col of set averages */
+            let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===g.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
+            let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===gcols[0].gd);
+            for(let col of gcols) {
+                let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd); 
+                col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+            }
+
+
             let f=pup.filter((/** @type {{ overall: { A: number; }; }} */ el)=>el.overall.A>0).map((/** @type {{ overall: { A: any; }; }} */ el)=>el.overall.A);
             let a=f?.length>0?f.reduce((/** @type {any} */ a,/** @type {any} */ v)=>a+v)/f.length:0;
             f=pup.filter((/** @type {{ overall: { B: number; }; }} */ el)=>el.overall.B>0).map((/** @type {{ overall: { B: any; }; }} */ el)=>el.overall.B);
             let b=f?.length>0?f.reduce((/** @type {any} */ a,/** @type {any} */ v)=>a+v)/f.length:0;
                 
-            status.table.push({g:g.g,sc:g.sc,ss:g.ss,sl:g.sl,overall:{A:Math.round(10*a)/10,B:Math.round(10*b)/10},cols:cols,conduct:cond,pupil:pup});
+            status.table.push({g:g.g,sc:g.sc,ss:g.ss,sl:g.sl,overall:{A:Math.round(10*a)/10,B:Math.round(10*b)/10},cols:gcols,conduct:cond,pupil:pup});
         }
 
         console.log('status.table',status.table);

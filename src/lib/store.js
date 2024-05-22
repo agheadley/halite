@@ -6,6 +6,7 @@ export let alert = writable({msg:"",type:'',ms:3000});
 
 export let location=writable('');
 
+/** @type {any} */
 export let config=writable({
     admin:[{tid:''}],
     rollover:{month:8},
@@ -66,6 +67,7 @@ export let groups=writable([
     }
 ]);
 
+/** @type {any} */
 export let cohorts=writable({
     assessments:{
         years:{list:[{yr:0,lv:'',fm:0}],index:0},
@@ -74,7 +76,8 @@ export let cohorts=writable({
     },
     overview:{
         years:{list:[{yr:0,lv:'',fm:0}],index:0},
-        houses:{list:[{hse:'',lv:'',yr:0}],index:0,all:false}
+        houses:{list:[{hse:'',lv:'',yr:0}],index:0,all:false},
+        list:{name:'',pid:[]}
     },
     exams:{
         years:{list:[{yr:0,lv:''}],index:0}

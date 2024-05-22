@@ -17,7 +17,7 @@ export async function load() {
     
     /** @type {any} */
     let cfg={};
-    config.subscribe((value) => {cfg=value;});
+    config.subscribe((/** @type {any} */ value) => {cfg=value;});
     /** @type {any} */
     let gps=[];
     groups.subscribe((value) => {gps=value;});

@@ -123,11 +123,12 @@
         padding:0.2rem;
     }
 
+/*
     th {
         border-bottom: 1px solid gray;
         padding:0.2rem;
     }
-
+*/
    
     .pupil-name {
         min-width:15rem;
