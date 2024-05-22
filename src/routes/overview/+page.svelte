@@ -7,6 +7,8 @@
     import List from './List.svelte';
     import Export from './Export.svelte';
     import Modal from '$lib/_Modal.svelte';
+    import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
+    import Cell from '$lib/_Cell.svelte';
 
     /** @type {any}*/
     export let data;
@@ -20,7 +22,9 @@
         list:false,
         user:'',
         update:false,
-        download:false
+        download:false,
+        view:'grade', /* grade/percentage */
+        rag:false
     };
 
     $:{
@@ -60,6 +64,8 @@
         console.log('pupils',$pupils);
         console.log('cohorts',$cohorts);
         status.user=data.user.name;
+        let f=$config.view.find((/** @type {{ context: string; }} */ el)=>el.context==='overview');
+        status.rag = f ? f.rag : false;
         
     });
     
@@ -81,7 +87,7 @@
    
     {#if !status.list}
     <div class="row">
-        <div class="col is-vertical-align">
+        <div class="col-6 is-vertical-align">
             <div class="row">
                 {#if $cohorts.overview.list.name===''}
                 <div class="col is-vertical-align">
@@ -98,8 +104,13 @@
             </div>
            
         </div>
-        
-        <div class="col is-vertical-align">
+        <div class="col-3 is-vertical-align">
+            <div class="tabs">
+                <a href={'#'} class={status.view==='grade' ? 'active' :''} on:click={()=>status.view='grade'}>Grade</a>
+                <a href={'#'} class={status.view==='percentage' ? 'active' :''} on:click={()=>status.view='percentage'}>&nbsp;%&nbsp;</a>
+            </div>
+        </div>
+        <div class="col-3 is-vertical-align">
             <button class="button dark" on:click={()=>status.list=true}>My Lists</button>
             <button on:click={()=>status.download=true} class="button icon-only outline">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
@@ -108,6 +119,7 @@
     </div>
    
 
+    {#if status.table[0]}
     <div class="responsive">
         <table>
             <thead>
@@ -117,7 +129,11 @@
                     <td></td>
                     <td></td>
                     <td></td>
-                    
+                    {#each status.table[0].cols as col,colIndex}
+                        <td> <AssessmentTitle title={col.title} subtitle={col.date}/></td>
+
+                    {/each}
+
                 </tr>
                 <tr>
                     <td></td>
@@ -142,7 +158,17 @@
                         <td>{row.tg}</td>
                         <td><IntakeBar r={row.overall.A} std={status.std.A}/></td>
                         <td><IntakeBar r={row.overall.B} std={status.std.B}/></td>
+                        {#each row.cols as col,colIndex}
+                            <td>
+                                {#if status.view==='grade'}
+                                <Cell color={status.rag} residual={col.r}>{col.gd}</Cell>
+                                {:else}
+                                    <Cell color={false} residual={col.r}>{col.pc===null ? '' : Math.round(col.pc)}</Cell>
+                                {/if}
+                            
+                            </td>
 
+                        {/each}
 
                     </tr>
                     {/if}
@@ -151,6 +177,7 @@
         </table>
 
     </div>
+    {/if}
     {/if} <!--/main display-->
     
     <style>

@@ -109,7 +109,7 @@
                 // @ts-ignore
                 xcol.pc=f?.length>0 && !cols[i].tag.grade?f.reduce((/** @type {any} */ a,/** @type {any} */ v)=>a+v)/f.length:null;
                 gcols.push(xcol);
-                console.log(g.g,i,f,f.length,cols[i].pc);
+                //console.log(g.g,i,f,f.length,cols[i].pc);
                 i+=1;
 
             }

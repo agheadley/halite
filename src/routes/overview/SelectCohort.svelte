@@ -62,6 +62,8 @@ let update=async()=>{
         }
     };
 
+    
+
     /* grab columns / section */
     let sections=$config.overview.filter((/** @type {{ lv: any; yr: any; }} */ el)=>el.lv===y.lv && el.yr===y.yr);
     for(let section of sections) {
@@ -70,7 +72,7 @@ let update=async()=>{
         section.dsTo=section.to?.length===10 ? section.to[5]+section.to[6]+"/" +section.to[2]+section.to[3]: '00/00';
     }
 
-    console.log(sections);
+    //console.log(sections);
 
     /* cycle through each pupil */
 
@@ -119,7 +121,7 @@ let update=async()=>{
                 
 
 
-                if(section.n==='TIG') console.log(scrs,scr,gd);
+                //if(section.n==='TIG') console.log(pupil.pid,f,scrs,gd);
 
                 col.pc=pc;
                 col.scr=scr;
