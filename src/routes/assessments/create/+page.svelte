@@ -42,7 +42,7 @@
         let y=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
     
         let grades=[];
-        let gds=$config.grade.filter(el=>el.sc===s.sc).sort((a,b)=>b.scr-a.scr)
+        let gds=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===s.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr)
         for(let item of gds) grades.push({gd:item.gd,pc:item.pc,scr:item.scr,active:true});
     
        
