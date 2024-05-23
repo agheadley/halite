@@ -179,6 +179,7 @@ let update=async()=>{
         
                 }
             }
+            col.d=Math.abs(col.d);
         }
        
         status.table.push({
