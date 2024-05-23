@@ -43,7 +43,7 @@ let update=async()=>{
 
     /* get results data */  
 
-    /** @type {{pid:number,gd:string,pc:number,scr:number,dt:number,n:string,dl:string,sc:string,ss:string,tag:{exam:boolean,grade:boolean}}[]}*/
+    /** @type {{pid:number,gd:string,pc:number,scr:number,dt:number,n:string,dl:string,sc:string,ss:string,fb:string,tag:{exam:boolean,grade:boolean}}[]}*/
     let data=[];
     for(let result of results) {
         let f=assessments.find((/** @type {{ _id: any; }} */ el)=>el._id===result.aoid);
@@ -58,7 +58,8 @@ let update=async()=>{
                 dl:f.dl,
                 tag:{exam:f.tag.exam,grade:f.tag.grade},
                 sc:f.sc,
-                ss:f.ss
+                ss:f.ss,
+                fb:result.fb
             });
         }
     };
@@ -79,7 +80,7 @@ let update=async()=>{
 
     for(let pupil of $pupils.filter(el=>el.lv===y.lv && el.yr===y.yr)) {
 
-        /** @type {{gd:string,pc:number|null,scr:number,r:number,title:string,date:string,sc:string}[]}*/
+        /** @type {{gd:string,pc:number|null,scr:number,r:number,u:number,d:number,title:string,date:string,sc:string,results:any[]}[]}*/
         let cols=[];
 
         for(let section of sections) {
@@ -107,8 +108,8 @@ let update=async()=>{
             let t=section.exam ? section.n : 'ASSESSMENTS';
             let d=section.exam ? section.ds : `${section.dsFrom}-${section.dsTo}`; 
 
-            /** @type {{gd:string,pc:number|null,scr:number,r:number,title:string,date:string,sc:string}} */
-            let col={gd:'X',pc:0,scr:0,r:0,title:t,date:d,sc:'A'};
+            /** @type {{gd:string,pc:number|null,scr:number,r:number,u:number,d:number,title:string,date:string,sc:string,results:any[]}} */
+            let col={gd:'X',pc:0,scr:0,r:0,u:0,d:0,title:t,date:d,sc:'A',results:f};
 
             if(f) {
 
@@ -156,13 +157,30 @@ let update=async()=>{
         status.cols=sections;
 
          /* add grade residuals from first col of set averages */
-         let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===cols[0].sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
+        let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===cols[0].sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
         let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===cols[0].gd);
         for(let col of cols) {
             let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd); 
             col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
         }
 
+        /* find grades up and down (u & d) cf first assessment */
+        for(let col of cols) {
+            for(let result of col.results) {
+                let f=cols[0].results.find(el=>el.sc===result.sc && el.ss===result.ss);
+                //if(f) console.log(`match ${pupil.pid} ${col.title} ${f.ss} ${f.sc}`);
+                if(f) {
+                    let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===f.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
+                    let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===f.gd);
+                    let  s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===result.gd); 
+                    let r= s1>-1 && s2>-1 ? s1-s2 : 0;
+                    if(r<0) col.d+=r;
+                    if(r>0) col.u+=r;
+        
+                }
+            }
+        }
+       
         status.table.push({
             show:true,
             select:true,
