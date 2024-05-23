@@ -43,7 +43,7 @@ let update=async()=>{
 
     /* get results data */  
 
-    /** @type {{pid:number,gd:string,pc:number,scr:number,dt:number,n:string,dl:string,sc:string,tag:{exam:boolean,grade:boolean}}[]}*/
+    /** @type {{pid:number,gd:string,pc:number,scr:number,dt:number,n:string,dl:string,sc:string,ss:string,tag:{exam:boolean,grade:boolean}}[]}*/
     let data=[];
     for(let result of results) {
         let f=assessments.find((/** @type {{ _id: any; }} */ el)=>el._id===result.aoid);
@@ -57,12 +57,13 @@ let update=async()=>{
                 n:f.n,
                 dl:f.dl,
                 tag:{exam:f.tag.exam,grade:f.tag.grade},
-                sc:f.sc
+                sc:f.sc,
+                ss:f.ss
             });
         }
     };
 
-    
+    status.results=data;
 
     /* grab columns / section */
     let sections=$config.overview.filter((/** @type {{ lv: any; yr: any; }} */ el)=>el.lv===y.lv && el.yr===y.yr);
@@ -151,7 +152,7 @@ let update=async()=>{
         }
 
 
-        /* add sections to status cols */
+        /* add sections to status.cols for table header display */
         status.cols=sections;
 
          /* add grade residuals from first col of set averages */
