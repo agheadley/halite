@@ -27,7 +27,8 @@
         update:false,
         download:false,
         view:'grade', /* grade/percentage */
-        rag:false
+        rag:false,
+        sort:false
     };
 
     /**
@@ -36,6 +37,22 @@
      */
     let export2D=(index)=>{
 
+    };
+
+    /**
+     * 
+     * @param {number} index
+     */
+    let toggleSort=(index)=>{
+        if(!status.sort) {
+            status.sort=true;
+            // @ts-ignore
+            status.table=status.table.sort((/** @type {{ cols: { d: number; }[]; }} */ a,/** @type {{ cols: { d: number; }[]; }} */ b)=>b.cols[index].u-a.cols[index].u || b.cols[index].d-a.cols[index].d);
+        
+        } else {
+            status.sort=false;
+            status.table=status.table.sort((/** @type {{ sn: string; pn: string; }} */ a,/** @type {{ sn: any; pn: any; }} */ b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));
+        }
     };
 
     $:{
@@ -145,6 +162,23 @@
 
                     {/each}
 
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    {#each status.cols as col,colIndex}
+                    
+                    <td>
+                    {#if colIndex>0}    
+                    <a href={'#'} on:click={()=>toggleSort(colIndex)} on:keydown={()=>toggleSort(colIndex)} class="button clear icon-only"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-down"><polyline points="7 13 12 18 17 13"></polyline><polyline points="7 6 12 11 17 6"></polyline></svg>
+                    </a>
+                    {/if}
+                    </td>
+                    {/each}
                 </tr>
                 <tr>
                     <td></td>
