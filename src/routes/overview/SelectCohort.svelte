@@ -90,6 +90,17 @@ let update=async()=>{
                 data.filter(el=>el.pid===pupil.pid && el.n===section.n && el.dl===section.dl && el.tag.exam===true && el.gd!=='X') :
                 data.filter(el=>el.pid===pupil.pid &&el.dt>=from && el.dt<=to && el.tag.exam===false && el.gd!=='X');
 
+
+
+
+            /* does the section need and 2D export - e.g. IntEx */
+            section.export=false;
+            if(section.exam && f[0]) section.export = f[0].tag.grade===false ? true : false; 
+            section.title=section.exam ? section.n : 'ASSESSMENTS';
+            section.date=section.exam ? section.ds : `${section.dsFrom}-${section.dsTo}`; 
+
+
+
             /* find mean grade,pc and scr and residuals */
 
             let t=section.exam ? section.n : 'ASSESSMENTS';
@@ -138,6 +149,10 @@ let update=async()=>{
 
             //console.log(pupil.sn,pupil.pn,from,to,section.n,section.dt,f.length);
         }
+
+
+        /* add sections to status cols */
+        status.cols=sections;
 
          /* add grade residuals from first col of set averages */
          let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===cols[0].sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
