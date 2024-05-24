@@ -7,8 +7,6 @@
     
     let exportScores=()=>{
     
-        console.log(status.assessment);
-        console.log(status.table);
         /** @type {string[][]}*/
         let out=[];
 
@@ -55,41 +53,32 @@
     };
     
     let exportScatter=()=>{
-        console.log($pupils);
+       
         let out=[];
-        out[0]=['pid','sn','pn','hse','gnd','g','type'];
-        out[0].push(status.std.A);
-        out[0].push(status.std.B);
-    
-    
-    
-        for(let group of status.table) {
-            for(let pupil of group.pupil) {
-                let f=$pupils.find(el=>el.pid===pupil.pid);
-                if(f?.base?.[0]) {
-                    for(let item of f.base) {
-                        /** @type {number|''}*/
-                        let a=item.A;
-                        if(status.std.A==='GCSE' && item.type!=='overall') a='';
-                        let row=[pupil.pid,pupil.sn,pupil.pn,pupil.hse,pupil.gnd,group.g,item.type,a,item.B];
-                        out.push(row);
-                    }
-                } else {
-                    let row=[pupil.pid,pupil.sn,pupil.pn,pupil.hse,pupil.gnd,group,"TBC","",""];
-                    out.push(row);
-                }
-                   
+       
+        out[0]=["percentage","grade"];
+
+        let groups=[...new Set(status.table.map((/** @type {{ g: any; }} */ el)=>el.g).sort())];
+
+        let students=status.table.map((/** @type {{ pupil: any[]; g: any; }} */ top)=>top.pupil.map((/** @type {{ pid: any; sn: any; pn: any; gd: any; pc: any; }} */ el)=>({g:top.g,pid:el.pid,sn:el.sn,pn:el.pn,gd:el.gd,pc:el.pc}))).flat();
+        students.sort((/** @type {{ pc: number; }} */ a,/** @type {{ pc: number; }} */ b)=>b.pc-a.pc);
+
+        console.log(groups,students);
+        
+        for(let item of groups) out[0].push(item);
+        for(let item of students) {
+            //console.log(item['percentage'],item['grade'],item['surname'],item['setCode']);
+            let row=[item.pc,item.gd];
+            for(let col of groups) {
+                if(item.g===col) row.push(`${item.pn} ${item.sn}`);
+                else row.push("");
             }
-                
-            
-    
+            out.push(row);
         }
-    
-    
-    
-    
-            console.log(out);
-            file.csvDownload(out,"INTAKE.csv");
+        
+
+        console.log(out);
+        file.csvDownload(out,"SCATTER.csv");
     };
     
     </script>
