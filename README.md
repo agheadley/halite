@@ -62,16 +62,8 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Overview
 
-- find average grades up to set dates (cumulative) or at set points e.g. TIG, IntEx
-- e.g. for MS 2025 Point1 up to 15/11/23, Point2 15/12/23, Point3 IntEx.
-- assessments in store > filter by dt, map oid > filter pupil results if asssessments oid includes the result
-
-
-- click on subject to go into detail and breakdown for each pupil
-
-
 - admin page to see which assessments are live
-
+- export results (intake done)
 
 # Assessments
 
