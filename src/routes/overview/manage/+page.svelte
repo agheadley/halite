@@ -117,10 +117,10 @@
     </svelte:head>
 
     <div class="row">
-        <div class="col">
+        <div class="col-4">
             <h4>Assessment Visibility {status.lv} {status.yr}</h4>
         </div>
-        <div class="col">
+        <div class="col-5">
             <div class="tabs">
                 <a href={'#'} class={status.tabs==='pupil' ? 'active' : ''}  on:keydown={()=>status.tabs='pupil'} on:click={()=>status.tabs='pupil'}>Pupil</a>
                 <a href={'#'} class={status.tabs==='parent' ? 'active' : ''} on:keydown={()=>status.tabs='parent'} on:click={()=>status.tabs='parent'}>Partent</a>
@@ -129,7 +129,7 @@
                 
             </div>
         </div>
-        <div class="col">
+        <div class="col-3">
             <a href='/overview' class="button outline">Close</a>
         </div>
     </div>
@@ -182,7 +182,7 @@
     }
 
     td {
-        padding:0.2rem;
+        padding:0.5rem;
     }
 
 
