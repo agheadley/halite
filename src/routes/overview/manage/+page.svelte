@@ -123,7 +123,7 @@
         <div class="col-5">
             <div class="tabs">
                 <a href={'#'} class={status.tabs==='pupil' ? 'active' : ''}  on:keydown={()=>status.tabs='pupil'} on:click={()=>status.tabs='pupil'}>Pupil</a>
-                <a href={'#'} class={status.tabs==='parent' ? 'active' : ''} on:keydown={()=>status.tabs='parent'} on:click={()=>status.tabs='parent'}>Partent</a>
+                <a href={'#'} class={status.tabs==='parent' ? 'active' : ''} on:keydown={()=>status.tabs='parent'} on:click={()=>status.tabs='parent'}>Parent</a>
                 <a href={'#'} class={status.tabs==='overview' ? 'active' : ''} on:keydown={()=>status.tabs='overview'} on:click={()=>status.tabs='overview'}>Overview</a>
                 <a href={'#'} class={status.tabs==='open' ? 'active' : ''} on:keydown={()=>status.tabs='open'} on:click={()=>status.tabs='open'}>Open</a>
                 
@@ -145,7 +145,6 @@
             <thead>
                 <tr>
                     <th>Subject</th>
-                    <th></th>
                     {#each status.cols as col,colIndex}
                         <th> <AssessmentTitle title={col.title} subtitle={col.date}/></th>
                     {/each}
@@ -154,18 +153,16 @@
             <tbody>
                 {#each status.table as row,rowIndex}
                 <tr>
-                    <td>{row.sl}</td>
-                    <td>({row.sc})</td>
+                    <td>{row.sl} ({row.sc})</td>
                     {#each row.cols as col,colIndex}
                         <td>
-                            Add red green bg to whole tag!!!
-                            <span class="tag">
-                                {#if status.tabs!=='open'}
-                                <sup><b><span class={col[status.tabs]>0 ? '' : 'bg-error text-white'}>{col[status.tabs]}</span></b></sup>
-                                {:else}
-                                <sup><b><span class={col[status.tabs]>0 ? 'bg-error text-white' : ''}>{col[status.tabs]}</span></b></sup>
-                                {/if}
-                                /<sub>{col.total}</sub></span>
+                            <span class={
+                                (col[status.tabs]>0 && status.tabs!=='open') ||
+                                (col[status.tabs]===0 && status.tabs==='open') ?
+                                'tag bg-success text-white' : 'tag bg-error text-white' 
+                            }>  
+                                <sup><b>{col[status.tabs]}</b></sup>/<sub>{col.total}</sub>
+                            </span>
                         </td>
                     {/each}
                 </tr>
