@@ -51,7 +51,7 @@
     let getH=(x)=>{
         let h=0;
         if(s>0) h=Math.exp(-(x*x)/(2*s*s))*1/(2*Math.PI*s);
-        //console.log(x,s,h);
+        console.log(x,s,h);
         return h;
     };
 
@@ -60,12 +60,13 @@
         //console.log(score);
 
         grades=grades.map(el=>({gd:el.gd,pre:el.pre}));
-        //console.log(grades);
+        console.log(grades);
         
         s=!!grades[0] ? grades[0].pre/5 : 0;
-        //console.log(score,grades[0].pre,s);
+        console.log(score,grades[0].pre,s);
 
         points=grades.sort((a,b)=> a.pre-b.pre);
+        console.log(points);
 
         let itemW= !!points[0] ? w/points.length : 0; 
       
@@ -88,7 +89,7 @@
             item['h'] = maxH*item['p']/max;
             item['y']=startY+maxH-item['h'];
         }
-        //console.log('Chances',score,points,total);
+        //console.log('Chances',points,datum);
       
     };
 

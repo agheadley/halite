@@ -104,6 +104,9 @@ onMount(async () => {
     
     cfg=res[0] ? res[0] : [];
 
+    /** sort grades top-bottom so that chances graphs are displayed properly */
+    cfg.grade=cfg.grade.sort((/** @type {{ sc: string; pre: number; }} */ a,/** @type {{ sc: any; pre: number; }} */ b)=>a.sc.localeCompare(b.sc) || b.pre-a.pre);
+
     /* get CEM stds */
     if(status.lv==='US') data.std={A:cfg.std.US.A,B:cfg.std.US.B};
     else if (status.lv==='MS') data.std={A:cfg.std.MS.A,B:cfg.std.MS.B};
@@ -358,13 +361,14 @@ onMount(async () => {
 </div>
 <div class="row">
     <div class="col">
-        CHANCES ({data.std.A})
+        CHANCES
     </div>
     <div class="col">
         <div>
             <span class="tag">{data.std.A}</span>
         </div>
         <div>
+           
             <Chance grades={cfg.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===row.sc)} score={row.pre.A ? row.pre.A : 0}/>
         </div>
         </div>

@@ -127,10 +127,10 @@ let getAssessmentsCohorts=()=>{
 	$cohorts.assessments.subjects.index=0;
 	
 	for(let item of $groups) {
-		if(!$cohorts.assessments.subjects.list.find(el=>el.yr===item.yr && el.lv===item.lv && el.sc===item.sc && el.ss===item.ss))
+		if(!$cohorts.assessments.subjects.list.find((/** @type {{ yr: number; lv: string; sc: string; ss: string; }} */ el)=>el.yr===item.yr && el.lv===item.lv && el.sc===item.sc && el.ss===item.ss))
 			$cohorts.assessments.subjects.list.push({yr:item.yr,lv:item.lv,ss:item.ss,sc:item.sc,sl:item.sl});	
 	}
-	$cohorts.assessments.subjects.list=$cohorts.assessments.subjects.list.sort((a,b)=>(a.sc.localeCompare(b.sc)) || (a.sl.localeCompare(b.sl)) );
+	$cohorts.assessments.subjects.list=$cohorts.assessments.subjects.list.sort((/** @type {{ sc: string; sl: string; }} */ a,/** @type {{ sc: any; sl: any; }} */ b)=>(a.sc.localeCompare(b.sc)) || (a.sl.localeCompare(b.sl)) );
     
 	/* Assessments - refine for yr,lv only and add current fm*/
 	let d=new Date();
@@ -142,10 +142,10 @@ let getAssessmentsCohorts=()=>{
 	for(let item of $cohorts.assessments.subjects.list) {
 	    let f=$config.year.find((/** @type {{ lv: any; x: number; }} */ el)=>el.lv===item.lv && el.x===(item.yr-currentYr));
         let fm = f ? f.fm : -1;
-        if(!$cohorts.assessments.years.list.find(el=>el.yr==item.yr && el.lv==item.lv)) 
+        if(!$cohorts.assessments.years.list.find((/** @type {{ yr: any; lv: any; }} */ el)=>el.yr==item.yr && el.lv==item.lv)) 
 			$cohorts.assessments.years.list.push({lv:item.lv,yr:item.yr,fm:fm});
     }
-    $cohorts.assessments.years.list=$cohorts.assessments.years.list.sort((a,b)=>b.fm-a.fm);
+    $cohorts.assessments.years.list=$cohorts.assessments.years.list.sort((/** @type {{ fm: number; }} */ a,/** @type {{ fm: number; }} */ b)=>b.fm-a.fm);
 
 };
 
@@ -157,10 +157,10 @@ let getOverviewCohorts=()=>{
 	$cohorts.overview.houses.index=0;
 	$cohorts.overview.houses.all=false;
 	for(let item of $pupils) {
-		if(!$cohorts.overview.houses.list.find(el=>el.yr===item.yr && el.lv===item.lv && el.hse===item.hse))
+		if(!$cohorts.overview.houses.list.find((/** @type {{ yr: number; lv: string; hse: string; }} */ el)=>el.yr===item.yr && el.lv===item.lv && el.hse===item.hse))
 			$cohorts.overview.houses.list.push({yr:item.yr,lv:item.lv,hse:item.hse})
 	}
-	$cohorts.overview.houses.list=$cohorts.overview.houses.list.sort((a,b)=>a.hse.localeCompare(b.hse));
+	$cohorts.overview.houses.list=$cohorts.overview.houses.list.sort((/** @type {{ hse: string; }} */ a,/** @type {{ hse: any; }} */ b)=>a.hse.localeCompare(b.hse));
     
 	/* Houses - refine for yr,lv only and add current fm */
 	let d=new Date();
@@ -172,7 +172,7 @@ let getOverviewCohorts=()=>{
 	for(let item of $cohorts.overview.houses.list) {
 		let f=$config.year.find((/** @type {{ lv: any; x: number; }} */ el)=>el.lv===item.lv && el.x===(item.yr-currentYr));
         let fm = f ? f.fm : -1;
-		if(!$cohorts.overview.years.list.find(el=>el.yr==item.yr && el.lv==item.lv))
+		if(!$cohorts.overview.years.list.find((/** @type {{ yr: any; lv: any; }} */ el)=>el.yr==item.yr && el.lv==item.lv))
 			$cohorts.overview.years.list.push({lv:item.lv,yr:item.yr,fm:fm});
 	}
 

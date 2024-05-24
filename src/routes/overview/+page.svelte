@@ -6,6 +6,7 @@
     import IntakeBar from '$lib/_IntakeBar.svelte';
     import List from './List.svelte';
     import Export from './Export.svelte';
+    import Feedback from './Feedback.svelte';
     import Modal from '$lib/_Modal.svelte';
     import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
     import Cell from '$lib/_Cell.svelte';
@@ -28,7 +29,8 @@
         download:false,
         view:'grade', /* grade/percentage */
         rag:false,
-        sort:false
+        sort:false,
+        fb:false
     };
 
     /**
@@ -106,6 +108,10 @@
     </svelte:head>
 
     <Modal bind:open={status.download}>
+        <Feedback bind:status={status}/>
+    </Modal>
+
+    <Modal bind:open={status.fb}>
         <Export bind:status={status}/>
     </Modal>
     
@@ -152,19 +158,25 @@
         <table>
             <thead>
                 <tr>
-                    <td></td>
-                    <td></td>
+                    <td>
+                        <a href='/overview/manage' class="button dark">Oversight</a>
+                       
+                    </td>
+                    <td> 
+                       
+                    </td>
                     <td></td>
                     <td></td>
                     <td></td>
                     {#each status.cols as col,colIndex}
                         <td> <AssessmentTitle title={col.title} subtitle={col.date}/></td>
-
                     {/each}
 
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>
+                        <button class="button dark" on:click={()=>status.fb=true}>Feedback</button>
+                    </td>
                     <td></td>
                     <td></td>
                     <td></td>
