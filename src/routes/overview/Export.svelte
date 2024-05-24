@@ -7,15 +7,22 @@
     
     let exportResults=()=>{
     
-    
+        console.log(status.cols);
     
         let out=[];
-        out[0]=['pid','sn','pn','hse','gnd','g'];
+        out[0]=['pid','pn','sn','hse','tg'];
+        for(let col of status.cols) out[0].push(col.exam?`${col.title} ${col.date}`:`${col.date}`);
+
+        for(let row of status.table) {
+            let line=[String(row.pid),row.pn,row.sn,row.hse,row.tg];
+            for(let col of row.cols) line.push(col.gd);
+            if(row.show) out.push(line);
+        }
        
     
     
-            console.log(out);
-            file.csvDownload(out,"RESULTS.csv");
+        console.log(out);
+        file.csvDownload(out,"OVERVIEW.csv");
     };
     
     let exportIntake=()=>{

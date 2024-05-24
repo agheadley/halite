@@ -62,10 +62,9 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Overview
 
-- admin page to see which assessments are live
-- export results (intake done)
 
--select team in overview, move to assessments, fails when returning to overview!
+
+- select team in overview, move to assessments, fails when returning to overview!
 
 # overview /manage
 
@@ -74,16 +73,9 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Assessments
 
-
-
-
-
 - need to add archive button, list of assessments to include archive data so you can downloads
 - add Pupil link - same file as for pupils, parents, but they have no RAGs etc
 
-# Assessments/edit
-
-- export scatter and results
 
 
 # _Pupil.svelte

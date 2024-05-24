@@ -10,7 +10,7 @@ let exportResults=()=>{
 
 
     let out=[];
-    out[0]=['pid','sn','pn','hse','gnd','g'];
+    out[0]=['pid','pn','sn','hse','gnd','g'];
     out[0].push(status.std.A);
     out[0].push(status.std.B);
 
@@ -29,7 +29,7 @@ let exportResults=()=>{
         out.push(row);
 
         for(let pupil of group.pupil) {
-            let row=[pupil.pid,pupil.sn,pupil.pn,pupil.hse,pupil.gnd,pupil.g,Math.round(100*pupil.overall.A)/100,Math.round(100*pupil.overall.B)/100];
+            let row=[pupil.pid,pupil.pn,pupil.sn,pupil.hse,pupil.gnd,pupil.g,Math.round(100*pupil.overall.A)/100,Math.round(100*pupil.overall.B)/100];
             for(let col of group.cols) {
                 row.push(`${col.gd}`);
                 row.push(col.pc!==null ? `${Math.round(100*col.pc)/100}` : '');
@@ -49,7 +49,7 @@ let exportResults=()=>{
 let exportIntake=()=>{
     console.log($pupils);
     let out=[];
-    out[0]=['pid','sn','pn','hse','gnd','g','type'];
+    out[0]=['pid','pn','sn','hse','gnd','g','type'];
     out[0].push(status.std.A);
     out[0].push(status.std.B);
 
@@ -63,11 +63,11 @@ let exportIntake=()=>{
                     /** @type {number|''}*/
                     let a=item.A;
                     if(status.std.A==='GCSE' && item.type!=='overall') a='';
-                    let row=[pupil.pid,pupil.sn,pupil.pn,pupil.hse,pupil.gnd,group.g,item.type,a,item.B];
+                    let row=[pupil.pid,pupil.pn,pupil.sn,pupil.hse,pupil.gnd,group.g,item.type,a,item.B];
                     out.push(row);
                 }
             } else {
-                let row=[pupil.pid,pupil.sn,pupil.pn,pupil.hse,pupil.gnd,group,"TBC","",""];
+                let row=[pupil.pid,pupil.pn,pupil.sn,pupil.hse,pupil.gnd,group,"TBC","",""];
                 out.push(row);
             }
                

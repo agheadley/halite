@@ -160,7 +160,7 @@
             <thead>
                 <tr>
                     <td>
-                        <a href='/overview/manage' class="button dark">Subject Check</a>
+                        <a href='/overview/manage' class="fixed-width button dark">Manage</a>
                        
                     </td>
                     <td> 
@@ -176,7 +176,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <button class="button dark" on:click={()=>status.fb=true}>Feedback</button>
+                        <button class="button dark fixed-width" on:click={()=>status.fb=true}>Feedback</button>
                     </td>
                     <td></td>
                     <td></td>
@@ -285,6 +285,10 @@
         max-width:15rem;
         overflow:hidden;
         white-space:nowrap;
+    }
+
+    .fixed-width {
+        width:15rem;
     }
 
 
