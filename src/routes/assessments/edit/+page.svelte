@@ -372,7 +372,7 @@ let handleKeydown=(event)=>{
             <td>{row.pc}</td>
             <td>{row.gd}</td>
             <td><input type=checkbox bind:checked={row.x} on:change={()=>calculate(groupIndex,rowIndex)}/></td>
-            <td><textarea id={`textarea-fb-${rowIndex}`} bind:value={row.fb} on:blur={()=>calculate(groupIndex,rowIndex)} /></td>
+            <td><textarea id={`textarea-fb-${rowIndex}`} class="fb" bind:value={row.fb} on:blur={()=>calculate(groupIndex,rowIndex)} /></td>
         </tr>
         {#if row.selected}
         <tr>
@@ -487,7 +487,14 @@ let handleKeydown=(event)=>{
 
 <style>
 
-   
+   .fb {
+    width:30rem;
+    height:5rem;
+   }
+
+   .fb:focus {
+    height:10rem;
+   }
 
     td {
         padding:0.2rem;

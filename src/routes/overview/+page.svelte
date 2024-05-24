@@ -108,11 +108,12 @@
     </svelte:head>
 
     <Modal bind:open={status.download}>
-        <Feedback bind:status={status}/>
+        <Export bind:status={status}/>
+       
     </Modal>
 
     <Modal bind:open={status.fb}>
-        <Export bind:status={status}/>
+        <Feedback bind:status={status}/>
     </Modal>
     
     {#if status.list}
@@ -214,7 +215,7 @@
                     {#if row.show}
                     <tr>
                        
-                        <td class="pupil-name"><button class="button clear primary" on:click={()=>row.pupilShow=true}>{row.sn} {row.pn}</button></td>
+                        <td class="pupil-name"><button class="button clear primary" on:click={()=>row.pupilShow=true}>{row.pn} {row.sn}</button></td>
                         <td>{row.hse}</td>
                         <td>{row.tg}</td>
                         <td><IntakeBar r={row.overall.A} std={status.std.A}/></td>

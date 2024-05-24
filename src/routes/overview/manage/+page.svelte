@@ -44,7 +44,7 @@
 
     <div class="row">
         <div class="col">
-            <h4>Visible Assessments {status.lv} {status.yr}</h4>
+            <h4>Assessment Visibility {status.lv} {status.yr}</h4>
         </div>
         <div class="col">
             <a href='/overview' class="button outline">Close</a>

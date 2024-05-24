@@ -173,7 +173,7 @@
             <tbody>
                 {#each group.pupil as row,rowIndex}
                     <tr>
-                        <td class="pupil-name"><button class="button clear primary" on:click={()=>row.show=true}>{row.sn} {row.pn}</button></td>
+                        <td class="pupil-name"><button class="button clear primary" on:click={()=>row.show=true}>{row.pn} {row.sn}</button></td>
                         <td><IntakeBar r={row.overall.A} std={status.std.A}/></td>
                         <td><IntakeBar r={row.overall.B} std={status.std.B}/></td>
                         {#each row.cols as col,colIndex}

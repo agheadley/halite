@@ -43,7 +43,7 @@ let update=async()=>{
 
     /* get results data */  
 
-    /** @type {{pid:number,gd:string,pc:number,scr:number,dt:number,n:string,dl:string,sc:string,ss:string,fb:string,tag:{exam:boolean,grade:boolean}}[]}*/
+    /** @type {{pid:number,gd:string,pc:number,scr:number,dt:number,n:string,dl:string,ds:string,sl:string,sc:string,ss:string,fb:string,tag:{exam:boolean,grade:boolean}}[]}*/
     let data=[];
     for(let result of results) {
         let f=assessments.find((/** @type {{ _id: any; }} */ el)=>el._id===result.aoid);
@@ -56,9 +56,11 @@ let update=async()=>{
                 dt:f.dt,
                 n:f.n,
                 dl:f.dl,
+                ds:f.ds,
                 tag:{exam:f.tag.exam,grade:f.tag.grade},
                 sc:f.sc,
                 ss:f.ss,
+                sl:f.sl,
                 fb:result.fb
             });
         }
