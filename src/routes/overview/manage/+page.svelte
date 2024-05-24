@@ -159,7 +159,7 @@
                             <span class={
                                 (col[status.tabs]>0 && status.tabs!=='open') ||
                                 (col[status.tabs]===0 && status.tabs==='open') ?
-                                'tag bg-success text-white' : 'tag bg-error text-white' 
+                                'tag bg-green' : 'tag bg-red ' 
                             }>  
                                 <sup><b>{col[status.tabs]}</b></sup>/<sub>{col.total}</sub>
                             </span>
@@ -183,6 +183,13 @@
     }
 
 
+    .bg-green {
+        background:#28bd1444;
+    }
+
+    .bg-red {
+        background:#d4393944;
+    }
 
     </style>
     

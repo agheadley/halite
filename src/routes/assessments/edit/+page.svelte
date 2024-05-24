@@ -6,6 +6,8 @@ import * as util from '$lib/util';
 import { goto } from '$app/navigation';
 import IntakeBar from '$lib/_IntakeBar.svelte';
 import Chance from '$lib/_Chance.svelte';
+import Modal from '$lib/_Modal.svelte';
+import Export from './Export.svelte';
 
 export let data;
 
@@ -21,6 +23,7 @@ let status = {
     std:{A:'',B:''},
     fb:{row:1,col:50},
     cells:[],
+    download:false
 
 };
 
@@ -295,6 +298,9 @@ let handleKeydown=(event)=>{
 
 <svelte:window on:keydown={handleKeydown} />
 
+<Modal bind:open={status.download}>
+    <Export bind:status={status}/>
+</Modal>
 
 <div class="row">
     <div class="col">
@@ -322,6 +328,9 @@ let handleKeydown=(event)=>{
     </div>
     <div class="col is-vertical-align">
         <a href='/assessments/manage' class="button dark">Manage</a>
+        <button on:click={()=>status.download=true} class="button icon-only outline">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </button>
     </div>
     <div class="col is-vertical-align">
         <div class="tabs">
