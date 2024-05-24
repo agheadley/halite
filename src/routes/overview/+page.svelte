@@ -160,7 +160,7 @@
             <thead>
                 <tr>
                     <td>
-                        <a href='/overview/manage' class="button dark">Oversight</a>
+                        <a href='/overview/manage' class="button dark">Subject Check</a>
                        
                     </td>
                     <td> 

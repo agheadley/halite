@@ -65,6 +65,12 @@ returns true for undefined (as undefined==null), null, [], ""
 - admin page to see which assessments are live
 - export results (intake done)
 
+
+# overview /manage
+
+- don't make TIGs live to parents when scaping data for parents!
+
+
 # Assessments
 
 
