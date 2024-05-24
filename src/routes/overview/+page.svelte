@@ -1,5 +1,5 @@
 <script>
-
+    import { onDestroy } from 'svelte';
     import { onMount } from 'svelte';
     import {config,location,pupils,groups,cohorts} from '$lib/store';
     import SelectCohort from './SelectCohort.svelte';
@@ -98,6 +98,11 @@
         status.rag = f ? f.rag : false;
         
     });
+
+    onDestroy(() => {
+		$cohorts.overview.list.name='';
+        $cohorts.overview.list.pid=[];
+	});
     
     
     </script>

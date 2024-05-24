@@ -60,15 +60,22 @@ returns true for undefined (as undefined==null), null, [], ""
 - F1,F2 now as GCSE LS ? Use % 
 
 
+
+
+# admin/Overview
+
+- add tag.parent checkbox to allow updates for those assessments to make them visible to parents,
+- this means that we can decide not to make TIGs viewable, but make AGs etc
+
 # Overview
 
 
 
-- select team in overview, move to assessments, fails when returning to overview!
 
 # overview /manage
 
 - don't make TIGs live to parents when scaping data for parents!
+- instead add tag.parent column to admin/Overview
 
 
 # Assessments
