@@ -158,7 +158,14 @@
                     <td>({row.sc})</td>
                     {#each row.cols as col,colIndex}
                         <td>
-                            <span class="tag"><sup><b>{col[status.tabs]}</b></sup>/<sub>{col.total}</sub></span>
+                            Add red green bg to whole tag!!!
+                            <span class="tag">
+                                {#if status.tabs!=='open'}
+                                <sup><b><span class={col[status.tabs]>0 ? '' : 'bg-error text-white'}>{col[status.tabs]}</span></b></sup>
+                                {:else}
+                                <sup><b><span class={col[status.tabs]>0 ? 'bg-error text-white' : ''}>{col[status.tabs]}</span></b></sup>
+                                {/if}
+                                /<sub>{col.total}</sub></span>
                         </td>
                     {/each}
                 </tr>
