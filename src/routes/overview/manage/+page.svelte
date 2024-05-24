@@ -19,7 +19,8 @@
        assessments:[],
        cols:[],
        rows:[],
-       table:[]
+       table:[],
+       tabs:'pupil' //'pupil','parent','overview','open'
     };
 
 
@@ -120,6 +121,15 @@
             <h4>Assessment Visibility {status.lv} {status.yr}</h4>
         </div>
         <div class="col">
+            <div class="tabs">
+                <a href={'#'} class={status.tabs==='pupil' ? 'active' : ''}  on:keydown={()=>status.tabs='pupil'} on:click={()=>status.tabs='pupil'}>Pupil</a>
+                <a href={'#'} class={status.tabs==='parent' ? 'active' : ''} on:keydown={()=>status.tabs='parent'} on:click={()=>status.tabs='parent'}>Partent</a>
+                <a href={'#'} class={status.tabs==='overview' ? 'active' : ''} on:keydown={()=>status.tabs='overview'} on:click={()=>status.tabs='overview'}>Overview</a>
+                <a href={'#'} class={status.tabs==='open' ? 'active' : ''} on:keydown={()=>status.tabs='open'} on:click={()=>status.tabs='open'}>Open</a>
+                
+            </div>
+        </div>
+        <div class="col">
             <a href='/overview' class="button outline">Close</a>
         </div>
     </div>
@@ -148,8 +158,7 @@
                     <td>({row.sc})</td>
                     {#each row.cols as col,colIndex}
                         <td>
-                            <div>Par {col.parent}/{col.total}</div>
-                            <div>Pup {col.pupil}/{col.total}</div>
+                            <span class="tag"><sup><b>{col[status.tabs]}</b></sup>/<sub>{col.total}</sub></span>
                         </td>
                     {/each}
                 </tr>
