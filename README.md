@@ -63,7 +63,7 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Reports
 
- - $config.cycle,  active boolean, sort/order number, term string, subterm string (1st/2nd), calendar year number
+ - $config.cycle,  active boolean, sort/order number, term string, subterm string (1st/2nd), calendar year number, max, min lengths for each type of eport.
  - $config.hm - for tid, salulation !
  - $config report order for pastoral - perhaps needed, academic, enrichment can be alphabetical.
  - report table
