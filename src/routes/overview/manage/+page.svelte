@@ -185,10 +185,12 @@
 
     .bg-green {
         background:#28bd1444;
+        border-radius:0.5rem;
     }
 
     .bg-red {
         background:#d4393944;
+        border-radius:0.5rem;
     }
 
     </style>

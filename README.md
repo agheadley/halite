@@ -61,6 +61,18 @@ returns true for undefined (as undefined==null), null, [], ""
 
 
 
+# Reports
+
+ - $config.cycle,  active boolean, sort/order number, term string, subterm string (1st/2nd), calendar year number
+ - $config.hm - for tid, salulation !
+ - $config report order for pastoral - perhaps needed, academic, enrichment can be alphabetical.
+ - report table
+   - yr, lv, cycle _id, type (Academic/Enrichment/Pastoral), sn, pn, pid, id (isams ID), text, effort{class:, prep}, cycle txt (Summer 1st 2024), tid, sal (teacher salutation)
+
+- PDFs !
+- management tools for missing reports, changes, generation !
+
+
 
 # admin/Overview
 
@@ -90,7 +102,7 @@ returns true for undefined (as undefined==null), null, [], ""
 - export let open - closes modal - but not shown if pupil - as single page - so no modal used for display !
 - need to check this for parent, pupil and teachers !!!!
 
-
+# Parent - to do !
 
 # Admin
 
