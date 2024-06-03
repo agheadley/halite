@@ -5,12 +5,14 @@
     import { goto } from '$app/navigation';
     import Import from './Import.svelte';
     import Overview from './Overview.svelte';
+    import Reports from './Reports.svelte';
+
     /** @type {any}*/
     export let data;
 
     let status={
         option:'Overview',
-        options:['Overview','Import'],
+        options:['Overview','Import','Reports'],
         user:''
     };
 
@@ -52,7 +54,7 @@
 
     {#if status.option==='Overview'}<Overview bind:status={status}/>{/if}
     {#if status.option==='Import'}<Import bind:status={status}/>{/if}
-    
+    {#if status.option==='Reports'}<Reports bind:status={status}/>{/if}
     
     <style>
     </style>

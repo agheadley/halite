@@ -29,10 +29,23 @@ export let config=writable({
     ],
     overview:[
         {lv:"",yr:0,exam:false,from:"0000-00-00",to:"0000-00-00",n:"",dl:"",dt:0}
+    ],
+    cycle:[
+        {
+        active:false,
+        index:0,
+        term:"Summer",
+        subterm:"2nd",
+        year:2024,
+        header:{active:false,txt:''},
+        A:{active:true,length:{min:180,max:600},effort:{class:true,prep:true}},
+        E:{active:true,length:{min:200,max:600},effort:{class:false,prep:false}},
+        P:{active:true,length:{min:180,max:600},effort:{class:false,prep:false}}
+            
+        }
     ]
 
 });
-
 
 
 export let pupils=writable([
