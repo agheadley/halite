@@ -76,7 +76,8 @@
 
         if(res.matchedCount===1) {
             $alert.msg=`Overivew Configuration saved -  ${res.modifiedCount===1 ? 'changes made' :'no changes'}`;
-            
+            data.confirm=false;
+   
         } else {
             $alert.type='error';
             $alert.msg=`Error updating overview configuration.`;

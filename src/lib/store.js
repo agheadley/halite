@@ -43,7 +43,10 @@ export let config=writable({
         P:{active:true,length:{min:180,max:600},effort:{class:false,prep:false}}
             
         }
-    ]
+    ],
+    term:['Winter',"Spring","Summer"],
+    subterm:['1st','2nd'],
+    effort:['4','3','2','1','N/A']
 
 });
 
