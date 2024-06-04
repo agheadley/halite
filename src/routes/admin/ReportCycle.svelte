@@ -11,8 +11,6 @@
     /** @type {any}*/
     let data={
         rows:[],
-        tabs:['Cycle','Create','Edit'],
-        tabIndex:0,
         assessments:[],
         cohorts:[],
         index:0,
@@ -30,6 +28,8 @@
         let m=$config.term[0]==='Winter' ? '12' :    $config.term[0]==='Spring' ? '04' : '06';
         let ay=util.getAcademicYear(`${y}-${m}-01`,$config.rollover.month);
         console.log(ay);
+
+
 
         data.rows.push( 
             {
@@ -148,7 +148,7 @@
     };
         
     onMount(async () => {
-        console.log('/admin Reports.svelte');
+        console.log('/admin ReportCycle.svelte');
         console.log(status);
         
 
@@ -301,7 +301,7 @@
                             <legend>Types (Active, Lengths,Efforts)</legend>
 
                             <p class="grouped">
-                                Academic
+                                ACADEMIC
                                 <input type=checkbox bind:checked={row.A.active}>
                                 <input id={`length-${rowIndex}-A`} type=number step="1" on:change={()=>row.A.length.min  = row.A.length.min > 0 ? parseInt(row.A.length.min) : 0} bind:value={row.A.length.min}/>
                                 <label for={`length-${rowIndex}-A`}>TO</label>
@@ -312,7 +312,7 @@
                                 <input id={`ep-${rowIndex}-A`} type=checkbox bind:checked={row.A.effort.prep}>
                             </p>
                             <p class="grouped">
-                                Enrichment
+                                ENRICHMENT
                                 <input type=checkbox bind:checked={row.E.active}>
                                 <input id={`length-${rowIndex}-E`} type=number step="1" on:change={()=>row.E.length.min  = row.E.length.min > 0 ? parseInt(row.E.length.min) : 0} bind:value={row.E.length.min}/>
                                 <label for={`length-${rowIndex}-E`}>TO</label>
@@ -323,7 +323,7 @@
                                 <input id={`ep-${rowIndex}-E`} type=checkbox bind:checked={row.E.effort.prep}>
                             </p>
                             <p class="grouped">
-                                Pastoral
+                                PASTORAL
                                 <input type=checkbox bind:checked={row.P.active}>
                                 <input id={`length-${rowIndex}-P`} type=number step="1" on:change={()=>row.P.length.min  = row.P.length.min > 0 ? parseInt(row.P.length.min) : 0} bind:value={row.P.length.min}/>
                                 <label for={`length-${rowIndex}-P`}>TO</label>
@@ -332,6 +332,14 @@
                                 <input id={`ec-${rowIndex}-P`} type=checkbox bind:checked={row.P.effort.class}>
                                 <label for={`ep-${rowIndex}-P`} >PREP</label>
                                 <input id={`ep-${rowIndex}-P`} type=checkbox bind:checked={row.P.effort.prep}>
+                            </p>
+                            <p class="grouped">
+                                {#if row.comment}
+                                COMMENTS
+                               {#each row.comment as col,colIndex}
+                               F{col.fm} <input type=checkbox bind:checked={col.comment}>
+                               {/each}
+                               {/if}
                             </p>
                         </fieldset>
                     </div>

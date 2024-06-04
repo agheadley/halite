@@ -4,27 +4,29 @@
     import * as util from '$lib/util';
     import {alert,config} from '$lib/store';
     import Modal from '$lib/_Modal.svelte';
-    import ReportCycle from './ReportCycle.svelte';
-    import ReportCreate from './ReportCreate.svelte';
 
     /** @type {any}*/
     export let status;
 
     /** @type {any}*/
     let data={
-        rows:[],
-        tabs:['Cycle','Create','Edit'],
-        tabIndex:0,
-        assessments:[],
-        cohorts:[],
-        index:0,
-        confirm:false,
-        valid:true
+       active:false,
+       cycle:{},
+       reports:[]
     };
     
     let addRow=()=>{
 
         let index=data.rows.length && data.rows.length>0 ? data.rows[data.rows.length-1].index+1 : 0;
+
+        let comments=$config.year.map((/** @type {{ fm: any; }} */ el)=>({fm:el.fm,comment:false}));
+
+        let y=new Date().getFullYear();
+        let m=$config.term[0]==='Winter' ? '12' :    $config.term[0]==='Spring' ? '04' : '06';
+        let ay=util.getAcademicYear(`${y}-${m}-01`,$config.rollover.month);
+        console.log(ay);
+
+
 
         data.rows.push( 
             {
@@ -32,7 +34,9 @@
                 index:index,
                 term:$config.term[0],
                 subterm:$config.subterm[0],
-                year:new Date().getFullYear(),
+                year:y,
+                ayear:ay,
+                comment:comments,
                 A:{active:false,length:{min:180,max:600},effort:{class:true,prep:true}},
                 E:{active:false,length:{min:300,max:600},effort:{class:false,prep:false}},
                 P:{active:false,length:{min:300,max:600},effort:{class:false,prep:false}},
@@ -66,6 +70,19 @@
         data.rows=data.rows;
     };
 
+      /**
+     * 
+     * @param {number} index
+     */
+    let changeYearTerm=(index)=>{
+        data.rows[index].year  =  data.rows[index].year > 0 ? parseInt( data.rows[index].year) : 0;
+
+        let y=data.rows[index].year;
+        let m=data.rows[index].term==='Winter' ? '12' :    data.rows[index].term==='Spring' ? '04' : '06';
+        data.rows[index].ayear=util.getAcademicYear(`${y}-${m}-01`,$config.rollover.month);
+
+    };
+
 
      let confirmCycle=()=>{
         data.valid=true;
@@ -94,6 +111,8 @@
                 term:row.term,
                 subterm:row.subterm,
                 year:row.year,
+                ayear:row.ayear,
+                comment:row.comment,
                 A:{active:row.A.active,length:{min:row.A.length.min,max:row.A.length.max},effort:{class:row.A.effort.class,prep:row.A.effort.prep}},
                 E:{active:row.E.active,length:{min:row.E.length.min,max:row.E.length.max},effort:{class:row.E.effort.class,prep:row.E.effort.prep}},
                 P:{active:row.P.active,length:{min:row.P.length.min,max:row.P.length.max},effort:{class:row.P.effort.class,prep:row.P.effort.prep}},
@@ -124,11 +143,14 @@
         }
        
     };
+
+    let create=async()=>{
+
+    };
         
     onMount(async () => {
-        console.log('/admin Reports.svelte');
+        console.log('/admin ReportCreate.svelte');
         console.log(status);
-        
 
        
         let response = await fetch('/edge/read', {
@@ -139,75 +161,110 @@
         let res= await response.json();
         $config=res[0] ? res[0] : {};
 
-        console.log($config.cycle);
-        data.rows=[];
-
-        for(let row of $config.cycle) {
-            let obj= {
-                active:row.active,
-                index:row.index,
-                term:row.term,
-                subterm:row.subterm,
-                year:row.year,
-                A:{active:row.A.active,length:{min:row.A.length.min,max:row.A.length.max},effort:{class:row.A.effort.class,prep:row.A.effort.prep}},
-                E:{active:row.E.active,length:{min:row.E.length.min,max:row.E.length.max},effort:{class:row.E.effort.class,prep:row.E.effort.prep}},
-                P:{active:row.P.active,length:{min:row.P.length.min,max:row.P.length.max},effort:{class:row.P.effort.class,prep:row.P.effort.prep}},
-            
-            };
-            data.rows.push(obj);
-         
-        }   
-
-        data.rows=data.rows.sort((/** @type {{ index: number; }} */ a,/** @type {{ index: number; }} */ b)=>a.index-b.index);
-
-        console.log(data);
+        data.cycle=$config.cycle.find((/** @type {{ active: any; }} */ el)=>el.active);
+        data.active=data.cycle.year && data.cycle.year>0 ? true : false;
         
+        if(data.active) {
+            response = await fetch('/edge/read', {
+                method: 'POST',
+                body: JSON.stringify({collection:'reports',filter:{cycle:data.cycle.index},projection:{}}),
+                headers: {'content-type': 'application/json'}
+            });
+            data.reports= await response.json();
+
+
+
+        }
+       
+       
+    
     });
     
     </script>
 
     <hr/>
     
-
-    <div class="row">
-        <div class="col">
-            <div class="tabs">
-                {#each data.tabs as row,rowIndex}
-                <a href={'#'} on:click={()=>data.tabIndex=rowIndex} class={data.tabIndex===rowIndex ? 'active':''}>{row}</a>        
-                {/each}
+    <Modal bind:open={data.confirm}>
+        <div class="row">
+            <div class="col">
+                <h4>Save Report Cycles</h4>
             </div>
         </div>
-    </div>
+      
+       
+        <div class="row">
+            <div class="col">
+               {#if data.valid}
+                    <span class="tag">All valid</span>
+               {:else}
+                <span class="tag bg-error text-white">Complete data for each entry. CHECK ALL CYCLES.</span>
+               {/if}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+               &nbsp;
+            </div>
+        </div>
+        <div class="row">
+
+            <div class="col">
+                <button class="button error" disabled={!data.valid} on:click={saveCycle}>Save</button>
+            </div>
+            <div class="col">
+                <button class="button outline" on:click={()=>data.confirm=false}>Cancel</button>
+            </div>
+        </div>
+    </Modal>
+    
 
 
-    {#if data.tabs[data.tabIndex]==='Edit'}
+
+
+  
     <div class="row">
-        <div class="col is-vertical-align"><h4>Edit Report Data</h4></div> 
+        <div class="col is-vertical-align"><h4>Create Reports</h4></div> 
        
     </div>
 
  
+    {#if data.active}
+    <div class="row">
+        <div class="col is-vertical-align">
+            <span class="tag bold">Report Cycle : {data.cycle.term} {data.cycle.subterm} {data.cycle.year}</span>
+        </div> 
+    </div>
+    <div class="row">
+        <div class="col">
+            {#if data.reports.length && data.reports.length>1}
+            <span class="tag">${data.reports.length} reports already exist, please edit before trying to create.</span>
+            {:else}
+                <button on:click={create} class="button error">Create</button>
+            {/if}
+        </div>
+    </div>
+    {:else}
+    <div class="row">
+        <div class="col is-vertical-align">
+    <span class="tag">No active cycle to create reports</span>
+    </div></div>
+    {/if}
+
     <div class="row">
         <div class="col">
            &nbsp;
         </div>
     </div>
 
-    {/if} <!-- /tab==='Edit'-->
+   
+  
+         
 
-
-    {#if data.tabs[data.tabIndex]==='Create'}
-        <ReportCreate bind:status={status}/>
-
-    {/if} <!-- /tab==='Create'-->
-
-
-    {#if data.tabs[data.tabIndex]==='Cycle'}
-        <ReportCycle bind:status={status}/>
-    {/if}
-
-    
     
     <style>
     
+    .bold {
+        font-weight:600;
+    }
+  
     </style>
