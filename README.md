@@ -86,7 +86,12 @@ How to deal with ToK reports?
 
 - every PR has HoD explanation text! Needs to be only text in PR1, Suplement report text in PR2
 
-- some PR1 need full reports in some year groups.
+- some PR1 need full reports in some year groups. We can do this by deleting or adding comments in manager ?
+- or add Form commnet / no comment checkbox ?
+- use to create/ update reports!
+
+
+
 
 
 
@@ -122,6 +127,8 @@ How to deal with ToK reports?
 
 - export let open - closes modal - but not shown if pupil - as single page - so no modal used for display !
 - need to check this for parent, pupil and teachers !!!!
+- need to display reports past and present too!
+
 
 # Parent - to do !
 
