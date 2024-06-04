@@ -4,6 +4,7 @@
     import * as util from '$lib/util';
     import {alert,config} from '$lib/store';
     import Modal from '$lib/_Modal.svelte';
+    import ReportCycle from './ReportCycle.svelte';
 
     /** @type {any}*/
     export let status;
@@ -166,39 +167,6 @@
 
     <hr/>
     
-    <Modal bind:open={data.confirm}>
-        <div class="row">
-            <div class="col">
-                <h4>Save Report Cycles</h4>
-            </div>
-        </div>
-      
-       
-        <div class="row">
-            <div class="col">
-               {#if data.valid}
-                    <span class="tag">All valid</span>
-               {:else}
-                <span class="tag bg-error text-white">Complete data for each entry. CHECK ALL CYCLES.</span>
-               {/if}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-               &nbsp;
-            </div>
-        </div>
-        <div class="row">
-
-            <div class="col">
-                <button class="button error" disabled={!data.valid} on:click={saveCycle}>Save</button>
-            </div>
-            <div class="col">
-                <button class="button outline" on:click={()=>data.confirm=false}>Cancel</button>
-            </div>
-        </div>
-    </Modal>
-    
 
     <div class="row">
         <div class="col">
@@ -244,122 +212,10 @@
 
 
     {#if data.tabs[data.tabIndex]==='Cycle'}
-    <div class="row">
-        <div class="col is-vertical-align"><h4>Edit Report Cycles</h4></div> 
-       
-    </div>
+        <ReportCycle bind:status={status}/>
+    {/if}
 
- 
-    <div class="row">
-        <div class="col">
-           &nbsp;
-        </div>
-    </div>
-
-   
-  
-            {#each data.rows as row,rowIndex}
-              
-                <div class="row">
-                   
-                    <div class="col-2 is-vertical-align">
-                        <button class="button error icon-only" on:click={()=>removeRow(rowIndex)}>         
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                        </button>
-                        &nbsp;
-                        <fieldset id="index">
-                            <legend>Active?</legend>
-                            <input type=checkbox bind:checked={row.active} on:change={()=>changeActive(rowIndex)}>
-                            {row.index}
-                    </fieldset>
-                    </div>
-                   
-                    <div class="col-3 is-vertical-align">
-                        <fieldset id="cohort" class="is-full-width">
-                            <legend>Main Details</legend>
-                            <p class="grouped">
-                                <select  id="details" bind:value={row.term}>
-                                    <optgroup label="Term">
-                                            {#each $config.term as item,index}
-                                                <option value={item}>{item}</option>
-                                            {/each}
-                                    </optgroup>
-                                  </select>
-                                  <select  id="cohort" bind:value={row.subterm}>
-                                    <optgroup label="Timing">
-                                            {#each $config.subterm as item,index}
-                                                <option value={item}>{item}</option>
-                                            {/each}
-                                    </optgroup>
-                                  </select>
-                            </p>
-                            <p class="grouped">
-                                <input id={`year-${rowIndex}`} type=number step="1" on:change={()=>row.year  = row.year > 0 ? parseInt(row.year) : 0} bind:value={row.year}/>
-                                <label for={`year-${rowIndex}`}>CALENDAR YEAR</label>
-                            </p>
-                        </fieldset>
-                    </div>
-                    <div class="col-7  is-vertical-align">
-                        <fieldset id="cohort" class="is-full-width">
-                            <legend>Types (Active, Lengths,Efforts)</legend>
-
-                            <p class="grouped">
-                                Academic
-                                <input type=checkbox bind:checked={row.A.active}>
-                                <input id={`length-${rowIndex}-A`} type=number step="1" on:change={()=>row.A.length.min  = row.A.length.min > 0 ? parseInt(row.A.length.min) : 0} bind:value={row.A.length.min}/>
-                                <label for={`length-${rowIndex}-A`}>TO</label>
-                                <input type=number step="1" on:change={()=>row.A.length.max  = row.A.length.max > 0 ? parseInt(row.A.length.max) : 0}  bind:value={row.A.length.max}/>
-                                <label for={`ec-${rowIndex}-A`} >CLASS</label>
-                                <input id={`ec-${rowIndex}-A`} type=checkbox bind:checked={row.A.effort.class}>
-                                <label for={`ep-${rowIndex}-A`} >PREP</label>
-                                <input id={`ep-${rowIndex}-A`} type=checkbox bind:checked={row.A.effort.prep}>
-                            </p>
-                            <p class="grouped">
-                                Enrichment
-                                <input type=checkbox bind:checked={row.E.active}>
-                                <input id={`length-${rowIndex}-E`} type=number step="1" on:change={()=>row.E.length.min  = row.E.length.min > 0 ? parseInt(row.E.length.min) : 0} bind:value={row.E.length.min}/>
-                                <label for={`length-${rowIndex}-E`}>TO</label>
-                                <input type=number step="1" on:change={()=>row.E.length.max  = row.E.length.max > 0 ? parseInt(row.E.length.max) : 0}  bind:value={row.E.length.max}/>
-                                <label for={`ec-${rowIndex}-E`} >CLASS</label>
-                                <input id={`ec-${rowIndex}-E`} type=checkbox bind:checked={row.E.effort.class}>
-                                <label for={`ep-${rowIndex}-E`} >PREP</label>
-                                <input id={`ep-${rowIndex}-E`} type=checkbox bind:checked={row.E.effort.prep}>
-                            </p>
-                            <p class="grouped">
-                                Pastoral
-                                <input type=checkbox bind:checked={row.P.active}>
-                                <input id={`length-${rowIndex}-P`} type=number step="1" on:change={()=>row.P.length.min  = row.P.length.min > 0 ? parseInt(row.P.length.min) : 0} bind:value={row.P.length.min}/>
-                                <label for={`length-${rowIndex}-P`}>TO</label>
-                                <input type=number step="1" on:change={()=>row.P.length.max  = row.P.length.max > 0 ? parseInt(row.P.length.max) : 0}  bind:value={row.P.length.max}/>
-                                <label for={`ec-${rowIndex}-P`} >CLASS</label>
-                                <input id={`ec-${rowIndex}-P`} type=checkbox bind:checked={row.P.effort.class}>
-                                <label for={`ep-${rowIndex}-P`} >PREP</label>
-                                <input id={`ep-${rowIndex}-P`} type=checkbox bind:checked={row.P.effort.prep}>
-                            </p>
-                        </fieldset>
-                    </div>
-                    
-                
-
-                 
-
-               
-                </div>
-              
-
-            {/each}
-            <div class="row">
-                <div class="col">
-                    <button class="button dark icon-only" on:click={addRow}>         
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                    </button>
-            </div>
-                <div class="col">
-                    <button class="button dark" on:click={confirmCycle}>Save</button>
-                </div>
-            </div>
-   
-    {/if} <!-- /tab==='Cycle'-->
+    
     
     <style>
     
