@@ -63,6 +63,11 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Reports
 
+Add txt to cycle ! Sorry central message can be formed!.
+Use <PRE> !
+
+
+
 Move report create and report cycles to separate components referenced from Report.svelte
 Only delete last item of cycle and severe warning! Store cycle text in report record too for safety!
 You need term and year from.xycle too!
@@ -78,6 +83,12 @@ How to deal with ToK reports?
  - $config report order for pastoral - perhaps needed, academic, enrichment can be alphabetical.
  - report table
    - yr, lv, cycle _id, type (Academic/Enrichment/Pastoral), sn, pn, pid, id (isams ID), text, effort{class:, prep}, cycle txt (Summer 1st 2024), tid, sal (teacher salutation)
+
+- every PR has HoD explanation text! Needs to be only text in PR1, Suplement report text in PR2
+
+- some PR1 need full reports in some year groups.
+
+
 
 - PDFs !
 - management tools for missing reports, changes, generation !
