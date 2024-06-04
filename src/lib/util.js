@@ -15,7 +15,23 @@ export let isEmpty=(value)=>{
     return (value == null || value.length === 0);
   }
   
+/**
+ * 
+ * @param {string} yyyymmdd 'yyyy-mm-dd' 
+ * @param {number} rollover
+ * @returns {string}
+ */
+export let getAcademicYear=(yyyymmdd,rollover)=>{
+  let x = new Date(yyyymmdd);
+  let finalYear=x.getFullYear();
+  let month=x.getMonth()+1;
+  console.log(month,finalYear);
 
+  if(month>rollover) finalYear+=1;
+  
+
+  return `${finalYear-1}/${finalYear}`;
+};
 
 /**
  * @returns {string}

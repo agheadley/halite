@@ -24,13 +24,22 @@
 
         let index=data.rows.length && data.rows.length>0 ? data.rows[data.rows.length-1].index+1 : 0;
 
+        let comments=$config.year.map((/** @type {{ fm: any; }} */ el)=>({fm:el.fm,comment:false}));
+
+        let y=new Date().getFullYear();
+        let m=$config.term[0]==='Winter' ? '12' :    $config.term[0]==='Spring' ? '04' : '06';
+        let ay=util.getAcademicYear(`${y}-${m}-01`,$config.rollover.month);
+        console.log(ay);
+
         data.rows.push( 
             {
                 active:false,
                 index:index,
                 term:$config.term[0],
                 subterm:$config.subterm[0],
-                year:new Date().getFullYear(),
+                year:y,
+                ayear:ay,
+                comment:comments,
                 A:{active:false,length:{min:180,max:600},effort:{class:true,prep:true}},
                 E:{active:false,length:{min:300,max:600},effort:{class:false,prep:false}},
                 P:{active:false,length:{min:300,max:600},effort:{class:false,prep:false}},
@@ -64,6 +73,19 @@
         data.rows=data.rows;
     };
 
+      /**
+     * 
+     * @param {number} index
+     */
+    let changeYearTerm=(index)=>{
+        data.rows[index].year  =  data.rows[index].year > 0 ? parseInt( data.rows[index].year) : 0;
+
+        let y=data.rows[index].year;
+        let m=data.rows[index].term==='Winter' ? '12' :    data.rows[index].term==='Spring' ? '04' : '06';
+        data.rows[index].ayear=util.getAcademicYear(`${y}-${m}-01`,$config.rollover.month);
+
+    };
+
 
      let confirmCycle=()=>{
         data.valid=true;
@@ -92,6 +114,8 @@
                 term:row.term,
                 subterm:row.subterm,
                 year:row.year,
+                ayear:row.ayear,
+                comment:row.comment,
                 A:{active:row.A.active,length:{min:row.A.length.min,max:row.A.length.max},effort:{class:row.A.effort.class,prep:row.A.effort.prep}},
                 E:{active:row.E.active,length:{min:row.E.length.min,max:row.E.length.max},effort:{class:row.E.effort.class,prep:row.E.effort.prep}},
                 P:{active:row.P.active,length:{min:row.P.length.min,max:row.P.length.max},effort:{class:row.P.effort.class,prep:row.P.effort.prep}},
@@ -147,6 +171,8 @@
                 term:row.term,
                 subterm:row.subterm,
                 year:row.year,
+                ayear:row.ayear,
+                comment:row.comment,
                 A:{active:row.A.active,length:{min:row.A.length.min,max:row.A.length.max},effort:{class:row.A.effort.class,prep:row.A.effort.prep}},
                 E:{active:row.E.active,length:{min:row.E.length.min,max:row.E.length.max},effort:{class:row.E.effort.class,prep:row.E.effort.prep}},
                 P:{active:row.P.active,length:{min:row.P.length.min,max:row.P.length.max},effort:{class:row.P.effort.class,prep:row.P.effort.prep}},
@@ -223,14 +249,22 @@
                 <div class="row">
                    
                     <div class="col-2 is-vertical-align">
-                        <button disabled={rowIndex<data.rows.length-1} class="button error icon-only" on:click={()=>removeRow(rowIndex)}>         
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                        </button>
-                        &nbsp;
                         <fieldset id="index">
-                            <legend>Active?</legend>
+                            <legend>CYCLE</legend>
+                            <p class="grouped">
+                                <button disabled={rowIndex<data.rows.length-1} class="button error icon-only" on:click={()=>removeRow(rowIndex)}>         
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                </button>
+                            </p>
+                                <p class="grouped">
+                                    ACTIVE?
                             <input type=checkbox bind:checked={row.active} on:change={()=>changeActive(rowIndex)}>
-                            {row.index}
+                            
+
+                        </p>
+                        <p class="grouped">
+                            Index {row.index}
+                        </p>
                     </fieldset>
                     </div>
                    
@@ -238,7 +272,7 @@
                         <fieldset id="cohort" class="is-full-width">
                             <legend>Main Details</legend>
                             <p class="grouped">
-                                <select  id="details" bind:value={row.term}>
+                                <select  id="details" bind:value={row.term}  on:change={()=>changeYearTerm(rowIndex)}>
                                     <optgroup label="Term">
                                             {#each $config.term as item,index}
                                                 <option value={item}>{item}</option>
@@ -254,8 +288,11 @@
                                   </select>
                             </p>
                             <p class="grouped">
-                                <input id={`year-${rowIndex}`} type=number step="1" on:change={()=>row.year  = row.year > 0 ? parseInt(row.year) : 0} bind:value={row.year}/>
-                                <label for={`year-${rowIndex}`}>CALENDAR YEAR</label>
+                                <input id={`year-${rowIndex}`} type=number step="1" on:change={()=>changeYearTerm(rowIndex)} bind:value={row.year}/>
+                                <label for={`year-${rowIndex}`}>YEAR</label>
+                            </p>
+                            <p class="grouped">
+                                ACDEMIC YEAR {row.ayear}
                             </p>
                         </fieldset>
                     </div>

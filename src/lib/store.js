@@ -36,8 +36,10 @@ export let config=writable({
         index:0,
         term:"Summer",
         subterm:"2nd",
+        ayear:'2023/2024',
         year:2024,
         header:{active:false,txt:''},
+        comment:[{fm:7,comments:false}],
         A:{active:true,length:{min:180,max:600},effort:{class:true,prep:true}},
         E:{active:true,length:{min:200,max:600},effort:{class:false,prep:false}},
         P:{active:true,length:{min:180,max:600},effort:{class:false,prep:false}}
