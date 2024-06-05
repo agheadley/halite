@@ -12,7 +12,8 @@
     let data={
        cycle:{},
        reports:[],
-       groups:[]
+       groups:[],
+       pupils:[]
     };
     
     
@@ -81,7 +82,7 @@
             if(row.teacher) {
             let gps=data.groups.filter((/** @type {{ fm: any; }} */ el)=>el.fm===row.fm);
 
-            console.log(`hod build F${row.fm},found ${gps.length} groups`);
+            console.log(`teacher build F${row.fm},found ${gps.length} groups`);
             for(let gp of gps) {
                
                 for(let pupil of gp.pupil) {
@@ -122,12 +123,113 @@
         console.log(data.reports);
     };
 
+    let buildHMReports=()=>{
+        for(let row of data.cycle.detail) {
+            if(row.hm) {
+            let pupils=data.pupils.filter((/** @type {{ fm: any; }} */ el)=>el.fm===row.fm);
+
+            console.log(`HM build F${row.fm},found ${pupils.length} pupils`);
+            for(let pupil of pupils) {
+               
+                        
+                    let f=$config.report.hm.find((/** @type {{ hse: any; }} */ el)=>el.hse===pupil.hse);
+                    let hm=f? {tid:f.tid,sal:f.sal} :{tid:'',sal:''};
+            
+                    let report={
+                        coid:data.cycle._id,
+                        ay:data.cycle.ay,
+                        y:data.cycle.y,
+                        tt:data.cycle.tt,
+                        ts:data.cycle.ts,
+                        min:data.cycle.length.P.min,
+                        max:data.cycle.length.P.max,
+                        type:'P',
+                        author:{type:'hm',tid:hm.tid,sal:hm.sal},
+                        ec:'',
+                        ep:'',
+                        txt:'',
+                        fm:row.fm,
+                        g:'',
+                        sc:'',
+                        ss:'',
+                        sl:'',
+                        lv:pupil.lv,
+                        yr:pupil.yr,
+                        pupil:{pid:pupil.pid,sn:pupil.sn,pn:pupil.pn,hse:pupil.hse,tg:pupil.tg,gnd:pupil.gnd,id:pupil.id}
+                    };
+
+                    data.reports.push(report);
+                
+                    
+
+
+              
+            } // end of pupil for
+            }
+        } // end of detail for
+
+        console.log(data.reports);
+    };
+
+    let buildTutorReports=()=>{
+        for(let row of data.cycle.detail) {
+            if(row.tutor) {
+            let pupils=data.pupils.filter((/** @type {{ fm: any; }} */ el)=>el.fm===row.fm);
+
+            console.log(`Tutor build F${row.fm},found ${pupils.length} pupils`);
+            for(let pupil of pupils) {
+               
+                        
+                    let f=$teachers.find((el)=>el.tid===pupil.tg);
+                    let tut=f? {tid:f.tid,sal:f.sal} :{tid:'',sal:''};
+                    // testing
+                    tut={tid:'AGH',sal:'Dr H'}
+
+
+                    let report={
+                        coid:data.cycle._id,
+                        ay:data.cycle.ay,
+                        y:data.cycle.y,
+                        tt:data.cycle.tt,
+                        ts:data.cycle.ts,
+                        min:data.cycle.length.P.min,
+                        max:data.cycle.length.P.max,
+                        type:'P',
+                        author:{type:'tutor',tid:tut.tid,sal:tut.sal},
+                        ec:'',
+                        ep:'',
+                        txt:'',
+                        fm:row.fm,
+                        g:'',
+                        sc:'',
+                        ss:'',
+                        sl:'',
+                        lv:pupil.lv,
+                        yr:pupil.yr,
+                        pupil:{pid:pupil.pid,sn:pupil.sn,pn:pupil.pn,hse:pupil.hse,tg:pupil.tg,gnd:pupil.gnd,id:pupil.id}
+                    };
+
+                    data.reports.push(report);
+                
+                    
+
+
+              
+            } // end of pupil for
+            }
+        } // end of detail for
+
+        console.log(data.reports);
+    };
+
 
 
     let create=async()=>{
         data.reports=[];
         buildHoDReports();
         buildTeacherReports();
+        buildHMReports();
+        buildTutorReports();
 
         let response = await fetch('/edge/insert', {
             method: 'POST',
@@ -187,14 +289,23 @@
             //console.log(g.lv,g.yr,g.g,g.fm);
         }
 
+         // copy groups with a filter
+         data.pupils=$pupils.filter(el=>el.yr>0);
+
+        /* add fm to groups */
+      
+
+        for(let g of data.pupils) {
+        
+            let f=$config.year.find((/** @type {{ lv: any; x: number; }} */ el)=>el.lv===g.lv && el.x===(g.yr-currentYr));
+            g.fm = f ? f.fm : -1;
+            
+        }
+
         console.log($teachers);
 
-
-        let houses=[];
-        for(let p of $pupils) {
-            if(!houses.find(el=>el.hse===p.hse)) houses.push({hse:p.hse,tid:'AGH',sal:'Dr H'});
-        }
-        console.log(JSON.stringify(houses));
+        console.log($pupils);
+       
     });
      
     
