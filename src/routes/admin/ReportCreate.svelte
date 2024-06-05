@@ -63,6 +63,7 @@
                         sl:gp.sl,
                         lv:gp.lv,
                         yr:gp.yr,
+                        log:`${status.user}|${util.getDate()}`,
                         pupil:{pid:pupil.pid,sn:pupil.sn,pn:pupil.pn,hse:pupil.hse,tg:pupil.tg,gnd:pupil.gnd,id:pupil.id}
                     };
 
@@ -107,6 +108,7 @@
                         sl:gp.sl,
                         lv:gp.lv,
                         yr:gp.yr,
+                        log:`${status.user}|${util.getDate()}`,
                         pupil:{pid:pupil.pid,sn:pupil.sn,pn:pupil.pn,hse:pupil.hse,tg:pupil.tg,gnd:pupil.gnd,id:pupil.id}
                     };
 
@@ -155,6 +157,7 @@
                         sl:'',
                         lv:pupil.lv,
                         yr:pupil.yr,
+                        log:`${status.user}|${util.getDate()}`,
                         pupil:{pid:pupil.pid,sn:pupil.sn,pn:pupil.pn,hse:pupil.hse,tg:pupil.tg,gnd:pupil.gnd,id:pupil.id}
                     };
 
@@ -206,7 +209,9 @@
                         sl:'',
                         lv:pupil.lv,
                         yr:pupil.yr,
+                        log:`${status.user}|${util.getDate()}`,
                         pupil:{pid:pupil.pid,sn:pupil.sn,pn:pupil.pn,hse:pupil.hse,tg:pupil.tg,gnd:pupil.gnd,id:pupil.id}
+                       
                     };
 
                     data.reports.push(report);

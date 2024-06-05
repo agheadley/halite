@@ -3,19 +3,21 @@
     import { onMount } from 'svelte';
     import {config,location,pupils,groups,cohorts} from '$lib/store';
     import { goto } from '$app/navigation';
+	import HoD from './HoD.svelte';
     
-    
+    /** @type {any}*/
+    export let data;
+
+    /** @type {any}*/
     let status={
-        table:[],
-        select:false
+        user:'',
+        cycle:{},
+        reports:[],
+        subjects:[]
+        
     };
 
-    $:{
-        if(status.select) {
-            console.log('changed cohort...');
-            status.select=false;
-        }
-    }
+    
     
     
     onMount(async () => {
@@ -24,13 +26,23 @@
         console.log('pupils',$pupils);
         console.log('groups',$groups);
         console.log('cohorts',$cohorts);
+
+        status.reports=data.reports;
+
+        status.user=data.user.name;
+
+        status.subjects=[];
+        for(let item of status.reports.filter((/** @type {{ type: string; author: { type: string; }; }} */ el)=>el.type==='A' && el.author.type==='hod')) {
+            if(!status.subjects.find((/** @type {{ ss: any; sc: any; fm: any; }} */ el)=>el.ss===item.ss && el.sc===item.sc && el.fm===item.fm)) 
+                status.subjects.push({sl:item.sl,ss:item.ss,sc:item.sc,fm:item.fm,tid:item.author.tid});
+        }
+        status.subjects=status.subjects.sort((/** @type {{ fm: number; sc: string; sl: string; }} */ a,/** @type {{ fm: number; sc: any; sl: any; }} */ b)=>b.fm-a.fm || a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl));
         
+        console.log(status.subjects);
     });
     
 
-    let x=[
-        [{x:2},{x:3},{x:2,y:1}],[{x:3},{y:7},{x:6,y:9}]
-    ];
+  
     
     </script>
     
@@ -41,15 +53,22 @@
     
     <div class="row">
         <div class="col is-vertical-align">
-           <h4>/reports</h4>
+           <button class="button dark">Teachers</button>
+           <button class="button dark" on:click={()=>status.tab='hod'}>HoDs</button>
+           <button class="button dark">Tutors</button>
+           <button class="button dark">HMs</button>
+           <button class="button dark">Enrichment</button>
+           
         </div>
     </div>
     
+    <hr/>
+    <div class="row">
+        <div class="col">&nbsp;</div>
+    </div>
 
-
-    <p>{JSON.stringify(x)}</p>
-
-    <p>{JSON.stringify(x.flat())}</p>
+    {#if status.tab==='hod'}<HoD bind:status={status}/> {/if}
+   
 
     <style>
     </style>
