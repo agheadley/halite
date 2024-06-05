@@ -31,7 +31,7 @@ export let config=writable({
         tt:['Winter',"Spring","Summer"],
         ts:['1st','2nd'],
         e:{list:['4','3','2','1','N/A'],default:'3'},
-        hm:[],
+        hm:[{hse:'',tid:'',sal:''}],
         hoy:[]
     }
 

@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import * as file from '$lib/file';
     import * as util from '$lib/util';
-    import {alert,config,groups,teachers} from '$lib/store';
+    import {alert,config,groups,teachers,pupils} from '$lib/store';
     import Modal from '$lib/_Modal.svelte';
 
     /** @type {any}*/
@@ -19,72 +19,115 @@
     let buildHoDReports=()=>{
         for(let row of data.cycle.detail) {
             if(row.hod) {
-                let gps=data.groups.filter((/** @type {{ fm: any; }} */ el)=>el.fm===row.fm);
+            let gps=data.groups.filter((/** @type {{ fm: any; }} */ el)=>el.fm===row.fm);
 
-                let person={tid:'',sn:'',pn:'',sal:''};
-                /* testing */
-                person={tid:'AGH',sn:'H',pn:'A',sal:'Dr H'};
+            let person={tid:'',sn:'',pn:'',sal:''};
+            /* testing */
+            person={tid:'AGH',sn:'H',pn:'A',sal:'Dr H'};
 
-                console.log(`hod build F${row.fm},found ${gps.length} groups`);
-                for(let gp of gps) {
-                    let f=$config.subject.find(el=>el.sc===gp.sc && el.ss===gp.ss);
-                    if(f) {
-                        let t=$teachers.find(el=>el.tid===f.tid);
-                        if(t) {
-                            person.tid=t.tid;
-                            person.sn=t.sn;
-                            person.pn=t.pn;
-                            person.sal=t.sal;
-                        }
+            console.log(`hod build F${row.fm},found ${gps.length} groups`);
+            for(let gp of gps) {
+                let f=$config.subject.find((/** @type {{ sc: any; ss: any; }} */ el)=>el.sc===gp.sc && el.ss===gp.ss);
+                if(f) {
+                    let t=$teachers.find(el=>el.tid===f.tid);
+                    if(t) {
+                        person.tid=t.tid;
+                        person.sn=t.sn;
+                        person.pn=t.pn;
+                        person.sal=t.sal;
                     }
-                
-                
-                
-                    for(let pupil of gp.pupil) {
-
-                        let report={
-                            coid:data.cycle._id,
-                            ay:data.cycle.ay,
-                            y:data.cycle.y,
-                            tt:data.cycle.tt,
-                            ts:data.cycle.ts,
-                            type:'A',
-                            author:{type:'hod',tid:person.tid,sal:person.sal},
-                            ec:'',
-                            ep:'',
-                            txt:'',
-                            fm:row.fm,
-                            g:gp.g,
-                            sc:gp.sc,
-                            ss:gp.ss,
-                            sl:gp.sl,
-                            lv:gp.lv,
-                            yr:gp.yr,
-                            pupil:{pid:pupil.pid,sn:pupil.sn,pn:pupil.pn,hse:pupil.hse,tg:pupil.tg,gnd:pupil.gnd,id:pupil.id}
-                        };
-
-                        data.reports.push(report);
-
-
-                    } // end of pupil for
+                }
             
-                
-                } // end of group for
+            
+            
+                for(let pupil of gp.pupil) {
+
+                    let report={
+                        coid:data.cycle._id,
+                        ay:data.cycle.ay,
+                        y:data.cycle.y,
+                        tt:data.cycle.tt,
+                        ts:data.cycle.ts,
+                        min:data.cycle.length.A.min,
+                        max:data.cycle.length.A.max,
+                        type:'A',
+                        author:{type:'hod',tid:person.tid,sal:person.sal},
+                        ec:'',
+                        ep:'',
+                        txt:'',
+                        fm:row.fm,
+                        g:gp.g,
+                        sc:gp.sc,
+                        ss:gp.ss,
+                        sl:gp.sl,
+                        lv:gp.lv,
+                        yr:gp.yr,
+                        pupil:{pid:pupil.pid,sn:pupil.sn,pn:pupil.pn,hse:pupil.hse,tg:pupil.tg,gnd:pupil.gnd,id:pupil.id}
+                    };
+
+                    data.reports.push(report);
 
 
-                
-
+                } // end of pupil for
+            } // end of group for
             }
-        }
+        } // end of detail for
 
+        console.log(data.reports);
+    };
+
+    let buildTeacherReports=()=>{
+        for(let row of data.cycle.detail) {
+            if(row.teacher) {
+            let gps=data.groups.filter((/** @type {{ fm: any; }} */ el)=>el.fm===row.fm);
+
+            console.log(`hod build F${row.fm},found ${gps.length} groups`);
+            for(let gp of gps) {
+               
+                for(let pupil of gp.pupil) {
+                    for(let teacher of gp.teacher) {
+                        let report={
+                        coid:data.cycle._id,
+                        ay:data.cycle.ay,
+                        y:data.cycle.y,
+                        tt:data.cycle.tt,
+                        ts:data.cycle.ts,
+                        min:data.cycle.length.A.min,
+                        max:data.cycle.length.A.max,
+                        type:'A',
+                        author:{type:'teacher',tid:teacher.tid,sal:teacher.sal},
+                        ec:row.ec ? $config.report.e.default : '',
+                        ep:row.ep ? $config.report.e.default : '',
+                        txt:'',
+                        fm:row.fm,
+                        g:gp.g,
+                        sc:gp.sc,
+                        ss:gp.ss,
+                        sl:gp.sl,
+                        lv:gp.lv,
+                        yr:gp.yr,
+                        pupil:{pid:pupil.pid,sn:pupil.sn,pn:pupil.pn,hse:pupil.hse,tg:pupil.tg,gnd:pupil.gnd,id:pupil.id}
+                    };
+
+                    data.reports.push(report);
+                    } // end of teacher for
+                    
+
+
+                } // end of pupil for
+            } // end of group for
+            }
+        } // end of detail for
 
         console.log(data.reports);
     };
 
 
+
     let create=async()=>{
         data.reports=[];
         buildHoDReports();
+        buildTeacherReports();
 
         let response = await fetch('/edge/insert', {
             method: 'POST',
@@ -145,6 +188,13 @@
         }
 
         console.log($teachers);
+
+
+        let houses=[];
+        for(let p of $pupils) {
+            if(!houses.find(el=>el.hse===p.hse)) houses.push({hse:p.hse,tid:'AGH',sal:'Dr H'});
+        }
+        console.log(JSON.stringify(houses));
     });
      
     
