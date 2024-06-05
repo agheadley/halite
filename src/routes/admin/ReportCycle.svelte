@@ -118,7 +118,7 @@
             P:{min:data.rows[index].length.P.min,max:data.rows[index].length.P.max}
         }
         //copy detail through filter!
-        data.cycle.detail=data.rows[index].detail.filter(el=>el.fm!==null);
+        data.cycle.detail=data.rows[index].detail.filter((/** @type {{ fm: null; }} */ el)=>el.fm!==null);
                
         
         
@@ -149,20 +149,52 @@
             </div>
         </div>
       
+        <div class="row">
+            <div class="col">
+            </div>
+        </div>
        
         <div class="row">
             <div class="col">
         
-                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Form</th>
+                            <th>HoD</th>
+                            <th>Teacher</th>
+                            <th>Effort C</th>
+                            <th>Effort P</th>
+                            <th>Enrichment</th>
+                            <th>Tutor</th>
+                            <th>HM</th>
+                            <th>HoS</th>
+                            <th>SLT</th>
+                        </tr>
+                    </thead>
+                 
+                    <tbody>
+                        {#each data.cycle.detail as row,rowIndex}
+                            <tr>
+                                <td>{row.fm}</td>
+                                <td><input type=checkbox bind:checked={row.hod}></td>
+                                <td><input type=checkbox bind:checked={row.teacher}></td>
+                                <td><input type=checkbox bind:checked={row.ec}></td>
+                                <td><input type=checkbox bind:checked={row.ep}></td>
+                                <td><input type=checkbox bind:checked={row.enrichment}></td>
+                                <td><input type=checkbox bind:checked={row.tutor}></td>
+                                <td><input type=checkbox bind:checked={row.hm}></td>
+                                <td><input type=checkbox bind:checked={row.hoy}></td>
+                                <td><input type=checkbox bind:checked={row.slt}></td>
+                            </tr>
+                        {/each}
+                    </tbody>
+                </table>
 
 
 
 
 
-
-
-
-                
             </div>
         </div>
 
