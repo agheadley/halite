@@ -13,6 +13,7 @@
         rows:[],
         edit:false,
         valid:true,
+        index:0,
         cycle:{}
     };
 
@@ -85,16 +86,14 @@
         data.rows=data.rows;
     };
 
-      /**
-     * 
-     * @param {number} index
-     */
-    let changeYearTerm=(index)=>{
-        data.rows[index].year  =  data.rows[index].year > 0 ? parseInt( data.rows[index].year) : 0;
+   
+    let changeYearTerm=()=>{
+        data.cycle.y  =  data.cycle.y > 0 ? parseInt( data.cycle.y) : 0;
 
-        let y=data.rows[index].year;
-        let m=data.rows[index].term==='Winter' ? '12' :    data.rows[index].term==='Spring' ? '04' : '06';
-        data.rows[index].ayear=util.getAcademicYear(`${y}-${m}-01`,$config.rollover.month);
+        let y=data.cycle.y;
+        let m=data.cycle.tt==='Winter' ? '12' :    data.cycle.tt==='Spring' ? '04' : '06';
+        data.cycle.ay=util.getAcademicYear(`${y}-${m}-01`,$config.rollover.month);
+
 
     };
 
@@ -106,6 +105,8 @@
     let editCycle=(index)=>{
       console.log('editing',data.rows[index]);
         data.edit=true;
+        data.index=index;
+        data.cycle._id=data.rows[index]._id;
         data.cycle.index=data.rows[index].index;
         data.cycle.active=data.rows[index].active;
         data.cycle.ay=data.rows[index].ay;
@@ -145,12 +146,44 @@
     <Modal bind:open={data.edit}>
         <div class="row">
             <div class="col">
-                <h4>Cycle {data.cycle.index} {data.cycle.ay} ({data.cycle.tt} {data.cycle.ts} {data.cycle.y})</h4>
+                <h4>Report Cycle {data.rows[data.index].ay} ({data.rows[data.index].tt} {data.rows[data.index].ts} {data.rows[data.index].y})</h4>
             </div>
         </div>
       
         <div class="row">
             <div class="col">
+                {data.cycle.ay} 
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type=number step="1" on:change={changeYearTerm} bind:value={data.cycle.y}/>
+                            </td>
+                            <td>
+                                <select  id="details" bind:value={data.cycle.tt}  on:change={changeYearTerm}>
+                                    <optgroup label="Term">
+                                            {#each $config.report.tt as item,index}
+                                                <option value={item}>{item}</option>
+                                            {/each}
+                                    </optgroup>
+                                  </select> 
+                            </td>
+                            <td>
+                                <select  id="cohort" bind:value={data.cycle.ts}>
+                                    <optgroup label="Timing">
+                                            {#each $config.report.ts as item,index}
+                                                <option value={item}>{item}</option>
+                                            {/each}
+                                    </optgroup>
+                                  </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
        
@@ -160,11 +193,44 @@
                 <table>
                     <thead>
                         <tr>
+                            <th>Type</th>
+                            <th>Min Length</th>
+                            <th>Max Length</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>A</td>
+                            <td><input type=number step="1" on:change={()=>data.cycle.length.A.min  = data.cycle.length.A.min > 0 ? parseInt(data.cycle.length.A.min ) : 0} bind:value={data.cycle.length.A.min }/>
+                            <td><input type=number step="1" on:change={()=>data.cycle.length.A.max  = data.cycle.length.A.max > 0 ? parseInt(data.cycle.length.A.max ) : 0} bind:value={data.cycle.length.A.max }/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>E</td>
+                            <td><input type=number step="1" on:change={()=>data.cycle.length.E.min  = data.cycle.length.E.min > 0 ? parseInt(data.cycle.length.E.min ) : 0} bind:value={data.cycle.length.E.min }/>
+                            <td><input type=number step="1" on:change={()=>data.cycle.length.E.max  = data.cycle.length.E.max > 0 ? parseInt(data.cycle.length.E.max ) : 0} bind:value={data.cycle.length.E.max }/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>P</td>
+                            <td><input type=number step="1" on:change={()=>data.cycle.length.P.min  = data.cycle.length.P.min > 0 ? parseInt(data.cycle.length.P.min ) : 0} bind:value={data.cycle.length.P.min }/>
+                            <td><input type=number step="1" on:change={()=>data.cycle.length.P.max  = data.cycle.length.P.max > 0 ? parseInt(data.cycle.length.P.max ) : 0} bind:value={data.cycle.length.P.max }/>
+                            </td>
+                        </tr>
+                    </tbody>
+                    </table>
+
+        <div class="row">
+            <div class="col">
+        
+                <table>
+                    <thead>
+                        <tr>
                             <th>Form</th>
                             <th>HoD</th>
                             <th>Teacher</th>
-                            <th>Effort C</th>
-                            <th>Effort P</th>
+                            <th>EffortClass</th>
+                            <th>EffortPrep</th>
                             <th>Enrichment</th>
                             <th>Tutor</th>
                             <th>HM</th>
@@ -206,10 +272,10 @@
         </div>
         <div class="row">
 
-            <div class="col">
+            <div class="col is-vertical-align">
                 <button class="button error" disabled={!data.valid} on:click={saveCycle}>Save</button>
             </div>
-            <div class="col">
+            <div class="col is-vertical-align">
                 <button class="button outline" on:click={()=>data.edit=false}>Cancel</button>
             </div>
         </div>
