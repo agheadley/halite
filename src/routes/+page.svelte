@@ -1,7 +1,7 @@
 <script>
 
 import { onMount } from 'svelte';
-import {config,location,pupils,groups,cohorts} from '$lib/store';
+import {config,location,pupils,groups,cohorts,teachers} from '$lib/store';
 import { goto } from '$app/navigation';
 
 export let data ;
@@ -228,9 +228,13 @@ onMount(async () => {
 	getAssessmentsCohorts();
 	getOverviewCohorts();
 	
-	/* to do */
 	await getOutcomeCohorts();
 	await getArchiveCohorts();
+
+
+	/* get teachers - should done from mis, all teaching staff, so sports staff etc grabbed */
+	$teachers=$groups.map(el=>el.teacher.map(cel=>({tid:cel.tid,id:cel.id,sn:cel.sn,pn:cel.pn,sal:cel.sal}))).flat();
+       
 
 	console.log('$cohorts',$cohorts);
 

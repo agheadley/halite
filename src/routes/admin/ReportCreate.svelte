@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import * as file from '$lib/file';
     import * as util from '$lib/util';
-    import {alert,config,groups} from '$lib/store';
+    import {alert,config,groups,teachers} from '$lib/store';
     import Modal from '$lib/_Modal.svelte';
 
     /** @type {any}*/
@@ -16,9 +16,21 @@
     };
     
     
+    let buildHoDReports=()=>{
+        for(let row of data.cycle.detail) {
+            if(row.hod) {
+                let gps=data.groups.filter((/** @type {{ fm: any; }} */ el)=>el.fm===row.fm);
+                console.log(`hod build F${row.fm},found ${gps.length} groups`);
+                let f=$config.subject.find()
+
+            }
+        }
+    };
+
 
     let create=async()=>{
-        
+        data.reports=[];
+        buildHoDReports();
     };
         
     onMount(async () => {
@@ -61,6 +73,8 @@
             g.fm = f ? f.fm : -1;
             //console.log(g.lv,g.yr,g.g,g.fm);
         }
+
+        console.log($teachers);
     });
      
     

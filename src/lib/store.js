@@ -71,6 +71,8 @@ export let groups=writable([
     }
 ]);
 
+export let teachers=writable([{id:'',pn:'',sn:'',sal:'',tid:''}]);
+
 /** @type {any} */
 export let cohorts=writable({
     assessments:{
