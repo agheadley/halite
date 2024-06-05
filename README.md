@@ -67,6 +67,7 @@ Add txt to cycle ! Sorry central message can be formed!.
 Use <PRE> !
 
 
+ToK, CAS, EE have sc as 'C', grade list as 'X' and have ep,ec levels.
 
 Move report create and report cycles to separate components referenced from Report.svelte
 Only delete last item of cycle and severe warning! Store cycle text in report record too for safety!
