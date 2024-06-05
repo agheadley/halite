@@ -27,28 +27,14 @@ export let config=writable({
         {context:'overview',rag:true,chance:true,fb:true}
         
     ],
-    overview:[
-        {lv:"",yr:0,exam:false,from:"0000-00-00",to:"0000-00-00",n:"",dl:"",dt:0}
-    ],
-    cycle:[
-        {
-        active:false,
-        index:0,
-        term:"Summer",
-        subterm:"2nd",
-        ayear:'2023/2024',
-        year:2024,
-        header:{active:false,txt:''},
-        comment:[{fm:7,comments:false}],
-        A:{active:true,length:{min:180,max:600},effort:{class:true,prep:true}},
-        E:{active:true,length:{min:200,max:600},effort:{class:false,prep:false}},
-        P:{active:true,length:{min:180,max:600},effort:{class:false,prep:false}}
-            
-        }
-    ],
-    term:['Winter',"Spring","Summer"],
-    subterm:['1st','2nd'],
-    effort:['4','3','2','1','N/A']
+    report:{
+        tt:['Winter',"Spring","Summer"],
+        ts:['1st','2nd'],
+        eg:['4','3','2','1','N/A'],
+        ed:'3',
+        hm:[]
+    }
+
 
 });
 
