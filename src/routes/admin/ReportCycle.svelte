@@ -78,12 +78,57 @@
      * 
      * @param {number} index
      */
-    let changeActive=(index)=>{
+    let changeActive=async(index)=>{
         console.log(data.rows[index].active);
         data.rows.forEach((/** @type {{ active: boolean; }} */ v,/** @type {number} */ i)=>{
             if(i!=index) v.active=false;
         });
         data.rows=data.rows;
+
+        let response = await fetch('/edge/update', {
+		    method: 'POST',
+		    body: JSON.stringify({
+                collection:'cycles',
+                filter:{},
+                update:{active:false}
+            }),
+		    headers: {'content-type': 'application/json'}
+	    });
+
+        let res= await response.json();
+        console.log(res);
+
+        if(res.matchedCount>=1) {
+           $alert.msg='active rows updated';
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error updating active cycles`;
+        }
+
+        if(data.rows[index].active) {
+            response = await fetch('/edge/update', {
+                method: 'POST',
+                body: JSON.stringify({
+                    collection:'cycles',
+                    filter:{"_id": { "$oid": data.rows[index]._id } },
+                    update:{active:true}
+                }),
+                headers: {'content-type': 'application/json'}
+            });
+
+            res= await response.json();
+            
+            if(res.matchedCount>=1) {
+                $alert.msg='row activated';
+            } else {
+                $alert.type='error';
+                $alert.msg=`Error updating active cycles`;
+            }
+        }
+       
+   
+
+        
     };
 
    
@@ -127,8 +172,43 @@
     };
 
     let saveCycle=async()=>{
-      
-       
+      console.log('save cycle',data.cycle.index);
+
+      let obj={
+        active:data.cycle.active,
+        index:data.cycle.index,
+        y:data.cycle.y,
+        ay:data.cycle.ay,
+        tt:data.cycle.tt,
+        ts:data.cycle.ts,
+        length:data.cycle.length,
+        detail:data.cycle.detail
+        
+      };
+
+        let response = await fetch('/edge/update', {
+		    method: 'POST',
+		    body: JSON.stringify({
+                collection:'cycles',
+                filter:{"_id": { "$oid": data.cycle._id } },
+                update:obj
+                }),
+		    headers: {'content-type': 'application/json'}
+	    });
+
+        let res= await response.json();
+        console.log(res);
+
+        if(res.matchedCount===1) {
+            $alert.msg=`Row saved -  ${res.modifiedCount===1 ? 'changes made' :'no changes'}`;
+            data.edit=false;
+   
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error updating row`;
+        }
+
+    
     };
         
     onMount(async () => {
@@ -141,7 +221,7 @@
     
     </script>
 
-    <hr/>
+
     
     <Modal bind:open={data.edit}>
         <div class="row">
