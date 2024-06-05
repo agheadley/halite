@@ -20,17 +20,87 @@
         for(let row of data.cycle.detail) {
             if(row.hod) {
                 let gps=data.groups.filter((/** @type {{ fm: any; }} */ el)=>el.fm===row.fm);
+
+                let person={tid:'',sn:'',pn:'',sal:''};
+                /* testing */
+                person={tid:'AGH',sn:'H',pn:'A',sal:'Dr H'};
+
                 console.log(`hod build F${row.fm},found ${gps.length} groups`);
-                let f=$config.subject.find()
+                for(let gp of gps) {
+                    let f=$config.subject.find(el=>el.sc===gp.sc && el.ss===gp.ss);
+                    if(f) {
+                        let t=$teachers.find(el=>el.tid===f.tid);
+                        if(t) {
+                            person.tid=t.tid;
+                            person.sn=t.sn;
+                            person.pn=t.pn;
+                            person.sal=t.sal;
+                        }
+                    }
+                
+                
+                
+                    for(let pupil of gp.pupil) {
+
+                        let report={
+                            coid:data.cycle._id,
+                            ay:data.cycle.ay,
+                            y:data.cycle.y,
+                            tt:data.cycle.tt,
+                            ts:data.cycle.ts,
+                            type:'A',
+                            author:{type:'hod',tid:person.tid,sal:person.sal},
+                            ec:'',
+                            ep:'',
+                            txt:'',
+                            fm:row.fm,
+                            g:gp.g,
+                            sc:gp.sc,
+                            ss:gp.ss,
+                            sl:gp.sl,
+                            lv:gp.lv,
+                            yr:gp.yr,
+                            pupil:{pid:pupil.pid,sn:pupil.sn,pn:pupil.pn,hse:pupil.hse,tg:pupil.tg,gnd:pupil.gnd,id:pupil.id}
+                        };
+
+                        data.reports.push(report);
+
+
+                    } // end of pupil for
+            
+                
+                } // end of group for
+
+
+                
 
             }
         }
+
+
+        console.log(data.reports);
     };
 
 
     let create=async()=>{
         data.reports=[];
         buildHoDReports();
+
+        let response = await fetch('/edge/insert', {
+            method: 'POST',
+            body: JSON.stringify({collection:'reports',documents:data.reports}),
+            headers: {'content-type': 'application/json'}
+        });
+        let res= await response.json();
+
+        if(res[0]) {
+            $alert.msg=`${res.length} reports created`;
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error inserting reports`;
+        }
+
+
     };
         
     onMount(async () => {
