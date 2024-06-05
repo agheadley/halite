@@ -4,13 +4,15 @@
     import {config,location,pupils,groups,cohorts} from '$lib/store';
     import { goto } from '$app/navigation';
 	import HoD from './HoD.svelte';
-    
+    import Teacher from './Teacher.svelte';
+
     /** @type {any}*/
     export let data;
 
     /** @type {any}*/
     let status={
         user:'',
+        tab:'teacher',
         cycle:{},
         reports:[],
         subjects:[]
@@ -68,7 +70,7 @@
     </div>
 
     {#if status.tab==='hod'}<HoD bind:status={status}/> {/if}
-   
+    {#if status.tab==='teacher'}<Teacher bind:status={status}/> {/if}
 
     <style>
     </style>
