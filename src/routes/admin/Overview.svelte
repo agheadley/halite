@@ -257,77 +257,58 @@
         </div>
     </div>
 
+    <table class="striped">
+        <thead>
+            <tr>
+                <th>Index</th>
+                <th>Assessment Point?</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Parent View?</th>
+            </tr>
+        </thead>
    
-  
-            {#each data.rows as row,rowIndex}
-                {#if row.lv===data.cohorts[data.index].lv && row.yr===data.cohorts[data.index].yr}
-                <div class="row">
-                   
-                    <div class="col is-vertical-align">
-                      
-                        &nbsp;
-                        <fieldset id="cohort">
-                            <legend>Index</legend>
-                            <p class="grouped">
-                                {row.lv} {row.yr} / {row.index}
-                            </p>
-                            <p class="grouped">
-                                <button class="button error icon-only" on:click={()=>removeRow(row._id)}>         
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
-                                </button>
-                            </p>
-                       
-                    </fieldset>
-                    </div>
-                   
-                    <div class="col is-vertical-align">
-                        <fieldset id="cohort" class="is-full-width">
-                            <legend>Single Assessment?</legend>
-                            <p class="grouped">
-                            <input type=checkbox bind:checked={row.exam}  on:change={()=>saveRow(rowIndex)}>
-                                {#if row.exam}
-                                <select  id="cohort" bind:value={row.aIndex}  on:change={()=>saveRow(rowIndex)}>
-                                    <optgroup label="Level ExamYear">
-                                            {#each data.assessments as item,index}
-                                                {#if item.lv===data.cohorts[data.index].lv && item.yr===data.cohorts[data.index].yr}
-                                                <option value={index}>{item.n} {item.dl} ({item.lv} {item.yr})</option>
-                                                {/if}
-                                            {/each}
-                                    </optgroup>
-                                  </select>
+        <tbody>
+        {#each data.rows as row,rowIndex}
+        {#if row.lv===data.cohorts[data.index].lv && row.yr===data.cohorts[data.index].yr}
+        <tr>
+            <td>
+            <button class="button error icon-only" on:click={()=>removeRow(row._id)}>         
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+            </button>
+            {row.lv} {row.yr} / {row.index}
+            </td>
+            <td>
+                <input type=checkbox bind:checked={row.exam}  on:change={()=>saveRow(rowIndex)}>
+                {#if row.exam}
+                <select  id="cohort" bind:value={row.aIndex}  on:change={()=>saveRow(rowIndex)}>
+                    <optgroup label="Level ExamYear">
+                            {#each data.assessments as item,index}
+                                {#if item.lv===data.cohorts[data.index].lv && item.yr===data.cohorts[data.index].yr}
+                                <option value={index}>{item.n} {item.dl} ({item.lv} {item.yr})</option>
                                 {/if}
-                            </p>
-                        </fieldset>
-                    </div>
-                    <div class="col is-vertical-align">
-                        <fieldset id="cohort" class="is-full-width">
-                            <legend>Assessment Range</legend>
-                            <p class="grouped">
-                                <input disabled={row.exam} style={'width:20rem;'}  on:change={()=>saveRow(rowIndex)} type=date bind:value={row.from} class={row.from==='' && !row.exam ? 'error' : ''}/>&nbsp;FROM
-                    
-                            </p>
-                            <p class="grouped">
-                             
-                                <input disabled={row.exam} style={'width:20rem;'}  on:change={()=>saveRow(rowIndex)} type=date bind:value={row.to} class={row.to==='' && !row.exam ? 'error' : ''}/>&nbsp;TO
-                            </p>
-                        </fieldset>
-                    </div>
-
-                    <div class="col is-vertical-align">
-                        <fieldset id="cohort"  class="is-full-width">
-                            <legend>Parent View?</legend>
-                            <p class="grouped">
-                                <input type=checkbox bind:checked={row.parent} on:change={()=>saveRow(rowIndex)}>
-                            </p>
-                          
-                        </fieldset>
-                    </div>
-
-
-               
-                </div>
+                            {/each}
+                    </optgroup>
+                  </select>
                 {/if}
-            {/each}
+            </td>
+            <td>
+                <input disabled={row.exam} style={'width:20rem;'}  on:change={()=>saveRow(rowIndex)} type=date bind:value={row.from} class={row.from==='' && !row.exam ? 'error' : ''}/>
+                    
+            </td>
+            <td>
+                <input disabled={row.exam} style={'width:20rem;'}  on:change={()=>saveRow(rowIndex)} type=date bind:value={row.to} class={row.to==='' && !row.exam ? 'error' : ''}/>
+            </td>
+            <td>
+                <input type=checkbox bind:checked={row.parent} on:change={()=>saveRow(rowIndex)}> 
+            </td>
+        </tr>
+        {/if}
+        {/each}
+        </tbody>
+    </table>
+  
+          
             <div class="row">
                 <div class="col">
                     <button class="button dark icon-only" on:click={addRow}>         

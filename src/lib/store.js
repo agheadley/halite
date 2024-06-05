@@ -30,9 +30,9 @@ export let config=writable({
     report:{
         tt:['Winter',"Spring","Summer"],
         ts:['1st','2nd'],
-        eg:['4','3','2','1','N/A'],
-        ed:'3',
-        hm:[]
+        e:{list:['4','3','2','1','N/A'],default:'3'},
+        hm:[],
+        hoy:[]
     }
 
 
