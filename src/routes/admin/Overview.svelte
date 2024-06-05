@@ -102,36 +102,44 @@
     };
 
 
-     let confimOverview=()=>{
-        data.valid=true;
-        for(let row of data.rows) {
-            if(row.exam) {
-                row.n=data.assessments[row.aIndex].n;
-                row.dl=data.assessments[row.aIndex].dl;
-                row.dt=data.assessments[row.aIndex].dt;
-                row.from='';
-                row.to='';
-            } else {
-                if(row.from==='' || row.to==='') data.valid=false;
-            }
-        }
-        console.log(data.rows);
-        data.confirm=true;
 
-    };
+  
 
-    let saveOverview=async()=>{
-        let update=[];
-        for(let row of data.rows) {
-            update.push({index:row.index,lv:row.lv,yr:row.yr,exam:row.exam,from:row.from,to:row.to,n:row.n,dl:row.dl,dt:row.dt,parent:row.parent});
+    /**
+     * 
+     * @param {number} index
+     */
+    let saveRow=async(index)=>{
+        console.log('validating ...',data.rows[index].index);
+
+      
+      
+        if(data.rows[index].exam) {
+            data.rows[index].n=data.assessments[data.rows[index].aIndex].n;
+            data.rows[index].dl=data.assessments[data.rows[index].aIndex].dl;
+            data.rows[index].dt=data.assessments[data.rows[index].aIndex].dt;
+            data.rows[index].from='';
+            data.rows[index].to='';``
+        } else {
+            data.rows[index].n='';
+            data.rows[index].dl='';
+            data.rows[index].dt=null
         }
+    
+       
+       
+        /* update row and check if tag.parent needs updating on found assessments */
+
+        let obj={index:data.rows[index].index,lv:data.rows[index].lv,yr:data.rows[index].yr,exam:data.rows[index].exam,from:data.rows[index].from,to:data.rows[index].to,n:data.rows[index].n,dl:data.rows[index].dl,dt:data.rows[index].dt,parent:data.rows[index].parent};
+        
+        console.log(obj);
 
         let response = await fetch('/edge/update', {
 		    method: 'POST',
 		    body: JSON.stringify({
-                collection:'config',
-                filter:{},
-                update:{overview:update}
+                collection:'overview',
+                filter:{"_id": { "$oid": data.rows[index]._id } },
+                update:obj
                 }),
 		    headers: {'content-type': 'application/json'}
 	    });
@@ -140,24 +148,21 @@
         console.log(res);
 
         if(res.matchedCount===1) {
-            $alert.msg=`Overivew Configuration saved -  ${res.modifiedCount===1 ? 'changes made' :'no changes'}`;
+            $alert.msg=`Row saved -  ${res.modifiedCount===1 ? 'changes made' :'no changes'}`;
             data.confirm=false;
    
         } else {
             $alert.type='error';
-            $alert.msg=`Error updating overview configuration.`;
+            $alert.msg=`Error updating row`;
         }
 
 
-       
-    };
 
-    /**
-     * 
-     * @param {number} index
-     */
-    let saveRow=async(index)=>{
-        console.log('validating ...',data.rows[index].index);
+
+        
+
+
+
     };
         
     onMount(async () => {
@@ -187,16 +192,7 @@
             res.sort((/** @type {{ yr: number; lv: any; }} */ a,/** @type {{ yr: number; lv: string; }} */ b)=>a.yr-b.yr || b.lv.localeCompare(a.lv))
             : [];
 
-        /* refresh config, to get current $config.overview rows */
-        /*
-        response = await fetch('/edge/read', {
-            method: 'POST',
-            body: JSON.stringify({collection:'config',filter:{},projection:{_id:0}}),
-            headers: {'content-type': 'application/json'}
-        });
-        res= await response.json();
-        $config=res[0] ? res[0] : {};
-        */
+       
 
         /* get overview records, sort by index */
         response = await fetch('/edge/read', {
@@ -225,38 +221,7 @@
     </script>
     
     
-    <Modal bind:open={data.confirm}>
-        <div class="row">
-            <div class="col">
-                <h4>Save Overview Display Columns</h4>
-            </div>
-        </div>
-      
-       
-        <div class="row">
-            <div class="col">
-               {#if data.valid}
-                    <span class="tag">All valid</span>
-               {:else}
-                <span class="tag bg-error text-white">Complete either exam or from/to dates for each entry. CHECK ALL COHORTS.</span>
-               {/if}
-            </div>
-        </div>
-        <div class="row">
-            <div class="col">
-               &nbsp;
-            </div>
-        </div>
-        <div class="row">
-
-            <div class="col">
-                <button class="button error" disabled={!data.valid} on:click={saveOverview}>Save</button>
-            </div>
-            <div class="col">
-                <button class="button outline" on:click={()=>data.confirm=false}>Cancel</button>
-            </div>
-        </div>
-    </Modal>
+   
 
     
     <div class="row">
@@ -338,12 +303,12 @@
                         <fieldset id="cohort" class="is-full-width">
                             <legend>Assessment Range</legend>
                             <p class="grouped">
-                                <input disabled={row.exam} style={'width:20rem;'}  on:input={()=>saveRow(rowIndex)} type=date bind:value={row.from} class={row.from==='' && !row.exam ? 'error' : ''}/>&nbsp;FROM
+                                <input disabled={row.exam} style={'width:20rem;'}  on:change={()=>saveRow(rowIndex)} type=date bind:value={row.from} class={row.from==='' && !row.exam ? 'error' : ''}/>&nbsp;FROM
                     
                             </p>
                             <p class="grouped">
                              
-                                <input disabled={row.exam} style={'width:20rem;'}  on:input={()=>saveRow(rowIndex)} type=date bind:value={row.to} class={row.to==='' && !row.exam ? 'error' : ''}/>&nbsp;TO
+                                <input disabled={row.exam} style={'width:20rem;'}  on:change={()=>saveRow(rowIndex)} type=date bind:value={row.to} class={row.to==='' && !row.exam ? 'error' : ''}/>&nbsp;TO
                             </p>
                         </fieldset>
                     </div>
@@ -369,11 +334,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                     </button>
             </div>
-            <!--
-                <div class="col">
-                    <button class="button dark" on:click={confimOverview}>Save</button>
-                </div>
-            -->
+          
             </div>
    
     

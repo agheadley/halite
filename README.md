@@ -103,8 +103,7 @@ How to deal with ToK reports?
 
 # admin/Overview
 
-- add tag.parent checkbox to allow updates for those assessments to make them visible to parents,
-- this means that we can decide not to make TIGs viewable, but make AGs etc
+- update assessment tags based upon row.parent change in saveRow
 
 # Overview
 
