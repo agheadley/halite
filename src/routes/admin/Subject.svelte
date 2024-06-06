@@ -35,41 +35,15 @@
 
   
 
-    /**
-     * 
-     * @param {number} index
-     */
-    let saveRow=async(index)=>{
-        console.log('validating ...',data.rows[index].index);
 
-      
-      
-        if(data.rows[index].exam) {
-            data.rows[index].n=data.assessments[data.rows[index].aIndex].n;
-            data.rows[index].dl=data.assessments[data.rows[index].aIndex].dl;
-            data.rows[index].dt=data.assessments[data.rows[index].aIndex].dt;
-            data.rows[index].from='';
-            data.rows[index].to='';``
-        } else {
-            data.rows[index].n='';
-            data.rows[index].dl='';
-            data.rows[index].dt=null
-        }
-    
-       
-       
-        /* update row and check if tag.parent needs updating on found assessments */
 
-        let obj={index:data.rows[index].index,lv:data.rows[index].lv,yr:data.rows[index].yr,exam:data.rows[index].exam,from:data.rows[index].from,to:data.rows[index].to,n:data.rows[index].n,dl:data.rows[index].dl,dt:data.rows[index].dt,parent:data.rows[index].parent};
-        
-        console.log(obj);
-
+    let save=async()=>{
         let response = await fetch('/edge/update', {
 		    method: 'POST',
 		    body: JSON.stringify({
-                collection:'overview',
-                filter:{"_id": { "$oid": data.rows[index]._id } },
-                update:obj
+                collection:'config',
+                filter:{},
+                update:{subject:data.rows}
                 }),
 		    headers: {'content-type': 'application/json'}
 	    });
@@ -78,25 +52,13 @@
         console.log(res);
 
         if(res.matchedCount===1) {
-            $alert.msg=`Row saved -  ${res.modifiedCount===1 ? 'changes made' :'no changes'}`;
-            data.confirm=false;
+            $alert.msg=`All saved ${res.modifiedCount===1 ? 'changes made' :'no changes'}`;
+            await update();
    
         } else {
             $alert.type='error';
-            $alert.msg=`Error updating row`;
+            $alert.msg=`Error saving subjects`;
         }
-
-
-
-
-        
-
-
-
-    };
-
-
-    let save=async()=>{
 
     };
 
