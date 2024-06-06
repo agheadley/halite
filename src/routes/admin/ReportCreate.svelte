@@ -80,7 +80,7 @@
 
     let buildTeacherReports=()=>{
         for(let row of data.cycle.detail) {
-            if(row.teacher) {
+            if(row.teacher || row.ec || row.ep) {
             let gps=data.groups.filter((/** @type {{ fm: any; }} */ el)=>el.fm===row.fm);
 
             console.log(`teacher build F${row.fm},found ${gps.length} groups`);
@@ -98,9 +98,9 @@
                         max:data.cycle.length.A.max,
                         type:'A',
                         author:{type:'teacher',tid:teacher.tid,sal:teacher.sal},
-                        ec:row.ec ? $config.report.e.default : '',
-                        ep:row.ep ? $config.report.e.default : '',
-                        txt:'',
+                        ec:row.ec ? $config.report.e.default : null,
+                        ep:row.ep ? $config.report.e.default : null,
+                        txt:row.teacher?'':null,
                         fm:row.fm,
                         g:gp.g,
                         sc:gp.sc,

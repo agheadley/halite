@@ -57,7 +57,8 @@
                             ec:f?f.ec:'',
                             ep:f?f.ep:'',
                             txt:f?f.txt:'',
-                            _id:f?f._id:''
+                            _id:f?f._id:'',
+                            sal:f?f.author.sal:''
                         }
                     }
                 );

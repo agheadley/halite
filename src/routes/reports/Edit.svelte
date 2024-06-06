@@ -2,63 +2,97 @@
 
 import {config} from '$lib/store';
 
-/** @type {{valid:boolean,min:number,max:number,ec:string,ep:string,txt:string,_id:string}}} */ 
+/** @type {{valid:boolean,min:number,max:number,ec:string|null,ep:string|null,txt:string|null,_id:string,sal:string}}} */ 
 export let data;
 
 
 </script>
-<div class="parent">
+
+<div>
+    {#if data.ec!==null || data.ep!==null}
     <div>
-        <textarea class={data.txt.length<data.min || data.txt.length>data.max ? 'comment red' : 'comment green'} bind:value={data.txt}></textarea>
-            <span class="small">{data.txt.length} / {data.max}</span>
-    </div>
-    <div>
-        <div class="padded">
-              
-                <div class="parent">
-                    <div>
-                        <select  id="cohort" bind:value={data.ec}>
-                            <optgroup label="Effort(Class)">
-                                    {#each $config.report.e.list as item,index}
-                                        <option value={item}>{item}</option>
-                                    {/each}
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="padded">Effort(Class)</div>
-                </div>
-        </div>
-        <div class="padded">
-              
-            <div class="parent">
-                <div>
-                    <select  id="cohort" bind:value={data.ep}>
-                        <optgroup label="Effort(Prep)">
+        <div class="flex-row start">
+            <div>
+                {#if data.ec!==''}
+                <span class="small">
+                    <fieldset id="class" class="is-full-width">
+                    <legend>Effort (Class)</legend>
+                    <select  id="cohort" bind:value={data.ec}>
+                        <optgroup label="Effort(Class)">
                                 {#each $config.report.e.list as item,index}
                                     <option value={item}>{item}</option>
                                 {/each}
                         </optgroup>
                     </select>
-                </div>
-                <div class="padded">Effort(Prep)</div>
+                    </fieldset>
+                </span>
+                {/if}
             </div>
+            <div>
+                {#if data.ep!==null}
+                <span class="small">
+                    <fieldset id="class" class="is-full-width">
+                    <legend>Effort (Prep)</legend>
+                    <select  id="cohort" bind:value={data.ep}>
+                        <optgroup label="Effort (Prep)">
+                                {#each $config.report.e.list as item,index}
+                                    <option value={item}>{item}</option>
+                                {/each}
+                        </optgroup>
+                    </select>
+                    </fieldset>
+                </span>
+                {/if}
+            </div>
+        </div>
     </div>
+    {/if}
+    <div>
+        {#if data.txt!==null}
+        <textarea class={data.txt.length<data.min || data.txt.length>data.max ? 'comment red' : 'comment green'} bind:value={data.txt}/> 
+        {/if}
+        </div>
+    <div>
+        <div class="flex-row">
+            <div>
+                <span class="small">{data.sal}</span>
+            </div>
+            {#if data.txt!==null}
+            <div>
+                <span class="small">{data.txt.length} / {data.min} [{data.max}]</span>
+            </div>
+            {/if}
+            <div>
+                <button class="button error small">Save</button>
+            </div>
+        </div>
     </div>
 </div>
 
+
+
 <style>
 
-.padded {
-    padding:1rem;
+
+
+.flex-row {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    width:60rem;
+    padding-bottom:0.25rem;
+    padding-top:0.25rem;
 }
-.parent {
-    display: inline-flex
+
+.start {
+    justify-content:start;
 }
+
 
 .comment {
         width:60rem;
         height:10rem;
-    }
+}
 
 .red {
     background:rgba(178,34,34,0.15);
@@ -70,7 +104,7 @@ export let data;
 }
 
 .small {
-    font-size:1rem;
+    font-size:1.2rem;
 }
 
 

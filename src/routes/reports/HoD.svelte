@@ -90,7 +90,8 @@
                             min:f?f.min:0,
                             max:f?f.max:0,
                             txt:f?f.txt:'',
-                            _id:f?f._id:''
+                            _id:f?f._id:'',
+                            sal:f?f.author.sal:''
                         }
                     }
                 );
@@ -152,15 +153,22 @@
         <tr>
             <th></th>
             <th></th>
-            <th><textarea class={data.txt.length<status.cycle.length.A.min || data.txt.length>status.cycle.length.A.max ? 'comment red' : 'comment green' } bind:value={data.txt}/></th>
-            <th><span class="tag small">{data.txt.length} / {status.cycle.length.A.max}</span></th>
+            <td>
+                <div>
+                    <textarea class={data.txt.length<status.cycle.length.A.min || data.txt.length>status.cycle.length.A.max ? 'comment red' : 'comment green' } bind:value={data.txt}/>
+                </div>
+                <div class="flex-row">
+                    <span class="tag small">{data.txt.length} / {status.cycle.length.A.min} [{status.cycle.length.A.max}]</span>
+                </div>
+            </td>
+          
         </tr>
         <tr>
             <th></th>
             <th></th>
          
             <th><button disabled={data.txt.length<status.cycle.length.A.min || data.txt.length>status.cycle.length.A.max} class="button error" on:click={save}>Save to All</button></th>
-                <th></th>
+             
             </tr>     
     </thead>
    <tbody>
@@ -170,12 +178,28 @@
             <td>{row.g}</td>
             <td>
                 {#if row.data.valid}
-                    <textarea class="comment" disabled bind:value={row.data.txt}></textarea>
+                    <div>
+                        <textarea class="comment" disabled bind:value={row.data.txt}></textarea>
+                    </div>
+                    <div class="flex-row">
+                        <div>
+                            <span class="small">{row.data.sal}</span>
+                        </div>
+                        {#if data.txt!==null}
+                        <div>
+                            <span class="small">{row.data.txt.length} / {status.cycle.length.A.min} [{status.cycle.length.A.max}]</span>
+                        </div>
+                        {/if}
+                        <div>
+                           &nbsp;
+                        </div>
+                    </div>
+                    
                 {:else}
                     <span class="tag">Error - Report missing</span>
                 {/if}
             </td>
-            <td><span class="small">{row.data.txt.length} / {data.reports[0].data.max}</span></td>
+      
         </tr>
     {/each}
    </tbody>
@@ -186,6 +210,14 @@
 
 <style>
 
+.flex-row {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    width:60rem;
+    padding-bottom:0.25rem;
+    padding-top:0.25rem;
+}
 
 .comment {
         width:60rem;
@@ -202,6 +234,6 @@
 }
 
 .small {
-    font-size:1rem;
+    font-size:1.2rem;
 }
 </style>
