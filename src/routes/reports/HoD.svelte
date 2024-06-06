@@ -56,6 +56,15 @@
         if(count<total) {
             $alert.type='error';
             $alert.msg=`Only ${count}/${total} reports correctly updated.`;
+        } else {
+            data.txt='';
+            for(let row of data.reports) {
+                if(row.data.valid) {
+                    let f=status.reports.find((/** @type {any} */ el)=>el._id===row.data._id);
+                    if(f) f.txt=row.data.txt;
+                    console.log(f);
+                }
+            }
         }
     };
 
@@ -111,7 +120,7 @@
 
 <div class="row">
     <div class="col is-vertical-align">
-        <h4>HoD Comments</h4>
+        <h4>HoD Comment</h4>
     </div>
     <div class="col is-vertical-align">
         <select  id="subject" bind:value={data.index} on:change={update}>

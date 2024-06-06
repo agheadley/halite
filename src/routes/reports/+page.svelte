@@ -67,6 +67,10 @@
            <button class="button dark">Enrichment</button>
            
         </div>
+        <div class="col">
+            <h4>Active Cycle</h4>
+            <span class="tag">{status.cycle.tt} {status.cycle.ts} {status.cycle.y}</span>
+        </div>
     </div>
     
     <hr/>
