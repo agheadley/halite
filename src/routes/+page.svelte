@@ -218,8 +218,7 @@ onMount(async () => {
 	
 	if(data.config.update.groups || data.config.update.conduct || data.config.update.contacts) await updateGroupsContactsConduct();
 	
-	//testing
-	await updateGroupsContactsConduct();
+	
 
 	msg='Building pupil data ...';
 	await getPupils();
@@ -234,9 +233,13 @@ onMount(async () => {
 	await getArchiveCohorts();
 
 
-	/* get teachers - should done from mis, all teaching staff, so sports staff etc grabbed */
-	$teachers=$groups.map(el=>el.teacher.map(cel=>({tid:cel.tid,id:cel.id,sn:cel.sn,pn:cel.pn,sal:cel.sal}))).flat();
-       
+	let response = await fetch('/edge/read', {
+		method: 'POST',
+		body: JSON.stringify({collection:'teachers',filter:{},projection:{}}),
+		headers: {'content-type': 'application/json'}
+	});
+    $teachers= await response.json();
+	   
 
 	console.log('$cohorts',$cohorts);
 

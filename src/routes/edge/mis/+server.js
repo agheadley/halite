@@ -59,13 +59,44 @@ export async function POST({request}) {
     groups=mis.getGroupData(x,data.cfg);
 
 
+    
+
+
     if(isOld) {
 
         /* update teachers */
+        let basedata=mis.getBasedata(x);
+        let staff=basedata.staff.filter((/** @type {{ teacher: string; }} */ el)=>el.teacher==='1').map((/** @type {{ id: any; tid: any; sn: any; pn: any; sal: any; }} */ el)=>({id:el.id,tid:el.tid,sn:el.sn,pn:el.pn,sal:el.sal,log:util.getDate()}));
+    
+    
+        body = {
+            "collection":'teachers',
+            "database":'halite',
+            "dataSource":process.env.ATLAS_CLUSTER,
+            "filter":{}
+        };
+        url = `${process.env.ATLAS_URL}/action/deleteMany`;
+    
+        response = await fetch(url,{method: 'POST',headers: headers,body:JSON.stringify(body)});
+        res=await response.json();
+        //console.log(res);
+      
+       
+    
+    
+        body = {
+            "collection":'teachers',
+            "database":'halite',
+            "dataSource":process.env.ATLAS_CLUSTER,
+            "documents":staff
+        };
+        url = `${process.env.ATLAS_URL}/action/insertMany`;
+    
+        response = await fetch(url,{method: 'POST',headers: headers,body:JSON.stringify(body)});
+        res=await response.json();
 
 
 
-        
         /* update groups */
         if(groups[0] && data.cfg.update.groups) {
             
@@ -244,7 +275,7 @@ export async function POST({request}) {
     */
 
     
-    //return json({});
+    return json({});
     //testing 
-    return json({x});
+   // return json({x});
 };
