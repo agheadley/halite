@@ -36,6 +36,8 @@
         console.log(data.user);
         status.admin=data.user.tag.admin;
 
+        status.cycle=data.cycle;
+
         status.subjects=[];
         for(let item of status.reports.filter((/** @type {{ type: string; author: { type: string; }; }} */ el)=>el.type==='A' && el.author.type==='hod')) {
             if(!status.subjects.find((/** @type {{ ss: any; sc: any; fm: any; }} */ el)=>el.ss===item.ss && el.sc===item.sc && el.fm===item.fm)) 
@@ -58,7 +60,7 @@
     
     <div class="row">
         <div class="col is-vertical-align">
-           <button class="button dark">Teachers</button>
+           <button class="button dark" on:click={()=>status.tab='teacher'}>Teachers</button>
            <button class="button dark" on:click={()=>status.tab='hod'}>HoDs</button>
            <button class="button dark">Tutors</button>
            <button class="button dark">HMs</button>
