@@ -61,7 +61,11 @@ export async function POST({request}) {
 
     if(isOld) {
 
-       
+        /* update teachers */
+
+
+
+        
         /* update groups */
         if(groups[0] && data.cfg.update.groups) {
             
@@ -240,6 +244,7 @@ export async function POST({request}) {
     */
 
     
-
-    return json({});
+    //return json({});
+    //testing 
+    return json({x});
 };

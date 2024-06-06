@@ -114,7 +114,7 @@ export let getContactData=(mis)=>{
 
 };
 
-let getBasedata=(/** @type {{ iSAMS: { PupilManager: { CurrentPupils: { Pupil: any; }; }; TeachingManager: { Departments: { Department: any; }; }; HRManager: { CurrentStaff: { StaffMember: any; }; }; }; }} */ mis)=>{
+export let getBasedata=(/** @type {{ iSAMS: { PupilManager: { CurrentPupils: { Pupil: any; }; }; TeachingManager: { Departments: { Department: any; }; }; HRManager: { CurrentStaff: { StaffMember: any; }; }; }; }} */ mis)=>{
     /** @type {any} */
     let data={pupils:[],subjects:[],staff:[]};
     for(let item of mis.iSAMS.PupilManager.CurrentPupils.Pupil) {

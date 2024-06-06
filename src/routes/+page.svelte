@@ -218,6 +218,8 @@ onMount(async () => {
 	
 	if(data.config.update.groups || data.config.update.conduct || data.config.update.contacts) await updateGroupsContactsConduct();
 	
+	//testing
+	await updateGroupsContactsConduct();
 
 	msg='Building pupil data ...';
 	await getPupils();
@@ -241,6 +243,8 @@ onMount(async () => {
 	msg='Searching for user entry points ...';
 	
 	if(data.user.tag.pupil) goto('/pupil');
+
+	//testing - remove goto !
 	if(data.user.tag.teacher) goto('/assessments');
 	
 });
