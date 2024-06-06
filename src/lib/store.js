@@ -49,6 +49,7 @@ export let pupils=writable([
         lv:'',
         hse:'',
         gnd:'',
+        fm:0,
         overall:{A:0,B:0},
         base:[{type:'',A:0,B:0}],
         groups:[{sc:'',ss:'',sl:'',pre:{A:0,B:0}}],
@@ -59,6 +60,7 @@ export let pupils=writable([
 export let groups=writable([
     {
         _id:'',
+        fm:0,
         g:'',
         yr:0,
         lv:'',

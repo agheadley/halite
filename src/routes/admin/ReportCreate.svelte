@@ -24,7 +24,7 @@
 
             let person={tid:'',sn:'',pn:'',sal:''};
             /* testing */
-            person={tid:'AGH',sn:'H',pn:'A',sal:'Dr H'};
+            //person={tid:'AGH',sn:'H',pn:'A',sal:'Dr H'};
 
             console.log(`hod build F${row.fm},found ${gps.length} groups`);
             for(let gp of gps) {
@@ -282,31 +282,12 @@
         // copy groups with a filter
         data.groups=$groups.filter(el=>el.yr>0);
 
-        /* add fm to groups */
-        let d=new Date();
-        let m=d.getMonth()+1;
-        let currentYr=m>$config.rollover.month ? d.getFullYear()+1:d.getFullYear();
-
-        for(let g of data.groups) {
-         
-            let f=$config.year.find((/** @type {{ lv: any; x: number; }} */ el)=>el.lv===g.lv && el.x===(g.yr-currentYr));
-            g.fm = f ? f.fm : -1;
-            //console.log(g.lv,g.yr,g.g,g.fm);
-        }
-
          // copy groups with a filter
          data.pupils=$pupils.filter(el=>el.yr>0);
 
         /* add fm to groups */
       
-
-        for(let g of data.pupils) {
-        
-            let f=$config.year.find((/** @type {{ lv: any; x: number; }} */ el)=>el.lv===g.lv && el.x===(g.yr-currentYr));
-            g.fm = f ? f.fm : -1;
-            
-        }
-
+       
         console.log($teachers);
 
         console.log($pupils);

@@ -99,6 +99,7 @@ let getPupils=async()=>{
 				//console.log(conductArr);
 
 				$pupils.push({
+					fm:0,
 					lv:g.lv,
 					yr:g.yr,
 					pid:p.pid,
@@ -223,6 +224,29 @@ onMount(async () => {
 	msg='Building pupil data ...';
 	await getPupils();
 	$groups=data.groups;
+
+	 /* add fm to groups */
+	 let d=new Date();
+     let m=d.getMonth()+1;
+     let currentYr=m>$config.rollover.month ? d.getFullYear()+1:d.getFullYear();
+
+	 
+		for(let g of $groups) {
+			
+			let f=$config.year.find((/** @type {{ lv: any; x: number; }} */ el)=>el.lv===g.lv && el.x===(g.yr-currentYr));
+			g.fm = f ? f.fm : -1;
+			//console.log(g.lv,g.yr,g.g,g.fm);
+		}
+
+		/* add fm to pupils */
+	 
+		for(let g of $pupils) {
+		
+			let f=$config.year.find((/** @type {{ lv: any; x: number; }} */ el)=>el.lv===g.lv && el.x===(g.yr-currentYr));
+			g.fm = f ? f.fm : -1;
+			
+		}
+
 
 	msg='Building cohort data ...';
 	

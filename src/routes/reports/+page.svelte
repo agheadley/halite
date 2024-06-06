@@ -12,6 +12,7 @@
     /** @type {any}*/
     let status={
         user:'',
+        admin:false,
         tab:'teacher',
         cycle:{},
         reports:[],
@@ -32,6 +33,8 @@
         status.reports=data.reports;
 
         status.user=data.user.name;
+        console.log(data.user);
+        status.admin=data.user.tag.admin;
 
         status.subjects=[];
         for(let item of status.reports.filter((/** @type {{ type: string; author: { type: string; }; }} */ el)=>el.type==='A' && el.author.type==='hod')) {
