@@ -13,7 +13,7 @@
     let status={
         user:'',
         admin:false,
-        tab:'teacher',
+        tab:'',
         cycle:{},
         reports:[],
         subjects:[]
@@ -46,6 +46,8 @@
         status.subjects=status.subjects.sort((/** @type {{ fm: number; sc: string; sl: string; }} */ a,/** @type {{ fm: number; sc: any; sl: any; }} */ b)=>b.fm-a.fm || a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl));
         
         console.log(status.subjects);
+
+        status.tab='teacher';
     });
     
 
