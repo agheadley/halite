@@ -6,13 +6,15 @@
     import Import from './Import.svelte';
     import Overview from './Overview.svelte';
     import Reports from './Reports.svelte';
+    import Subject from './Subject.svelte';
+    
 
     /** @type {any}*/
     export let data;
 
     let status={
-        option:'Overview',
-        options:['Overview','Import','Reports'],
+        option:'Reports',
+        options:['Reports','Overview','Import','Subjects'],
         user:''
     };
 
@@ -55,7 +57,8 @@
     {#if status.option==='Overview'}<Overview bind:status={status}/>{/if}
     {#if status.option==='Import'}<Import bind:status={status}/>{/if}
     {#if status.option==='Reports'}<Reports bind:status={status}/>{/if}
-    
+    {#if status.option==='Subjects'}<Subject bind:status={status}/>{/if}
+
     <style>
     </style>
     
