@@ -175,7 +175,7 @@
                     <span class="tag">Error - Report missing</span>
                 {/if}
             </td>
-            <td><span class="tag small">{row.data.txt.length} / {data.reports[0].data.max}</span></td>
+            <td><span class="small">{row.data.txt.length} / {data.reports[0].data.max}</span></td>
         </tr>
     {/each}
    </tbody>
@@ -185,6 +185,7 @@
 
 
 <style>
+
 
 .comment {
         width:60rem;
