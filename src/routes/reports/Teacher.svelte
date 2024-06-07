@@ -14,8 +14,28 @@
         groups:[],
         tIndex:0,
         teachers:[],
-        reports:[]
+        reports:[],
+        next:0,
+        current:0
     };
+
+    $:{
+        let index=data.next-1;
+        if(data.next>data.current) {
+            if(data.reports[data.next]) {
+                //console.log('moving on!');
+                if(data.reports[data.next].txt!==null) {
+                    document.getElementById(`c|${String(data.next)}`)?.focus();
+                } 
+                data.current=data.next;
+            } else {
+                data.current=data.next-1;
+            }
+
+           console.log('must update status.reports for ',data.reports[index].sn);
+
+        }
+    }
 
     let update=()=>{
        console.log('updating...');
@@ -125,6 +145,7 @@
 </div>
 
 
+
 {#if data.reports[0]}
 
 
@@ -143,7 +164,8 @@
                 <td>{row.pn} {row.sn}</td>
                 <td>
                     {#if row.data.valid}
-                        <Edit bind:data={row.data}/>
+                  
+                        <Edit bind:data={row.data} index={rowIndex} bind:next={data.next} user={data.user}/>
                     {:else}
                         <span class="tag">Error - Report missing</span>
                     {/if}

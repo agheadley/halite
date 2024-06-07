@@ -1,13 +1,16 @@
 <script>
     import {groups} from '$lib/store';
     import {alert} from '$lib/store';
+	import { StringUtils } from '@azure/msal-browser';
     import { onMount } from 'svelte';
+    import * as util from '$lib/util';
 
     /** @type {any}*/
     export let status;
 
     /** @type {any}*/
     let data={
+        user:'',
         index:0,
         subjects:[],
         reports:[],
@@ -19,14 +22,19 @@
         let count=0;
         let total=0;
 
+        let log=`${data.user}|${util.getDateTime()}`;
+
         for(let row of data.reports) {
             if(row.data.valid) {
                 row.data.txt=data.txt;
+                row.data.log=log;
                 total+=1;
 
             }
         }
         data.reports=data.reports;
+
+       
 
         for(let row of data.reports) {
             if(row.data.valid) {
@@ -35,7 +43,7 @@
                     body: JSON.stringify({
                         collection:'reports',
                         filter:{"_id": { "$oid": row.data._id } },
-                        update:{txt:row.data.txt}
+                        update:{txt:row.data.txt,log:log}
                     }),
                     headers: {'content-type': 'application/json'}
                 });
@@ -61,7 +69,10 @@
             for(let row of data.reports) {
                 if(row.data.valid) {
                     let f=status.reports.find((/** @type {any} */ el)=>el._id===row.data._id);
-                    if(f) f.txt=row.data.txt;
+                    if(f) {
+                        f.txt=row.data.txt;
+                        f.log=log;
+                    }
                     console.log(f);
                 }
             }
@@ -107,6 +118,7 @@
     onMount(async () => {
         console.log(status);
 
+        data.user=status.user;
       
         if(!status.admin)
                 data.subjects=status.subjects.filter((/** @type {{ tid: any; }} */ el)=>el.tid===status.user);
@@ -119,6 +131,7 @@
     });
 
 </script>
+
 
 
 <div class="row">
@@ -193,12 +206,12 @@
                         </div>
                         {/if}
                         <div>
-                           &nbsp;
+                            <span class="small">{row.data.log}</span>
                         </div>
                     </div>
                     
                 {:else}
-                    <span class="tag">Error - Report missing</span>
+                <span class="tag">Error - Report missing</span>
                 {/if}
             </td>
       

@@ -44,6 +44,18 @@ export let getDate=() =>{
 };
 
 /**
+ * @returns {string}
+ */
+export let getDateTime=() =>{
+  let x = new Date();
+  let y = x.getFullYear()+'-'+String(x.getMonth()+1).padStart(2,'0')+'-'+String(x.getDate()).padStart(2,'0');
+
+
+  return y+" "+x.toTimeString().substring(0,5);
+        
+};
+
+/**
  * 
  * @param {any} assessments
  * @param {string[]} teachers
