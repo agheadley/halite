@@ -183,7 +183,7 @@
         <select  id="Teacher" bind:value={data.tIndex} on:change={update}>
             <optgroup label="Teacher">
                     {#each data.teachers as item,index}
-                        <option value={index}>({item.tid}) {item.pn}</option>
+                        <option value={index}>({item.tid}) {item.pn} {item.sn}</option>
                     {/each}
             </optgroup>
           </select>
