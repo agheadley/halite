@@ -19,8 +19,6 @@ export let next;
 export let user;
 
 
-
-// current=document.activeElement ? document.activeElement.id : '';
 let save=async()=>{
 
     data.log=`${user}|${util.getDateTime()}`;

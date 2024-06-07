@@ -1,6 +1,7 @@
 <script>
 import { onMount } from 'svelte';
-import {pupils,teachers} from '$lib/store';
+import {pupils,teachers,config} from '$lib/store';
+import Pedit from './Pedit.svelte';
     
 /** @type {any}*/
 export let status;
@@ -10,37 +11,149 @@ let data={
     user:'',
     tutors:[],
     tIndex:0,
-    reports:[]
+    reports:[],
+    index:0,
+    next:0
 };
 
-let update=()=>{
+$:{
+      
+
+      if(data.reports[data.next]) {
+          if(data.reports[data.next].txt!==null) {
+                  document.getElementById(`c|${String(data.next)}`)?.focus();
+          } 
+      }
+
+      if(data.reports[data.next-1]) {
+          let x=data.reports[data.next-1];
+          console.log(x.sn,x.data._id);
+          let f=status.reports.find((/** @type {{ _id: any; }} */ el)=>el._id===x.data._id);
+          if(f) {
+              f.txt=x.data.txt;
+              f.ec=x.data.ec;
+              f.ep=x.data.ep;
+              f.log=x.data.log;
+              
+              
+          }
+      }
+       
+  }
+
+let update=async()=>{
         data.user=data.tutors[data.tIndex].tg;
         data.reports=[];
        
+        let pups=$pupils.filter(el=>el.tg===data.user);
+
+        /** @type {any}*/
+        let res=[];
+
+        if(pups[0]) {
+            let response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'results',filter:{lv:pups[0].lv,yr:pups[0].yr},projection:{}}),
+            headers: {'content-type': 'application/json'}
+            });
+            res= await response.json();
+            //console.log(res);
+        }
+       
 
 
+        for(let pupil of pups) {
 
-        for(let pupil of $pupils.filter(el=>el.tg===data.user)) {
-
+            /* get other pupil reports */
             let p=status.reports.filter((/** @type {{ pupil: { pid: number; }; type: string; author: { type: string; }; }} */ el)=>el.pupil.pid===pupil.pid && el.type==='P' && el.author.type!=='tutor');
             let a=status.reports.filter((/** @type {{ pupil: { pid: number; }; type: string; author: { type: string; }; }} */ el)=>el.pupil.pid===pupil.pid &&  el.type==='A' && el.author.type==='teacher');
             let h=status.reports.filter((/** @type {{ pupil: { pid: number; }; type: string; author: { type: string; }; }} */ el)=>el.pupil.pid===pupil.pid  && el.type==='A' && el.author.type==='hod');
             let e=status.reports.filter((/** @type {{ pupil: { pid: number; }; type: string; }} */ el)=>el.pupil.pid===pupil.pid  && el.type==='E');
 
+            /* find matching tutor report */
             let f=status.reports.find(( /** @type {{ pupil: { pid: number; tg: any; }; type: string; author: { type: string; }; }} */ el)=>el.pupil.pid===pupil.pid && el.pupil.tg===data.user && el.type==='P' && el.author.type==='tutor');
-             data.reports.push({
+            
+            /* process, sort pastoral reports */
+            let ps=[];
+            for(let item of p) ps.push({sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep}); 
+            ps=ps.sort((a,b)=>a.title.localeCompare(b.title));
+
+            /* process, sort enrichment reports */
+            let es=[];
+            for(let item of e) es.push({sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep}); 
+            es=es.sort((a,b)=>a.title.localeCompare(b.title));
+
+            /* process, sort academic reports */
+            /** @type {any}*/
+            let as=[];
+            for(let item of a) as.push({cols:[],hod:'',sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:item.sl,sc:item.sc,ss:item.ss,g:item.gp,ec:item.ec,ep:item.sp}); 
+            as=as.sort((/** @type {{ sc: string; sl: string; }} */ a,/** @type {{ sc: any; sl: any; }} */ b)=>a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl));
+
+            /* add matching hods comments */
+            for(let item of as) {
+                let f=h.find((/** @type {{ ss: any; sc: any; }} */ el)=>el.ss==item.ss && el.sc===item.sc);
+                item.hod=f?f.txt:'';
+            }
+
+            /* add assessment results */
+            for(let subject of as) {
+                subject.cols=[];
+                let pupilResults=res.filter((/** @type {{ pid: number; ss: any; sc: any; }} */ el)=>el.pid===pupil.pid && el.ss===subject.ss && el.sc===subject.sc);
+                for(let item of pupilResults) {
+                    if(!subject.cols.find((/** @type {{ n: any; dl: any; }} */ el)=>el.n===item.n && el.dl===item.dl)) {
+                        subject.cols.push({
+                                n:item.n,
+                                ds:item.dl?.length===10 ? item.dl[5]+item.dl[6]+"/" +item.dl[2]+item.dl[3]: '00/00',
+                                dt:new Date(item.dl).getTime(),
+                                dl:item.dl,
+                                gd:'X',
+                                pc:0,
+                                r:0
+                        });
+                    }
+                }
+                subject.cols=subject.cols.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
+                console.log(pupil.pid,pupil.sn,subject.ss,subject.sc,subject.cols);
+
+
+                for(let col of subject.cols) {
+                    let f=pupilResults.find(el=>el.n===col.n && el.dl===col.dl);
+                    col.g=f?f.gd:'X';
+                    col.pc=f?f.pc:0;
+                }
+
+                let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===subject.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
+                let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===subject.cols[0].gd);
+                for(let col of subject.cols) {
+                    let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd); 
+                    col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+                }
+
+
+            }
+           
+
+
+
+            data.reports.push({
                 pid:pupil.pid,
                 sn:pupil.sn,
                 pn:pupil.pn,
-                tg:pupil.tg,    
+                tg:pupil.tg,
+                hse:pupil.hse,    
                         data:{
                             valid:f?true:false,
                             min:f?f.min:0,
                             max:f?f.max:0,
+                            ec:null,
+                            ep:null,
                             txt:f?f.txt:'',
                             _id:f?f._id:'',
                             sal:f?f.author.sal:'',
-                            log:f?f.log:''
+                            log:f?f.log:'',
+                            a:as,
+                            p:ps,
+                            e:es
                             
                         }
             });
@@ -54,6 +167,12 @@ onMount(async () => {
 
     data.user=status.user;
 
+   
+
+    //testing ......
+    for(let item of $pupils) item.tg='XXX';
+    for(let item of $pupils.filter(el=>el.hse==='Spear' && el.fm===6) ) item.tg='AGH';
+
     console.log($pupils);
 
     data.tutors=[];
@@ -66,18 +185,11 @@ onMount(async () => {
     data.tutors.sort((/** @type {{ sn: string; pn: string; }} */ a,/** @type {{ sn: any; pn: any; }} */ b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));
 
     console.log(data.tutors);
-
-    //data.teachers=$teachers.sort((a,b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));
-    // testing
-    //data.teachers=$teachers.sort((a,b)=>a.tid.localeCompare(b.tid));
-
     data.tIndex=data.tutors.findIndex((/** @type {{ tid: any; }} */ el)=>el.tid===data.user);
 
     
-    update();
-    //await updateReports(); // already handled by update
-
-
+    await update();
+  
 });
 
 
@@ -100,6 +212,50 @@ onMount(async () => {
     </div>
 </div>
 
+
+{#if data.reports[0]}
+
+
+<table>
+    <thead>
+        <tr>
+            <th></th>
+            <th>
+
+
+            </th>
+          
+        </tr>   
+
+    </thead>
+    <tbody>
+        {#each data.reports as row,rowIndex}
+            <tr>
+                <td>
+                    <td><div>{row.pn} {row.sn}</div><div><span class="small">{row.hse}</span></div><div><span class="small">{row.tg}</span></div>
+                </td>
+                <td>
+                    {#if row.data.valid}
+                  
+                        <Pedit bind:data={row.data} index={rowIndex}  bind:next={data.next} user={data.user}/>
+                    {:else}
+                        <span class="tag">Error - Report missing</span>
+                    {/if}
+                </td>
+            </tr>
+        {/each}
+    </tbody>
+</table>
+
+{/if}
+
+
+
+
+
 <style>
 
+.small {
+    font-size:1.2rem;
+}
 </style>

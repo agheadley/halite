@@ -226,7 +226,7 @@
     <tbody>
         {#each data.reports as row,rowIndex}
             <tr>
-                <td class="top">{row.pn} {row.sn}</td>
+                <td><div>{row.pn} {row.sn}</div><div><span class="small">{row.g}</span></div></td>
                 <td>
                     {#if row.data.valid}
                   
@@ -246,7 +246,7 @@
 
 <style>
 
-.top {
-    vertical-align:middle;
+.small {
+    font-size:1.2rem;
 }
 </style>
