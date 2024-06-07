@@ -91,7 +91,8 @@
                             max:f?f.max:0,
                             txt:f?f.txt:'',
                             _id:f?f._id:'',
-                            sal:f?f.author.sal:''
+                            sal:f?f.author.sal:'',
+                            log:f?f.log:''
                         }
                     }
                 );
@@ -101,6 +102,7 @@
         data.reports=data.reports.sort((/** @type {{ g: string; sn: string; pn: string; }} */ a,/** @type {{ g: any; sn: any; pn: any; }} */ b)=>a.g.localeCompare(b.g) || a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn) );
         console.log(data.reports);
     };
+
 
     onMount(async () => {
         console.log(status);
