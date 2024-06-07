@@ -1,7 +1,7 @@
 <script>
 
     import { onMount } from 'svelte';
-    import {groups,teachers} from '$lib/store';
+    import {groups,teachers,config} from '$lib/store';
     import Edit from './Edit.svelte';
 
     /** @type {any}*/
@@ -15,7 +15,8 @@
         tIndex:0,
         teachers:[],
         reports:[],
-        next:0
+        next:0,
+        cols:[]
     };
 
     $:{
@@ -44,25 +45,10 @@
       
 
        
-        /*
-        if(data.next>data.current) {
-            if(data.reports[data.next]) {
-                //console.log('moving on!');
-                if(data.reports[data.next].txt!==null) {
-                    document.getElementById(`c|${String(data.next)}`)?.focus();
-                } 
-                data.current=data.next;
-            } else {
-                data.current=data.next-1;
-            }
-
-           console.log('must update status.reports for ',data.reports[index].sn);
-
-        }
-        */
+      
     }
 
-    let update=()=>{
+    let update=async()=>{
        console.log('updating...');
        data.user=data.teachers[data.tIndex].tid;
        data.groups=[];
@@ -71,13 +57,13 @@
                 data.groups.push({g:item.g,fm:item.fm,sl:item.sl,sc:item.sc,ss:item.ss});
        }
        data.index=0;
-       updateReports();
+       await updateReports();
        console.log(data.groups);
     
 
     };
 
-    let updateReports=()=>{
+    let updateReports=async()=>{
         let g=data.groups[data.index];
 
         data.reports=[];
@@ -86,9 +72,47 @@
 
         if(gp) {
 
-        
+            /* get assessment cols */
+            console.log(gp.g,gp.lv,gp.yr,gp.ss,gp.sc);
+            let response = await fetch('/edge/read', {
+                method: 'POST',
+                body: JSON.stringify({collection:'results',filter:{lv:gp.lv,yr:gp.yr,ss:gp.ss,sc:gp.sc},projection:{}}),
+                headers: {'content-type': 'application/json'}
+            });
+            let res= await response.json();
+            console.log(res);
+
+            data.cols=[];
+            for(let item of res) {
+                if(!data.cols.find((/** @type {{ n: any; dl: any; }} */ el)=>el.n===item.n && el.dl===item.dl)) {
+                    data.cols.push({
+                            n:item.n,
+                            ds:item.dl?.length===10 ? item.dl[5]+item.dl[6]+"/" +item.dl[2]+item.dl[3]: '00/00',
+                            dt:new Date(item.dl).getTime(),
+                            dl:item.dl
+                        });
+                }
+            }
+            data.cols=data.cols.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
+            console.log(data.cols);
+
+            /* build report data */
             for(let pupil of gp.pupil) {
                 let f=status.reports.find((/** @type {{ author: { type: string; }; pupil: { pid: number; }; g: any; ss: string; sc: string; }} */ el)=>el.author.type==='teacher' && el.pupil.pid===pupil.pid && el.g===g.g && el.ss===gp.ss && el.sc===gp.sc);
+                
+                let cols=[];
+                for(let col of data.cols) {
+                    let a=res.find((/** @type {{ pid: number; dl: any; n: any; }} */ el)=>el.pid===pupil.pid && el.dl===col.dl && el.n===col.n);
+                    cols.push({gd:a?a.gd:'X',pc:a?a.pc:0,r:0});
+                }
+
+                let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===gp.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
+                let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===cols[0].gd);
+                for(let col of cols) {
+                    let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd); 
+                    col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+                }
+                
                 data.reports.push(
                     {
                         pid:pupil.pid,
@@ -104,7 +128,8 @@
                             txt:f?f.txt:'',
                             _id:f?f._id:'',
                             sal:f?f.author.sal:'',
-                            log:f?f.log:''
+                            log:f?f.log:'',
+                            cols:cols
                         }
                     }
                 );
@@ -114,6 +139,12 @@
 
         data.reports=data.reports.sort((/** @type {{ g: string; sn: string; pn: string; }} */ a,/** @type {{ g: any; sn: any; pn: any; }} */ b)=>a.g.localeCompare(b.g) || a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn) );
         console.log(data.reports);
+
+
+       
+
+
+
     };
 
     onMount(async () => {
@@ -128,8 +159,8 @@
        data.tIndex=data.teachers.findIndex((/** @type {{ tid: any; }} */ el)=>el.tid===data.user);
 
       
-        update();
-        updateReports();
+        await update();
+        //await updateReports(); // already handled by update
 
 
     });

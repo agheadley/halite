@@ -2,8 +2,9 @@
 
 import {config,alert} from '$lib/store';
 import * as util from '$lib/util';
+import Cell from '$lib/_Cell.svelte'
 
-/** @type {{valid:boolean,log:string,min:number,max:number,ec:string|null,ep:string|null,txt:string|null,_id:string,sal:string}}} */ 
+/** @type {{valid:boolean,cols:any[],log:string,min:number,max:number,ec:string|null,ep:string|null,txt:string|null,_id:string,sal:string}}} */ 
 export let data;
 
 /** @type {number}*/
@@ -55,7 +56,16 @@ let save=async()=>{
 
 </script>
 
-
+<div>
+    <table>
+        <tr>
+            {#each data.cols as col,colIndex}
+                <td><Cell color={true} residual={col.r}>{col.gd}</Cell></td>
+            {/each}
+        </tr>
+    </table>
+   
+</div>
 <div>
     {#if data.ec!==null || data.ep!==null}
     <div>
@@ -91,6 +101,9 @@ let save=async()=>{
                     </fieldset>
                 </span>
                 {/if}
+            </div>
+            <div>
+             
             </div>
         </div>
     </div>

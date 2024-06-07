@@ -73,7 +73,7 @@
                         f.txt=row.data.txt;
                         f.log=log;
                     }
-                    console.log(f);
+                    //console.log(f);
                 }
             }
         }
