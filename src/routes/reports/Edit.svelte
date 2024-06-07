@@ -5,7 +5,7 @@ import * as util from '$lib/util';
 import Cell from '$lib/_Cell.svelte';
 import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 
-/** @type {{valid:boolean,cols:any[],log:string,min:number,max:number,ec:string|null,ep:string|null,txt:string|null,_id:string,sal:string}}} */ 
+/** @type {{valid:boolean,cols:any[],hod:string,log:string,min:number,max:number,ec:string|null,ep:string|null,txt:string|null,_id:string,sal:string}}} */ 
 export let data;
 
 /** @type {number}*/
@@ -111,7 +111,12 @@ let save=async()=>{
                 {/if}
             </div>
             <div>
-             
+                <span class="small">
+                    <fieldset id="class" class="is-full-width" style="height:100%">
+                    <legend>HoD Comment</legend>
+                        <div>{data.hod}</div>
+                    </fieldset>
+                </span>
             </div>
         </div>
     </div>
@@ -155,7 +160,11 @@ let save=async()=>{
     width:70rem;
     padding-bottom:0.25rem;
     padding-top:0.25rem;
+
+   
+   
 }
+
 
 .start {
     justify-content:start;
@@ -164,8 +173,10 @@ let save=async()=>{
 
 .comment {
         width:70rem;
-        height:10rem;
+        height:14rem;
 }
+
+
 
 .red {
     background:rgba(178,34,34,0.15);

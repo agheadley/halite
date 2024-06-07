@@ -101,6 +101,9 @@
             for(let pupil of gp.pupil) {
                 let f=status.reports.find((/** @type {{ author: { type: string; }; pupil: { pid: number; }; g: any; ss: string; sc: string; }} */ el)=>el.author.type==='teacher' && el.pupil.pid===pupil.pid && el.g===g.g && el.ss===gp.ss && el.sc===gp.sc);
                 
+                let h=status.reports.find((/** @type {{ author: { type: string; }; pupil: { pid: number; }; fm: number; ss: string; sc: string; }} */ el)=>el.author.type==='hod' && el.pupil.pid===pupil.pid && el.fm===gp.fm && el.ss===gp.ss && el.sc===gp.sc);
+                
+
                 let cols=[];
                 for(let col of data.cols) {
                     let a=res.find((/** @type {{ pid: number; dl: any; n: any; }} */ el)=>el.pid===pupil.pid && el.dl===col.dl && el.n===col.n);
@@ -130,7 +133,8 @@
                             _id:f?f._id:'',
                             sal:f?f.author.sal:'',
                             log:f?f.log:'',
-                            cols:cols
+                            cols:cols,
+                            hod:h?h.txt:''
                     
                         }
                     }
