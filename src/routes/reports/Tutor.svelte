@@ -2,7 +2,8 @@
 import { onMount } from 'svelte';
 import {pupils,teachers,config} from '$lib/store';
 import Pedit from './Pedit.svelte';
-    
+import Pdetail from './Pdetail.svelte';
+
 /** @type {any}*/
 export let status;
 
@@ -75,18 +76,18 @@ let update=async()=>{
             
             /* process, sort pastoral reports */
             let ps=[];
-            for(let item of p) ps.push({sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep}); 
+            for(let item of p) ps.push({sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep,min:item.min,max:item.max}); 
             ps=ps.sort((a,b)=>a.title.localeCompare(b.title));
 
             /* process, sort enrichment reports */
             let es=[];
-            for(let item of e) es.push({sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep}); 
+            for(let item of e) es.push({sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep,min:item.min,max:item.max}); 
             es=es.sort((a,b)=>a.title.localeCompare(b.title));
 
             /* process, sort academic reports */
             /** @type {any}*/
             let as=[];
-            for(let item of a) as.push({cols:[],hod:'',sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:item.sl,sc:item.sc,ss:item.ss,g:item.gp,ec:item.ec,ep:item.sp}); 
+            for(let item of a) as.push({cols:[],hod:'',sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:item.sl,sc:item.sc,ss:item.ss,g:item.gp,ec:item.ec,ep:item.ep,min:item.min,max:item.max}); 
             as=as.sort((/** @type {{ sc: string; sl: string; }} */ a,/** @type {{ sc: any; sl: any; }} */ b)=>a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl));
 
             /* add matching hods comments */
@@ -113,21 +114,23 @@ let update=async()=>{
                     }
                 }
                 subject.cols=subject.cols.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
-                //console.log(pupil.pid,pupil.sn,subject.ss,subject.sc,subject.cols);
+                console.log(pupil.pid,pupil.sn,subject.ss,subject.sc,subject.cols);
 
+                if(subject.cols[0]) {
+                    for(let col of subject.cols) {
+                        let f=pupilResults.find((/** @type {{ n: any; dl: any; }} */ el)=>el.n===col.n && el.dl===col.dl);
+                        col.gd=f?f.gd:'X';
+                        col.pc=f?f.pc:0;
+                    }
 
-                for(let col of subject.cols) {
-                    let f=pupilResults.find((/** @type {{ n: any; dl: any; }} */ el)=>el.n===col.n && el.dl===col.dl);
-                    col.gd=f?f.gd:'X';
-                    col.pc=f?f.pc:0;
+                    let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===subject.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
+                    let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===subject.cols[0].gd);
+                    for(let col of subject.cols) {
+                        let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd); 
+                        col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+                    }
                 }
-
-                let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===subject.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
-                let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===subject.cols[0].gd);
-                for(let col of subject.cols) {
-                    let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd); 
-                    col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
-                }
+               
 
 
             }
@@ -136,6 +139,7 @@ let update=async()=>{
 
 
             data.reports.push({
+                detail:false,
                 pid:pupil.pid,
                 sn:pupil.sn,
                 pn:pupil.pn,
@@ -240,9 +244,21 @@ onMount(async () => {
     </thead>
     <tbody>
         {#each data.reports as row,rowIndex}
+          
+            <tr>
+              <td colspan="2">
+                {#if row.detail}
+                    <Pdetail bind:open={row.detail} data={row.data} pupil={{pn:row.pn,sn:row.sn,pid:row.pid,tg:row.tg,hse:row.hse}}/>
+                {:else}
+                    <button class="button small dark" on:click={()=>row.detail=true}>{row.pn} {row.sn}</button>
+                {/if}
+              </td>
+             
+            </tr>
+
             <tr>
                 <td>
-                    <td><div>{row.pn} {row.sn}</div><div><span class="small">{row.hse}</span></div><div><span class="small">{row.tg}</span></div>
+                   <div>{row.pn} {row.sn}</div><div><span class="small">{row.hse}</span></div><div><span class="small">{row.tg}</span></div>
                 </td>
                 <td>
                     {#if row.data.valid}
