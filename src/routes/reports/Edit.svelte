@@ -12,6 +12,7 @@ export let index;
 /** @type {number}*/
 export let next;
 
+
 /** @type {string}*/
 export let user;
 
@@ -21,6 +22,7 @@ export let user;
 let save=async()=>{
 
     data.log=`${user}|${util.getDateTime()}`;
+
 
 
     let response = await fetch('/edge/update', {
