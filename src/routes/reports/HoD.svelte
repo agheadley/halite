@@ -90,6 +90,15 @@
         for(let gp of gps) {
             for(let pupil of gp.pupil) {
                 let f=status.reports.find((/** @type {{ author: { type: string; }; pupil: { pid: number; }; fm: number; ss: string; sc: string; }} */ el)=>el.author.type==='hod' && el.pupil.pid===pupil.pid && el.fm===gp.fm && el.ss===gp.ss && el.sc===gp.sc);
+                
+                let t=status.reports.filter((/** @type {{ author: { type: string; }; pupil: { pid: number; }; fm: number; ss: string; sc: string; }} */ el)=>el.author.type==='teacher' && el.pupil.pid===pupil.pid && el.fm===gp.fm && el.ss===gp.ss && el.sc===gp.sc);
+                
+                let teachers=[];
+                for(let item of t) {
+                    teachers.push({txt:item.txt,ec:item.ec,ep:item.ep,tid:item.author.tid,sal:item.author.sal})
+                }
+                teachers=teachers.sort((a,b)=>a.tid.localeCompare(b.tid));
+
                 data.reports.push(
                     {
                         pid:pupil.pid,
@@ -104,7 +113,8 @@
                             _id:f?f._id:'',
                             sal:f?f.author.sal:'',
                             log:f?f.log:''
-                        }
+                        },
+                        teacher:teachers
                     }
                 );
             }
@@ -182,7 +192,7 @@
             <th></th>
             <th></th>
          
-            <th><button disabled={data.txt.length<status.cycle.length.A.min || data.txt.length>status.cycle.length.A.max} class="button error" on:click={save}>Save to All</button></th>
+            <th><button disabled={data.txt.length<status.cycle.length.A.min || data.txt.length>status.cycle.length.A.max} class="button error" on:click={save}>Save HoD Comment</button></th>
              
             </tr>     
     </thead>
@@ -190,11 +200,11 @@
     {#each data.reports as row,rowIndex}
         <tr>
             <td>{row.pn} {row.sn}</td>
-            <td>{row.g}</td>
+            <td>{row.g} HoD</td>
             <td>
                 {#if row.data.valid}
                     <div>
-                        <textarea class="comment" disabled bind:value={row.data.txt}></textarea>
+                        <textarea class="comment bold" disabled bind:value={row.data.txt}></textarea>
                     </div>
                     <div class="flex-row">
                         <div>
@@ -216,6 +226,20 @@
             </td>
       
         </tr>
+        {#each row.teacher as t,tIndex}
+            <tr>
+                <td></td>
+                <td>
+                    <div>
+                        {t.tid}
+                    </div>
+                    <div>
+                        {t.ec!==null ? t.ec : '.'} / {t.ep!==null ? t.ep : '.'} 
+                    </div>
+                </td>
+                <td>{#if t.txt!==null}<textarea class="comment" disabled bind:value={t.txt}></textarea>{/if}</td>
+            </tr>
+        {/each}
     {/each}
    </tbody>
 
@@ -250,5 +274,9 @@
 
 .small {
     font-size:1.2rem;
+}
+
+.bold {
+    font-weight:600;
 }
 </style>
