@@ -113,12 +113,12 @@ let update=async()=>{
                     }
                 }
                 subject.cols=subject.cols.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
-                console.log(pupil.pid,pupil.sn,subject.ss,subject.sc,subject.cols);
+                //console.log(pupil.pid,pupil.sn,subject.ss,subject.sc,subject.cols);
 
 
                 for(let col of subject.cols) {
-                    let f=pupilResults.find(el=>el.n===col.n && el.dl===col.dl);
-                    col.g=f?f.gd:'X';
+                    let f=pupilResults.find((/** @type {{ n: any; dl: any; }} */ el)=>el.n===col.n && el.dl===col.dl);
+                    col.gd=f?f.gd:'X';
                     col.pc=f?f.pc:0;
                 }
 
@@ -159,7 +159,9 @@ let update=async()=>{
             });
         }
 
-        console.log(data.reports.filter((/** @type {{ data: { valid: any; }; }} */ el)=>el.data.valid));
+        console.log(data.reports);
+
+        data.reports=data.reports;
 };
 
 onMount(async () => {
@@ -195,6 +197,11 @@ onMount(async () => {
 
 </script>
 
+
+
+
+
+
 <div class="row">
     <div class="col is-vertical-align">
         <h4>Tutor Comments </h4>
@@ -211,6 +218,9 @@ onMount(async () => {
  
     </div>
 </div>
+
+
+
 
 
 {#if data.reports[0]}
@@ -236,7 +246,6 @@ onMount(async () => {
                 </td>
                 <td>
                     {#if row.data.valid}
-                  
                         <Pedit bind:data={row.data} index={rowIndex}  bind:next={data.next} user={data.user}/>
                     {:else}
                         <span class="tag">Error - Report missing</span>
