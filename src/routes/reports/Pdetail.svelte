@@ -1,6 +1,7 @@
 <script>
 	import Edit from "./Edit.svelte";
     import Modal from '$lib/_Modal.svelte';
+    import Cell from '$lib/_Cell.svelte';
 
 /** @type {any}*/
 export let data;
@@ -14,10 +15,13 @@ export let open;
 
 let edit={open:false,index:0}
 
+/**
+ * 
+ * @param {number} index
+ */
 let openEdit=(index)=>{
     edit.index=index;
     edit.open=true;
-    console.log('editing');
 };
 </script>
 
@@ -26,7 +30,7 @@ let openEdit=(index)=>{
     <Modal bind:open={edit.open}>
         <header>
          
-                <h4></h4>
+                <h4>data.a.[index]</h4>
         
         </header>
         <p>Are you sure?</p>
@@ -48,21 +52,46 @@ let openEdit=(index)=>{
 
 <table>
     <tbody>
-        {#each data.a as row,rowIndex}
+        {#each data.detail as row,rowIndex}
+        {#if row.type==='A'}
+        <tr>
+          
+            <td>
+                <span class="small bold">{row.sl} ({row.sc})</span>
+             
+            </td>
+            <td>
+                <table>
+                    <tbody>
+                        <tr>
+                            {#each row.cols as col,colIndex}
+                                <td><span class="small">{col.ds}</span><Cell color={true} residual={col.r}>{col.gd}</Cell></td>
+                            {/each}
+                        </tr>
+                    </tbody>
+                </table>
+              
+            </td>
+        </tr>
+        {/if}
         <tr>
             <td>
                 <div>
-                    <span class="small">{row.sl} ({row.sc})</span>
+                    <span class="tag small" tabindex={1} role="button" on:keydown={()=>openEdit(rowIndex)}  on:click={()=>openEdit(rowIndex)}>EDIT</span>
+                </div>
+                <div>
+                    {#if row.type==='A'}
+                    <span class="small">EC {row.ec} / EP {row.ep}</span>
+                    {:else}
+                    <span class="small bold">{row.title.toUpperCase()}</span>
+                    {/if}
                 </div>
                 <div>
                     <span class="small">{row.sal}</span>
                 </div>
-                <div>
-                    <span class="small">EC {row.ec} / EP {row.ep}</span>
-                </div>
             </td>
             <td>
-                <textarea  on:click={()=>openEdit(rowIndex)} class={row.txt.length<row.min || row.txt.length>row.max ? 'comment red small' : 'comment green small'} bind:value={row.txt}/> 
+                <textarea  disabled  class={row.txt.length<row.min || row.txt.length>row.max ? 'comment red small' : 'comment green small'} bind:value={row.txt}/> 
             </td>
         </tr>
         {/each}
@@ -91,9 +120,11 @@ let openEdit=(index)=>{
         height:7rem;
     }
 
-    .focussed {
-        height:14rem;
+    .bold {
+        font-weight:600;
     }
+
+
 
 
 

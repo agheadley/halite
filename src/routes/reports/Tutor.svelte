@@ -23,11 +23,13 @@ $:{
       if(data.reports[data.next]) {
           if(data.reports[data.next].txt!==null) {
                   document.getElementById(`c|${String(data.next)}`)?.focus();
+                  //data.reports[data.next].detail=true;
           } 
       }
 
       if(data.reports[data.next-1]) {
           let x=data.reports[data.next-1];
+          //x.detail=false;
           console.log(x.sn,x.data._id);
           let f=status.reports.find((/** @type {{ _id: any; }} */ el)=>el._id===x.data._id);
           if(f) {
@@ -76,18 +78,18 @@ let update=async()=>{
             
             /* process, sort pastoral reports */
             let ps=[];
-            for(let item of p) ps.push({sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep,min:item.min,max:item.max}); 
+            for(let item of p) ps.push({type:"P",sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep,min:item.min,max:item.max}); 
             ps=ps.sort((a,b)=>a.title.localeCompare(b.title));
 
             /* process, sort enrichment reports */
             let es=[];
-            for(let item of e) es.push({sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep,min:item.min,max:item.max}); 
+            for(let item of e) es.push({type:"E",sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep,min:item.min,max:item.max}); 
             es=es.sort((a,b)=>a.title.localeCompare(b.title));
 
             /* process, sort academic reports */
             /** @type {any}*/
             let as=[];
-            for(let item of a) as.push({cols:[],hod:'',sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:item.sl,sc:item.sc,ss:item.ss,g:item.gp,ec:item.ec,ep:item.ep,min:item.min,max:item.max}); 
+            for(let item of a) as.push({type:"A",cols:[],hod:'',sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:item.sl,sc:item.sc,ss:item.ss,g:item.gp,ec:item.ec,ep:item.ep,min:item.min,max:item.max}); 
             as=as.sort((/** @type {{ sc: string; sl: string; }} */ a,/** @type {{ sc: any; sl: any; }} */ b)=>a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl));
 
             /* add matching hods comments */
@@ -134,7 +136,11 @@ let update=async()=>{
 
 
             }
-           
+
+            let linked=[];
+            for(let item of as) linked.push(item);
+            for(let item of es) linked.push(item);
+            for(let item of ps) linked.push(item);
 
 
 
@@ -155,9 +161,7 @@ let update=async()=>{
                             _id:f?f._id:'',
                             sal:f?f.author.sal:'',
                             log:f?f.log:'',
-                            a:as,
-                            p:ps,
-                            e:es
+                            detail:linked
                             
                         }
             });
