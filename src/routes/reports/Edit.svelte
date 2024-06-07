@@ -2,7 +2,8 @@
 
 import {config,alert} from '$lib/store';
 import * as util from '$lib/util';
-import Cell from '$lib/_Cell.svelte'
+import Cell from '$lib/_Cell.svelte';
+import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 
 /** @type {{valid:boolean,cols:any[],log:string,min:number,max:number,ec:string|null,ep:string|null,txt:string|null,_id:string,sal:string}}} */ 
 export let data;
@@ -59,6 +60,11 @@ let save=async()=>{
 <div>
     <table>
         <tbody>
+            <tr>
+                {#each data.cols as col,colIndex}
+                    <td><AssessmentTitle title={col.n} subtitle={col.ds}/></td>
+                {/each}
+            </tr>
         <tr>
             {#each data.cols as col,colIndex}
                 <td><Cell color={true} residual={col.r}>{col.gd}</Cell></td>
@@ -146,7 +152,7 @@ let save=async()=>{
     display:flex;
     flex-direction:row;
     justify-content:space-between;
-    width:60rem;
+    width:70rem;
     padding-bottom:0.25rem;
     padding-top:0.25rem;
 }
@@ -157,7 +163,7 @@ let save=async()=>{
 
 
 .comment {
-        width:60rem;
+        width:70rem;
         height:10rem;
 }
 

@@ -3,7 +3,7 @@
     import { onMount } from 'svelte';
     import {groups,teachers,config} from '$lib/store';
     import Edit from './Edit.svelte';
-    import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
+  
 
     /** @type {any}*/
     export let status;
@@ -104,7 +104,7 @@
                 let cols=[];
                 for(let col of data.cols) {
                     let a=res.find((/** @type {{ pid: number; dl: any; n: any; }} */ el)=>el.pid===pupil.pid && el.dl===col.dl && el.n===col.n);
-                    cols.push({gd:a?a.gd:'X',pc:a?a.pc:0,r:0});
+                    cols.push({gd:a?a.gd:'X',pc:a?a.pc:0,r:0,ds:col.ds,n:col.n});
                 }
 
                 let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===gp.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
@@ -131,6 +131,7 @@
                             sal:f?f.author.sal:'',
                             log:f?f.log:'',
                             cols:cols
+                    
                         }
                     }
                 );
@@ -209,18 +210,9 @@
 <table>
     <thead>
         <tr>
-            <th>Pupil</th>
+            <th></th>
             <th>
 
-                <table>
-                    <tbody>
-                        <tr>
-                            {#each data.cols as col,colIndex}
-                                <td><AssessmentTitle title={col.n} subtitle={col.ds}/></td>
-                            {/each}
-                        </tr>
-                    </tbody>
-                </table>
 
             </th>
           
@@ -251,6 +243,6 @@
 <style>
 
 .top {
-    vertical-align:top;
+    vertical-align:middle;
 }
 </style>

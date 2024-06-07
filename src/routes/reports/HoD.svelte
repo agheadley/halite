@@ -200,7 +200,7 @@
     {#each data.reports as row,rowIndex}
         <tr>
             <td>{row.pn} {row.sn}</td>
-            <td>{row.g} HoD</td>
+            <td>{row.g} <span class="bold">HoD</span></td>
             <td>
                 {#if row.data.valid}
                     <div>
@@ -231,10 +231,10 @@
                 <td></td>
                 <td>
                     <div>
-                        {t.tid}
+                        <span class="small">{t.tid}
                     </div>
                     <div>
-                        {t.ec!==null ? t.ec : '.'} / {t.ep!==null ? t.ep : '.'} 
+                        <span class="small">{t.ec!==null ? t.ec : '.'} / {t.ep!==null ? t.ep : '.'}</span>
                     </div>
                 </td>
                 <td>{#if t.txt!==null}<textarea class="comment" disabled bind:value={t.txt}></textarea>{/if}</td>
@@ -253,13 +253,13 @@
     display:flex;
     flex-direction:row;
     justify-content:space-between;
-    width:60rem;
+    width:70rem;
     padding-bottom:0.25rem;
     padding-top:0.25rem;
 }
 
 .comment {
-        width:60rem;
+        width:70rem;
         height:10rem;
     }
 
