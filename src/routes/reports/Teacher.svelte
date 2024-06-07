@@ -3,6 +3,7 @@
     import { onMount } from 'svelte';
     import {groups,teachers,config} from '$lib/store';
     import Edit from './Edit.svelte';
+    import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 
     /** @type {any}*/
     export let status;
@@ -209,7 +210,19 @@
     <thead>
         <tr>
             <th>Pupil</th>
-            <th></th>
+            <th>
+
+                <table>
+                    <tbody>
+                        <tr>
+                            {#each data.cols as col,colIndex}
+                                <td><AssessmentTitle title={col.n} subtitle={col.ds}/></td>
+                            {/each}
+                        </tr>
+                    </tbody>
+                </table>
+
+            </th>
           
         </tr>   
 

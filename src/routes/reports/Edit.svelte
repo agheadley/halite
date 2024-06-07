@@ -58,11 +58,13 @@ let save=async()=>{
 
 <div>
     <table>
+        <tbody>
         <tr>
             {#each data.cols as col,colIndex}
                 <td><Cell color={true} residual={col.r}>{col.gd}</Cell></td>
             {/each}
         </tr>
+        </tbody>
     </table>
    
 </div>
