@@ -45,6 +45,7 @@
 
                     let report={
                         coid:data.cycle._id,
+                        ci:data.cycle.index,
                         ay:data.cycle.ay,
                         y:data.cycle.y,
                         tt:data.cycle.tt,
@@ -90,6 +91,7 @@
                     for(let teacher of gp.teacher) {
                         let report={
                         coid:data.cycle._id,
+                        ci:data.cycle.index,
                         ay:data.cycle.ay,
                         y:data.cycle.y,
                         tt:data.cycle.tt,
@@ -139,6 +141,7 @@
             
                     let report={
                         coid:data.cycle._id,
+                        ci:data.cycle.index,
                         ay:data.cycle.ay,
                         y:data.cycle.y,
                         tt:data.cycle.tt,
@@ -191,6 +194,7 @@
 
                     let report={
                         coid:data.cycle._id,
+                        ci:data.cycle.index,
                         ay:data.cycle.ay,
                         y:data.cycle.y,
                         tt:data.cycle.tt,

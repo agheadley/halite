@@ -5,6 +5,7 @@
     import { goto } from '$app/navigation';
 	import HoD from './HoD.svelte';
     import Teacher from './Teacher.svelte';
+    import Tutor from './Tutor.svelte';
 
     /** @type {any}*/
     export let data;
@@ -64,7 +65,7 @@
         <div class="col is-vertical-align">
            <button class="button dark" on:click={()=>status.tab='teacher'}>Teachers</button>
            <button class="button dark" on:click={()=>status.tab='hod'}>HoDs</button>
-           <button class="button dark">Tutors</button>
+           <button class="button dark" on:click={()=>status.tab='tutor'}>Tutors</button>
            <button class="button dark">HMs</button>
            <button class="button dark">Enrichment</button>
            
@@ -82,7 +83,7 @@
 
     {#if status.tab==='hod'}<HoD bind:status={status}/> {/if}
     {#if status.tab==='teacher'}<Teacher bind:status={status}/> {/if}
-
+    {#if status.tab==='tutor'}<Tutor bind:status={status}/> {/if}
     <style>
     </style>
     
