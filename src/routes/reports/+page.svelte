@@ -7,6 +7,7 @@
     import Teacher from './Teacher.svelte';
     import Tutor from './Tutor.svelte';
     import HM from './HM.svelte';
+    import Enrichment from './Enrichment.svelte';
 
     /** @type {any}*/
     export let data;
@@ -90,6 +91,7 @@
     {#if status.tab==='teacher'}<Teacher bind:status={status}/> {/if}
     {#if status.tab==='tutor'}<Tutor bind:status={status}/> {/if}
     {#if status.tab==='hm'}<HM bind:status={status}/> {/if}
+    {#if status.tab==='enrichment'}<Enrichment bind:status={status}/> {/if}
 
 
     <style>
