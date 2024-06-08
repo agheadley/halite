@@ -1,6 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import {groups,teachers,config} from '$lib/store';
+    import Create from './Create.svelte';
 
     /** @type {any}*/
     export let status;
@@ -9,7 +10,8 @@
     let data={
         user:'',
         teachers:[],
-        tIndex:0
+        tIndex:0,
+        reports:[]
     };
 
     let update=async()=>{
@@ -37,9 +39,17 @@
 
 </script>
 
+{#if data.create}
+    <Create bind:data={data} bind:status={status}/>
+{/if}
+
 <div class="row">
     <div class="col is-vertical-align">
-        <h4>Enrichment Reports</h4>
+        {#if !data.create}
+        <h4>Write Enrichment Reports</h4>
+        {:else}
+        <h4>Manage Enrichment Reports</h4>
+        {/if}
     </div>
     <div class="col is-vertical-align">
 
@@ -52,13 +62,28 @@
           </select>
  
     </div>
-    <div class="col is-vertical-align">
-        Subjects ?
+    <div class="col is-vertical-align is-right">
+        {#if !data.create}
+        <button class="button dark" on:click={()=>data.create=true}>Create</button>
+        {:else}
+        <button class="button outline" on:click={()=>data.create=false}>Close</button>
+        
+        {/if}
+
     </div>
-    <div class="col is-vertical-align">
-        My Lists ? Modal?
-    </div>
+    
 </div>
+
+
+
+
+{#if !data.create}
+
+<p>List all status.reports (type=E) here, filtered only by user !</p>
+
+
+
+{/if}
 
 <style>
 
