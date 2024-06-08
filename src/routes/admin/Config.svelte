@@ -12,7 +12,8 @@
     let data={
         rows:[],
         lvs:[],
-        lv:''
+        lv:'',
+        tab:'subject'   // subject, grade
     };
     
     let addRow=()=>{
@@ -109,13 +110,22 @@
     <div class="row">
         <div class="col">
             <div class="tabs">
-                <a href={'#'} class={'active'}>Subjects</a>
-                <a href={'#'} class={''}>Grades</a>
+                <a href={'#'} on:click={()=>data.tab='subject'} on:keydown={()=>data.tab='subject'} class={data.tab==='subject'?'active':''}>Subjects</a>
+                <a href={'#'} on:click={()=>data.tab='grade'} on:keydown={()=>data.tab='grade'} class={data.tab==='grade'?'active':''}>Grades</a>
             </div>
         </div>
     </div>
 
-    
+
+    {#if data.tab==='grade'}
+    <div class="row">
+        <div class="col">
+            <h4>Edit Grades</h4>
+        </div>
+    </div>
+    {/if} <!-- / tab=grade-->
+
+    {#if data.tab==='subject'}
     <div class="row">
         <div class="col is-vertical-align"><h4>Edit Subjects</h4></div> 
         <div class="col is-vertical-align">
@@ -145,7 +155,7 @@
         </div>
     </div>
 
-    <table class="striped">
+    <table class="striped small">
         <thead>
             <tr>
                 <th></th>
@@ -161,7 +171,7 @@
                     <tr>
                         <td>
                             <button class="button error icon-only" on:click={()=>removeRow(rowIndex)}>         
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                             </button>
                             
                         </td>
@@ -190,7 +200,11 @@
           
             </div>
    
-    
+    {/if} <!-- / tab=subject-->
     <style>
     
+    .small {
+        font-size:1.2rem;
+    }
+
     </style>
