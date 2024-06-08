@@ -12,7 +12,9 @@
         teachers:[],
         tIndex:0,
         reports:[],
-        pupils:[]
+        pupils:[],
+        years:[],
+        gnds:[{gnd:'M',filter:true},{gnd:'F',filter:true}]
     };
 
     let update=async()=>{
@@ -35,6 +37,9 @@
         data.pupils=data.pupils.sort((/** @type {{ sn: string; pn: string; }} */ a,/** @type {{ sn: any; pn: any; }} */ b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));   
 
 
+        data.years=$config.year.map((/** @type {{ fm: any; }} */ el)=>({fm:el.fm,filter:true}));
+        
+        
         await update();
         //await updateReports(); // already handled by update
 
@@ -44,9 +49,6 @@
 
 </script>
 
-{#if data.create}
-    <Manage bind:data={data} bind:status={status}/>
-{/if}
 
 <div class="row">
     <div class="col is-vertical-align">
@@ -79,6 +81,10 @@
     
 </div>
 
+
+{#if data.create}
+    <Manage bind:data={data} bind:status={status}/>
+{/if}
 
 
 
