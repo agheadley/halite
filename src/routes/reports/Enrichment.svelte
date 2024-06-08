@@ -1,7 +1,7 @@
 <script>
     import { onMount } from 'svelte';
     import {groups,teachers,config} from '$lib/store';
-    import Create from './Create.svelte';
+    import Manage from './Manage.svelte';
 
     /** @type {any}*/
     export let status;
@@ -40,7 +40,7 @@
 </script>
 
 {#if data.create}
-    <Create bind:data={data} bind:status={status}/>
+    <Manage bind:data={data} bind:status={status}/>
 {/if}
 
 <div class="row">
