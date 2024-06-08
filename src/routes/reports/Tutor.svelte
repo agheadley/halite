@@ -38,7 +38,7 @@ $:{
 
     if(data.reports[data.next]) {
         if(data.reports[data.next].txt!==null) {
-                document.getElementById(`c|${String(data.next)}`)?.scrollIntoView();
+                document.getElementById(`c|${String(data.next)}`)?.focus();
                 //data.reports[data.next].detail=true;
         } 
     }

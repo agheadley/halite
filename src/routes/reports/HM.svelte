@@ -38,7 +38,7 @@
     
         if(data.reports[data.next]) {
             if(data.reports[data.next].txt!==null) {
-                    document.getElementById(`c|${String(data.next)}`)?.scrollIntoView();
+                    document.getElementById(`c|${String(data.next)}`)?.focus();
                     //data.reports[data.next].detail=true;
             } 
         }
@@ -58,7 +58,7 @@
             }
 
             /* update to reflect changes */
-            console.log(x);
+            //console.log(x);
             
             let d=x.data.detail.find((/** @type {{ tid: any; title: string; }} */ el)=>el.tid===data.user && el.title==='hm');
             if(d) {
@@ -82,7 +82,12 @@
       };
     
     let update=async()=>{
-            data.user=data.hms[data.hIndex].tg;
+
+        console.log(data.user);
+            data.user=data.hms[data.hIndex].tid;
+
+            console.log(data.user);
+
             data.reports=[];
            
             let pups=$pupils.filter(el=>el.tg===data.user);
@@ -216,15 +221,12 @@
     
        
     
-        //testing ......
-        for(let item of $pupils) item.tg='XXX';
-        for(let item of $pupils.filter(el=>el.hse==='Spear' && el.fm===6) ) item.tg='AGH';
-    
+       
         console.log($pupils);
     
         data.hms=[];
         for(let item of $config.report.hm) {
-            if(!data.hms.find((el)=>el.hse===item.hse)) {
+            if(!data.hms.find((/** @type {{ hse: any; }} */ el)=>el.hse===item.hse)) {
                 let f=$teachers.find(el=>el.tid===item.tid);
                 data.hms.push({hse:item.hse,tid:item.tid,sal:item.sal,sn:f?f.sn:'',pn:f?f.pn:''});
             }
@@ -274,7 +276,7 @@
     
     <div class="row">
         <div class="col is-vertical-align">
-            <h4>Tutor Comments </h4>
+            <h4>Housemaster Comments </h4>
         </div>
         <div class="col is-vertical-align">
     
