@@ -52,6 +52,12 @@
           </select>
  
     </div>
+    <div class="col is-vertical-align">
+        Subjects ?
+    </div>
+    <div class="col is-vertical-align">
+        My Lists ? Modal?
+    </div>
 </div>
 
 <style>
