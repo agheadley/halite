@@ -57,7 +57,10 @@ returns true for undefined (as undefined==null), null, [], ""
 - $config
 
 
-- F1,F2 now as GCSE LS ? Use % 
+- F1,F2 now as GCSE LS ? O 9-8,VG 6-7,G 4-5 ,A 1-3 ,U
+
+- change $config subject to pull groups into sc L, lv LS
+- change $config.years to set to LS (relate yr to GCSE exam)
 
 
 
@@ -67,60 +70,22 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Reports
 
-Add txt to cycle ! Sorry central message can be formed!.
-Use <PRE> !
+- Enrichment
 
-
-ToK, CAS, EE have sc as 'C', grade list as 'X' and have ep,ec levels.
-
-Move report create and report cycles to separate components referenced from Report.svelte
-Only delete last item of cycle and severe warning! Store cycle text in report record too for safety!
-You need term and year from.xycle too!
-Calculate and apply academic year to cycles using config.rollover.
-Add gnd, hse, tg, form number to reports
-
-Click on set and pull all reports for that set in c teacher 2 etc, add group to reports
-
-How to deal with ToK reports?
-
- - $config.cycle,  active boolean, sort/order number, term string, subterm string (1st/2nd), calendar year number, max, min lengths for each type of eport.
- - $config.hm - for tid, salulation !
- - $config report order for pastoral - perhaps needed, academic, enrichment can be alphabetical.
- - report table
-   - yr, lv, cycle _id, type (Academic/Enrichment/Pastoral), sn, pn, pid, id (isams ID), text, effort{class:, prep}, cycle txt (Summer 1st 2024), tid, sal (teacher salutation)
-
-- every PR has HoD explanation text! Needs to be only text in PR1, Suplement report text in PR2
-
-- some PR1 need full reports in some year groups. We can do this by deleting or adding comments in manager ?
-- or add Form commnet / no comment checkbox ?
-- use to create/ update reports!
-
-
-
-
-
+- Add txt to cycle ! Sorry central message can be formed!. Use <PRE> !
 
 - PDFs !
-- management tools for missing reports, changes, generation !
+- management tools for changes.
 
 
 
 # admin/Overview
 
-- update assessment tags based upon row.parent change in saveRow
+- tag.parent updates to assessments
 
-# admin/Create - create assessments !!!!!
+# admin/Assessments
 
-
-# Overview
-
-
-
-
-# overview /manage
-
-- don't make TIGs live to parents when scaping data for parents!
-- instead add tag.parent column to admin/Overview
+- create assesments tag.exam (IntEx), tag.grade (TIG+tag.exam=true), tag.pupil (AG + tag.exam=true)
 
 
 # Assessments
@@ -132,16 +97,15 @@ How to deal with ToK reports?
 
 # _Pupil.svelte
 
-- export let open - closes modal - but not shown if pupil - as single page - so no modal used for display !
-- need to check this for parent, pupil and teachers !!!!
 - need to display reports past and present too!
+- export let open - closes modal - but not shown if user type pupil - as single page - so no modal used for display !
+- need to check this for parent, pupil and teachers !!!!
+
 
 
 # Parent - to do !
 
-# Admin
 
-- overview page to show active pages etc.
 
 # pupil store, created at startup from all groups, intake
 ```

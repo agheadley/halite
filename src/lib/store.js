@@ -32,11 +32,15 @@ export let config=writable({
         ts:['1st','2nd'],
         e:{list:['4','3','2','1','N/A'],default:'3'},
         hm:[{hse:'',tid:'',sal:''}],
-        hoy:[]
+        hoy:[],
+        enrichment:[{sl:'',sc:'E',ss:'',g:''}]
     }
 
 
 });
+
+
+
 
 
 export let pupils=writable([

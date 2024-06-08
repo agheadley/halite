@@ -191,7 +191,7 @@ let calculate=async(groupIndex,pupilIndex)=>{
                     pc:x.pc,
                     fb:x.fb,
                     n:status.assessment.n,
-                    log:`${status.user}|${util.getDate()}`
+                    log:`${status.user}|${util.getDateTime()}`
                 }
             }),
 		    headers: {'content-type': 'application/json'}
