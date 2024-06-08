@@ -146,7 +146,7 @@
 
 <div class="row">
     <div class="col is-vertical-align">
-        <h4>HoD Comment</h4>
+        <h4>HoD Statement</h4>
     </div>
     <div class="col is-vertical-align">
         <select  id="subject" bind:value={data.index} on:change={update}>
@@ -172,7 +172,7 @@
         <tr>
             <th>Pupil</th>
             <th>Group</th>
-            <th>HoD Comment</th>
+            <th>HoD Statement</th>
             <th></th>
         </tr>   
         <tr>
@@ -192,7 +192,7 @@
             <th></th>
             <th></th>
          
-            <th><button disabled={data.txt.length<status.cycle.length.A.min || data.txt.length>status.cycle.length.A.max} class="button error" on:click={save}>Save HoD Comment</button></th>
+            <th><button disabled={data.txt.length<status.cycle.length.A.min || data.txt.length>status.cycle.length.A.max} class="button dark" on:click={save}>Save HoD Comment</button></th>
              
             </tr>     
     </thead>

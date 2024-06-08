@@ -64,7 +64,7 @@
     </div>
     <div class="col is-vertical-align is-right">
         {#if !data.create}
-        <button class="button dark" on:click={()=>data.create=true}>Create</button>
+        <button class="button dark" on:click={()=>data.create=true}>Manage</button>
         {:else}
         <button class="button outline" on:click={()=>data.create=false}>Close</button>
         
