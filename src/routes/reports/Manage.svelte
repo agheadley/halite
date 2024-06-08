@@ -59,9 +59,7 @@ onMount(async () => {
                 </p>
         </fieldset>
 </div>
-<div>
-        Gnd filter, select clear
-</div>
+
 <table class="striped small">
         <tbody>
                 {#each data.pupils as row,rowIndex}
