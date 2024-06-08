@@ -87,6 +87,11 @@ returns true for undefined (as undefined==null), null, [], ""
 
 - create assesments tag.exam (IntEx), tag.grade (TIG+tag.exam=true), tag.pupil (AG + tag.exam=true)
 
+# admin/Config
+
+- grade editing
+- add sc=L (LS) grades
+- add grades for sc=X (EAL,LSup,ToK,CAS,EE)
 
 # Assessments
 

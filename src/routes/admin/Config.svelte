@@ -104,8 +104,16 @@
     
     </script>
     
-    
-   
+    <hr/>
+
+    <div class="row">
+        <div class="col">
+            <div class="tabs">
+                <a href={'#'} class={'active'}>Subjects</a>
+                <a href={'#'} class={''}>Grades</a>
+            </div>
+        </div>
+    </div>
 
     
     <div class="row">
