@@ -56,6 +56,19 @@ $:{
             
             
         }
+
+        /* update to reflect changes */
+        console.log(x);
+        
+        let d=x.data.detail.find((/** @type {{ tid: any; title: string; }} */ el)=>el.tid===data.user && el.title==='tutor');
+        if(d) {
+            d.txt=x.data.txt;
+            d.log=x.data.log;
+        }
+        
+
+
+        
     }
        
   }
