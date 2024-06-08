@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import {groups,teachers,config} from '$lib/store';
+    import {pupils,teachers,config} from '$lib/store';
     import Manage from './Manage.svelte';
 
     /** @type {any}*/
@@ -11,7 +11,8 @@
         user:'',
         teachers:[],
         tIndex:0,
-        reports:[]
+        reports:[],
+        pupils:[]
     };
 
     let update=async()=>{
@@ -19,17 +20,21 @@
     };
 
     onMount(async () => {
-       console.log('reports/Teacher.svelte mounted');
+        console.log('reports/Teacher.svelte mounted');
 
-       data.user=status.user;
+        data.user=status.user;
 
-       data.teachers=$teachers.sort((a,b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));
-       // testing
-       data.teachers=$teachers.sort((a,b)=>a.tid.localeCompare(b.tid));
+        data.teachers=$teachers.sort((a,b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));
+        // testing
+        data.teachers=$teachers.sort((a,b)=>a.tid.localeCompare(b.tid));
 
-       data.tIndex=data.teachers.findIndex((/** @type {{ tid: any; }} */ el)=>el.tid===data.user);
+        data.tIndex=data.teachers.findIndex((/** @type {{ tid: any; }} */ el)=>el.tid===data.user);
 
-      
+        
+        data.pupils=$pupils.map(el=>({pid:el.pid,sn:el.sn,pn:el.pn,hse:el.hse,fm:el.fm,gnd:el.gnd,select:false,show:true}));
+        data.pupils=data.pupils.sort((/** @type {{ sn: string; pn: string; }} */ a,/** @type {{ sn: any; pn: any; }} */ b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));   
+
+
         await update();
         //await updateReports(); // already handled by update
 
