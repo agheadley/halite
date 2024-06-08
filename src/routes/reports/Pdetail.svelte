@@ -78,7 +78,7 @@ console.log(data);
     <tbody>
         {#each data.detail as row,rowIndex}
         {#if row.type==='A'}
-        {#if data.detail[rowIndex-1] && (row.ss!==data.detail[rowIndex-1].ss || row.sc!==data.detail[rowIndex-1].sc) }
+        {#if rowIndex===0 || (data.detail[rowIndex-1] && (row.ss!==data.detail[rowIndex-1].ss || row.sc!==data.detail[rowIndex-1].sc)) }
         <tr>
           
             <td>
@@ -96,6 +96,17 @@ console.log(data);
                     </tbody>
                 </table>
               
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+            <span class="small">
+            <details>
+                <summary>HoD Statement</summary>
+                <p>{row.hod}</p>
+                </details>
+            </span>
             </td>
         </tr>
         {/if}
@@ -126,7 +137,7 @@ console.log(data);
             <td>
                 <textarea disabled={!row.edit} class={row.txt.length<row.min || row.txt.length>row.max ? 'comment red small' : 'comment green small'} bind:value={row.txt}/> 
                 <span class="small">{row.log}</span>
-            </td>
+               </td>
         </tr>
         {/each}
  
