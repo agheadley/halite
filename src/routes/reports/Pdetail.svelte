@@ -2,10 +2,17 @@
 	import Edit from "./Edit.svelte";
     import Modal from '$lib/_Modal.svelte';
     import Cell from '$lib/_Cell.svelte';
+    import * as util from '$lib/util';
+    import {alert} from '$lib/store';
 
 /** @type {any}*/
 export let data;
 
+/** @type {string}*/
+export let user;
+
+/** @type {{log:string,txt:string,_id:string}}}*/
+export let active;
 
 /**
  * 
@@ -16,8 +23,48 @@ let openEdit=(index)=>{
 };
 
 
+/**
+ * 
+ * @param {number} index
+ */
+ let save=async(index)=>{
+
+    data.detail[index].log=`${user}|${util.getDateTime()}`;
+    
+    console.log('saving',data.detail[index]._id,data.detail[index].title,data.detail[index].tid,data.detail[index].sal);
+    
+    
+    let response = await fetch('/edge/update', {
+        method: 'POST',
+        body: JSON.stringify({
+            collection:'reports',
+            filter:{"_id": { "$oid": data.detail[index]._id} },
+            update:{txt: data.detail[index].txt,log: data.detail[index].log}
+        }),
+        headers: {'content-type': 'application/json'}
+    });
+
+    let res= await response.json();
+            
+    if(res.matchedCount===1) {
+        $alert.msg=`Saved report`;
+        data.detail[index].edit=false;
+
+        active={_id:data.detail[index]._id,log:data.detail[index].log,txt:data.detail[index].txt};
+
+    } else {
+        $alert.type='error';
+        $alert.msg=`Error saving report`;
+    }
+
+    
 
 
+    
+};
+
+
+console.log(data);
 
 </script>
 
@@ -31,6 +78,7 @@ let openEdit=(index)=>{
     <tbody>
         {#each data.detail as row,rowIndex}
         {#if row.type==='A'}
+        {#if data.detail[rowIndex-1] && (row.ss!==data.detail[rowIndex-1].ss || row.sc!==data.detail[rowIndex-1].sc) }
         <tr>
           
             <td>
@@ -51,10 +99,18 @@ let openEdit=(index)=>{
             </td>
         </tr>
         {/if}
+        {/if}
         <tr>
             <td>
                 <div>
+                    <!--
                     <span class="tag small" tabindex={1} role="button" on:keydown={()=>openEdit(rowIndex)} on:click={()=>openEdit(rowIndex)}>EDIT</span>
+                    -->
+                    {#if !row.edit}
+                    <button class="button dark small" on:click={()=>openEdit(rowIndex)}>Edit</button>
+                    {:else}
+                    <button disabled={row.txt.length<row.min || row.txt.length>row.max} class="button dark small" on:click={()=>save(rowIndex)}>Save</button>
+                    {/if}
                 </div>
                 <div>
                     {#if row.type==='A'}
@@ -64,11 +120,12 @@ let openEdit=(index)=>{
                     {/if}
                 </div>
                 <div>
-                    <span class="small">{row.sal}</span>
+                    <span class="small">{row.tid}</span>
                 </div>
             </td>
             <td>
                 <textarea disabled={!row.edit} class={row.txt.length<row.min || row.txt.length>row.max ? 'comment red small' : 'comment green small'} bind:value={row.txt}/> 
+                <span class="small">{row.log}</span>
             </td>
         </tr>
         {/each}

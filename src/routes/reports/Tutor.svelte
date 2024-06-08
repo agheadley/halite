@@ -16,33 +16,47 @@ let data={
     reports:[],
     index:0,
     next:0,
-    detail:{open:false,index:0}
+    detail:{open:false,index:0},
+    active:{_id:'',log:'',txt:''}
 };
 
 $:{
       
+    if(data.active._id!=='') {
 
-      if(data.reports[data.next]) {
-          if(data.reports[data.next].txt!==null) {
-                  document.getElementById(`c|${String(data.next)}`)?.scrollIntoView();
-                  //data.reports[data.next].detail=true;
-          } 
-      }
+        //console.log('updating status.reports.',data.active);
 
-      if(data.reports[data.next-1]) {
-          let x=data.reports[data.next-1];
-          //x.detail=false;
-          console.log(x.sn,x.data._id);
-          let f=status.reports.find((/** @type {{ _id: any; }} */ el)=>el._id===x.data._id);
-          if(f) {
-              f.txt=x.data.txt;
-              f.ec=x.data.ec;
-              f.ep=x.data.ep;
-              f.log=x.data.log;
-              
-              
-          }
-      }
+        let f=status.reports.find((/** @type {{ _id: any; }} */ el)=>el._id===data.active._id);
+        if(f) {
+            f.txt=data.active.txt;
+            f.log=data.active.log;
+        }
+        data.active={_id:'',log:'',txt:''};
+
+
+    }
+
+    if(data.reports[data.next]) {
+        if(data.reports[data.next].txt!==null) {
+                document.getElementById(`c|${String(data.next)}`)?.scrollIntoView();
+                //data.reports[data.next].detail=true;
+        } 
+    }
+
+    if(data.reports[data.next-1]) {
+        let x=data.reports[data.next-1];
+        //x.detail=false;
+        console.log(x.sn,x.data._id);
+        let f=status.reports.find((/** @type {{ _id: any; }} */ el)=>el._id===x.data._id);
+        if(f) {
+            f.txt=x.data.txt;
+            f.ec=x.data.ec;
+            f.ep=x.data.ep;
+            f.log=x.data.log;
+            
+            
+        }
+    }
        
   }
 
@@ -89,18 +103,18 @@ let update=async()=>{
             
             /* process, sort pastoral reports */
             let ps=[];
-            for(let item of p) ps.push({type:"P",sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep,min:item.min,max:item.max}); 
+            for(let item of p) ps.push({type:"P",sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep,min:item.min,max:item.max,log:item.log}); 
             ps=ps.sort((a,b)=>a.title.localeCompare(b.title));
 
             /* process, sort enrichment reports */
             let es=[];
-            for(let item of e) es.push({type:"E",sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep,min:item.min,max:item.max}); 
+            for(let item of e) es.push({type:"E",sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep,min:item.min,max:item.max,log:item.log}); 
             es=es.sort((a,b)=>a.title.localeCompare(b.title));
 
             /* process, sort academic reports */
             /** @type {any}*/
             let as=[];
-            for(let item of a) as.push({type:"A",cols:[],hod:'',sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:item.sl,sc:item.sc,ss:item.ss,g:item.gp,ec:item.ec,ep:item.ep,min:item.min,max:item.max}); 
+            for(let item of a) as.push({type:"A",cols:[],hod:'',sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:item.sl,sc:item.sc,ss:item.ss,g:item.gp,ec:item.ec,ep:item.ep,min:item.min,max:item.max,log:item.log}); 
             as=as.sort((/** @type {{ sc: string; sl: string; }} */ a,/** @type {{ sc: any; sl: any; }} */ b)=>a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl));
 
             /* add matching hods comments */
@@ -127,7 +141,7 @@ let update=async()=>{
                     }
                 }
                 subject.cols=subject.cols.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
-                console.log(pupil.pid,pupil.sn,subject.ss,subject.sc,subject.cols);
+                //console.log(pupil.pid,pupil.sn,subject.ss,subject.sc,subject.cols);
 
                 if(subject.cols[0]) {
                     for(let col of subject.cols) {
@@ -228,7 +242,7 @@ onMount(async () => {
             </div>
         </div>
         <div class="row">
-            <Pdetail  data={data.reports[data.detail.index].data}/>
+            <Pdetail  bind:active={data.active} data={data.reports[data.detail.index].data} user={status.user}/>
         </div>
         <div class="row">
             <div class="col">
@@ -285,24 +299,18 @@ onMount(async () => {
     <tbody>
         {#each data.reports as row,rowIndex}
           
-            <tr>
-              <td colspan="2">
-              
-                      <button class="button small dark" on:click={()=>openDetail(rowIndex)}>{row.pn} {row.sn}</button>
-         
- 
-                    
-              </td>
-             
-            </tr>
-
+           
             <tr>
                 <td>
+                    <div>
+                        <button class="button small dark" on:click={()=>openDetail(rowIndex)}>Review</button>
+         
+                    </div>
                    <div>{row.pn} {row.sn}</div><div><span class="small">{row.hse}</span></div><div><span class="small">{row.tg}</span></div>
                 </td>
                 <td>
                     {#if row.data.valid}
-                        <Pedit bind:data={row.data} index={rowIndex}  bind:next={data.next} user={data.user}/>
+                        <Pedit bind:data={row.data} index={rowIndex}  bind:next={data.next} user={status.user}/>
                     {:else}
                         <span class="tag">Error - Report missing</span>
                     {/if}

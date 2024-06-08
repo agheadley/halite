@@ -35,7 +35,7 @@
     width:100vw;
     height:100vh;
     background-color:#333;
-    opacity: 0.2;
+    opacity: 0.5;
 }
 
 .modal{

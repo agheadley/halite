@@ -234,7 +234,7 @@
                         <span class="small">{t.tid}
                     </div>
                     <div>
-                        <span class="small">{t.ec!==null ? t.ec : '.'} / {t.ep!==null ? t.ep : '.'}</span>
+                        <span class="small">EC {t.ec!==null ? t.ec : '.'} / EP {t.ep!==null ? t.ep : '.'}</span>
                     </div>
                 </td>
                 <td>{#if t.txt!==null}<textarea class="comment" disabled bind:value={t.txt}></textarea>{/if}</td>

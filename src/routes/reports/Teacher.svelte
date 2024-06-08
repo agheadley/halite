@@ -99,7 +99,7 @@
 
             /* build report data */
             for(let pupil of gp.pupil) {
-                let f=status.reports.find((/** @type {{ author: { type: string; }; pupil: { pid: number; }; g: any; ss: string; sc: string; }} */ el)=>el.author.type==='teacher' && el.pupil.pid===pupil.pid && el.g===g.g && el.ss===gp.ss && el.sc===gp.sc);
+                let f=status.reports.find((/** @type {{ author: { type: string; tid: any; }; pupil: { pid: number; }; g: any; ss: string; sc: string; }} */ el)=>el.author.type==='teacher' && el.author.tid===data.user && el.pupil.pid===pupil.pid && el.g===g.g && el.ss===gp.ss && el.sc===gp.sc);
                 
                 let h=status.reports.find((/** @type {{ author: { type: string; }; pupil: { pid: number; }; fm: number; ss: string; sc: string; }} */ el)=>el.author.type==='hod' && el.pupil.pid===pupil.pid && el.fm===gp.fm && el.ss===gp.ss && el.sc===gp.sc);
                 
@@ -230,7 +230,7 @@
                 <td>
                     {#if row.data.valid}
                   
-                        <Edit bind:data={row.data} index={rowIndex}  bind:next={data.next} user={data.user}/>
+                        <Edit bind:data={row.data} index={rowIndex}  bind:next={data.next} user={status.user}/>
                     {:else}
                         <span class="tag">Error - Report missing</span>
                     {/if}

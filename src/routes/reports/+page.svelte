@@ -63,16 +63,20 @@
     
     <div class="row">
         <div class="col is-vertical-align">
-           <button class="button dark" on:click={()=>status.tab='teacher'}>Teachers</button>
-           <button class="button dark" on:click={()=>status.tab='hod'}>HoDs</button>
-           <button class="button dark" on:click={()=>status.tab='tutor'}>Tutors</button>
-           <button class="button dark">HMs</button>
-           <button class="button dark">Enrichment</button>
+            <div class="tabs">
+                <a class={status.tab==='teacher' ? 'active' :''} href={'#'} on:click={()=>status.tab='teacher'} on:keydown={()=>status.tab='teacher'}>Teacher</a>
+                <a class={status.tab==='hod' ? 'active' :''} href={'#'} on:click={()=>status.tab='hod'} on:keydown={()=>status.tab='hod'}>HoD</a>
+                <a class={status.tab==='tutor' ? 'active' :''} href={'#'} on:click={()=>status.tab='tutor'} on:keydown={()=>status.tab='tutor'}>Tutor</a>
+                <a class={status.tab==='hm' ? 'active' :''} href={'#'} on:click={()=>status.tab='hm'} on:keydown={()=>status.tab='hm'}>HM</a>
+                <a class={status.tab==='enrichment' ? 'active' :''} href={'#'} on:click={()=>status.tab='enrichment'} on:keydown={()=>status.tab='enrichment'}>Enrichment</a>
+         
+            </div>
+        
            
         </div>
         <div class="col">
-            <h4>Active Cycle</h4>
-            <span class="tag">{status.cycle.tt} {status.cycle.ts} {status.cycle.y}</span>
+          
+            <h4>{status.cycle.tt} {status.cycle.ts} {status.cycle.y}</h4>
         </div>
     </div>
     
@@ -84,6 +88,11 @@
     {#if status.tab==='hod'}<HoD bind:status={status}/> {/if}
     {#if status.tab==='teacher'}<Teacher bind:status={status}/> {/if}
     {#if status.tab==='tutor'}<Tutor bind:status={status}/> {/if}
+
+
     <style>
+    
+
+    
     </style>
     
