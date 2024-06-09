@@ -126,7 +126,11 @@ console.log(data);
                 <div>
                     {#if row.type==='A'}
                     <span class="small">EC {row.ec} / EP {row.ep}</span>
-                    {:else}
+                    {/if}
+                    {#if row.type==='E'}
+                    <span class="small bold">{row.sl.toUpperCase()}</span>
+                    {/if}
+                    {#if row.type==='P'}
                     <span class="small bold">{row.title.toUpperCase()}</span>
                     {/if}
                 </div>

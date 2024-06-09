@@ -2,10 +2,21 @@
     import { onMount } from 'svelte';
     import {pupils,teachers,config} from '$lib/store';
     import Manage from './Manage.svelte';
-	import Pupil from '$lib/_Pupil.svelte';
+	import Eedit from './Eedit.svelte';
+
 
     /** @type {any}*/
     export let status;
+
+
+    $:{
+        if(data.reports[data.next]) {
+            if(data.reports[data.next].txt!==null) {
+                    document.getElementById(`c|${String(data.next)}`)?.focus();
+            } 
+        }
+
+    }
 
     /** @type {any}*/
     let data={
@@ -17,17 +28,27 @@
         pupils:[],
         years:[],
         gnds:[{gnd:'M',filter:true},{gnd:'F',filter:true}],
-        lists:[]
+        lists:[],
+        next:0
     };
 
     let update=async()=>{
-        data.tIndex=data.teachers.findIndex((/** @type {{ tid: any; }} */ el)=>el.tid===data.user);
         data.user=data.teachers[data.tIndex].tid;
         data.sal=data.teachers[data.tIndex].sal;
 
         data.reports=status.reports.filter((/** @type {{ type: string; author: { tid: any; }; }} */ el)=>el.type==='E' && el.author.tid===data.user);
         
 
+        let response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'lists',filter:{type:'enrichment',user:data.user},projection:{}}),
+            headers: {'content-type': 'application/json'}
+        });
+        let res= await response.json();
+
+        console.log(res);
+        data.lists=res.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>b.dt-a.dt);
+    
     };
 
     onMount(async () => {
@@ -104,9 +125,27 @@
 
 {#if data.reports[0]}
 
-{#each data.reports as row,rowIndex}
-    <p>{row.pupil.pn} {row.pupil.pn} {row.sl}</p>
-{/each}
+
+<table>
+    <thead>
+
+    </thead>
+    <tbody>
+        {#each data.reports as row,rowIndex}
+            <tr>
+            <td>
+                <div>{row.pupil.pn} {row.pupil.pn}</div>
+                <div><span class="bold">{row.sl}</span></div>
+                <div><span class="small">{row.author.tid}</span></div>
+            </td>
+            <td>
+                <Eedit index={rowIndex} bind:next={data.next} bind:data={row} user={status.user}/>
+            </td>
+        </tr>  
+        {/each}
+    </tbody>
+</table>
+
 
 {/if}
 
@@ -116,5 +155,12 @@
 
 <style>
 
+.bold {
+    font-weight:600;
+}
+
+.small {
+    font-size:1.2rem;
+}
 
 </style>

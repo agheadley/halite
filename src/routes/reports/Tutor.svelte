@@ -121,7 +121,7 @@ let update=async()=>{
 
             /* process, sort enrichment reports */
             let es=[];
-            for(let item of e) es.push({type:"E",sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:null,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep,min:item.min,max:item.max,log:item.log}); 
+            for(let item of e) es.push({type:"E",sal:item.author.sal,tid:item.author.tid,_id:item._id,txt:item.txt,title:item.author.type,sl:item.sl,sc:null,ss:null,g:null,ec:item.ec,ep:item.ep,min:item.min,max:item.max,log:item.log}); 
             es=es.sort((a,b)=>a.title.localeCompare(b.title));
 
             /* process, sort academic reports */
