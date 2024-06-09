@@ -5,7 +5,7 @@ import * as util from '$lib/util';
 import Cell from '$lib/_Cell.svelte';
 import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 
-/** @type {{valid:boolean,cols:any[],hod:string,log:string,min:number,max:number,ec:string|null,ep:string|null,txt:string|null,_id:string,sal:string}}} */ 
+/** @type {any}*/ 
 export let data;
 
 /** @type {number}*/
@@ -127,7 +127,7 @@ let save=async()=>{
     <div>
         <div class="flex-row">
             <div>
-                <span class="small">{data.sal}</span>
+                <span class="small">{data.author.sal}</span>
             </div>
             {#if data.txt!==null}
             <div>
@@ -145,7 +145,18 @@ let save=async()=>{
     </div>
 </div>
 
+<div>
+   {#if data.associated[0]}
+    <details>
+        <summary>Associated Reports</summary>
+    {#each data.associated as line,lineIndex}
+    <p><span class="bold small">{line.tid}</span><span class="tag small">{line.ec!==null ? `EC ${line.ec} ` : ' '} {line.ec!==null && line.ep!==null ? ' / ' : ''} {line.ep!==null ? `EC ${line.ep} ` : ' '}</span>&nbsp;{#if line.txt!==null}<span class="small">{line.txt}</span>{/if}</p>
+   
+    {/each}
+</details>
 
+   {/if}
+</div>
 
 <style>
 
@@ -189,5 +200,8 @@ let save=async()=>{
     font-size:1.2rem;
 }
 
+.bold {
+    font-weight:600;
+}
 
 </style>

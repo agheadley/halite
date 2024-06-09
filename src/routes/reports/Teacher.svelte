@@ -32,19 +32,6 @@
             } 
         }
 
-        if(data.reports[data.next-1]) {
-            let x=data.reports[data.next-1];
-            console.log(x.sn,x.data._id);
-            let f=status.reports.find((/** @type {{ _id: any; }} */ el)=>el._id===x.data._id);
-            if(f) {
-                f.txt=x.data.txt;
-                f.ec=x.data.ec;
-                f.ep=x.data.ep;
-                f.log=x.data.log;
-                
-                
-            }
-        }
         
       
 
@@ -312,11 +299,8 @@
             <tr>
                 <td><div>{row.pupil.pn} {row.pupil.sn}</div><div><span class="small">{row.g}</span></div></td>
                 <td>
-                    {JSON.stringify(row)}
+                    <Edit bind:data={row} index={rowIndex}  bind:next={data.next} user={status.user}/>
                    
-                    <!--    
-                    <Edit bind:data={row.data} index={rowIndex}  bind:next={data.next} user={status.user}/>
-                   -->
                 </td>
             </tr>
         {/each}
