@@ -87,15 +87,12 @@
         <div class="col">&nbsp;</div>
     </div>
 
-    {#if status.cycle.active}
-        {#if status.tab==='hod'}<HoD bind:status={status}/> {/if}
-        {#if status.tab==='teacher'}<Teacher bind:status={status}/> {/if}
-        {#if status.tab==='tutor'}<Tutor bind:status={status}/> {/if}
-        {#if status.tab==='hm'}<HM bind:status={status}/> {/if}
-        {#if status.tab==='enrichment'}<Enrichment bind:status={status}/> {/if}
-    {:else}
-        <span class="tab">No active report cycle found.</span>
-    {/if}
+    {#if status.tab==='hod'}<HoD bind:status={status}/> {/if}
+    {#if status.tab==='teacher'}<Teacher bind:status={status}/> {/if}
+    {#if status.tab==='tutor'}<Tutor bind:status={status}/> {/if}
+    {#if status.tab==='hm'}<HM bind:status={status}/> {/if}
+    {#if status.tab==='enrichment'}<Enrichment bind:status={status}/> {/if}
+
 
     <style>
     
