@@ -179,7 +179,9 @@
         <h4>Teacher Comments </h4>
     </div>
     <div class="col is-vertical-align">
-
+        <fieldset>
+            <legend>Select Teacher</legend>
+           
         <select  id="Teacher" bind:value={data.tIndex} on:change={update}>
             <optgroup label="Teacher">
                     {#each data.teachers as item,index}
@@ -187,10 +189,13 @@
                     {/each}
             </optgroup>
           </select>
+        </fieldset>
  
     </div>
     <div class="col is-vertical-align">
-
+        <fieldset>
+            <legend>Select Group</legend>
+        
         <select  id="Groups" bind:value={data.index} on:change={updateReports}>
             <optgroup label="Groups">
                     {#each data.groups as item,index}
@@ -198,6 +203,8 @@
                     {/each}
             </optgroup>
           </select>
+        </fieldset>
+ 
  
     </div>
     <div class="col is-vertical-align">

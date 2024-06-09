@@ -149,6 +149,8 @@
         <h4>HoD Statement</h4>
     </div>
     <div class="col is-vertical-align">
+       <fieldset>
+        <legend>Select Subject</legend>
         <select  id="subject" bind:value={data.index} on:change={update}>
             <optgroup label="Subject">
                     {#each data.subjects as item,index}
@@ -156,6 +158,8 @@
                     {/each}
             </optgroup>
           </select>
+        </fieldset>
+ 
     </div>
     <div class="col is-vertical-align">
         &nbsp;

@@ -279,15 +279,17 @@
             <h4>Housemaster Comments </h4>
         </div>
         <div class="col is-vertical-align">
-    
-            <select  id="Tutor" bind:value={data.hIndex} on:change={update}>
-                <optgroup label="Tutor">
+            <fieldset>
+                <legend>Select House</legend>
+               
+            <select  id="Hse" bind:value={data.hIndex} on:change={update}>
+                <optgroup label="hse">
                         {#each data.hms as item,index}
                             <option value={index}>({item.hse}) {item.pn} {item.sn}</option>
                         {/each}
                 </optgroup>
               </select>
-     
+              </fieldset>
         </div>
     </div>
     

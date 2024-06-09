@@ -60,15 +60,18 @@
         {/if}
     </div>
     <div class="col is-vertical-align">
-
-        <select  id="Teacher" bind:value={data.tIndex} on:change={update}>
-            <optgroup label="Teacher">
-                    {#each data.teachers as item,index}
-                        <option value={index}>({item.tid}) {item.pn} {item.sn}</option>
-                    {/each}
-            </optgroup>
-          </select>
- 
+        <fieldset>
+            <legend>Select Teacher</legend>
+            <select  id="Teacher" bind:value={data.tIndex} on:change={update}>
+                <optgroup label="Teacher">
+                        {#each data.teachers as item,index}
+                            <option value={index}>({item.tid}) {item.pn} {item.sn}</option>
+                        {/each}
+                </optgroup>
+              </select>
+     
+        </fieldset>
+        
     </div>
     <div class="col is-vertical-align is-right">
         {#if !data.create}

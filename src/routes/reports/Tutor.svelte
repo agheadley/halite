@@ -278,7 +278,9 @@ onMount(async () => {
         <h4>Tutor Comments </h4>
     </div>
     <div class="col is-vertical-align">
-
+        <fieldset>
+            <legend>Select Tutor Group</legend>
+           
         <select  id="Tutor" bind:value={data.tIndex} on:change={update}>
             <optgroup label="Tutor">
                     {#each data.tutors as item,index}
@@ -286,6 +288,7 @@ onMount(async () => {
                     {/each}
             </optgroup>
           </select>
+          </fieldset>
  
     </div>
 </div>

@@ -3,8 +3,7 @@ import { onMount } from 'svelte';
 import {teachers,config,alert} from '$lib/store';
 import Modal from '$lib/_Modal.svelte';
 import * as util from '$lib/util';
-	import { updated } from '$app/stores';
-
+	
 /** @type {any}*/
 export let data;
 
@@ -19,7 +18,7 @@ $:{
 }
 
 /** @type {any}*/
-let list={name:'',max:15,valid:false,open:false,pupils:[]};
+let list={name:'',max:15,valid:false,open:false,pupils:[],delete:false,index:0,create:false};
 
 
 let save=async()=>{
@@ -38,7 +37,10 @@ let save=async()=>{
         let res= await response.json();
         console.log(res);
         if(res[0]) {
-            $alert.msg=`List created`;  
+            $alert.msg=`List created`; 
+            list.open=false;
+            await update();
+             
         } else {
             $alert.type='error';
             $alert.msg=`Error creating list`;
@@ -89,7 +91,11 @@ let validate=()=>{
  * @param {number} index
  */
 let chooseList=(index)=>{
-
+        for(let item of data.pupils) {
+                if(data.lists[list.index].pid.includes(item.pid)) item.select=true;
+                else item.select=false;
+        }
+        data.pupils=data.pupils;
 };
 
 
@@ -97,8 +103,31 @@ let chooseList=(index)=>{
  * 
  * @param {number} index
  */
- let removeList=async(index)=>{
+ let removeListOpen=(index)=>{
+        list.index=index;
+        list.delete=true;
 
+};
+
+let removeList=async()=>{
+        console.log('deleting',data.lists[list.index]._id,data.lists[list.index].name);
+        let response = await fetch('/edge/delete', {
+		    method: 'POST',
+		    body: JSON.stringify({collection:'lists',filter:{"_id": { "$oid": data.lists[list.index]._id } }}),
+		    headers: {'content-type': 'application/json'}
+	});
+
+        let res= await response.json();
+        console.log(res);
+        if(res.deletedCount && res.deletedCount===1 ) {
+            $alert.msg=`List deleted`;
+            list.delete=false;
+            await update();
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error deleting list`;
+        }
+        
 };
 
 
@@ -106,7 +135,12 @@ let chooseList=(index)=>{
  * 
  * @param {number} index
  */
- let create=async(index)=>{
+ let createOpen=(index)=>{
+        list.index=index;
+        list.create=true;
+};
+
+let create=async()=>{
 
 };
 
@@ -122,6 +156,86 @@ onMount(async () => {
 
 </script>
 
+
+
+
+{#if list.create}
+    <Modal bind:open={list.create}>
+        <div class="row">
+            <div class="col">
+                <h4>Create Reports</h4>
+            </div>
+            <div class="col is-right">
+                <button class="button outline" on:click={()=>list.create=false}>Close</button>
+            </div>
+        </div>
+        <div class="row">
+                <div class="col">
+                        <fieldset>
+                                <legend>Subject</legend>
+                                <p class="grouped">
+                                </p>
+                        </fieldset>
+                </div>
+        </div>
+        <div class="row">
+                <div class="col">
+                    <button class="button dark" on:click={create}>Create</button>
+                </div>
+                <div class="col is-right">
+                    <button class="button outline" on:click={()=>list.create=false}>Cancel</button>
+                </div>
+            </div>
+         <div class="row">
+            <div class="col">
+               <table class="striped small">
+                {#each list.pupils as row}
+                        <tr>
+                                <td>{row.pn} {row.sn}</td>
+                                <td>{row.fm}</td>
+                                <td>{row.hse}</td>
+                        </tr>
+                {/each}
+               </table>
+            </div>
+        </div>
+    
+        
+       
+    </Modal>
+    {/if}
+
+
+
+{#if list.delete}
+    <Modal bind:open={list.delete}>
+        <div class="row">
+            <div class="col">
+                {#if data.lists[list.index].user===status.user}
+                <h4>Delete this list?</h4>
+                {:else}
+                <span class="tag">Only the list's user can delete!</span>
+                {/if}
+            </div>
+        </div>
+        <div class="row">
+                <div class="col">
+                        &nbsp;
+                </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <button disabled={!data.lists[list.index].user===status.user} class="button error" on:click={removeList}>Delete</button>
+            </div>
+            <div class="col is-right">
+                <button class="button outline" on:click={()=>list.delete=false}>Close</button>
+            </div>
+        </div>
+    
+        
+       
+    </Modal>
+{/if}
 
 
 {#if list.open}
@@ -143,11 +257,6 @@ onMount(async () => {
                                         <button disabled={list.name==='' || list.pupils.length===0} class="button dark" on:click={save}>Save</button>
                                 </p>
                         </fieldset>
-                </div>
-        </div>
-        <div class="row">
-                <div class="col">
-                        <h4>Create Enrichment Reports ?</h4>
                 </div>
         </div>
         <div class="row">
@@ -178,7 +287,7 @@ onMount(async () => {
 <div class="col">
 <p><span class="tag">MANAGE LISTS</span></p>
 <div>
-        <button class="button dark" on:click={()=>list.open=true}>Create</button>   
+        <button class="button dark" on:click={()=>list.open=true}>Create List</button>   
 </div>
 <div>&nbsp;</div>
 <div>
@@ -229,12 +338,12 @@ onMount(async () => {
                 <tr>
                         <td><button class="button clear" on:click={()=>chooseList(listIndex)}>{list.name}</button></td>
                         <td>
-                                <button class="button outline icon-only" on:click={()=>removeList(listIndex)}>         
+                                <button class="button outline icon-only" on:click={()=>removeListOpen(listIndex)}>         
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                                 </button>
                         </td>
                         <td>
-                                <button class="button dark" on:click={()=>create(listIndex)}>Create</button>
+                                <button class="button dark small" on:click={()=>createOpen(listIndex)}>Create Reports</button>
                         </td>
                 </tr>
                 {/each}
