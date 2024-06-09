@@ -12,13 +12,13 @@ export let data;
 export let status;
 
 $:{
-        if(list.open) {
+        if(list.open || list.create) {
                 list.pupils=data.pupils.filter((/** @type {{ select: boolean; }} */ el)=>el.select===true).map((/** @type {{ id: any; fm: any; pid: any; sn: any; pn: any; gnd: any; tg: any; hse: any; }} */ el)=>({id:el.id,fm:el.fm,pid:el.pid,sn:el.sn,pn:el.pn,gnd:el.gnd,tg:el.tg,hse:el.hse}));
         }
 }
 
 /** @type {any}*/
-let list={name:'',max:15,valid:false,open:false,pupils:[],delete:false,index:0,create:false};
+let list={name:'',max:15,valid:false,open:false,pupils:[],delete:false,index:0,create:false,sIndex:0};
 
 
 let save=async()=>{
@@ -141,7 +141,8 @@ let removeList=async()=>{
 };
 
 let create=async()=>{
-
+        console.log('creating reports...',$config.report.enrichment[list.sIndex].sl,$config.report.enrichment[list.sIndex].sc);
+        
 };
 
 
@@ -174,6 +175,14 @@ onMount(async () => {
                         <fieldset>
                                 <legend>Subject</legend>
                                 <p class="grouped">
+                                        <select  id="Subject" bind:value={list.sIndex}>
+                                                <optgroup label="Subject">
+                                                        {#each $config.report.enrichment as item,index}
+                                                            <option value={index}>{item.sl}</option>
+                                                        {/each}
+                                                </optgroup>
+                                              </select>
+                                     
                                 </p>
                         </fieldset>
                 </div>
