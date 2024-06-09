@@ -25,7 +25,7 @@
         data.user=data.teachers[data.tIndex].tid;
         data.sal=data.teachers[data.tIndex].sal;
 
-        data.reports=status.reports.filter(el=>el.type==='E' && el.author.tid===data.user);
+        data.reports=status.reports.filter((/** @type {{ type: string; author: { tid: any; }; }} */ el)=>el.type==='E' && el.author.tid===data.user);
         
 
     };
