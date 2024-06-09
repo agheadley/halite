@@ -14,7 +14,8 @@
         index:0,
         subjects:[],
         reports:[],
-        txt:''
+        txt:'',
+        all:false
     };
 
     let save=async()=>{
@@ -153,16 +154,22 @@
         console.log(data.reports);
     };
 
+    let updateSubjects=()=>{
+
+        data.subjects=status.subjects;
+        
+        let x=status.subjects.filter((/** @type {{ tid: any; }} */ el)=>el.tid===status.user);
+        console.log(x,x.length);
+        if(x[0] && !data.all) data.subjects=x;
+        
+        console.log(data.subjects);
+
+    };
+
 
     onMount(async () => {
        
-        if(!status.admin)
-                data.subjects=status.subjects.filter((/** @type {{ tid: any; }} */ el)=>el.tid===status.user);
-        else 
-                data.subjects=status.subjects;
-
-        console.log(data.subjects);
-
+        updateSubjects();
         await update();
     });
 
@@ -179,6 +186,7 @@
     <div class="col is-vertical-align">
        <fieldset>
         <legend>Select Subject</legend>
+        <p class="grouped">
         <select  id="subject" bind:value={data.index} on:change={update}>
             <optgroup label="Subject">
                     {#each data.subjects as item,index}
@@ -186,6 +194,8 @@
                     {/each}
             </optgroup>
           </select>
+          <input type=checkbox bind:checked={data.all} on:change={updateSubjects}/>
+        </p>
         </fieldset>
  
     </div>
