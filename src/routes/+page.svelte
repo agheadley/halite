@@ -103,6 +103,7 @@ let getPupils=async()=>{
 					lv:g.lv,
 					yr:g.yr,
 					pid:p.pid,
+					id:p.id,
 					sn:p.sn,
 					pn:p.pn,
 					hse:p.hse,

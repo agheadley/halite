@@ -45,6 +45,7 @@ export let config=writable({
 
 export let pupils=writable([
     {
+        id:'',
         pid:0,
         pn:'',
         sn:'',

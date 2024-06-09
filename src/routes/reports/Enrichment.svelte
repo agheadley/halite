@@ -14,7 +14,8 @@
         reports:[],
         pupils:[],
         years:[],
-        gnds:[{gnd:'M',filter:true},{gnd:'F',filter:true}]
+        gnds:[{gnd:'M',filter:true},{gnd:'F',filter:true}],
+        lists:[]
     };
 
     let update=async()=>{
@@ -33,7 +34,7 @@
         data.tIndex=data.teachers.findIndex((/** @type {{ tid: any; }} */ el)=>el.tid===data.user);
 
         
-        data.pupils=$pupils.map(el=>({pid:el.pid,sn:el.sn,pn:el.pn,hse:el.hse,fm:el.fm,gnd:el.gnd,select:false,show:true}));
+        data.pupils=$pupils.map(el=>({id:el.id,pid:el.pid,sn:el.sn,pn:el.pn,hse:el.hse,tg:el.tg,fm:el.fm,gnd:el.gnd,select:false,show:true}));
         data.pupils=data.pupils.sort((/** @type {{ sn: string; pn: string; }} */ a,/** @type {{ sn: any; pn: any; }} */ b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));   
 
 

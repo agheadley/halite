@@ -11,7 +11,7 @@
     let control={
         selection:'current',
         lists:[],
-        list:{name:'',type:'overview',lv:'',yr:0,user:'',pid:[],dl:'',dt:0},
+        list:{name:'',type:'overview',lv:'',yr:0,user:'',pid:[],dl:'',dt:0,log:''},
         valid:false,
         max:15,
         delete:false,
@@ -95,6 +95,7 @@
         let c=$cohorts.overview.years.list[$cohorts.overview.years.index];
         control.list.lv=c.lv;
         control.list.yr=c.yr;
+        control.list.log=`${status.user}|${util.getDateTime()}`;
 
         let response = await fetch('/edge/insert', {
 		    method: 'POST',
@@ -127,7 +128,7 @@
         let c=$cohorts.overview.years.list[$cohorts.overview.years.index];
         let response = await fetch('/edge/read', {
             method: 'POST',
-            body: JSON.stringify({collection:'lists',filter:{lv:c.lv,yr:c.yr,user:status.user},projection:{}}),
+            body: JSON.stringify({collection:'lists',filter:{type:'overview',lv:c.lv,yr:c.yr,user:status.user},projection:{}}),
             headers: {'content-type': 'application/json'}
         });
         let res= await response.json();
