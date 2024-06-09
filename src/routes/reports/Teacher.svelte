@@ -50,17 +50,23 @@
     }
 
     let update=async()=>{
-       console.log('updating...');
-       data.user=data.teachers[data.tIndex].tid;
-       data.groups=[];
-       for(let item of status.reports.filter((/** @type {{ author: { tid: any; type: string; }; type: string; }} */ el)=>el.author.tid===data.user && el.type==='A' && el.author.type==='teacher')) {
-            if(!data.groups.find((/** @type {{ fm: any; g: any; }} */ el)=>el.fm===item.fm && el.g===item.g))
-                data.groups.push({g:item.g,fm:item.fm,sl:item.sl,sc:item.sc,ss:item.ss});
-       }
-       data.index=0;
-       await updateReports();
-       console.log(data.groups);
-    
+        // set user
+        data.user=data.teachers[data.tIndex].tid;
+
+        // get groups for user
+        let response = await fetch('/edge/distinct', {
+                method: 'POST',
+                body: JSON.stringify({collection:'reports',match:{coid:status.cycle._id,"author.tid":data.user,type:"A"},aggregate:['fm','g','ss','sc','sl']}),
+                headers: {'content-type': 'application/json'}
+            });
+            let res= await response.json();
+            data.groups=res[0] ? res.sort((/** @type {{ fm: number; g: string; }} */ a,/** @type {{ fm: number; g: any; }} */ b)=>b.fm-a.fm || a.g.localeCompare(b.g)) :[];
+            
+            console.log(data.groups);
+        
+
+       //await updateReports();
+     
 
     };
 
@@ -159,6 +165,7 @@
        data.user=status.user;
 
        data.teachers=$teachers.sort((a,b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));
+       
        // testing
        data.teachers=$teachers.sort((a,b)=>a.tid.localeCompare(b.tid));
 
@@ -166,8 +173,6 @@
 
       
         await update();
-        //await updateReports(); // already handled by update
-
 
     });
 
