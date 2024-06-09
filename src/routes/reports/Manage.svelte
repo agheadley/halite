@@ -191,10 +191,12 @@ let create=async()=>{
         console.log(res);
         if(res[0]) {
             $alert.msg=`${res.length} reports created`; 
-            list.create=false;
 
             for(let item of reports) status.reports.push(item);
             status.reports=status.reports;
+
+            list.create=false;
+
              
         } else {
             $alert.type='error';
