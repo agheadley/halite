@@ -203,7 +203,6 @@
     <thead>  
         <tr>
             <th></th>
-            <th></th>
             <td>
                 <div>
                     <textarea class={data.txt.length<status.cycle.length.A.min || data.txt.length>status.cycle.length.A.max ? 'comment red' : 'comment green' } bind:value={data.txt}/>
@@ -216,7 +215,6 @@
         </tr>
         <tr>
             <th></th>
-            <th></th>
          
             <th><button disabled={data.txt.length<status.cycle.length.A.min || data.txt.length>status.cycle.length.A.max} class="button dark" on:click={save}>Save HoD Comment</button></th>
              
@@ -227,8 +225,13 @@
         <tr>
             {#if row.author.type==='hod'}
                 
-            <td>{row.pupil.pn} {row.pupil.sn}</td>
-            <td>{row.g} <span class="bold">HoD</span></td>
+            <td>
+                <div>
+                    {row.pupil.pn} {row.pupil.sn}
+                </div>
+                <div><span class="small">{row.g}</span></div>
+                <div><span class="bold small">HoD</span></div>
+            </td>
             <td>
                     <div>
                         <textarea class="comment bold" disabled bind:value={row.txt}></textarea>
@@ -251,7 +254,6 @@
 
             {:else}
 
-            <td></td>
                 <td>
                     <div>
                         <span class="small">{row.author.tid}
