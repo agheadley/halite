@@ -13,7 +13,7 @@ export let status;
 
 $:{
         if(list.open || list.create) {
-                list.pupils=data.pupils.filter((/** @type {{ select: boolean; }} */ el)=>el.select===true).map((/** @type {{ id: any; fm: any; pid: any; sn: any; pn: any; gnd: any; tg: any; hse: any; }} */ el)=>({id:el.id,fm:el.fm,pid:el.pid,sn:el.sn,pn:el.pn,gnd:el.gnd,tg:el.tg,hse:el.hse}));
+                list.pupils=data.pupils.filter((/** @type {{ select: boolean; }} */ el)=>el.select===true).map((/** @type {{ yr:number,lv:string,id: any; fm: any; pid: any; sn: any; pn: any; gnd: any; tg: any; hse: any; }} */ el)=>({lv:el.lv,yr:el.yr,id:el.id,fm:el.fm,pid:el.pid,sn:el.sn,pn:el.pn,gnd:el.gnd,tg:el.tg,hse:el.hse}));
         }
 }
 
@@ -142,7 +142,70 @@ let removeList=async()=>{
 
 let create=async()=>{
         console.log('creating reports...',$config.report.enrichment[list.sIndex].sl,$config.report.enrichment[list.sIndex].sc);
+
+        console.log(status.cycle);
         
+        let reports=[];
+
+        for(let pupil of list.pupils) {
+
+
+                let report={
+                        coid:status.cycle._id,
+                        ci:status.cycle.index,
+                        ay:status.cycle.ay,
+                        y:status.cycle.y,
+                        tt:status.cycle.tt,
+                        ts:status.cycle.ts,
+                        min:status.cycle.length.E.min,
+                        max:status.cycle.length.E.max,
+                        type:'E',
+                        author:{type:'enrichment',tid:data.user,sal:data.sal},
+                        ec:null,
+                        ep:null,
+                        txt:'',
+                        fm:pupil.fm,
+                        g:$config.report.enrichment[list.sIndex].g,
+                        sc:$config.report.enrichment[list.sIndex].sc,
+                        ss:$config.report.enrichment[list.sIndex].ss,
+                        sl:$config.report.enrichment[list.sIndex].sl,
+                        lv:pupil.lv,
+                        yr:pupil.yr,
+                        log:`${status.user}|${util.getDateTime()}`,
+                        pupil:{pid:pupil.pid,sn:pupil.sn,pn:pupil.pn,hse:pupil.hse,tg:pupil.tg,gnd:pupil.gnd,id:pupil.id}
+                       
+                    };
+
+                reports.push(report);
+        }
+
+        console.log(reports);
+
+        let response = await fetch('/edge/insert', {
+                method: 'POST',
+                body: JSON.stringify({collection:'reports',documents:reports}),
+                headers: {'content-type': 'application/json'}
+        });
+
+        let res= await response.json();
+        console.log(res);
+        if(res[0]) {
+            $alert.msg=`${res.length} reports created`; 
+            list.create=false;
+
+            for(let item of reports) status.reports.push(item);
+            status.reports=status.reports;
+             
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error creating reports`;
+        }
+
+       
+
+
+
+
 };
 
 

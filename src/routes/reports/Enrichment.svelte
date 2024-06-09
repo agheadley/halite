@@ -2,6 +2,7 @@
     import { onMount } from 'svelte';
     import {pupils,teachers,config} from '$lib/store';
     import Manage from './Manage.svelte';
+	import Pupil from '$lib/_Pupil.svelte';
 
     /** @type {any}*/
     export let status;
@@ -11,6 +12,7 @@
         user:'',
         teachers:[],
         tIndex:0,
+        sal:'',
         reports:[],
         pupils:[],
         years:[],
@@ -19,6 +21,12 @@
     };
 
     let update=async()=>{
+        data.tIndex=data.teachers.findIndex((/** @type {{ tid: any; }} */ el)=>el.tid===data.user);
+        data.user=data.teachers[data.tIndex].tid;
+        data.sal=data.teachers[data.tIndex].sal;
+
+        data.reports=status.reports.filter(el=>el.type==='E' && el.author.tid===data.user);
+        
 
     };
 
@@ -94,7 +102,13 @@
 
 {#if !data.create}
 
-<p>List all status.reports (type=E) here, filtered only by user !</p>
+{#if data.reports[0]}
+
+{#each data.reports as row,rowIndex}
+    <p>{row.pupil.pn} {row.pupil.pn} {row.sl}</p>
+{/each}
+
+{/if}
 
 
 
