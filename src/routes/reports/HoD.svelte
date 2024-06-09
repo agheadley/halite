@@ -135,16 +135,22 @@
 
                             if(res[0]) {
                                 console.log(`Missing reports created`);
+                                $alert.msg=`Missing report created`;
+    
                                 obj._id=res[0];
                                 data.reports.push[0];
 
                             } else {
                                 console.log(`Error inserting report`);
+                                $alert.type='error';
+                                $alert.msg=`Error inserting report`;
                             }
+    
+                            
 
                 }
 
-                let tchs=status.reports.filter((/** @type {{ author: { type: string; }; pupil: { pid: number; }; fm: number; ss: string; sc: string; }} */ el)=>el.author.type==='teacher' && el.pupil.pid===pupil.pid && el.fm===gp.fm && el.ss===gp.ss && el.sc===gp.sc);
+                let tchs=reports.filter((/** @type {{ author: { type: string; }; pupil: { pid: number; }; fm: number; ss: string; sc: string; }} */ el)=>el.author.type==='teacher' && el.pupil.pid===pupil.pid && el.fm===gp.fm && el.ss===gp.ss && el.sc===gp.sc);
                
                 for(let item of tchs) data.reports.push(item);
 
@@ -154,7 +160,7 @@
         console.log(data.reports);
     };
 
-    let updateSubjects=()=>{
+    let updateSubjects=async()=>{
 
         data.subjects=status.subjects;
         
@@ -164,13 +170,15 @@
         
         console.log(data.subjects);
 
+        await update();
+    
+
     };
 
 
     onMount(async () => {
        
         updateSubjects();
-        await update();
     });
 
 
@@ -272,7 +280,7 @@
                         <span class="small">EC {row.ec!==null ? row.ec : '.'} / EP {row.ep!==null ? row.ep : '.'}</span>
                     </div>
                 </td>
-                <td>{#if row.txt!==null}<textarea class="comment" disabled bind:value={row.txt}></textarea>{/if}</td>
+                <td>{#if row.txt!==null}<textarea class="comment small" disabled bind:value={row.txt}></textarea>{/if}</td>
             
             {/if}
         </tr>
