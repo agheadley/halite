@@ -92,7 +92,7 @@ onMount(async () => {
         });
         results= await response.json();
 
-        // get assessments tag.overview=true , filter 
+        // get assessments tag.overview=true , filter results based upon this!
         response = await fetch('/edge/read', {
             method: 'POST',
             body: JSON.stringify({collection:'assessments',filter:{lv:res[0].lv,yr:res[0].yr,"tag.overview":true},projection:{_id:1}}),
@@ -101,8 +101,7 @@ onMount(async () => {
         let x=await response.json();
         assessments=x[0] ? x.map((/** @type {{ _id: any; }} */ el)=>el._id) : [];
         results=results.filter((/** @type {{ aoid: string; }} */ el)=>assessments.includes(el.aoid));
-        console.log(assessments);
-    
+        
     }
 
     // add academic reports
@@ -183,6 +182,7 @@ onMount(async () => {
 
 </script>
 
+{#if data.reports[0]}
 <table>
     <tbody>
         {#each data.reports as row,rowIndex}
@@ -264,6 +264,29 @@ onMount(async () => {
  
     </tbody>
 </table>
+
+{:else}
+<div class="row">
+    <div class="col">
+        &nbsp;
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        <span class="tag">Harvesting pupil data...</span>
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        &nbsp;
+    </div>
+</div>
+<div class="row">
+    <div class="col">
+        &nbsp;
+    </div>
+</div>
+{/if}
 
 
 
