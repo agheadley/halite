@@ -56,6 +56,7 @@ let save=async()=>{
 </script>
 
 <div>
+    {#if data.cols!==undefined}
     <table>
         <tbody>
             <tr>
@@ -70,6 +71,7 @@ let save=async()=>{
         </tr>
         </tbody>
     </table>
+    {/if}
    
 </div>
 <div>
@@ -109,12 +111,14 @@ let save=async()=>{
                 {/if}
             </div>
             <div>
+                {#if data.hod}
                 <span class="small">
                     <fieldset id="class" class="is-full-width" style="height:100%">
                     <legend>HoD Comment</legend>
                         <div>{data.hod}</div>
                     </fieldset>
                 </span>
+                {/if}
             </div>
         </div>
     </div>
@@ -146,7 +150,7 @@ let save=async()=>{
 </div>
 
 <div>
-   {#if data.associated[0]}
+   {#if data.associated && data.associated[0]}
     <details>
         <summary>Associated Reports</summary>
     {#each data.associated as line,lineIndex}

@@ -1,6 +1,6 @@
 <script>
     import { onMount } from 'svelte';
-    import {groups,teachers,config,alert} from '$lib/store';
+    import {groups,teachers,config,alert,pupils} from '$lib/store';
     import Edit from './Edit.svelte';
     import * as util from '$lib/util';
     import Modal from '$lib/_Modal.svelte';
@@ -21,6 +21,16 @@
     /** @type {string}*/
     export let type;
 
+
+    $:{
+        if(data.reports[data.next]) {
+            if(data.reports[data.next].txt!==null) {
+                    document.getElementById(`c|${String(data.next)}`)?.focus();
+            } 
+        }
+
+    }
+
      /**
      * 
      * @param {number} index
@@ -34,17 +44,32 @@
     };
 
     let update=async()=>{
+        data.user=status.teachers[data.tIndex].tid;
+       
+        let response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'reports',filter:{type:'P',coid:status.cycle._id,"author.tid":data.user,"author.type":type},projection:{}}),
+            headers: {'content-type': 'application/json'}
+        });
+        let res= await response.json();
+        data.reports=res[0] ? res.sort((/** @type {{ pupil: { sn: string; pn: string; }; }} */ a,/** @type {{ pupil: { sn: any; pn: any; }; }} */ b)=>a.pupil.sn.localeCompare(b.pupil.sn) || a.pupil.pn.localeCompare(b.pupil.pn) ) :[];
 
+        // add subject name to display.
+        for(let item of data.reports) item.sl=type.toUpperCase();
+
+       
+
+
+        console.log(data);
     };
     
     onMount(async () => {
        console.log('reports/TPastoral.svelte mounted',type);
-
        data.user=status.user;
-
        data.detail.type=type;
-       
        data.tIndex=status.teachers.findIndex((/** @type {{ tid: any; }} */ el)=>el.tid===data.user);
+
+       
 
       
         await update();
@@ -67,7 +92,7 @@
             </div>
         </div>
         <div class="row">
-            <Detail pid={data.detail.pid} type={'teacher'}/>
+            <Detail pid={data.detail.pid} type={type}/>
         </div>
         <div class="row">
             <div class="col">
@@ -83,9 +108,62 @@
     </Modal>
 {/if}
 
-{type}
+<div class="row">
+    <div class="col is-vertical-align">
+        <h4>{#if type==='tutor'}Tutor Comments{/if}{#if type==='hm'}Housemaster Comments{/if}</h4>
+    </div>
+    <div class="col is-vertical-align">
+        <fieldset>
+            <legend>Select Teacher</legend>
+           
+        <select  id="Tutor" bind:value={data.tIndex} on:change={update}>
+            <optgroup label="Tutor">
+                    {#each status.teachers as item,index}
+                        <option value={index}>({item.tid}) {item.pn} {item.sn}</option>
+                    {/each}
+            </optgroup>
+          </select>
+          </fieldset>
+ 
+    </div>
+</div>
 
+
+{#if data.reports[0]}
+
+
+<table>
+    <thead>
+
+    </thead>
+    <tbody>
+        {#each data.reports as row,rowIndex}
+            <tr>
+            <td>
+                <div>
+                    <a href={'#'} on:click={()=>openDetail(rowIndex)}>{row.pupil.pn} {row.pupil.sn}</a>
+                </div>
+                <div><span class="bold">{row.sl}</span></div>
+                <div><span class="small">{row.author.tid}</span></div>
+            </td>
+            <td>
+               <Edit index={rowIndex} bind:next={data.next} bind:data={row} user={status.user}/>
+            </td>
+        </tr>  
+        {/each}
+    </tbody>
+</table>
+
+
+{/if}
 
 <style>
-    
+
+  .small {
+    font-size:1.2rem;
+  }  
+
+  .bold {
+    font-weight:600;
+  }
 </style>

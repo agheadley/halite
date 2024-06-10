@@ -211,7 +211,7 @@
             </div>
         </div>
         <div class="row">
-            <Detail pid={data.detail.pid} type={'teacher'}/>
+            <Detail pid={data.detail.pid} type={'enrichment'}/>
         </div>
         <div class="row">
             <div class="col">
