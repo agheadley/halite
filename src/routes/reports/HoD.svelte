@@ -17,7 +17,7 @@
         reports:[],
         txt:'',
         all:false,
-        detail:{open:false,txt:'',type:'hod',pid:0,sn:'',pn:''}
+        detail:{open:false,txt:'',type:'hod',pid:0,sn:'',pn:'',user:'',cycleID:''}
     };
 
      /**
@@ -29,6 +29,8 @@
         data.detail.pn=data.reports[index].pupil.pn;
         data.detail.sn=data.reports[index].pupil.sn;
         data.detail.open=true;
+        data.detail.user=status.user;
+        data.detail.cycleID=status.cycle._id;
         
     };
 
@@ -211,7 +213,7 @@
             </div>
         </div>
         <div class="row">
-            <Detail pid={data.detail.pid} type={'enrichment'}/>
+            <Detail type={'enrichment'} bind:detail={data.detail}/>
         </div>
         <div class="row">
             <div class="col">

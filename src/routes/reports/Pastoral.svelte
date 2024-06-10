@@ -12,7 +12,7 @@
         tIndex:0,
         reports:[],
         next:0,
-        detail:{open:false,txt:'',type:'tutor',pid:0,sn:'',pn:''}
+        detail:{open:false,txt:'',type:'tutor',pid:0,sn:'',pn:'',user:'',cycleID:''}
     };
 
     /** @type {any}*/
@@ -40,6 +40,8 @@
         data.detail.pn=data.reports[index].pupil.pn;
         data.detail.sn=data.reports[index].pupil.sn;
         data.detail.open=true;
+        data.detail.user=status.user;
+        data.detail.cycleID=status.cycle._id;
         
     };
 
@@ -92,7 +94,7 @@
             </div>
         </div>
         <div class="row">
-            <Detail pid={data.detail.pid} type={type}/>
+            <Detail type={type} bind:detail={data.detail}/>
         </div>
         <div class="row">
             <div class="col">
