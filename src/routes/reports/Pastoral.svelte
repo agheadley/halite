@@ -12,7 +12,7 @@
         tIndex:0,
         reports:[],
         next:0,
-        detail:{open:false,txt:'',type:'tutor',pid:0,sn:'',pn:'',user:'',cycleID:''}
+        detail:{open:false,txt:'',_id:'',type:'tutor',pid:0,sn:'',pn:'',user:'',cycleID:''}
     };
 
     /** @type {any}*/
@@ -27,6 +27,14 @@
             if(data.reports[data.next].txt!==null) {
                     document.getElementById(`c|${String(data.next)}`)?.focus();
             } 
+        }
+
+        if(data.detail.txt!=='') {
+            console.log('Detail.svelte has saved a report - update in Pastoral.svelte...',data.detail.txt);
+            let f=data.reports.find((/** @type {{ _id: any; }} */ el)=>el._id===data.detail._id);
+            if(f) f.txt=data.detail.txt;
+            data.detail.txt='';
+            data.detail._id='';
         }
 
     }

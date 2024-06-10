@@ -114,9 +114,6 @@ console.log(data);
         <tr>
             <td>
                 <div>
-                    <!--
-                    <span class="tag small" tabindex={1} role="button" on:keydown={()=>openEdit(rowIndex)} on:click={()=>openEdit(rowIndex)}>EDIT</span>
-                    -->
                     {#if !row.edit}
                     <button class="button dark small" on:click={()=>openEdit(rowIndex)}>Edit</button>
                     {:else}
@@ -147,9 +144,8 @@ console.log(data);
  
     </tbody>
 </table>
-<div class="row">
-    
-</div>
+
+
 
 
 <style>

@@ -17,7 +17,7 @@
         reports:[],
         txt:'',
         all:false,
-        detail:{open:false,txt:'',type:'hod',pid:0,sn:'',pn:'',user:'',cycleID:''}
+        detail:{open:false,txt:'',_id:'',type:'hod',pid:0,sn:'',pn:'',user:'',cycleID:''}
     };
 
      /**

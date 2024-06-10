@@ -1,7 +1,8 @@
 <script>
 import { onMount } from 'svelte';
-import {pupils,teachers,config} from '$lib/store';
-
+import {config,alert} from '$lib/store';
+import Cell from '$lib/_Cell.svelte';
+import * as util from '$lib/util';
 
 /** @type {string}*/
 export let type; // hm,tutor (editiable), teacher, enrichment, hod (read only)
@@ -14,7 +15,55 @@ let data={
     reports:[]
 };
 
+/**
+ * 
+ * @param {number} index
+ */
+ let openEdit=(index)=>{
+    data.reports[index].edit=true;
+};
 
+/**
+ * 
+ * @param {number} index
+ */
+ let save=async(index)=>{
+
+data.report[index].log=`${detail.user}|${util.getDateTime()}`;
+
+
+
+let response = await fetch('/edge/update', {
+    method: 'POST',
+    body: JSON.stringify({
+        collection:'reports',
+        filter:{"_id": { "$oid": data.report[index]._id} },
+        update:{txt: data.report[index].txt,log: data.report[index].log}
+    }),
+    headers: {'content-type': 'application/json'}
+});
+
+let res= await response.json();
+        
+if(res.matchedCount===1) {
+    $alert.msg=`Saved report`;
+    data.report[index].edit=false;
+
+    detail._id=data.report[index]._id;
+    detail.txt= data.report[index].txt;
+
+} else {
+    $alert.type='error';
+    $alert.msg=`Error saving report`;
+    detail.txt='';
+    detail._id='';
+}
+
+
+
+
+
+};
 
 onMount(async () => {
     console.log('reports/Detail.svelte mounted',type);
@@ -92,6 +141,8 @@ onMount(async () => {
        
         data.reports.push(report);
 
+        for(let item of data.reports) item.edit=false;
+
 
 
     }
@@ -103,6 +154,7 @@ onMount(async () => {
 
     // add pastoral reports
     for(let report of res.filter((/** @type {{ type: string; }} */ el)=>el.type==='P').sort((/** @type {{ author: { type: any; tid: string; }; }} */ a,/** @type {{ author: { type: string; tid: any; }; }} */ b)=>b.author.type.localeCompare(a.author.type) || a.author.tid.localeCompare(b.author.tid))) {
+        report.sl=report.author.type.toUpperCase();
         data.reports.push(report);
     }
 
@@ -111,16 +163,126 @@ onMount(async () => {
 
     console.log(data.reports);
 
+    data.report=data.reports;
+
 });
 
 
 </script>
 
-
+<table>
+    <tbody>
+        {#each data.reports as row,rowIndex}
+        {#if row.type==='A'}
+        {#if rowIndex===0 || (data.reports[rowIndex-1] && (row.ss!==data.reports[rowIndex-1].ss || row.sc!==data.reports[rowIndex-1].sc)) }
+        <tr>
+          
+            <td>
+                <span class="small bold">{row.sl} ({row.sc})</span>
+             
+            </td>
+            <td>
+                <table>
+                    <tbody>
+                        <tr>
+                            {#each row.cols as col,colIndex}
+                                <td><span class="small">{col.ds}</span><Cell color={true} residual={col.r}>{col.gd}</Cell></td>
+                            {/each}
+                        </tr>
+                    </tbody>
+                </table>
+              
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+            <span class="small">
+            <details>
+                <summary>HoD Statement</summary>
+                <p>{row.hod}</p>
+                </details>
+            </span>
+            </td>
+        </tr>
+        {/if}
+        {/if}
+        <tr>
+            <td>
+                <div>
+                    {#if (type=='hm' || type==='tutor')}
+                    {#if !row.edit}
+                    <button class="button outline small" on:click={()=>openEdit(rowIndex)}>Edit</button>
+                    {:else}
+                    <button disabled={row.txt.length<row.min || row.txt.length>row.max} class="button outline small" on:click={()=>save(rowIndex)}>Save</button>
+                    {/if}
+                    {/if}
+                </div>
+                <div>
+                    {#if row.type==='A'}
+                    <span class="small">EC {row.ec!==null ? row.ec : '.'} / EP {row.ep!==null ? row.ep : '.'}</span>
+                    {/if}
+                    {#if row.type==='E' || row.type==='P'}
+                        <span class="small bold">{row.sl}</span>
+                    {/if}
+                    
+                </div>
+                <div>
+                    <span class="small">{row.author.tid}</span>
+                </div>
+            </td>
+            <td>
+                {#if type==='hm' || type==='tutor'}
+                {#if row.edit}
+                <textarea class={row.txt.length<row.min || row.txt.length>row.max ? 'red edit-comment' : 'green edit-comment'} bind:value={row.txt}/> 
+              
+                {:else}
+                <textarea disabled class={row.txt.length<row.min || row.txt.length>row.max ? 'comment red small' : 'comment green small'} bind:value={row.txt}/> 
+              
+                {/if}
+                  {:else}
+                <textarea disabled class={row.txt.length<row.min || row.txt.length>row.max ? 'comment red small' : 'comment green small'} bind:value={row.txt}/> 
+              
+                {/if}
+                <span class="small">{row.log}</span>
+               </td>
+        </tr>
+        {/each}
+ 
+    </tbody>
+</table>
 
 
 
 <style>
+
+.small {
+        font-size:1.2rem;
+    }
+
+    .edit-comment {
+        width:70rem;
+        height:10rem;
+        font-size:normal;
+    }
+    .comment {
+        width:70rem;
+        height:7rem;
+    }
+
+    .bold {
+        font-weight:600;
+    }
+
+    .red {
+    background:rgba(178,34,34,0.15);
+   
+}
+
+.green {
+    background:rgba(34,139,34,0.15);
+}
+
 
 </style>
 

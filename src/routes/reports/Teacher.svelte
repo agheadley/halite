@@ -22,7 +22,7 @@
         reports:[],
         next:0,
         cols:[],
-        detail:{open:false,txt:'',type:'teacher',pid:0,sn:'',pn:'',user:'',cycleID:''}
+        detail:{open:false,txt:'',_id:'',type:'teacher',pid:0,sn:'',pn:'',user:'',cycleID:''}
     };
 
     $:{

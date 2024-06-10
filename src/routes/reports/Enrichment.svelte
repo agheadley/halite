@@ -31,7 +31,7 @@
         gnds:[{gnd:'M',filter:true},{gnd:'F',filter:true}],
         lists:[],
         next:0,
-        detail:{open:false,txt:'',type:'enrichment',pid:0,sn:'',pn:'',user:'',cycleID:''}
+        detail:{open:false,txt:'',_id:"",type:'enrichment',pid:0,sn:'',pn:'',user:'',cycleID:''}
     };
 
      /**
