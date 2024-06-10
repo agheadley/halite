@@ -73,7 +73,6 @@ returns true for undefined (as undefined==null), null, [], ""
 - extra tab - exports/previous ?
 
 
-- cycle needs publish:true false,
 
 - Detail needs grab assessments, _id, tag.overview (can we go /page.svelte as place in store ?
 - check with .map, .includes whether to filter in/out the result against aoid!

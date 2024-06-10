@@ -49,7 +49,8 @@
                 y:y,
                 ay:ay,
                 length:{A:{min:180,max:600},E:{min:250,max:600},P:{min:250,max:600}},
-                detail:detail
+                detail:detail,
+                publish:false
                
             };
         
@@ -182,7 +183,8 @@
         tt:data.cycle.tt,
         ts:data.cycle.ts,
         length:data.cycle.length,
-        detail:data.cycle.detail
+        detail:data.cycle.detail,
+        publish:data.cycle.publish
         
       };
 
@@ -388,6 +390,7 @@
                 <th>Term</th>
                 <th>Subterm</th>
                 <th>Active?</th>
+                <th>Publish?</th>
             </tr>
         </thead>
         <tbody>
@@ -404,6 +407,8 @@
                 <td>{row.tt}</td>
                 <td>{row.ts}</td>
                 <td><input type=checkbox bind:checked={row.active}  on:change={()=>changeActive(rowIndex)}></td>
+                <td><input type=checkbox bind:checked={row.publish}  on:change={()=>changeActive(rowIndex)}></td>
+            
             </tr>
         {/each}
     </tbody>
