@@ -70,6 +70,14 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Reports
 
+- extra tab - exports/previous ?
+
+
+- cycle needs publish:true false,
+
+- Detail needs grab assessments, _id, tag.overview (can we go /page.svelte as place in store ?
+- check with .map, .includes whether to filter in/out the result against aoid!
+- same for parent view, pupil view 
 
 - Clickable pupils to Detail.svelte modal (created on fly per pupil) - in Modal
 - Type for Detail.svelte e.h. hm/ttutor editable (others view only). 
@@ -110,9 +118,15 @@ returns true for undefined (as undefined==null), null, [], ""
 - need to check this for parent, pupil and teachers !!!!
 
 
+- Pupil needs grab assessments, _id, tag.pupil (can we go /page.svelte as place in store ?
+- check with .map, .includes whether to filter in/out the result against aoid!
+
 
 # Parent - to do !
 
+
+- Pupil needs grab assessments, _id, tag.parent (can we go /page.svelte as place in store ?
+- check with .map, .includes whether to filter in/out the result against aoid!
 
 
 # pupil store, created at startup from all groups, intake

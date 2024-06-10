@@ -202,7 +202,7 @@ let create=async()=>{
                 headers: {'content-type': 'application/json'}
             });
             res= await response.json();
-            data.reports=res[0] ? res.sort((a,b)=>a.sl.localeCompare(b.sl) || a.pupil.sn.localeCompare(b.pupil.sn) || a.pupil.pn.localeCompare(b.pupil.pn) ) :[];
+            data.reports=res[0] ? res.sort((/** @type {{ sl: string; pupil: { sn: string; pn: string; }; }} */ a,/** @type {{ sl: any; pupil: { sn: any; pn: any; }; }} */ b)=>a.sl.localeCompare(b.sl) || a.pupil.sn.localeCompare(b.pupil.sn) || a.pupil.pn.localeCompare(b.pupil.pn) ) :[];
 
 
 
