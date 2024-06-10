@@ -262,7 +262,7 @@ onMount(async () => {
 
     .edit-comment {
         width:70rem;
-        height:10rem;
+        height:14rem;
         font-size:normal;
     }
     .comment {
