@@ -70,7 +70,13 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Reports
 
-- Enrichment
+- +page.js for status.teachers
+
+
+- Single Pastoral.svelte for tutor/hm/hoy/slt
+- Clickable pupils to Detail.svelte modal (created on fly per pupil)
+- Type for Detail.svelte e.h. hm/ttutor editable (others view only). 
+- When edited pass txt back, reactive change to populate data.reports
 
 - Add txt to cycle ! Sorry central message can be formed!. Use <PRE> !
 
