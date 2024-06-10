@@ -134,6 +134,7 @@
                 let h=reports.find((/** @type {{ author: { type: string; }; pupil: { pid: number; }; fm: number; ss: string; sc: string; }} */ el)=>el.author.type==='hod' && el.pupil.pid===pupil.pid && el.fm===gp.fm && el.ss===gp.ss && el.sc===gp.sc);
                 
                 // associated reports from other staff
+                /** @type {any}*/
                 let t=reports.filter((/** @type {{ author: { type: string; tid: any; }; pupil: { pid: number; }; g: any; ss: string; sc: string; }} */ el)=>el.author.type==='teacher' && el.author.tid!==data.user && el.pupil.pid===pupil.pid && el.g===g.g && el.ss===gp.ss && el.sc===gp.sc);
                 
                 /** @type {{tid:string,txt:string|null,ec:string|null,ep:string|null}[]}*/
