@@ -79,17 +79,30 @@ onMount(async () => {
 
     //console.log(res);
 
+    /** @type {any}*/
     let results=[];
+    /** @type {string[]}*/
+    let assessments=[];
 
     if(res[0]) {
-        let lv=res[0].lv;
-        let yr=res[0].yr;
         let response = await fetch('/edge/read', {
             method: 'POST',
             body: JSON.stringify({collection:'results',filter:{lv:res[0].lv,yr:res[0].yr,pid:detail.pid},projection:{}}),
             headers: {'content-type': 'application/json'}
         });
-    results= await response.json();
+        results= await response.json();
+
+        // get assessments tag.overview=true , filter 
+        response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'assessments',filter:{lv:res[0].lv,yr:res[0].yr,"tag.overview":true},projection:{_id:1}}),
+            headers: {'content-type': 'application/json'}
+        });
+        let x=await response.json();
+        assessments=x[0] ? x.map((/** @type {{ _id: any; }} */ el)=>el._id) : [];
+        results=results.filter((/** @type {{ aoid: string; }} */ el)=>assessments.includes(el.aoid));
+        console.log(assessments);
+    
     }
 
     // add academic reports
