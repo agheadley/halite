@@ -21,7 +21,6 @@
     /** @type {any}*/
     let data={
         user:'',
-        teachers:[],
         tIndex:0,
         sal:'',
         reports:[],
@@ -33,10 +32,9 @@
     };
 
     let update=async()=>{
-        data.user=data.teachers[data.tIndex].tid;
-        data.sal=data.teachers[data.tIndex].sal;
+        data.user=status.teachers[data.tIndex].tid;
+        data.sal=status.teachers[data.tIndex].sal;
 
-        data.reports=status.reports.filter((/** @type {{ type: string; author: { tid: any; }; }} */ el)=>el.type==='E' && el.author.tid===data.user);
         
 
         let response = await fetch('/edge/read', {
@@ -45,22 +43,29 @@
             headers: {'content-type': 'application/json'}
         });
         let res= await response.json();
-
-        console.log(res);
-        data.lists=res.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>b.dt-a.dt);
+        data.lists=res[0] ? res.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>b.dt-a.dt) :[];
     
+
+
+        response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'reports',filter:{type:'E',coid:status.cycle._id,"author.tid":data.user},projection:{}}),
+            headers: {'content-type': 'application/json'}
+        });
+        res= await response.json();
+        data.reports=res[0] ? res.sort((a,b)=>a.sl.localeCompare(b.sl) || a.pupil.sn.localeCompare(b.pupil.sn) || a.pupil.pn.localeCompare(b.pupil.pn) ) :[];
+
+        console.log(data);
+        
     };
 
     onMount(async () => {
-        console.log('reports/Teacher.svelte mounted');
+        console.log('reports/Enrichment.svelte mounted');
 
         data.user=status.user;
 
-        data.teachers=$teachers.sort((a,b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));
-        // testing
-        data.teachers=$teachers.sort((a,b)=>a.tid.localeCompare(b.tid));
-
-        data.tIndex=data.teachers.findIndex((/** @type {{ tid: any; }} */ el)=>el.tid===data.user);
+       
+        data.tIndex=status.teachers.findIndex((/** @type {{ tid: any; }} */ el)=>el.tid===data.user);
 
         
         data.pupils=$pupils.map(el=>({id:el.id,pid:el.pid,sn:el.sn,pn:el.pn,hse:el.hse,tg:el.tg,fm:el.fm,gnd:el.gnd,select:false,show:true}));
@@ -71,8 +76,7 @@
         
         
         await update();
-        //await updateReports(); // already handled by update
-
+       
 
     });
 
@@ -93,7 +97,7 @@
             <legend>Select Teacher</legend>
             <select  id="Teacher" bind:value={data.tIndex} on:change={update}>
                 <optgroup label="Teacher">
-                        {#each data.teachers as item,index}
+                        {#each status.teachers as item,index}
                             <option value={index}>({item.tid}) {item.pn} {item.sn}</option>
                         {/each}
                 </optgroup>

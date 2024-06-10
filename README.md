@@ -74,7 +74,7 @@ returns true for undefined (as undefined==null), null, [], ""
 
 
 - Single Pastoral.svelte for tutor/hm/hoy/slt
-- Clickable pupils to Detail.svelte modal (created on fly per pupil)
+- Clickable pupils to Detail.svelte modal (created on fly per pupil) - in Modal
 - Type for Detail.svelte e.h. hm/ttutor editable (others view only). 
 - When edited pass txt back, reactive change to populate data.reports
 

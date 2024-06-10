@@ -192,10 +192,19 @@ let create=async()=>{
         if(res[0]) {
             $alert.msg=`${res.length} reports created`; 
 
-            for(let item of reports) status.reports.push(item);
-            status.reports=status.reports;
-
+            
             list.create=false;
+
+
+            response = await fetch('/edge/read', {
+                method: 'POST',
+                body: JSON.stringify({collection:'reports',filter:{type:'E',coid:status.cycle._id,"author.tid":data.user},projection:{}}),
+                headers: {'content-type': 'application/json'}
+            });
+            res= await response.json();
+            data.reports=res[0] ? res.sort((a,b)=>a.sl.localeCompare(b.sl) || a.pupil.sn.localeCompare(b.pupil.sn) || a.pupil.pn.localeCompare(b.pupil.pn) ) :[];
+
+
 
              
         } else {

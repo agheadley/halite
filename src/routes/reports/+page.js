@@ -1,7 +1,7 @@
 import * as auth from '$lib/auth';
 import { error } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
-import {config,groups} from '$lib/store';
+import {config,groups,teachers} from '$lib/store';
 
 /* execute layout.js only in the browser - msal browser! */ 
 export const ssr = false;
@@ -19,7 +19,10 @@ export async function load() {
     let cfg={};
     config.subscribe((/** @type {{ any; }} */ value) => {cfg=value;});
 
-    
+    /** @type {any} */
+    let tch=[];
+    teachers.subscribe((value) => {tch=value;});
+ 
     
     
 
@@ -88,8 +91,15 @@ export async function load() {
     }
 
 
+    let staff=tch.sort((/** @type {{ sn: string; pn: string; }} */ a,/** @type {{ sn: any; pn: any; }} */ b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));
+       
+    // testing
+    staff=staff.sort((/** @type {{ tid: string; }} */ a,/** @type {{ tid: any; }} */ b)=>a.tid.localeCompare(b.tid));
 
-    return {user:user,cycle:cycle,subjects:subjects};
+
+
+
+    return {user:user,cycle:cycle,subjects:subjects,teachers:staff};
     
       
 }

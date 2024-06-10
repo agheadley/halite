@@ -4,9 +4,8 @@
     import {config,location,pupils,groups,cohorts} from '$lib/store';
     import { goto } from '$app/navigation';
 	import HoD from './HoD.svelte';
+    import Pastoral from './Pastoral.svelte';
     import Teacher from './Teacher.svelte';
-    import Tutor from './Tutor.svelte';
-    import HM from './HM.svelte';
     import Enrichment from './Enrichment.svelte';
 
     /** @type {any}*/
@@ -17,7 +16,8 @@
         user:'',
         tab:'',
         cycle:{},
-        subjects:[]
+        subjects:[],
+        teachers:[]
         
     };
 
@@ -36,6 +36,7 @@
         
         status.cycle=data.cycle;
         status.subjects=data.subjects;
+        status.teachers=data.teachers;
 
         console.log(status);
 
@@ -79,8 +80,8 @@
     {#if status.cycle.active}
         {#if status.tab==='hod'}<HoD bind:status={status}/> {/if}
         {#if status.tab==='teacher'}<Teacher bind:status={status}/> {/if}
-        {#if status.tab==='tutor'}<Tutor bind:status={status}/> {/if}
-        {#if status.tab==='hm'}<HM bind:status={status}/> {/if}
+        {#if status.tab==='tutor'}<Pastoral bind:status={status} type={'tutor'}/> {/if}
+        {#if status.tab==='hm'}<Pastoral bind:status={status} type={'hm'}/> {/if}
         {#if status.tab==='enrichment'}<Enrichment bind:status={status}/> {/if}
     {:else}
         <span class="tab">No active report cycle found.</span>

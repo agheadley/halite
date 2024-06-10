@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import {pupils,teachers,config} from '$lib/store';
     import Pedit from './Pedit.svelte';
-    import Pdetail from './Pdetail.svelte';
+    import Pdetail from './Pdetail.txt';
     import Modal from '$lib/_Modal.svelte';
     
     /** @type {any}*/
