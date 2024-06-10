@@ -74,7 +74,6 @@ returns true for undefined (as undefined==null), null, [], ""
 
 
 
-- Detail needs grab assessments, _id, tag.overview (can we go /page.svelte as place in store ?
 - check with .map, .includes whether to filter in/out the result against aoid!
 - same for parent view, pupil view 
 
@@ -99,10 +98,6 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # admin/Config
 
-- grade editing
-- add sc=L (LS) grades
-- add grades for sc=X (EAL,LSup,ToK,CAS,EE)
-
 # Assessments
 
 - need to add archive button, list of assessments to include archive data so you can downloads
@@ -116,14 +111,14 @@ returns true for undefined (as undefined==null), null, [], ""
 - export let open - closes modal - but not shown if user type pupil - as single page - so no modal used for display !
 - need to check this for parent, pupil and teachers !!!!
 
-
+- (reports/Detail.svelte for this below)
 - Pupil needs grab assessments, _id, tag.pupil (can we go /page.svelte as place in store ?
 - check with .map, .includes whether to filter in/out the result against aoid!
 
 
 # Parent - to do !
 
-
+-- (reports/Detail.svelte for this below)
 - Pupil needs grab assessments, _id, tag.parent (can we go /page.svelte as place in store ?
 - check with .map, .includes whether to filter in/out the result against aoid!
 

@@ -1,0 +1,411 @@
+[{
+  "_id": {
+    "$oid": "6660481d6369b0deca66197a"
+  },
+  "index": 0,
+  "active": true,
+  "tt": "Winter",
+  "ts": "1st",
+  "y": 2023,
+  "ay": "2023/2024",
+  "length": {
+    "A": {
+      "min": 180,
+      "max": 600
+    },
+    "E": {
+      "min": 250,
+      "max": 600
+    },
+    "P": {
+      "min": 250,
+      "max": 600
+    }
+  },
+  "detail": [
+    {
+      "fm": 8,
+      "hod": false,
+      "teacher": false,
+      "ec": false,
+      "ep": false,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 7,
+      "hod": true,
+      "teacher": true,
+      "ec": true,
+      "ep": true,
+      "enrichment": false,
+      "tutor": false,
+      "hm": true,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 6,
+      "hod": true,
+      "teacher": true,
+      "ec": true,
+      "ep": true,
+      "enrichment": true,
+      "tutor": true,
+      "hm": true,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 5,
+      "hod": true,
+      "teacher": false,
+      "ec": true,
+      "ep": true,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 4,
+      "hod": true,
+      "teacher": true,
+      "ec": true,
+      "ep": false,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 3,
+      "hod": false,
+      "teacher": false,
+      "ec": false,
+      "ep": false,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 2,
+      "hod": false,
+      "teacher": false,
+      "ec": false,
+      "ep": false,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 1,
+      "hod": false,
+      "teacher": false,
+      "ec": false,
+      "ep": false,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 0,
+      "hod": false,
+      "teacher": false,
+      "ec": false,
+      "ep": false,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    }
+  ],
+  "ys": "1st",
+  "publish": false
+},
+{
+  "_id": {
+    "$oid": "6660488cc2e3caa57b3caed0"
+  },
+  "index": 1,
+  "active": false,
+  "tt": "Winter",
+  "ts": "2nd",
+  "y": 2024,
+  "ay": "2024/2025",
+  "length": {
+    "A": {
+      "min": 180,
+      "max": 600
+    },
+    "E": {
+      "min": 250,
+      "max": 600
+    },
+    "P": {
+      "min": 250,
+      "max": 600
+    }
+  },
+  "detail": [
+    {
+      "fm": 8,
+      "hod": true,
+      "teacher": true,
+      "ec": true,
+      "ep": true,
+      "enrichment": true,
+      "tutor": true,
+      "hm": true,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 7,
+      "hod": true,
+      "teacher": true,
+      "ec": true,
+      "ep": true,
+      "enrichment": true,
+      "tutor": true,
+      "hm": true,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 6,
+      "hod": true,
+      "teacher": true,
+      "ec": true,
+      "ep": true,
+      "enrichment": true,
+      "tutor": true,
+      "hm": true,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 5,
+      "hod": true,
+      "teacher": true,
+      "ec": true,
+      "ep": true,
+      "enrichment": true,
+      "tutor": true,
+      "hm": true,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 4,
+      "hod": true,
+      "teacher": true,
+      "ec": true,
+      "ep": true,
+      "enrichment": true,
+      "tutor": true,
+      "hm": true,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 3,
+      "hod": true,
+      "teacher": true,
+      "ec": true,
+      "ep": true,
+      "enrichment": true,
+      "tutor": true,
+      "hm": true,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 2,
+      "hod": true,
+      "teacher": true,
+      "ec": true,
+      "ep": true,
+      "enrichment": true,
+      "tutor": true,
+      "hm": true,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 1,
+      "hod": true,
+      "teacher": true,
+      "ec": true,
+      "ep": true,
+      "enrichment": true,
+      "tutor": true,
+      "hm": true,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 0,
+      "hod": true,
+      "teacher": true,
+      "ec": true,
+      "ep": true,
+      "enrichment": true,
+      "tutor": true,
+      "hm": true,
+      "hoy": false,
+      "slt": false
+    }
+  ],
+  "ys": "2nd",
+  "publish": false
+},
+{
+  "_id": {
+    "$oid": "66604890ad45ce63a0046e39"
+  },
+  "index": 2,
+  "active": false,
+  "tt": "Winter",
+  "ts": "2nd",
+  "y": 2024,
+  "ay": "2024/2025",
+  "length": {
+    "A": {
+      "min": 180,
+      "max": 600
+    },
+    "E": {
+      "min": 250,
+      "max": 600
+    },
+    "P": {
+      "min": 250,
+      "max": 600
+    }
+  },
+  "detail": [
+    {
+      "fm": 8,
+      "hod": true,
+      "teacher": false,
+      "ec": false,
+      "ep": false,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 7,
+      "hod": true,
+      "teacher": false,
+      "ec": false,
+      "ep": false,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 6,
+      "hod": true,
+      "teacher": true,
+      "ec": true,
+      "ep": true,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 5,
+      "hod": true,
+      "teacher": false,
+      "ec": false,
+      "ep": false,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 4,
+      "hod": true,
+      "teacher": false,
+      "ec": false,
+      "ep": false,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 3,
+      "hod": true,
+      "teacher": false,
+      "ec": false,
+      "ep": false,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 2,
+      "hod": true,
+      "teacher": false,
+      "ec": false,
+      "ep": false,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 1,
+      "hod": true,
+      "teacher": false,
+      "ec": false,
+      "ep": false,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    },
+    {
+      "fm": 0,
+      "hod": true,
+      "teacher": false,
+      "ec": false,
+      "ep": false,
+      "enrichment": false,
+      "tutor": false,
+      "hm": false,
+      "hoy": false,
+      "slt": false
+    }
+  ],
+  "ys": "1st",
+  "publish": false
+}]

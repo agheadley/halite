@@ -1,0 +1,5226 @@
+[{
+  "_id": {
+    "$oid": "662a1aa8b38beca12ac151ab"
+  },
+  "admin": [
+    {
+      "tid": "AGH"
+    }
+  ],
+  "rollover": {
+    "month": 8
+  },
+  "rag": {
+    "green": 1,
+    "red": -1
+  },
+  "update": {
+    "groups": false,
+    "conduct": false,
+    "contacts": false
+  },
+  "std": {
+    "US": {
+      "A": "GCSE",
+      "B": "ALIS"
+    },
+    "MS": {
+      "A": "NAT",
+      "B": "IND"
+    },
+    "L1": {
+      "A": "",
+      "B": ""
+    }
+  },
+  "grade": [
+    {
+      "sc": "A",
+      "gd": "A*",
+      "pc": 90,
+      "scr": 100,
+      "pre": 140
+    },
+    {
+      "sc": "A",
+      "gd": "A",
+      "pc": 80,
+      "scr": 86,
+      "pre": 120
+    },
+    {
+      "sc": "A",
+      "gd": "B",
+      "pc": 70,
+      "scr": 71,
+      "pre": 100
+    },
+    {
+      "sc": "A",
+      "gd": "C",
+      "pc": 60,
+      "scr": 57,
+      "pre": 80
+    },
+    {
+      "sc": "A",
+      "gd": "D",
+      "pc": 50,
+      "scr": 43,
+      "pre": 60
+    },
+    {
+      "sc": "A",
+      "gd": "E",
+      "pc": 40,
+      "scr": 29,
+      "pre": 40
+    },
+    {
+      "sc": "A",
+      "gd": "U",
+      "pc": 0,
+      "scr": 0,
+      "pre": 0
+    },
+    {
+      "sc": "B",
+      "gd": "D*",
+      "pc": 101,
+      "scr": 100,
+      "pre": 140
+    },
+    {
+      "sc": "B",
+      "gd": "D",
+      "pc": 80,
+      "scr": 86,
+      "pre": 120
+    },
+    {
+      "sc": "B",
+      "gd": "M",
+      "pc": 60,
+      "scr": 57,
+      "pre": 80
+    },
+    {
+      "sc": "B",
+      "gd": "P",
+      "pc": 30,
+      "scr": 29,
+      "pre": 40
+    },
+    {
+      "sc": "B",
+      "gd": "NP",
+      "pc": 20,
+      "scr": 15,
+      "pre": 20
+    },
+    {
+      "sc": "B",
+      "gd": "U",
+      "pc": 0,
+      "scr": 0,
+      "pre": 0
+    },
+    {
+      "sc": "G",
+      "gd": "9",
+      "pc": 90,
+      "scr": 100,
+      "pre": 9
+    },
+    {
+      "sc": "G",
+      "gd": "8",
+      "pc": 80,
+      "scr": 88,
+      "pre": 8
+    },
+    {
+      "sc": "G",
+      "gd": "7",
+      "pc": 70,
+      "scr": 77,
+      "pre": 7
+    },
+    {
+      "sc": "G",
+      "gd": "6",
+      "pc": 60,
+      "scr": 66,
+      "pre": 6
+    },
+    {
+      "sc": "G",
+      "gd": "5",
+      "pc": 50,
+      "scr": 55,
+      "pre": 5
+    },
+    {
+      "sc": "G",
+      "gd": "4",
+      "pc": 40,
+      "scr": 44,
+      "pre": 4
+    },
+    {
+      "sc": "G",
+      "gd": "3",
+      "pc": 30,
+      "scr": 33,
+      "pre": 3
+    },
+    {
+      "sc": "G",
+      "gd": "2",
+      "pc": 20,
+      "scr": 22,
+      "pre": 2
+    },
+    {
+      "sc": "G",
+      "gd": "1",
+      "pc": 10,
+      "scr": 11,
+      "pre": 1
+    },
+    {
+      "sc": "G",
+      "gd": "U",
+      "pc": 0,
+      "scr": 0,
+      "pre": 0
+    },
+    {
+      "sc": "I",
+      "gd": "7",
+      "pc": 75,
+      "scr": 100,
+      "pre": 7
+    },
+    {
+      "sc": "I",
+      "gd": "6",
+      "pc": 65,
+      "scr": 86,
+      "pre": 6
+    },
+    {
+      "sc": "I",
+      "gd": "5",
+      "pc": 55,
+      "scr": 71,
+      "pre": 5
+    },
+    {
+      "sc": "I",
+      "gd": "4",
+      "pc": 45,
+      "scr": 57,
+      "pre": 4
+    },
+    {
+      "sc": "I",
+      "gd": "3",
+      "pc": 35,
+      "scr": 43,
+      "pre": 3
+    },
+    {
+      "sc": "I",
+      "gd": "2",
+      "pc": 25,
+      "scr": 29,
+      "pre": 2
+    },
+    {
+      "sc": "I",
+      "gd": "1",
+      "pc": 15,
+      "scr": 15,
+      "pre": 1
+    },
+    {
+      "sc": "I",
+      "gd": "U",
+      "pc": 0,
+      "scr": 0,
+      "pre": 0
+    },
+    {
+      "sc": "L",
+      "gd": "O",
+      "pc": 80,
+      "scr": 80,
+      "pre": 8.5
+    },
+    {
+      "sc": "M",
+      "gd": "8",
+      "pc": 100,
+      "scr": 100,
+      "pre": 8
+    },
+    {
+      "sc": "M",
+      "gd": "7",
+      "pc": 87.5,
+      "scr": 88,
+      "pre": 7
+    },
+    {
+      "sc": "M",
+      "gd": "6",
+      "pc": 75,
+      "scr": 75,
+      "pre": 6
+    },
+    {
+      "sc": "M",
+      "gd": "5",
+      "pc": 59.4,
+      "scr": 63,
+      "pre": 5
+    },
+    {
+      "sc": "M",
+      "gd": "4",
+      "pc": 46.9,
+      "scr": 50,
+      "pre": 4
+    },
+    {
+      "sc": "M",
+      "gd": "3",
+      "pc": 31.3,
+      "scr": 38,
+      "pre": 3
+    },
+    {
+      "sc": "M",
+      "gd": "2",
+      "pc": 18.8,
+      "scr": 25,
+      "pre": 2
+    },
+    {
+      "sc": "M",
+      "gd": "1",
+      "pc": 3.1,
+      "scr": 13,
+      "pre": 1
+    },
+    {
+      "sc": "M",
+      "gd": "U",
+      "pc": 0,
+      "scr": 0,
+      "pre": 0
+    },
+    {
+      "sc": "O",
+      "gd": "O",
+      "pc": 80,
+      "scr": 100,
+      "pre": 100
+    },
+    {
+      "sc": "O",
+      "gd": "V",
+      "pc": 65,
+      "scr": 80,
+      "pre": 80
+    },
+    {
+      "sc": "O",
+      "gd": "G",
+      "pc": 50,
+      "scr": 60,
+      "pre": 60
+    },
+    {
+      "sc": "O",
+      "gd": "I",
+      "pc": 35,
+      "scr": 40,
+      "pre": 40
+    },
+    {
+      "sc": "O",
+      "gd": "L",
+      "pc": 20,
+      "scr": 20,
+      "pre": 20
+    },
+    {
+      "sc": "O",
+      "gd": "U",
+      "pc": 0,
+      "scr": 0,
+      "pre": 0
+    },
+    {
+      "sc": "P",
+      "gd": "D1",
+      "pc": 90,
+      "scr": 100,
+      "pre": 140
+    },
+    {
+      "sc": "P",
+      "gd": "D2",
+      "pc": 80,
+      "scr": 100,
+      "pre": 130
+    },
+    {
+      "sc": "P",
+      "gd": "D3",
+      "pc": 70,
+      "scr": 86,
+      "pre": 120
+    },
+    {
+      "sc": "P",
+      "gd": "M1",
+      "pc": 60,
+      "scr": 86,
+      "pre": 110
+    },
+    {
+      "sc": "P",
+      "gd": "M2",
+      "pc": 50,
+      "scr": 71,
+      "pre": 100
+    },
+    {
+      "sc": "P",
+      "gd": "M3",
+      "pc": 40,
+      "scr": 57,
+      "pre": 80
+    },
+    {
+      "sc": "P",
+      "gd": "P1",
+      "pc": 30,
+      "scr": 43,
+      "pre": 60
+    },
+    {
+      "sc": "P",
+      "gd": "P2",
+      "pc": 20,
+      "scr": 29,
+      "pre": 40
+    },
+    {
+      "sc": "P",
+      "gd": "P3",
+      "pc": 10,
+      "scr": 15,
+      "pre": 20
+    },
+    {
+      "sc": "P",
+      "gd": "U",
+      "pc": 0,
+      "scr": 0,
+      "pre": 0
+    },
+    {
+      "sc": "L",
+      "gd": "V",
+      "pc": 65,
+      "scr": 65,
+      "pre": 6.5
+    },
+    {
+      "sc": "L",
+      "gd": "G",
+      "pc": 50,
+      "scr": 50,
+      "pre": 4.5
+    },
+    {
+      "sc": "L",
+      "gd": "A",
+      "pc": 30,
+      "scr": 30,
+      "pre": 2
+    },
+    {
+      "sc": "L",
+      "gd": "U",
+      "pc": 0,
+      "scr": 0,
+      "pre": 0
+    }
+  ],
+  "year": [
+    {
+      "lv": "US",
+      "fm": 8,
+      "nc": 14,
+      "x": -1
+    },
+    {
+      "lv": "US",
+      "fm": 7,
+      "nc": 13,
+      "x": 0
+    },
+    {
+      "lv": "US",
+      "fm": 6,
+      "nc": 12,
+      "x": 1
+    },
+    {
+      "lv": "MS",
+      "fm": 5,
+      "nc": 11,
+      "x": 0
+    },
+    {
+      "lv": "MS",
+      "fm": 4,
+      "nc": 10,
+      "x": 1
+    },
+    {
+      "lv": "MS",
+      "fm": 3,
+      "nc": 9,
+      "x": 2
+    },
+    {
+      "lv": "MS",
+      "fm": 2,
+      "nc": 8,
+      "x": 3
+    },
+    {
+      "lv": "MS",
+      "fm": 1,
+      "nc": 7,
+      "x": 4
+    },
+    {
+      "lv": "LS",
+      "fm": 0,
+      "nc": 6,
+      "x": 5
+    }
+  ],
+  "conduct": [
+    {
+      "name": "Commendation",
+      "id": "1",
+      "reward": true
+    },
+    {
+      "name": "Optimum",
+      "id": "2",
+      "reward": true
+    },
+    {
+      "name": "T-Tick",
+      "id": "3",
+      "reward": true
+    },
+    {
+      "name": "B-Tick",
+      "id": "4",
+      "reward": true
+    },
+    {
+      "name": "BX",
+      "id": "5",
+      "reward": false
+    },
+    {
+      "name": "HoD Warning",
+      "id": "8",
+      "reward": false
+    },
+    {
+      "name": "Kit",
+      "id": "10",
+      "reward": false
+    },
+    {
+      "name": "Late",
+      "id": "11",
+      "reward": false
+    },
+    {
+      "name": "TX",
+      "id": "18",
+      "reward": false
+    },
+    {
+      "name": "Organisation/Kit/Uniform",
+      "id": "35",
+      "reward": false
+    },
+    {
+      "name": "Prep/Academic",
+      "id": "36",
+      "reward": false
+    },
+    {
+      "name": "Behaviour",
+      "id": "37",
+      "reward": false
+    }
+  ],
+  "kpi": [
+    {
+      "lv": "US",
+      "section": "GCE",
+      "KPI": "(%) A*-B",
+      "sc": "A",
+      "gd": "A*",
+      "sort": 4
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*",
+      "sc": "P",
+      "gd": "D2",
+      "sort": 16
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*",
+      "sc": "P",
+      "gd": "D1",
+      "sort": 15
+    },
+    {
+      "lv": "US",
+      "section": "GCE",
+      "KPI": "(%) A*",
+      "sc": "A",
+      "gd": "A*",
+      "sort": 1
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-A",
+      "sc": "P",
+      "gd": "M1",
+      "sort": 24
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "A",
+      "gd": "D",
+      "sort": 39
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "P",
+      "gd": "D3",
+      "sort": 47
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-A",
+      "sc": "P",
+      "gd": "M1",
+      "sort": 66
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-B",
+      "sc": "P",
+      "gd": "M2",
+      "sort": 78
+    },
+    {
+      "lv": "US",
+      "section": "IBHL",
+      "KPI": "(%) 7-5",
+      "sc": "I",
+      "gd": "6",
+      "sort": 85
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9",
+      "sc": "G",
+      "gd": "9",
+      "sort": 87
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-6",
+      "sc": "G",
+      "gd": "8",
+      "sort": 94
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-4",
+      "sc": "G",
+      "gd": "4",
+      "sort": 107
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-6 / A*-B",
+      "sc": "G",
+      "gd": "6",
+      "sort": 119
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-5 / A*-C",
+      "sc": "G",
+      "gd": "A*",
+      "sort": 128
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-5 / A*-C",
+      "sc": "G",
+      "gd": "C",
+      "sort": 131
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-4 / A*-C",
+      "sc": "G",
+      "gd": "A",
+      "sort": 139
+    },
+    {
+      "lv": "US",
+      "section": "GCE",
+      "KPI": "(%) A*-E",
+      "sc": "A",
+      "gd": "C",
+      "sort": 10
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-B",
+      "sc": "P",
+      "gd": "M1",
+      "sort": 33
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "P",
+      "gd": "P2",
+      "sort": 52
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-A",
+      "sc": "A",
+      "gd": "A",
+      "sort": 60
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-A",
+      "sc": "P",
+      "gd": "D2",
+      "sort": 64
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-B",
+      "sc": "B",
+      "gd": "D",
+      "sort": 73
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-B",
+      "sc": "P",
+      "gd": "D2",
+      "sort": 75
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-B",
+      "sc": "P",
+      "gd": "D3",
+      "sort": 76
+    },
+    {
+      "lv": "US",
+      "section": "IBHL",
+      "KPI": "(%) 7-6",
+      "sc": "I",
+      "gd": "7",
+      "sort": 82
+    },
+    {
+      "lv": "US",
+      "section": "IBHL",
+      "KPI": "(%) 7-6",
+      "sc": "I",
+      "gd": "6",
+      "sort": 83
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-8",
+      "sc": "G",
+      "gd": "8",
+      "sort": 89
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-7",
+      "sc": "G",
+      "gd": "7",
+      "sort": 92
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-5",
+      "sc": "G",
+      "gd": "8",
+      "sort": 98
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-5",
+      "sc": "G",
+      "gd": "5",
+      "sort": 101
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-8 / A*",
+      "sc": "G",
+      "gd": "A*",
+      "sort": 110
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-7 / A*-A",
+      "sc": "G",
+      "gd": "9",
+      "sort": 111
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-5 / A*-C",
+      "sc": "G",
+      "gd": "6",
+      "sort": 126
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-4 / A*-C",
+      "sc": "G",
+      "gd": "6",
+      "sort": 135
+    },
+    {
+      "lv": "US",
+      "section": "GCE",
+      "KPI": "(%) A*-A",
+      "sc": "A",
+      "gd": "A*",
+      "sort": 2
+    },
+    {
+      "lv": "US",
+      "section": "GCE",
+      "KPI": "(%) A*-E",
+      "sc": "A",
+      "gd": "D",
+      "sort": 11
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*",
+      "sc": "A",
+      "gd": "A*",
+      "sort": 13
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-A",
+      "sc": "A",
+      "gd": "A",
+      "sort": 18
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-B",
+      "sc": "A",
+      "gd": "B",
+      "sort": 27
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "A",
+      "gd": "A*",
+      "sort": 35
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "P",
+      "gd": "D2",
+      "sort": 46
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "P",
+      "gd": "P1",
+      "sort": 51
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-A",
+      "sc": "P",
+      "gd": "D1",
+      "sort": 63
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-A",
+      "sc": "I",
+      "gd": "7",
+      "sort": 67
+    },
+    {
+      "lv": "US",
+      "section": "IBHL",
+      "KPI": "(%) 7",
+      "sc": "I",
+      "gd": "7",
+      "sort": 81
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-8",
+      "sc": "G",
+      "gd": "9",
+      "sort": 88
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-5",
+      "sc": "G",
+      "gd": "6",
+      "sort": 100
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-4",
+      "sc": "G",
+      "gd": "7",
+      "sort": 104
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-7 / A*-A",
+      "sc": "G",
+      "gd": "A*",
+      "sort": 114
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-6 / A*-B",
+      "sc": "G",
+      "gd": "A",
+      "sort": 121
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-6 / A*-B",
+      "sc": "G",
+      "gd": "B",
+      "sort": 122
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-5 / A*-C",
+      "sc": "G",
+      "gd": "9",
+      "sort": 123
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-5 / A*-C",
+      "sc": "G",
+      "gd": "5",
+      "sort": 127
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-4 / A*-C",
+      "sc": "G",
+      "gd": "7",
+      "sort": 134
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-4 / A*-C",
+      "sc": "G",
+      "gd": "B",
+      "sort": 140
+    },
+    {
+      "lv": "US",
+      "section": "GCE",
+      "KPI": "(%) A*-A",
+      "sc": "A",
+      "gd": "A",
+      "sort": 3
+    },
+    {
+      "lv": "US",
+      "section": "GCE",
+      "KPI": "(%) A*-B",
+      "sc": "A",
+      "gd": "A",
+      "sort": 5
+    },
+    {
+      "lv": "US",
+      "section": "GCE",
+      "KPI": "(%) A*-B",
+      "sc": "A",
+      "gd": "B",
+      "sort": 6
+    },
+    {
+      "lv": "US",
+      "section": "GCE",
+      "KPI": "(%) A*-E",
+      "sc": "A",
+      "gd": "A",
+      "sort": 8
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-A",
+      "sc": "P",
+      "gd": "D1",
+      "sort": 21
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-B",
+      "sc": "B",
+      "gd": "D*",
+      "sort": 28
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-B",
+      "sc": "P",
+      "gd": "D2",
+      "sort": 31
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "A",
+      "gd": "A",
+      "sort": 36
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "B",
+      "gd": "D",
+      "sort": 42
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*",
+      "sc": "A",
+      "gd": "A*",
+      "sort": 54
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*",
+      "sc": "P",
+      "gd": "D1",
+      "sort": 56
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-A",
+      "sc": "P",
+      "gd": "D3",
+      "sort": 65
+    },
+    {
+      "lv": "US",
+      "section": "IBHL",
+      "KPI": "(%) 7-5",
+      "sc": "I",
+      "gd": "7",
+      "sort": 84
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-7",
+      "sc": "G",
+      "gd": "8",
+      "sort": 91
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-4",
+      "sc": "G",
+      "gd": "6",
+      "sort": 105
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-6 / A*-B",
+      "sc": "G",
+      "gd": "7",
+      "sort": 118
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-5 / A*-C",
+      "sc": "G",
+      "gd": "B",
+      "sort": 130
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-4 / A*-C",
+      "sc": "G",
+      "gd": "C",
+      "sort": 141
+    },
+    {
+      "lv": "US",
+      "section": "GCE",
+      "KPI": "(%) A*-E",
+      "sc": "A",
+      "gd": "A*",
+      "sort": 7
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-A",
+      "sc": "A",
+      "gd": "A*",
+      "sort": 17
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-B",
+      "sc": "P",
+      "gd": "D1",
+      "sort": 30
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "A",
+      "gd": "C",
+      "sort": 38
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "A",
+      "gd": "E",
+      "sort": 40
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "P",
+      "gd": "M1",
+      "sort": 48
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*",
+      "sc": "B",
+      "gd": "D*",
+      "sort": 55
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*",
+      "sc": "I",
+      "gd": "7",
+      "sort": 58
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-B",
+      "sc": "A",
+      "gd": "A",
+      "sort": 70
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-B",
+      "sc": "P",
+      "gd": "M1",
+      "sort": 77
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-B",
+      "sc": "I",
+      "gd": "6",
+      "sort": 80
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-7",
+      "sc": "G",
+      "gd": "9",
+      "sort": 90
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-6",
+      "sc": "G",
+      "gd": "7",
+      "sort": 95
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-6",
+      "sc": "G",
+      "gd": "6",
+      "sort": 96
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-8 / A*",
+      "sc": "G",
+      "gd": "9",
+      "sort": 108
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-7 / A*-A",
+      "sc": "G",
+      "gd": "7",
+      "sort": 113
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-6 / A*-B",
+      "sc": "G",
+      "gd": "8",
+      "sort": 117
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-4 / A*-C",
+      "sc": "G",
+      "gd": "8",
+      "sort": 133
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-4 / A*-C",
+      "sc": "G",
+      "gd": "4",
+      "sort": 137
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-4 / A*-C",
+      "sc": "G",
+      "gd": "A*",
+      "sort": 138
+    },
+    {
+      "lv": "US",
+      "section": "GCE",
+      "KPI": "(%) A*-E",
+      "sc": "A",
+      "gd": "E",
+      "sort": 12
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*",
+      "sc": "B",
+      "gd": "D*",
+      "sort": 14
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-B",
+      "sc": "P",
+      "gd": "M2",
+      "sort": 34
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "B",
+      "gd": "M",
+      "sort": 43
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "P",
+      "gd": "M2",
+      "sort": 49
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-B",
+      "sc": "A",
+      "gd": "A*",
+      "sort": 69
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-B",
+      "sc": "A",
+      "gd": "B",
+      "sort": 71
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-B",
+      "sc": "P",
+      "gd": "D1",
+      "sort": 74
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-5",
+      "sc": "G",
+      "gd": "9",
+      "sort": 97
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-5 / A*-C",
+      "sc": "G",
+      "gd": "A",
+      "sort": 129
+    },
+    {
+      "lv": "US",
+      "section": "GCE",
+      "KPI": "(%) A*-E",
+      "sc": "A",
+      "gd": "B",
+      "sort": 9
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-A",
+      "sc": "P",
+      "gd": "D3",
+      "sort": 23
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-B",
+      "sc": "B",
+      "gd": "D",
+      "sort": 29
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-B",
+      "sc": "P",
+      "gd": "D3",
+      "sort": 32
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "B",
+      "gd": "P",
+      "sort": 44
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "P",
+      "gd": "M3",
+      "sort": 50
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*",
+      "sc": "P",
+      "gd": "D2",
+      "sort": 57
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-A",
+      "sc": "A",
+      "gd": "A*",
+      "sort": 59
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-A",
+      "sc": "B",
+      "gd": "D*",
+      "sort": 61
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-A",
+      "sc": "B",
+      "gd": "D",
+      "sort": 62
+    },
+    {
+      "lv": "US",
+      "section": "IBHL",
+      "KPI": "(%) 7-5",
+      "sc": "I",
+      "gd": "5",
+      "sort": 86
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-6",
+      "sc": "G",
+      "gd": "9",
+      "sort": 93
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-4",
+      "sc": "G",
+      "gd": "8",
+      "sort": 103
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-4",
+      "sc": "G",
+      "gd": "5",
+      "sort": 106
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-8 / A*",
+      "sc": "G",
+      "gd": "8",
+      "sort": 109
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-7 / A*-A",
+      "sc": "G",
+      "gd": "8",
+      "sort": 112
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-7 / A*-A",
+      "sc": "G",
+      "gd": "A",
+      "sort": 115
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-6 / A*-B",
+      "sc": "G",
+      "gd": "9",
+      "sort": 116
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-6 / A*-B",
+      "sc": "G",
+      "gd": "A*",
+      "sort": 120
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-5 / A*-C",
+      "sc": "G",
+      "gd": "8",
+      "sort": 124
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-4 / A*-C",
+      "sc": "G",
+      "gd": "9",
+      "sort": 132
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-A",
+      "sc": "B",
+      "gd": "D*",
+      "sort": 19
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-A",
+      "sc": "B",
+      "gd": "D",
+      "sort": 20
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-A",
+      "sc": "P",
+      "gd": "D2",
+      "sort": 22
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-B",
+      "sc": "A",
+      "gd": "A*",
+      "sort": 25
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-B",
+      "sc": "A",
+      "gd": "A",
+      "sort": 26
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "A",
+      "gd": "B",
+      "sort": 37
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "B",
+      "gd": "D*",
+      "sort": 41
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "P",
+      "gd": "D1",
+      "sort": 45
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC",
+      "KPI": "(%) A*-E",
+      "sc": "P",
+      "gd": "P3",
+      "sort": 53
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-A",
+      "sc": "I",
+      "gd": "6",
+      "sort": 68
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-B",
+      "sc": "B",
+      "gd": "D*",
+      "sort": 72
+    },
+    {
+      "lv": "US",
+      "section": "GCE/PreU/BTEC/IBHL",
+      "KPI": "(%) A*-B",
+      "sc": "I",
+      "gd": "7",
+      "sort": 79
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-5",
+      "sc": "G",
+      "gd": "7",
+      "sort": 99
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE",
+      "KPI": "(%) 9-4",
+      "sc": "G",
+      "gd": "9",
+      "sort": 102
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-5 / A*-C",
+      "sc": "G",
+      "gd": "7",
+      "sort": 125
+    },
+    {
+      "lv": "MS",
+      "section": "GCSE LEGACY",
+      "KPI": "(%) 9-4 / A*-C",
+      "sc": "G",
+      "gd": "5",
+      "sort": 136
+    },
+    {
+      "lv": "US",
+      "section": "BTEC",
+      "KPI": "(%) D*",
+      "sc": "B",
+      "gd": "D*",
+      "sort": 142
+    },
+    {
+      "lv": "US",
+      "section": "BTEC",
+      "KPI": "(%) D*-D",
+      "sc": "B",
+      "gd": "D*",
+      "sort": 143
+    },
+    {
+      "lv": "US",
+      "section": "BTEC",
+      "KPI": "(%) D*-D",
+      "sc": "B",
+      "gd": "D",
+      "sort": 144
+    },
+    {
+      "lv": "US",
+      "section": "BTEC",
+      "KPI": "(%) D*-M",
+      "sc": "B",
+      "gd": "D*",
+      "sort": 145
+    },
+    {
+      "lv": "US",
+      "section": "BTEC",
+      "KPI": "(%) D*-M",
+      "sc": "B",
+      "gd": "D",
+      "sort": 146
+    },
+    {
+      "lv": "US",
+      "section": "BTEC",
+      "KPI": "(%) D*-M",
+      "sc": "B",
+      "gd": "M",
+      "sort": 147
+    }
+  ],
+  "regression": [
+    {
+      "sc": "A",
+      "ss": "AD",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.62,
+      "intercept": 46.91,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "B",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 1.26,
+      "intercept": -39.37,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "Bu",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.65,
+      "intercept": 29.33,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "C",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 1.13,
+      "intercept": -27.41,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "CCS",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.71,
+      "intercept": 31.4,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "Civ",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.63,
+      "intercept": 36.24,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "Co",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 1.28,
+      "intercept": -54.13,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "DrT",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.54,
+      "intercept": 47.58,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "DT",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.81,
+      "intercept": 11.68,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "Ec",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.78,
+      "intercept": 19.64,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "Eli",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.89,
+      "intercept": 12.48,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "F",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.77,
+      "intercept": 23.01,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "FM",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.74,
+      "intercept": 23.68,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "G",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.87,
+      "intercept": 13.79,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "H",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.76,
+      "intercept": 24.56,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "L",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.76,
+      "intercept": 25.02,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "M",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 1.22,
+      "intercept": -34.96,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "P",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 1.32,
+      "intercept": -54.94,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "PE",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.84,
+      "intercept": 5.77,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "Phi",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.98,
+      "intercept": -6.02,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "Po",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.71,
+      "intercept": 28.47,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "Psy",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.91,
+      "intercept": 3.49,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "RP",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.75,
+      "intercept": 26.34,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "RS",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.75,
+      "intercept": 26.34,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "Sp",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.64,
+      "intercept": 38.59,
+      "std": "B"
+    },
+    {
+      "sc": "A",
+      "ss": "AD",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 10.02,
+      "intercept": 38.12,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "B",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 21.17,
+      "intercept": -67.44,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "Bu",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 13.53,
+      "intercept": 6.15,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "C",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 19.85,
+      "intercept": -58.44,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "CCS",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 12.69,
+      "intercept": 9.46,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "Civ",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 11.05,
+      "intercept": 22.3,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "Co",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 18.08,
+      "intercept": -40.71,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "DrT",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 11.08,
+      "intercept": 25.48,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "DT",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 14.75,
+      "intercept": -4.38,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "Ec",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 14.06,
+      "intercept": -1.59,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "Eli",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 13.81,
+      "intercept": 2.18,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "F",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 12.81,
+      "intercept": 5.28,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "FM",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 12.8,
+      "intercept": 7.5,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "G",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 15.03,
+      "intercept": -6.6,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "Gn",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 12.85,
+      "intercept": 5.1,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "H",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 13.09,
+      "intercept": 5.6,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "L",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 18.39,
+      "intercept": -43.08,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "M",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 18.01,
+      "intercept": -38.03,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "Mu",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 11.76,
+      "intercept": 14.04,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "MuP",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 11.76,
+      "intercept": 14.04,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "P",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 20.26,
+      "intercept": -60.57,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "PE",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 17.39,
+      "intercept": -27.11,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "Phi",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 16.12,
+      "intercept": -24.69,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "Po",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 12.79,
+      "intercept": 9.61,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "Psy",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 16.84,
+      "intercept": -23.06,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "RP",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 13.51,
+      "intercept": 4.49,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "RP",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 13.51,
+      "intercept": 4.59,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "RS",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 13.51,
+      "intercept": 4.59,
+      "std": "A"
+    },
+    {
+      "sc": "A",
+      "ss": "Sp",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 11.03,
+      "intercept": 20.86,
+      "std": "A"
+    },
+    {
+      "sc": "B",
+      "ss": "BuS",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.65,
+      "intercept": 29.33,
+      "std": "B"
+    },
+    {
+      "sc": "B",
+      "ss": "SpS",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.84,
+      "intercept": 5.77,
+      "std": "B"
+    },
+    {
+      "sc": "B",
+      "ss": "BuS",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 13.53,
+      "intercept": 6.15,
+      "std": "A"
+    },
+    {
+      "sc": "B",
+      "ss": "SpS",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 17.39,
+      "intercept": -27.11,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "AD",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "B",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Bda",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Bu",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "C",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "CCS",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Cda",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Chi",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Civ",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Co",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Cz",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Dr",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "DrT",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "DT",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "DTpd",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "E",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Ec",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Ela",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Elec",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Eli",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "F",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "FM",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "G",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Gk",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Gn",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "H",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Ita",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "L",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "M",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Mu",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "P",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Pda",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "PE",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Phi",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Po",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Psy",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "RP",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "RS",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Sc",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "Sp",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "B"
+    },
+    {
+      "sc": "G",
+      "ss": "AD",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "B",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Bda",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Bu",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "C",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "CCS",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Cda",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Chi",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Civ",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Co",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Cz",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Dr",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "DrT",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "DT",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "DTpd",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "E",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Ec",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Ela",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Elec",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Eli",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "F",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "FM",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "G",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Gk",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Gn",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "H",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "L",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "M",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Mu",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "P",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Pda",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "PE",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Phi",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Po",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Psy",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "RP",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "RS",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Sc",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "G",
+      "ss": "Sp",
+      "regressionYear": 2023,
+      "lv": "MS",
+      "gradient": null,
+      "intercept": null,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Bh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.04,
+      "intercept": 1.12,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "BMh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 2.84,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "BMs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 2.19,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Bs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.04,
+      "intercept": 0.66,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Ch",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.05,
+      "intercept": -0.2,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Coh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.05,
+      "intercept": -0.73,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Cos",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.05,
+      "intercept": -1.21,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Cs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.05,
+      "intercept": -0.94,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "DTh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 1.93,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "DTs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 1.69,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Ech",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 1.89,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Ecs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 2.26,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Eh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 2.48,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Es",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.02,
+      "intercept": 2.78,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "ESSs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.04,
+      "intercept": 0.76,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "FBs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.02,
+      "intercept": 3.17,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Gh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 2.11,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Gns",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.02,
+      "intercept": 3.38,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "GPh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.04,
+      "intercept": 1.79,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "GPs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 2.7,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Gs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 1.98,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Hh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 2.44,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Hs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.02,
+      "intercept": 2.76,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Lh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 1.88,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Ls",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 1.93,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Mah",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.05,
+      "intercept": -0.29,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Mas",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.04,
+      "intercept": 0.38,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Mh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.05,
+      "intercept": -0.29,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Mis",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.05,
+      "intercept": 0.15,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Ms",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.04,
+      "intercept": 0.38,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Muh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 2.49,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Mus",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.02,
+      "intercept": 2.59,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Ph",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.05,
+      "intercept": -1.07,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Phih",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 2.61,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Phis",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.02,
+      "intercept": 3.83,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Ps",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.06,
+      "intercept": -1.5,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Psyh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.02,
+      "intercept": 2.86,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Psys",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 2.23,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "SpBs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.02,
+      "intercept": 3.43,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Spis",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.03,
+      "intercept": 2.54,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "SpSs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.04,
+      "intercept": 0.65,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "VAs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.02,
+      "intercept": 3.1,
+      "std": "B"
+    },
+    {
+      "sc": "I",
+      "ss": "Bh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.71,
+      "intercept": 0.09,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "BMh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.5,
+      "intercept": 2.18,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "BMs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.52,
+      "intercept": 2.13,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Bs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.66,
+      "intercept": 0.59,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Ch",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.87,
+      "intercept": -1.53,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Coh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.76,
+      "intercept": -0.55,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Cos",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.83,
+      "intercept": -1.06,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Cs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.78,
+      "intercept": -0.81,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "DTh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.5,
+      "intercept": 1.85,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "DTs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.58,
+      "intercept": 1.21,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Ech",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.58,
+      "intercept": 1.4,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Ecs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.6,
+      "intercept": 1.17,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Eh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.47,
+      "intercept": 2.19,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Es",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.45,
+      "intercept": 2.11,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "ESSs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.64,
+      "intercept": 0.89,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "FBh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.28,
+      "intercept": 3.81,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "FBs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.45,
+      "intercept": 2.2,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Gh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.55,
+      "intercept": 1.89,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "GnBh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.23,
+      "intercept": 4.29,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "GnBs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.42,
+      "intercept": 2.3,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Gnh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.37,
+      "intercept": 3.01,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Gnis",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.65,
+      "intercept": 0.3,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Gns",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.34,
+      "intercept": 3.11,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "GPh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.48,
+      "intercept": 2.19,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Gs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.57,
+      "intercept": 1.61,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Hh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.49,
+      "intercept": 2.09,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Hs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.41,
+      "intercept": 2.45,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Itais",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.64,
+      "intercept": 0.09,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Lh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.92,
+      "intercept": -1.9,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Ls",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.87,
+      "intercept": -1.46,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Mah",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.76,
+      "intercept": -0.87,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Mas",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.64,
+      "intercept": 0.27,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Mh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.76,
+      "intercept": -0.87,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Mis",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.63,
+      "intercept": 1.12,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Mnis",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.4,
+      "intercept": 2.96,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Ms",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.64,
+      "intercept": 0.27,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Muh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.42,
+      "intercept": 2.5,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Mus",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.41,
+      "intercept": 2.47,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Ph",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.82,
+      "intercept": -1.05,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Phih",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.45,
+      "intercept": 2.44,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Phis",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.42,
+      "intercept": 2.83,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Ps",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.79,
+      "intercept": -0.94,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Psyh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.49,
+      "intercept": 2.03,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Psys",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.54,
+      "intercept": 1.59,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "SpBh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.21,
+      "intercept": 4.62,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "SpBs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.45,
+      "intercept": 2.36,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "Spis",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.52,
+      "intercept": 1.71,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "SpSs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.67,
+      "intercept": 0.87,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "TAh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.38,
+      "intercept": 3.38,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "TAs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.34,
+      "intercept": 3.62,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "VAh",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.37,
+      "intercept": 3.2,
+      "std": "A"
+    },
+    {
+      "sc": "I",
+      "ss": "VAs",
+      "regressionYear": 2023,
+      "lv": "US",
+      "gradient": 0.4,
+      "intercept": 2.89,
+      "std": "A"
+    }
+  ],
+  "tips": [
+    "Use up/down/left/right/enter - just like to spreadhseet - to enter data",
+    "use the Scatter download to see how all sets have performed in the assessment."
+  ],
+  "subject": [
+    {
+      "ss": "AD",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "ERB"
+    },
+    {
+      "ss": "B",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "PJI"
+    },
+    {
+      "ss": "Bda",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "PJI"
+    },
+    {
+      "ss": "C",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "JEG"
+    },
+    {
+      "ss": "Cda",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "JEG"
+    },
+    {
+      "ss": "Civ",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "WGL"
+    },
+    {
+      "ss": "Co",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "ND1"
+    },
+    {
+      "ss": "Cz",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "VL"
+    },
+    {
+      "ss": "Dr",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "GN"
+    },
+    {
+      "ss": "DT",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "TCW"
+    },
+    {
+      "ss": "E",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "HEJ"
+    },
+    {
+      "ss": "Eli",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "HEJ"
+    },
+    {
+      "ss": "F",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "JRD"
+    },
+    {
+      "ss": "G",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "HAC"
+    },
+    {
+      "ss": "Gk",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "WGL"
+    },
+    {
+      "ss": "Gn",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "PJS"
+    },
+    {
+      "ss": "H",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "JNJR"
+    },
+    {
+      "ss": "Hum",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "MRS"
+    },
+    {
+      "ss": "Ita",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "RSB"
+    },
+    {
+      "ss": "L",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "WGL"
+    },
+    {
+      "ss": "M",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "MHC"
+    },
+    {
+      "ss": "Mfd",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "MHC"
+    },
+    {
+      "ss": "Mu",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "PD"
+    },
+    {
+      "ss": "P",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "JAC"
+    },
+    {
+      "ss": "Pda",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "JAC"
+    },
+    {
+      "ss": "Per",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "VL"
+    },
+    {
+      "ss": "RP",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "LFM"
+    },
+    {
+      "ss": "Sc",
+      "sc": "L",
+      "lv": "LS",
+      "tid": "JEG"
+    },
+    {
+      "lv": "LS",
+      "ss": "EAL",
+      "sc": "X",
+      "tid": "JMI"
+    },
+    {
+      "lv": "LS",
+      "ss": "LSup",
+      "sc": "X",
+      "tid": "ESI"
+    },
+    {
+      "ss": "AD",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "ERB"
+    },
+    {
+      "ss": "B",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "PJI"
+    },
+    {
+      "ss": "Bda",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "PJI"
+    },
+    {
+      "ss": "C",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "JEG"
+    },
+    {
+      "ss": "Cda",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "JEG"
+    },
+    {
+      "ss": "Civ",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "WGL"
+    },
+    {
+      "ss": "Co",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "ND1"
+    },
+    {
+      "ss": "Cz",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "VL"
+    },
+    {
+      "ss": "Dr",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "GN"
+    },
+    {
+      "ss": "DT",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "TCW"
+    },
+    {
+      "ss": "E",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "HEJ"
+    },
+    {
+      "ss": "Eli",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "HEJ"
+    },
+    {
+      "ss": "F",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "JRD"
+    },
+    {
+      "ss": "G",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "HAC"
+    },
+    {
+      "ss": "Gk",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "WGL"
+    },
+    {
+      "ss": "Gn",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "PJS"
+    },
+    {
+      "ss": "H",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "JNJR"
+    },
+    {
+      "ss": "Ita",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "RSB"
+    },
+    {
+      "ss": "L",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "WGL"
+    },
+    {
+      "ss": "M",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "MHC"
+    },
+    {
+      "ss": "Mfd",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "MHC"
+    },
+    {
+      "ss": "Mu",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "PD"
+    },
+    {
+      "ss": "P",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "JAC"
+    },
+    {
+      "ss": "Pda",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "JAC"
+    },
+    {
+      "ss": "PEne",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "SW3"
+    },
+    {
+      "ss": "Per",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "VL"
+    },
+    {
+      "ss": "RP",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "LFM"
+    },
+    {
+      "ss": "Sc",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "JEG"
+    },
+    {
+      "ss": "Sp",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "CMP"
+    },
+    {
+      "ss": "Spfd",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "CMP"
+    },
+    {
+      "ss": "TS",
+      "sc": "M",
+      "lv": "MP",
+      "tid": "GN"
+    },
+    {
+      "ss": "AD",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "ERB"
+    },
+    {
+      "ss": "B",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "PJI"
+    },
+    {
+      "ss": "Bda",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "PJI"
+    },
+    {
+      "ss": "C",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "JEG"
+    },
+    {
+      "ss": "Cda",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "JEG"
+    },
+    {
+      "ss": "Civ",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "WGL"
+    },
+    {
+      "ss": "Co",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "ND1"
+    },
+    {
+      "ss": "Cz",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "VL"
+    },
+    {
+      "ss": "Dr",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "GN"
+    },
+    {
+      "ss": "DT",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "TCW"
+    },
+    {
+      "ss": "E",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "HEJ"
+    },
+    {
+      "ss": "Eli",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "HEJ"
+    },
+    {
+      "ss": "F",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "JRD"
+    },
+    {
+      "ss": "G",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "HAC"
+    },
+    {
+      "ss": "Gk",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "WGL"
+    },
+    {
+      "ss": "Gn",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "PJS"
+    },
+    {
+      "ss": "H",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "JNJR"
+    },
+    {
+      "ss": "Ita",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "RSB"
+    },
+    {
+      "ss": "L",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "WGL"
+    },
+    {
+      "ss": "M",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "MHC"
+    },
+    {
+      "ss": "Mfd",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "MHC"
+    },
+    {
+      "ss": "Mu",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "PD"
+    },
+    {
+      "ss": "P",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "JAC"
+    },
+    {
+      "ss": "Pda",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "JAC"
+    },
+    {
+      "ss": "PE",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "SW3"
+    },
+    {
+      "ss": "Per",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "VL"
+    },
+    {
+      "ss": "RP",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "LFM"
+    },
+    {
+      "ss": "Sp",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "CMP"
+    },
+    {
+      "ss": "Spfd",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "CMP"
+    },
+    {
+      "ss": "TS",
+      "sc": "G",
+      "lv": "MS",
+      "tid": "GN"
+    },
+    {
+      "lv": "MS",
+      "ss": "EAL",
+      "sc": "X",
+      "tid": "JMI"
+    },
+    {
+      "lv": "MS",
+      "ss": "LSup",
+      "sc": "X",
+      "tid": "ESI"
+    },
+    {
+      "ss": "AD",
+      "sc": "A",
+      "lv": "US",
+      "tid": "ERB"
+    },
+    {
+      "ss": "B",
+      "sc": "A",
+      "lv": "US",
+      "tid": "PJI"
+    },
+    {
+      "ss": "Bu",
+      "sc": "A",
+      "lv": "US",
+      "tid": "SDY"
+    },
+    {
+      "ss": "C",
+      "sc": "A",
+      "lv": "US",
+      "tid": "JEG"
+    },
+    {
+      "ss": "CCS",
+      "sc": "A",
+      "lv": "US",
+      "tid": "ERB"
+    },
+    {
+      "ss": "Civ",
+      "sc": "A",
+      "lv": "US",
+      "tid": "WGL"
+    },
+    {
+      "ss": "Co",
+      "sc": "A",
+      "lv": "US",
+      "tid": "ND1"
+    },
+    {
+      "ss": "DrT",
+      "sc": "A",
+      "lv": "US",
+      "tid": "TCW"
+    },
+    {
+      "ss": "DT",
+      "sc": "A",
+      "lv": "US",
+      "tid": "TCW"
+    },
+    {
+      "ss": "Ec",
+      "sc": "A",
+      "lv": "US",
+      "tid": "SJJ"
+    },
+    {
+      "ss": "Eli",
+      "sc": "A",
+      "lv": "US",
+      "tid": "HEJ"
+    },
+    {
+      "ss": "F",
+      "sc": "A",
+      "lv": "US",
+      "tid": "JRD"
+    },
+    {
+      "ss": "FM",
+      "sc": "A",
+      "lv": "US",
+      "tid": "MHC"
+    },
+    {
+      "ss": "G",
+      "sc": "A",
+      "lv": "US",
+      "tid": "HAC"
+    },
+    {
+      "ss": "Gk",
+      "sc": "A",
+      "lv": "US",
+      "tid": "WGL"
+    },
+    {
+      "ss": "Gn",
+      "sc": "A",
+      "lv": "US",
+      "tid": "PJS"
+    },
+    {
+      "ss": "H",
+      "sc": "A",
+      "lv": "US",
+      "tid": "JNJR"
+    },
+    {
+      "ss": "L",
+      "sc": "A",
+      "lv": "US",
+      "tid": "WGL"
+    },
+    {
+      "ss": "M",
+      "sc": "A",
+      "lv": "US",
+      "tid": "MHC"
+    },
+    {
+      "ss": "Mu",
+      "sc": "A",
+      "lv": "US",
+      "tid": "PD"
+    },
+    {
+      "ss": "P",
+      "sc": "A",
+      "lv": "US",
+      "tid": "JAC"
+    },
+    {
+      "ss": "PE",
+      "sc": "A",
+      "lv": "US",
+      "tid": "SW3"
+    },
+    {
+      "ss": "Phi",
+      "sc": "A",
+      "lv": "US",
+      "tid": "LFM"
+    },
+    {
+      "ss": "Po",
+      "sc": "A",
+      "lv": "US",
+      "tid": "LAW"
+    },
+    {
+      "ss": "Psy",
+      "sc": "A",
+      "lv": "US",
+      "tid": "CCF"
+    },
+    {
+      "ss": "RP",
+      "sc": "A",
+      "lv": "US",
+      "tid": "LFM"
+    },
+    {
+      "ss": "RS",
+      "sc": "A",
+      "lv": "US",
+      "tid": "LFM"
+    },
+    {
+      "ss": "Sp",
+      "sc": "A",
+      "lv": "US",
+      "tid": "CMP"
+    },
+    {
+      "ss": "BuS",
+      "sc": "B",
+      "lv": "US",
+      "tid": "SDY"
+    },
+    {
+      "ss": "SpS",
+      "sc": "B",
+      "lv": "US",
+      "tid": "SW3"
+    },
+    {
+      "ss": "Bh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "PJI"
+    },
+    {
+      "ss": "BMh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "SDY"
+    },
+    {
+      "ss": "BMs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "SDY"
+    },
+    {
+      "ss": "Bs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "PJI"
+    },
+    {
+      "ss": "Ch",
+      "sc": "I",
+      "lv": "US",
+      "tid": "JEG"
+    },
+    {
+      "ss": "Cos",
+      "sc": "I",
+      "lv": "US",
+      "tid": "ND1"
+    },
+    {
+      "ss": "Cs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "JEG"
+    },
+    {
+      "ss": "DTh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "TCW"
+    },
+    {
+      "ss": "DTs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "TCW"
+    },
+    {
+      "ss": "Ech",
+      "sc": "I",
+      "lv": "US",
+      "tid": "SJJ"
+    },
+    {
+      "ss": "Ecs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "SJJ"
+    },
+    {
+      "ss": "Eh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "HEJ"
+    },
+    {
+      "ss": "Es",
+      "sc": "I",
+      "lv": "US",
+      "tid": "HEJ"
+    },
+    {
+      "ss": "ESSs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "PJI"
+    },
+    {
+      "ss": "FBh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "JRD"
+    },
+    {
+      "ss": "FBs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "JRD"
+    },
+    {
+      "ss": "Fis",
+      "sc": "I",
+      "lv": "US",
+      "tid": "JRD"
+    },
+    {
+      "ss": "Gh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "HAC"
+    },
+    {
+      "ss": "GnBh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "PJS"
+    },
+    {
+      "ss": "GnBs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "PJS"
+    },
+    {
+      "ss": "Gnh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "PJS"
+    },
+    {
+      "ss": "Gns",
+      "sc": "I",
+      "lv": "US",
+      "tid": "PJS"
+    },
+    {
+      "ss": "GPh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "LAW"
+    },
+    {
+      "ss": "GPs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "LAW"
+    },
+    {
+      "ss": "Gs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "HAC"
+    },
+    {
+      "ss": "Hh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "JNJR"
+    },
+    {
+      "ss": "Hs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "JNJR"
+    },
+    {
+      "ss": "Itais",
+      "sc": "I",
+      "lv": "US",
+      "tid": "RSB"
+    },
+    {
+      "ss": "Lh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "WGL"
+    },
+    {
+      "ss": "Ls",
+      "sc": "I",
+      "lv": "US",
+      "tid": "WGL"
+    },
+    {
+      "ss": "Mah",
+      "sc": "I",
+      "lv": "US",
+      "tid": "MHC"
+    },
+    {
+      "ss": "Mas",
+      "sc": "I",
+      "lv": "US",
+      "tid": "MHC"
+    },
+    {
+      "ss": "Mh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "MHC"
+    },
+    {
+      "ss": "Mis",
+      "sc": "I",
+      "lv": "US",
+      "tid": "MHC"
+    },
+    {
+      "ss": "Ms",
+      "sc": "I",
+      "lv": "US",
+      "tid": "MHC"
+    },
+    {
+      "ss": "Ph",
+      "sc": "I",
+      "lv": "US",
+      "tid": "LFM"
+    },
+    {
+      "ss": "Phih",
+      "sc": "I",
+      "lv": "US",
+      "tid": "LFM"
+    },
+    {
+      "ss": "Phis",
+      "sc": "I",
+      "lv": "US",
+      "tid": "LFM"
+    },
+    {
+      "ss": "Ps",
+      "sc": "I",
+      "lv": "US",
+      "tid": "JAC"
+    },
+    {
+      "ss": "Psyh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "CCF"
+    },
+    {
+      "ss": "Psys",
+      "sc": "I",
+      "lv": "US",
+      "tid": "CCF"
+    },
+    {
+      "ss": "SpBh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "CMP"
+    },
+    {
+      "ss": "SpBs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "CMP"
+    },
+    {
+      "ss": "Spis",
+      "sc": "I",
+      "lv": "US",
+      "tid": "CMP"
+    },
+    {
+      "ss": "SpSh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "SW3"
+    },
+    {
+      "ss": "SpSs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "SW3"
+    },
+    {
+      "ss": "TAh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "GN"
+    },
+    {
+      "ss": "TAs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "GN"
+    },
+    {
+      "ss": "VAh",
+      "sc": "I",
+      "lv": "US",
+      "tid": "ERB"
+    },
+    {
+      "ss": "VAs",
+      "sc": "I",
+      "lv": "US",
+      "tid": "ERB"
+    },
+    {
+      "ss": "ADP",
+      "sc": "P",
+      "lv": "US",
+      "tid": "ERB"
+    },
+    {
+      "ss": "MuP",
+      "sc": "P",
+      "lv": "US",
+      "tid": "PD"
+    },
+    {
+      "lv": "US",
+      "ss": "CAS",
+      "sc": "X",
+      "tid": "SDY"
+    },
+    {
+      "lv": "US",
+      "ss": "EAL",
+      "sc": "X",
+      "tid": "JMI"
+    },
+    {
+      "lv": "US",
+      "ss": "EE",
+      "sc": "X",
+      "tid": "MHC"
+    },
+    {
+      "lv": "US",
+      "ss": "LSup",
+      "sc": "X",
+      "tid": "ESI"
+    },
+    {
+      "lv": "US",
+      "ss": "ToK",
+      "sc": "X",
+      "tid": "CEM"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "MJF"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "JLP"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "RP1"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "AM"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "MJD"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "HWFP"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "DNC"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "OJS"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "PTL2"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "SEG"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "MLT"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "GLB"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "LEA"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "JHR"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "ESI"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "TDS"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "NPF"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "LFD"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "ESI"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "JJC"
+    },
+    {
+      "ss": "XXX",
+      "sc": "XXX",
+      "lv": "XXX",
+      "tid": "JMI"
+    },
+    {
+      "lv": "XXX",
+      "sc": "XXX",
+      "ss": "XXX",
+      "tid": "AGH"
+    },
+    {
+      "lv": "XXX",
+      "ss": "XXX",
+      "sc": "XXX",
+      "tid": "MJD"
+    }
+  ],
+  "view": [
+    {
+      "chance": false,
+      "context": "parent",
+      "rag": false,
+      "fb": false
+    },
+    {
+      "chance": true,
+      "context": "pupil",
+      "rag": false,
+      "fb": false
+    },
+    {
+      "chance": true,
+      "context": "overview",
+      "rag": true,
+      "fb": true
+    },
+    {
+      "context": "assessments",
+      "rag": true,
+      "chance": true,
+      "fb": true
+    }
+  ],
+  "report": {
+    "tt": [
+      "Winter",
+      "Spring",
+      "Summer"
+    ],
+    "ts": [
+      "1st",
+      "2nd"
+    ],
+    "e": {
+      "list": [
+        "4",
+        "3",
+        "2",
+        "1",
+        "N/A"
+      ],
+      "default": "3"
+    },
+    "hm": [
+      {
+        "hse": "Wragg",
+        "tid": "WS",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Duress",
+        "tid": "DW2",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Soster",
+        "tid": "MMF",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Hoster",
+        "tid": "KLG",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Grim",
+        "tid": "LMD",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Paddocks",
+        "tid": "TDD",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Healer",
+        "tid": "SADD",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Spear",
+        "tid": "AGH",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Nickel",
+        "tid": "LJA",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Wiiliams",
+        "tid": "ASD",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Taylors",
+        "tid": "GG",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Doorson",
+        "tid": "OJH",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Leering",
+        "tid": "EGR",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Drums",
+        "tid": "KMR",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "DJ2",
+        "tid": "AVW",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Roche2",
+        "tid": "HJC",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "DJ1",
+        "tid": "AMR",
+        "sal": "Dr H"
+      },
+      {
+        "hse": "Roche1",
+        "tid": "MJP",
+        "sal": "Dr H"
+      }
+    ],
+    "hoy": [],
+    "enrichment": [
+      {
+        "sl": "Musc:Piano",
+        "sc": "E",
+        "ss": "E-M-Pno",
+        "g": ""
+      },
+      {
+        "sl": "Games:Cricket",
+        "sc": "E",
+        "ss": "E-G-Crk",
+        "g": ""
+      },
+      {
+        "sl": "Service:Duke of Edinborough",
+        "sc": "E",
+        "ss": "E-S-DoE",
+        "g": ""
+      }
+    ]
+  }
+}]
