@@ -33,6 +33,38 @@ $:{
 
 
 let removeAssessments=async()=>{
+    let a=data.assessments.list[data.assessments.index];
+    let c=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
+
+    let response = await fetch('/edge/delete', {
+        method: 'POST',
+        body: JSON.stringify({collection:'assessments',filter:{n:a.n,dl:a.dl,lv:c.lv,yr:c.yr,"tag.archive":false,"tag.exam":true}}),
+        headers: {'content-type': 'application/json'}
+    });
+
+  
+    let res= await response.json();
+  
+    let msg='';
+    if(res.deletedCount && res.deletedCount>=1 ) {
+        msg=`Deleted ${res.deletedCount} assessments.`;
+    } else {
+        $alert.type='error';
+        $alert.msg=`Error deleting assessments`;
+    }
+
+    response = await fetch('/edge/delete', {
+        method: 'POST',
+        body: JSON.stringify({collection:'results',filter:{n:a.n,dl:a.dl,lv:c.lv,yr:c.yr}}),
+        headers: {'content-type': 'application/json'}
+    });
+    res= await response.json();
+    if(res.deletedCount && res.deletedCount>=1 ) {
+        $alert.msg=msg+` Deleted ${res.deletedCount} results.`;
+    } else {
+        $alert.type='error';
+        $alert.msg=`Error deleting results`;
+    }
 
 };
 
