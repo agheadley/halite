@@ -13,7 +13,7 @@ let data= {
     tabs:['Manage','Create'],
     tab:'Manage',
     create:{active:false,confirm:false,max:15,n:'',dl:'0000-00-00',ds:'',dt:0,lv:'',yr:0,tag:{open:true,grade:false,overview:false,pupil:false,parent:false,pupiledit:false,exam:true,archive:false}},
-    assessments:{index:0,list:[],results:[]}
+    assessments:{index:0,list:[],results:[],tag:{archive:false,grade:false,pupiledit:false,exam:false,open:false,overview:false,pupil:false,parent:false}}
 
 };
 
@@ -175,16 +175,16 @@ let updateResults=async()=>{
     let c=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
     
     // get all the aoids
-    let response = await fetch('/edge/distinct', {
+    let response = await fetch('/edge/readOne', {
             method: 'POST',
-            body: JSON.stringify({collection:'assessments',match:{n:a.n,dl:a.dl,lv:c.lv,yr:c.yr,"tag.archive":false,"tag.exam":true},aggregate:['_id']}),
+            body: JSON.stringify({collection:'assessments',filter:{n:a.n,dl:a.dl,lv:c.lv,yr:c.yr,"tag.archive":false,"tag.exam":true},prohect:{}}),
             headers: {'content-type': 'application/json'}
         });
     let res= await response.json();
-    let aoids=res[0] ? res.map((/** @type {{ _id: any; }} */ el)=>el._id) :[];
-    
-    console.log(aoids);
 
+
+    data.assessments.tag=res.tag ? res.tag : {archive:false,grade:false,pupiledit:false,exam:false,open:false,overview:false,pupil:false,parent:false};
+   
     data.assessments.resuls=[];
 
     response = await fetch('/edge/read', {
@@ -193,9 +193,8 @@ let updateResults=async()=>{
             headers: {'content-type': 'application/json'}
     });
     res= await response.json();
-
-    data.assessments.results=res[0]? res.filter(el=>aoids.includes(el.aoid)) : [];
-
+    data.assessments.results=res[0]? res : [];
+   
     console.log(data.assessments.results);
     
     
@@ -220,6 +219,40 @@ let update=async()=>{
     await updateResults();
 };
 
+let updateTag=async()=>{
+    let a=data.assessments.list[data.assessments.index];
+    let c=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
+   
+    console.log('updating tag',data.assessments.tag);
+
+    $alert.msg='requesting update ...';
+    
+    let response = await fetch('/edge/update', {
+		    method: 'POST',
+		    body: JSON.stringify({
+                collection:'assessments',
+                filter:{n:a.n,dl:a.dl,lv:c.lv,yr:c.yr},
+                update:{tag:data.assessments.tag}
+                }),
+		    headers: {'content-type': 'application/json'}
+	    });
+
+        let res= await response.json();
+        console.log(res);
+
+        if(res.matchedCount>=1) {
+            $alert.msg=`tag updates saved to ${res.matchedCount} assessments. ${res.modifiedCount} changes made`;
+            await update();
+   
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error updating assessments tags`;
+        }
+};
+
+let exportResults=()=>{
+
+};
 
 onMount(async () => {
        
@@ -321,6 +354,50 @@ onMount(async () => {
     <div class="col is-vertical-align">
     </div>
 </div>
+
+
+<div class="row">
+    <div class="col">
+       {#each Object.keys(data.assessments.tag) as col,colIndex}
+            {col}<input type=checkbox bind:checked={data.assessments.tag[col]}/>&nbsp;&nbsp;
+       {/each}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <button on:click={exportResults} class="button outline fixed-width">Results&nbsp;
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </button>
+        <button class="button error" on:click={updateTag}>Update</button>
+    </div>
+</div>
+
+<table class="striped small">
+    <thead>
+        <tr>
+            <th>Assessment</th>
+            <th>Subject</th>
+            <th>Pupil</th>
+            <th>Results</th>
+        </tr>
+    </thead>
+    <tbody>
+        {#each data.assessments.results as row,rowIndex}
+        {#if rowIndex<10}
+            <tr>
+                <td>{row.n} {row.dl}</td>
+                <td>{row.ss} {row.sc} {row.g}</td>
+                <td>{row.pn} {row.sn}</td>
+                <td>[{row.t.toString()}] {row.pc}% {row.gd}</td>
+                
+            </tr>
+        {/if}
+        {/each}
+    </tbody>
+</table>
+
+
 {/if}
 
 
@@ -410,4 +487,7 @@ onMount(async () => {
 
 <style>
 
+.small {
+    font-size:1.2rem;
+}
 </style>
