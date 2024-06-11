@@ -89,12 +89,7 @@ returns true for undefined (as undefined==null), null, [], ""
 
 
 
-# admin/Assessments
 
-view, manage, delete (revive the json ?)
-
-
-# admin/Config
 
 # Assessments
 
