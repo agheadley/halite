@@ -57,7 +57,7 @@
             sc:s.sc,
             sl:s.sl,
             ss:s.ss,
-            tag:{open:true,grade:false,overview:false,pupil:false,parent:false,exam:false,archive:false},
+            tag:{open:true,grade:false,overview:false,pupil:false,parent:false,exam:false,archive:false,pupiledit:false},
             total:[{t:100,w:100,n:'P1'}],
             grade:grades,
             log:`${data.user.name}|${util.getDate()}`

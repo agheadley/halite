@@ -91,7 +91,8 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # admin/Assessments
 
-- create assesments tag.exam (IntEx), tag.grade (TIG+tag.exam=true), tag.pupil (AG + tag.exam=true)
+view, manage, delete (revive the json ?)
+
 
 # admin/Config
 
