@@ -345,16 +345,18 @@ onMount(async () => {
     </tbody>
 </table>
 {#if data.view.chance}
+
+
 <div class="row">
     &nbsp;
 </div>
 <div class="row">
     <div class="col">
-        CHANCES
+        <span class="small bold">Chance Graphs</span>
     </div>
     <div class="col">
         <div>
-            <span class="tag">{data.std.A}</span>
+            <span class="tag small">{data.std.A}</span>
         </div>
         <div>
            
@@ -364,16 +366,56 @@ onMount(async () => {
    
     <div class="col">
         <div>
-            <span class="tag">{data.std.B}</span>
+            <span class="tag small">{data.std.B}</span>
         </div>
         <div>
             <Chance grades={cfg.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===row.sc)} score={row.pre.B ? row.pre.B : 0}/>
         </div>
     </div>
 </div>
+
 {/if} <!--/ chances-->
 
+<div class="row">
+    <div class="col">
+        <table class="small">
+            <tbody>
+                <tr>
+                    <td>
+                        Winter 2nd 2024
+                    </td>
+       
+                    <td>
+                        weffewf f fwef wfwe fewf ewf ewfwe fwef wefewf ewf ewf ew fewf ef wfew fewf ewf efe wefwe fwe fwef wef
+                    </td>
 
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        <details>
+            <summary><span class="small bold">Previous Reports</span></summary>
+            <div>
+                <table class="small">
+                    <tbody>
+                        <tr>
+                            Winter 1st 2024
+                        </tr>
+                        <tr>
+                            feffwf fewfwf ewfewf ewfwfwf ewfw fewfewf ewf ewfefewfew ewf efew fewfewf
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </details>
+    </div>
+</div>
+
+<hr/>
 {/each}
 
 {/if}  <!-- /  !detail-->

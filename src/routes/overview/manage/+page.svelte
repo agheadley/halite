@@ -38,7 +38,7 @@
         status.yr=$cohorts.overview.years.list[$cohorts.overview.years.index].yr;
         status.lv=$cohorts.overview.years.list[$cohorts.overview.years.index].lv;
 
-         /* get cohort assessments */
+        /* get cohort assessments */
         let response = await fetch('/edge/read', {
             method: 'POST',
             body: JSON.stringify({collection:'assessments',filter:{lv:status.lv,yr:status.yr,"tag.archive":false,"tag.overview":true},projection:{}}),
@@ -47,9 +47,19 @@
 
         status.assessments= await response.json();
         console.log(status.assessments);
+        
+        /* get overview data */
+        response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'overview',filter:{},projection:{}}),
+            headers: {'content-type': 'application/json'}
+        });
+        let res= await response.json();
+        let overview=res.sort((/** @type {{ index: number; }} */ a,/** @type {{ index: number; }} */ b)=>a.index-b.index);
 
          /* grab columns / section */
-        let sections=$config.overview.filter((/** @type {{ lv: any; yr: any; }} */ el)=>el.lv===status.lv && el.yr===status.yr);
+        let sections=overview.filter((/** @type {{ lv: any; yr: any; }} */ el)=>el.lv===status.lv && el.yr===status.yr);
+        //console.log(sections);
         for(let section of sections) {
             section.ds=section.dl?.length===10 ? section.dl[5]+section.dl[6]+"/" +section.dl[2]+section.dl[3]: '00/00';
             section.dsFrom=section.from?.length===10 ? section.from[5]+section.from[6]+"/" +section.from[2]+section.from[3]: '00/00';
@@ -118,7 +128,7 @@
 
     <div class="row">
         <div class="col-4">
-            <h4>Assessment Visibility {status.lv} {status.yr}</h4>
+            <h4>Assessment Visibility <span class="tag">{status.lv} {status.yr}</span></h4>
         </div>
         <div class="col-5">
             <div class="tabs">
