@@ -88,9 +88,6 @@ returns true for undefined (as undefined==null), null, [], ""
 
 
 
-# admin/Overview
-
-- tag.parent updates to assessments
 
 # admin/Assessments
 

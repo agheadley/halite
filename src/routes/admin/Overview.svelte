@@ -150,6 +150,7 @@
         if(res.matchedCount===1) {
             $alert.msg=`Row saved -  ${res.modifiedCount===1 ? 'changes made' :'no changes'}`;
             data.confirm=false;
+ 
    
         } else {
             $alert.type='error';
@@ -158,8 +159,46 @@
 
 
 
+        // now update parent view for assessments tag.parent
+        console.log('updating parent view for ',data.rows[index]);
+        /** @type {any}*/
+        let filter={};
+        if(data.rows[index].exam) {
+            filter={"tag.exam":true,"tag.archive":false,"tag.pupil":true,n:data.rows[index].n,dl:data.rows[index].dl}
+        } else {
+            let from=new Date(data.rows[index].from).getTime()-1;
+            let to=new Date(data.rows[index].to).getTime()+1;
+            filter={"tag.exam":false,"tag.archive":false,"tag.pupil":true,dt:{$gt:from,$lt:to}};
+        
+        }
+        
+        $alert.msg='Updating parent view, please wait...';
+        response = await fetch('/edge/update', {
+		    method: 'POST',
+		    body: JSON.stringify({
+                collection:'assessments',
+                filter:filter,
+                update:{"tag.parent":data.rows[index].parent}
+                }),
+		    headers: {'content-type': 'application/json'}
+	    });
+
+    
+        res= await response.json();
+        console.log(filter);
+        console.log('parent update...',res);
+
+        if(res.matchedCount>=1) {
+            $alert.msg=`Parent view matched ${res.matchedCount} modified ${res.modifiedCount}`;
+            
+   
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error updating parent view`;
+        }
 
         
+
 
 
 
