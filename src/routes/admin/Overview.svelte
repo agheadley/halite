@@ -164,11 +164,11 @@
         /** @type {any}*/
         let filter={};
         if(data.rows[index].exam) {
-            filter={"tag.exam":true,"tag.archive":false,"tag.pupil":true,n:data.rows[index].n,dl:data.rows[index].dl}
+            filter={lv:data.rows[index].lv,yr:data.rows[index].yr,"tag.exam":true,"tag.archive":false,"tag.pupil":true,n:data.rows[index].n,dl:data.rows[index].dl}
         } else {
             let from=new Date(data.rows[index].from).getTime()-1;
             let to=new Date(data.rows[index].to).getTime()+1;
-            filter={"tag.exam":false,"tag.archive":false,"tag.pupil":true,dt:{$gt:from,$lt:to}};
+            filter={lv:data.rows[index].lv,yr:data.rows[index].yr,"tag.exam":false,"tag.archive":false,"tag.pupil":true,dt:{$gt:from,$lt:to}};
         
         }
         
