@@ -1,8 +1,9 @@
 <script>
 import {cohorts,groups,config,alert} from '$lib/store';
+import { onMount } from 'svelte';
 import * as util from '$lib/util';
 import Modal from '$lib/_Modal.svelte';
-
+	
 /** @type {any}*/
 export let status;
 
@@ -11,7 +12,9 @@ export let status;
 let data= {
     tabs:['Manage','Create'],
     tab:'Manage',
-    create:{active:false,confirm:false,max:15,n:'',dl:'0000-00-00',ds:'',dt:0,lv:'',yr:0,tag:{open:true,grade:false,overview:false,pupil:false,parent:false,pupiledit:false,exam:true,archive:false}}
+    create:{active:false,confirm:false,max:15,n:'',dl:'0000-00-00',ds:'',dt:0,lv:'',yr:0,tag:{open:true,grade:false,overview:false,pupil:false,parent:false,pupiledit:false,exam:true,archive:false}},
+    assessments:{index:0,list:[],results:[]}
+
 };
 
 
@@ -167,6 +170,65 @@ let create=async()=>{
     data.create.active=false;
 };
 
+let updateResults=async()=>{
+    let a=data.assessments.list[data.assessments.index];
+    let c=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
+    
+    // get all the aoids
+    let response = await fetch('/edge/distinct', {
+            method: 'POST',
+            body: JSON.stringify({collection:'assessments',match:{n:a.n,dl:a.dl,lv:c.lv,yr:c.yr,"tag.archive":false,"tag.exam":true},aggregate:['_id']}),
+            headers: {'content-type': 'application/json'}
+        });
+    let res= await response.json();
+    let aoids=res[0] ? res.map((/** @type {{ _id: any; }} */ el)=>el._id) :[];
+    
+    console.log(aoids);
+
+    data.assessments.resuls=[];
+
+    response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'results',filter:{n:a.n,dl:a.dl,lv:c.lv,yr:c.yr},projection:{}}),
+            headers: {'content-type': 'application/json'}
+    });
+    res= await response.json();
+
+    data.assessments.results=res[0]? res.filter(el=>aoids.includes(el.aoid)) : [];
+
+    console.log(data.assessments.results);
+    
+    
+    
+};
+
+let update=async()=>{
+    
+    let c=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
+    
+    let response = await fetch('/edge/distinct', {
+            method: 'POST',
+            body: JSON.stringify({collection:'assessments',match:{lv:c.lv,yr:c.yr,"tag.archive":false,"tag.exam":true},aggregate:['lv','yr','dl','n','dt']}),
+            headers: {'content-type': 'application/json'}
+        });
+    let res= await response.json();
+        
+   
+    data.assessments.list=res[0] ? res.sort((/** @type {{ dt: number; n: string; }} */ a,/** @type {{ dt: number; n: any; }} */ b)=>a.dt-b.dt || a.n.localeCompare(b.n)): [];
+    data.assessments.index=0;
+
+    await updateResults();
+};
+
+
+onMount(async () => {
+       
+        console.log(`$admin/Assessments mounted`);
+        await update();
+      
+        
+});
+    
 
 </script>
 
@@ -211,6 +273,56 @@ let create=async()=>{
         </div>
     </div>
 </div>
+
+
+{#if data.tab==='Manage'}
+
+<div class="row">
+    <div class="col is-vertical-align">
+        <h4>Manage Whole Year Group Assessments</h4>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col is-vertical-align">
+      
+        <fieldset id="cohort" class="is-full-width">
+            <legend>Cohort</legend>
+            <p class="grouped">
+            <select  id="cohort" bind:value={$cohorts.assessments.years.index} on:change={update}>
+                <optgroup label="Form Level ExamYear">
+                        {#each $cohorts.assessments.years.list as item,index}
+                            <option value={index}>F{item.fm} {item.lv} {item.yr}</option>
+                        {/each}
+                </optgroup>
+              </select>
+            </p>
+            </fieldset>
+        
+        
+    </div>
+    <div class="col is-vertical-align">
+        <fieldset id="assessments" class="is-full-width">
+            <legend>Cohort</legend>
+            <p class="grouped">
+            <select  id="assessments" bind:value={data.assessments.index} on:change={updateResults}>
+                <optgroup label="Form Level ExamYear">
+                        {#each data.assessments.list as item,index}
+                            <option value={index}>{item.n} {item.dl} ({item.lv} {item.yr}) </option>
+                        {/each}
+                </optgroup>
+              </select>
+            </p>
+            </fieldset>
+        
+   
+    </div>
+    <div class="col is-vertical-align">
+    </div>
+</div>
+{/if}
+
 
 {#if data.tab==='Create'}
   
@@ -290,10 +402,7 @@ let create=async()=>{
 {/if}
 
 
-{#if data.tab==='Manage'}
-    Edit exam visiblity, open etc
-    Download, delete
-{/if}
+
 
 
 
