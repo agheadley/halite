@@ -2,6 +2,7 @@
 import {cohorts,groups,config,alert} from '$lib/store';
 import { onMount } from 'svelte';
 import * as util from '$lib/util';
+import * as file from '$lib/file';
 import Modal from '$lib/_Modal.svelte';
 	
 /** @type {any}*/
@@ -13,7 +14,7 @@ let data= {
     tabs:['Manage','Create'],
     tab:'Manage',
     create:{active:false,confirm:false,max:15,n:'',dl:'0000-00-00',ds:'',dt:0,lv:'',yr:0,tag:{open:true,grade:false,overview:false,pupil:false,parent:false,pupiledit:false,exam:true,archive:false}},
-    assessments:{index:0,list:[],results:[],tag:{archive:false,grade:false,pupiledit:false,exam:false,open:false,overview:false,pupil:false,parent:false}}
+    assessments:{txt:'',confirm:false,index:0,list:[],records:[],results:[],tag:{archive:false,grade:false,pupiledit:false,exam:false,open:false,overview:false,pupil:false,parent:false}}
 
 };
 
@@ -24,6 +25,16 @@ let data= {
 $:{
     if(!data.create.tag.grade) data.create.tag.pupiledit=false;
 }
+
+
+$:{
+    if(!data.assessments.confirm) data.assessments.txt='';
+}
+
+
+let removeAssessments=async()=>{
+
+};
 
 
 let openConfirm=()=>{
@@ -174,19 +185,20 @@ let updateResults=async()=>{
     let a=data.assessments.list[data.assessments.index];
     let c=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
     
-    // get all the aoids
-    let response = await fetch('/edge/readOne', {
+    // get matching assessments
+    data.assessments.records=[];
+    let response = await fetch('/edge/read', {
             method: 'POST',
-            body: JSON.stringify({collection:'assessments',filter:{n:a.n,dl:a.dl,lv:c.lv,yr:c.yr,"tag.archive":false,"tag.exam":true},prohect:{}}),
+            body: JSON.stringify({collection:'assessments',filter:{n:a.n,dl:a.dl,lv:c.lv,yr:c.yr,"tag.archive":false,"tag.exam":true},projection:{}}),
             headers: {'content-type': 'application/json'}
         });
     let res= await response.json();
+    data.assessments.records=res[0] ? res.sort((/** @type {{ sc: string; sl: string; }} */ a,/** @type {{ sc: any; sl: any; }} */ b)=>a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl)): [];
 
-
-    data.assessments.tag=res.tag ? res.tag : {archive:false,grade:false,pupiledit:false,exam:false,open:false,overview:false,pupil:false,parent:false};
+    data.assessments.tag=res[0] && res[0].tag ? res[0].tag : {archive:false,grade:false,pupiledit:false,exam:false,open:false,overview:false,pupil:false,parent:false};
    
-    data.assessments.resuls=[];
-
+    // get results
+    data.assessments.results=[];
     response = await fetch('/edge/read', {
             method: 'POST',
             body: JSON.stringify({collection:'results',filter:{n:a.n,dl:a.dl,lv:c.lv,yr:c.yr},projection:{}}),
@@ -216,7 +228,8 @@ let update=async()=>{
     data.assessments.list=res[0] ? res.sort((/** @type {{ dt: number; n: string; }} */ a,/** @type {{ dt: number; n: any; }} */ b)=>a.dt-b.dt || a.n.localeCompare(b.n)): [];
     data.assessments.index=0;
 
-    await updateResults();
+   
+    if(data.assessments.list[0]) await updateResults();
 };
 
 let updateTag=async()=>{
@@ -251,7 +264,90 @@ let updateTag=async()=>{
 };
 
 let exportResults=()=>{
+    /** @type {string[][]}*/
+    let out=[];
 
+    
+    out[0]=['_id','aoid','lv','yr','ss','sc','n','dl','pid','pn','sn','g','t','gd','pc','scr','fb','log'];
+   
+    for(let row of data.assessments.results) {
+
+        /** @type {string[]}*/
+        let line=[
+            row._id,
+            row.aoid,
+            row.lv,
+            row.yr,
+            row.ss,
+            row.sc,
+            row.n,
+            row.dl,
+            row.pid,
+            row.pn.replace(/,/g,' '),
+            row.sn.replace(/,/g,' '),
+            row.g,
+            row.t.toString().replace(/,/g,'|'),
+            row.gd,
+            row.pc,
+            row.scr,
+            row.fb.replace(/,/g,' '),
+            row.log.replace(/,/g,'')
+        ];
+       
+
+
+
+
+        out.push(line);
+    }
+
+    console.log(out);
+    file.csvDownload(out,"ASSESSMENT-RESULTS.csv");
+
+
+
+
+};
+
+let exportAssessments=()=>{
+     /** @type {string[][]}*/
+     let out=[];
+
+    
+    out[0]=['_id','lv','yr','n','dl','ds','dt','sl','ss','sc','log','tag','total','grade'];
+
+    for(let row of data.assessments.records) {
+
+        /** @type {string[]}*/
+        let line=[
+            row._id,
+            row.lv,
+            row.yr,
+            row.n,
+            row.dl,
+            row.ds,
+            row.dt,
+            row.sl.replace(/,/g,' '),
+            row.ss,
+            row.sc,
+            (row.log+',').replace(/,/g,''),
+            (JSON.stringify(row.tag)+',').replace(/,/g,'|'),
+            (JSON.stringify(row.total)+',').replace(/,/g,'|'),
+            (JSON.stringify(row.grade)+',').replace(/,/g,'|'),
+        
+        
+        
+        ];
+   
+
+
+
+
+    out.push(line);
+}
+
+    console.log(out);
+    file.csvDownload(out,"ASSESSMENTS.csv");
 };
 
 onMount(async () => {
@@ -296,6 +392,44 @@ onMount(async () => {
 {/if}
 
 
+{#if data.assessments.confirm}
+<Modal bind:open={data.assessments.confirm}>
+    <div class="row">
+        <div class="col">
+            <h4>Remove Assessments</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p><span class="tag bg-error text-white">This can't be undone!</span></p>
+           
+           
+            <p>&nbsp;</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <fieldset>
+                <legend>Type 'DELETE' to confirm</legend>
+                <input type=text bind:value={data.assessments.txt} class={data.assessments.txt==='DELETE' ? 'success' : 'error'}/>
+
+            </fieldset>
+           
+           
+            <p>&nbsp;</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button disabled={data.assessments.txt!=='DELETE'} class="button error" on:click={removeAssessments}>Delete</button>
+        </div>
+        <div class="col">
+            <button class="button outline" on:click={()=>data.assessments.confirm=false}>Cancel</button>
+        </div>
+    </div>
+</Modal>
+
+{/if}
 
 <div class="row">
     <div class="col">
@@ -336,8 +470,10 @@ onMount(async () => {
         
     </div>
     <div class="col is-vertical-align">
+      
         <fieldset id="assessments" class="is-full-width">
             <legend>Cohort</legend>
+            {#if data.assessments.list[0]}
             <p class="grouped">
             <select  id="assessments" bind:value={data.assessments.index} on:change={updateResults}>
                 <optgroup label="Form Level ExamYear">
@@ -347,29 +483,44 @@ onMount(async () => {
                 </optgroup>
               </select>
             </p>
+            {:else}
+            <span class="tag">No assessments found</span>
+            {/if}
             </fieldset>
-        
+            
    
     </div>
     <div class="col is-vertical-align">
+        <button class="button error" on:click={()=>data.assessments.confirm=true}>Delete</button>
     </div>
 </div>
 
 
 <div class="row">
-    <div class="col">
+    <div class="col is-vertical-align">
+        {#if data.assessments.list[0]}
        {#each Object.keys(data.assessments.tag) as col,colIndex}
             {col}<input type=checkbox bind:checked={data.assessments.tag[col]}/>&nbsp;&nbsp;
        {/each}
+       {:else}
+       &nbsp;
+       {/if}
+    </div>
+    <div class="col is-vertical-align">
+        <button class="button dark" on:click={updateTag}>Update</button>
     </div>
 </div>
+<hr/>
 
 <div class="row">
     <div class="col">
         <button on:click={exportResults} class="button outline fixed-width">Results&nbsp;
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
         </button>
-        <button class="button error" on:click={updateTag}>Update</button>
+        <button on:click={exportAssessments} class="button outline fixed-width">Assessments&nbsp;
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        </button>
+        
     </div>
 </div>
 
