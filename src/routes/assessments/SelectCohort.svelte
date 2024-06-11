@@ -3,7 +3,7 @@
     import { onMount } from 'svelte';
     import * as util from '$lib/util';
 	import { goto } from '$app/navigation';
-	import { getConductData } from '$lib/mis';
+
     
     /** @type {any}*/
     export let status;
@@ -71,8 +71,6 @@
 
         for(let g of gps) {
             /** @type {any}*/
-            let cond=[];
-            /** @type {any}*/
             let pup=[];
             for(let p of g.pupil) {
                 let f=$pupils.find(el=>el.pid==p.pid);
@@ -91,9 +89,7 @@
                     col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
                 }
                
-
-                if(f) cond=cond.concat(f.conduct);
-                pup.push({g:g.g,pid:p.pid,sn:p.sn,pn:p.pn,tg:p.tg,hse:p.hse,cols:pcols,overall:f?f.overall:{A:0,B:0},groups:f?f.groups:[],conduct:f?f.conduct:[],show:false})
+                pup.push({g:g.g,pid:p.pid,sn:p.sn,pn:p.pn,tg:p.tg,hse:p.hse,cols:pcols,overall:f?f.overall:{A:0,B:0},groups:f?f.groups:[],show:false})
             }
 
             let i=0;
@@ -128,7 +124,7 @@
             f=pup.filter((/** @type {{ overall: { B: number; }; }} */ el)=>el.overall.B>0).map((/** @type {{ overall: { B: any; }; }} */ el)=>el.overall.B);
             let b=f?.length>0?f.reduce((/** @type {any} */ a,/** @type {any} */ v)=>a+v)/f.length:0;
                 
-            status.table.push({g:g.g,sc:g.sc,ss:g.ss,sl:g.sl,overall:{A:Math.round(10*a)/10,B:Math.round(10*b)/10},cols:gcols,conduct:cond,pupil:pup});
+            status.table.push({g:g.g,sc:g.sc,ss:g.ss,sl:g.sl,overall:{A:Math.round(10*a)/10,B:Math.round(10*b)/10},cols:gcols,pupil:pup});
         }
 
         console.log('status.table',status.table);

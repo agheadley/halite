@@ -9,7 +9,7 @@ export let data ;
 /** @type {string}*/
 let msg='Checking user, updating MIS data';
 
-let updateGroupsContactsConduct=async()=>{
+let updateGroupsContactsTeachers=async()=>{
 
 	msg='Updating pupil data from the MIS ...';
 	/* get groups and contact info */
@@ -44,15 +44,7 @@ let getPupils=async()=>{
 	let gps=data.groups.map((/** @type {{ lv: any; yr: any; g: any; sc: any; ss: any;sl: any; pupil: any[]; }} */ el)=>({lv:el.lv,yr:el.yr,g:el.g,sc:el.sc,sl:el.sl,ss:el.ss,pid:el.pupil.map((/** @type {{ pid: any; }} */ el)=>el.pid)}));
 	console.log(gps);
 	
-	/** get conduct data */
 
-	response = await fetch('/edge/read', {
-		method: 'POST',
-		body: JSON.stringify({collection:'conduct',filter:{},projection:{}}),
-		headers: {'content-type': 'application/json'}
-	});
-    let conduct= await response.json();
-	//console.log('conduct',conduct);
     
 
 
@@ -83,20 +75,7 @@ let getPupils=async()=>{
 
 				}
 				
-				/** @type {{dl:string,dt:number,past7:boolean,ss:string,sc:string,reward:boolean,id:string}[]}*/
-				let conductArr=[];
-				let c=conduct.find((/** @type {{ pid: any; yr: any; lv: any; }} */ el)=>el.pid===p.pid && el.yr===g.yr && el.lv===g.lv);
-				if(c) {
-					//console.log('coduct found',p.pid,c);
-					let past7days=new Date().getTime()-(86400*7*1000);
-					for(let item of c.conduct) {
-						let check=item.dt>=past7days ? true : false;
-						conductArr.push({dl:item.dl,dt:item.dt,past7:check,ss:item.ss,sc:item.sc,id:item.id,reward:item.reward});
-					}
-				}
-
-
-				//console.log(conductArr);
+				
 
 				$pupils.push({
 					fm:0,
@@ -111,8 +90,7 @@ let getPupils=async()=>{
 					gnd:p.gnd,
 					overall:overall,
 					groups:groups,
-					base:base,
-					conduct:conductArr
+					base:base
 				});
 			}
 		}
@@ -218,7 +196,8 @@ onMount(async () => {
 	//console.log(data);
 	$config=data.config;
 	
-	if(data.config.update.groups || data.config.update.conduct || data.config.update.contacts) await updateGroupsContactsConduct();
+	//if(data.config.update.groups || data.config.update.conduct || data.config.update.contacts) await updateGroupsContactsConduct();
+	if(data.config.update.groups || data.config.update.conduct || data.config.update.contacts) await updateGroupsContactsTeachers();
 	
 	
 

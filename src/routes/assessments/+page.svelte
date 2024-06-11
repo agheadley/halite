@@ -5,7 +5,6 @@
     import { goto } from '$app/navigation';
     import SelectCohort from './SelectCohort.svelte';
     import IntakeBar from '$lib/_IntakeBar.svelte';
-    import ConductBar from '$lib/_ConductBar.svelte';
     import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
     import Cell from '$lib/_Cell.svelte';
     import Modal from '$lib/_Modal.svelte';
@@ -125,10 +124,7 @@
                             {/if}
                         </td>
                     {/each}
-                    <!--
-                    <td><span class="tag">R/S 365</span></td>
-                    <td><span class="tag">R/S 7</span></td>
-                    -->
+                  
                     <td></td>
                     
                 
@@ -146,25 +142,10 @@
                                 <Cell color={false} residual={col.r}>{col.pc===null ? '' : Math.round(col.pc)}</Cell>
                             {/if}
                            
-                            <!--
-                            <GradeCell color={colIndex===0 ? false :true} base={group.cols[0].gd} grade={col.gd} grades={$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc)}>{col.gd}</GradeCell>
-                                -->
+                         
                         </td>
                     {/each}
-                    <!--
-                    <td><ConductBar 
-                        reward={group.conduct.filter((/** @type {{ reward: boolean; sc: string; ss: string; }} */ el)=>el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
-                        sanction={group.conduct.filter((/** @type {{ reward: boolean; sc: string; ss: string; }} */ el)=>el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
-                       
-                        />
-                    </td>
-                    <td><ConductBar 
-                        reward={group.conduct.filter((/** @type {{ past7:boolean;reward: boolean; sc: string; ss: string; }} */ el)=>el.past7===true && el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
-                        sanction={group.conduct.filter((/** @type {{ past7:boolean;reward: boolean; sc: string; ss: string; }} */ el)=>el.past7===true && el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
-                       
-                        />
-                    </td>
-                    -->
+                  
                     <td></td>
                     
                 
@@ -183,25 +164,10 @@
                             {:else}
                                 <Cell color={false} residual={col.r}>{col.pc===null ? '' : Math.round(col.pc)}</Cell>
                             {/if}
-                            <!--
-                            <GradeCell color={colIndex===0 ? false :true} base={row.cols[0].gd} grade={col.gd} grades={$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc)}>{col.gd}</GradeCell>
-                            -->
+                          
                         </td>
                         {/each}
-                        <!--
-                        <td><ConductBar 
-                            reward={row.conduct.filter((/** @type {{ reward: boolean; sc: string; ss: string; }} */ el)=>el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
-                            sanction={row.conduct.filter((/** @type {{ reward: boolean; sc: string; ss: string; }} */ el)=>el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
-                           
-                            />
-                        </td>
-                        <td><ConductBar 
-                            reward={row.conduct.filter((/** @type {{ past7:boolean;reward: boolean; sc: string; ss: string; }} */ el)=>el.past7===true && el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
-                            sanction={row.conduct.filter((/** @type {{ past7:boolean;reward: boolean; sc: string; ss: string; }} */ el)=>el.past7===true && el.reward===true && el.sc===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].sc && el.ss===$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].ss).length} 
-                           
-                            />
-                        </td>
-                        -->
+                       
                         <td></td>
                     </tr>
                     {#if row.show}

@@ -47,11 +47,6 @@ export async function POST({request}) {
     /** @type {any} */
     let contacts=[];
 
-    /** @type {any} */
-    let newConduct=[];
-
-    /** @type {any} */
-    let conductData;
 
     res=await fetch(`https://isams.oakham.rutland.sch.uk/api/batch/1.0/json.ashx?apiKey={${process.env.MIS_PEOPLE}}`);
     let x=await res.json();
@@ -167,6 +162,7 @@ export async function POST({request}) {
 
     /* contacts checking and update */
 
+    /*
     let now=new Date();
     let currentYear=now.getFullYear();
     let currentMonth=now.getMonth()+1;
@@ -175,7 +171,7 @@ export async function POST({request}) {
     if(currentMonth<data.cfg.rollover.month) currentYear-=1;
     console.log('after',currentMonth,currentYear,data.cfg.rollover);
 
-    /* testing */
+    // testing
     currentMonth=9;
     currentYear=2023;
 
@@ -207,14 +203,14 @@ export async function POST({request}) {
         </Filters>`;
         if (filter.charCodeAt(0) === 0xFEFF) filter = filter.slice(1); // Remove the BOM
   
-    /** @type {any} */
+    
     let res=await fetch(`https://isams.oakham.rutland.sch.uk/api/batch/1.0/json.ashx?apiKey={${process.env.MIS_RS}}`,{method:"post",headers:{'Accept': 'application/xml','Content-Type': 'application/json'},body:filter});
     conductData=await res.json();
 
 
     console.log(conductData,filter);
 
-     /** @type {any} */
+    
      body = {
         "collection":'conduct',
         "database":'halite',
@@ -259,21 +255,7 @@ export async function POST({request}) {
 
     }
 
-    /*
-    body = {
-        "collection":'log',
-        "database":'occam',
-        "dataSource":ATLAS_CLUSTER,
-        "documents":log
-    };
-    url = `${ATLAS_URL}/action/insertMany`;
-
-    response = await fetch(url,{method: 'POST',headers: headers,body:JSON.stringify(body)});
-    res=await response.json();
-    //console.log('log insert',res);
-
     */
-
     
     return json({});
     //testing 
