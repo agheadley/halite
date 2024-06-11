@@ -32,9 +32,7 @@ let detail = false;
  /** @type {any} */
  let cfg= [];
 
-/** close down main modal!*/
-/** @type {boolean} */
-export let open;
+
 
 /**
  * 
@@ -301,20 +299,9 @@ onMount(async () => {
 {/if}
 
 
+
 <div class="container">
-<div class="row">
-    <div class="col">
-        <h4>{status.pn} {status.sn} ({status.hse})</h4>
-      
-    </div>
-    <div class="col">
-        {#if status.context!=='pupil'}
-        <button class="button outline" on:click={()=>open=false}>Close</button>
-        {/if}
-      
-    </div>
-</div>
-<hr/>
+
 
 
 {#if data.table[0] && data.table.length}

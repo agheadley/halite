@@ -172,8 +172,16 @@
                     </tr>
                     {#if row.show}
                     <Modal bind:open={row.show}>
+                        <div class="row">
+                            <div class="col">
+                                <h4>{row.pn} {row.sn} ({row.hse})</h4>
+                              
+                            </div>
+                           
+                        </div>
+                        <hr/>
                         <Pupil 
-                            bind:open={row.show}
+                         
 
                             status={{
                                 pid:row.pid,
@@ -188,6 +196,11 @@
                             }}
                             >
                         </Pupil>
+                        <div class="row">
+                            <div class="col is-right">
+                                <button class="button outline" on:click={()=>row.show=false}>Close</button>
+                            </div>
+                        </div>
                         
                     </Modal>
                     {/if}

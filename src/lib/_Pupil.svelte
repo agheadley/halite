@@ -32,9 +32,7 @@ let detail = false;
  /** @type {any} */
  let cfg= [];
 
-/** close down main modal!*/
-/** @type {boolean} */
-export let open;
+
 
 /**
  * 
@@ -207,17 +205,19 @@ onMount(async () => {
 
 
 
+{#if data.table[0] && data.table.length}
+
+<div class="container">
+
 
 {#if detail}
-<div class="parent" transition:fade={{ duration: 200 }}>
-    <div role="cell" tabindex=0 class="background" on:keydown={()=>detail=false} on:click={()=>detail=false}/>
-    <div class="modal">
+
             <div class="row">
                 <div class="col">
                     <h4>{data.detail.n} {data.detail.ds}</h4>
                 </div>
                 <div class="col">
-                    <button class="button outline" on:click={()=>detail=false}>Close</button>
+                    <button class="button outline" on:click={()=>detail=false}>Back</button>
                 </div>
             </div>
            
@@ -252,7 +252,7 @@ onMount(async () => {
             {#if !data.detail.tag.grade}
             <div class="row">
                 <div class="col">
-                    <table class="striped">
+                    <table class="striped small">
                         <thead>
                             <tr>
                                 <th>Section</th>
@@ -264,7 +264,7 @@ onMount(async () => {
                             {#each data.detail.total as row,rowIndex}
                             <tr>
                                 <td>{row.n}</td>
-                                <td>{row.scr} / {row.t}</td>
+                                <td>{row.scr}/{row.t}</td>
                                 <td>{row.w}</td>
                             </tr>
                             {/each}
@@ -272,8 +272,9 @@ onMount(async () => {
                         </tbody>
                     </table>
                 </div>
+           
                 <div class="col">
-                    <table class="striped">
+                    <table class="striped small">
                         <thead>
                             <tr>
                                 <th>Grade</th>
@@ -296,30 +297,18 @@ onMount(async () => {
             {/if}
 
               
-    </div>
-</div>
+
+ 
 {/if}
 
 
-<div class="container">
-<div class="row">
-    <div class="col">
-        <h4>{status.pn} {status.sn} ({status.hse})</h4>
-      
-    </div>
-    <div class="col">
-        {#if status.context!=='pupil'}
-        <button class="button outline" on:click={()=>open=false}>Close</button>
-        {/if}
-      
-    </div>
-</div>
-<hr/>
 
 
-{#if data.table[0] && data.table.length}
+
+{#if !detail}
+
 {#each data.table as row,rowIndex}
-<div class="container">
+
 <table>
     <tbody>
         <tr>
@@ -382,18 +371,20 @@ onMount(async () => {
         </div>
     </div>
 </div>
-{/if}
-</div>
+{/if} <!--/ chances-->
+
 
 {/each}
 
+{/if}  <!-- /  !detail-->
+</div>
 {:else}
 <p>harvesting data ...</p>
 {/if}
 
 
 
-</div> <!--/container-->
+
 
 
 
@@ -403,49 +394,12 @@ onMount(async () => {
     font-weight:600;
 
 }
-.parent{
-    position:fixed;
-    top:0px;
-    left:0px;
-    width:100vw;
-    height:100vh;
-    z-index:100000;
+
+.small {
+    font-size:1.2rem;
 }
 
-.background{
-    position:fixed;
-    top:0px;
-    left: 0px;
-    width:100%;
-    height:100%;
-    background-color:#333;
-    opacity: 0.0;
-}
 
-.modal{
-    padding:2rem;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    min-width:20rem;
-    /*max-width:50rem;*/
-    max-width:80vw;
-    min-height:20rem;
-    background-color: white;
-    border-radius:0.3rem;
-    border:1px solid #333;
-}
 
-/*
-.name {
-    max-width:20rem;
-    width:20rem;
-}
 
-.group {
-    max-width:5rem;
-    width:5rem;
-}
-*/
 </style>
