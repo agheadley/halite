@@ -92,6 +92,8 @@ let blurGrade=async()=>{
 onMount(async () => {
     
     console.log('_Pupil.svelte mounted');
+
+
     /*get published report cycles*/
     let response = await fetch('/edge/read', {
             method: 'POST',
@@ -99,7 +101,10 @@ onMount(async () => {
             headers: {'content-type': 'application/json'}
         });
     let res= await response.json();
+    console.log(res);
     let cycles=res[0] ? res.map((/** @type {{ index: any; }} */ el)=>el.index) :[];
+    //console.log(cycles);
+    cycles = cycles[0]!==undefined ? cycles.sort((/** @type { number} */ a,/** @type { number } */ b)=>b-a) : [];
     console.log('publish cycles',cycles);
 
      /*get published reports for pupil*/
@@ -111,10 +116,13 @@ onMount(async () => {
      res= await response.json();
      console.log('found reports',res);
 
-     let reports=res[0] && cycles[0]!==undefined ? res.filter((/** @type {{ ci: any; }} */ el)=>cycles.includes(el.ci)) : [];
-     console.log('published reports',reports);
-     for(let item of reports) console.log('xxx',item.ci);
+     let publishedReports=res[0] && cycles[0]!==undefined ? res.filter((/** @type {{ ci: any; }} */ el)=>cycles.includes(el.ci)) : [];
+     console.log('published reports',publishedReports);
      
+
+
+
+
    
      /* get cfg */
      response = await fetch('/edge/read', {
@@ -215,7 +223,50 @@ onMount(async () => {
             c.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
         }
 
-        let row={sl:group.sl,ss:group.ss,sc:group.sc,g:group.g,col:col,pre:{A:f?f.A:0,B:f?f.B:0}};
+        /* get academic reports */
+
+        /**
+         * @typedef {{ci:number,title:string,type:'teacher'|'hod',sc:string,ss:string,sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}} Report 
+         * @type {{current:Report[],past:Report[]}}
+         * */
+        let report={current:[],past:[]};
+
+       
+        
+        console.log(publishedReports[0],cycles[0]);
+        if(publishedReports[0] && cycles[0]!==undefined) {
+             // current report
+            let t=publishedReports.filter((/** @type {{ ci: any; ss: any; sc: any; author: { type: string; }; }} */ el)=>el.ci===cycles[0] && el.ss===group.ss && el.sc===group.sc && el.author.type==='teacher');
+            //t=t[0] ? t.sort((a,b)=b.ci-a.ci || a.author.tid.localeCompare(b.author.tid)) : [];
+            let h=publishedReports.find((/** @type {{ ci: any; ss: any; sc: any; author: { type: string; }; }} */ el)=>el.ci===cycles[0] && el.ss===group.ss && el.sc===group.sc && el.author.type==='hod');
+            if(h) report.current.push({ci:h.ci,title:`${h.tt} ${h.ts} ${h.y}`,type:'hod',sc:h.sc,ss:h.ss,sal:h.author.sal,tid:h.author.tid,ec:h.ec,ep:h.ep,txt:h.txt});
+            for(let x of t) {
+                report.current.push({ci:x.ci,title:`${x.tt} ${x.ts} ${x.y}`,type:'teacher',sc:x.sc,ss:x.ss,sal:x.author.sal,tid:x.author.tid,ec:x.ec,ep:x.ep,txt:x.txt});
+            }
+
+            report.current=report.current.sort((a,b)=>a.type.localeCompare(b.tid) || a.type.localeCompare(b.tid) );
+            
+             // previous reports
+            t=publishedReports.filter((/** @type {{ ci: any; ss: any; sc: any; author: { type: string; }; }} */ el)=>el.ci!==cycles[0] && el.ss===group.ss && el.sc===group.sc && el.author.type==='teacher');
+            //t=t[0] ? t.sort((a,b)=b.ci-a.ci || a.author.tid.localeCompare(b.author.tid)) : [];
+            h=publishedReports.filter((/** @type {{ ci: any; ss: any; sc: any; author: { type: string; }; }} */ el)=>el.ci!==cycles[0] && el.ss===group.ss && el.sc===group.sc && el.author.type==='hod');
+            for(let x of h) {
+                report.past.push({ci:x.ci,title:`${x.tt} ${x.ts} ${x.y}`,type:'hod',sc:x.sc,ss:x.ss,sal:x.author.sal,tid:x.author.tid,ec:x.ec,ep:x.ep,txt:x.txt});
+            }
+            for(let x of t) {
+                report.past.push({ci:x.ci,title:`${x.tt} ${x.ts} ${x.y}`,type:'teacher',sc:x.sc,ss:x.ss,sal:x.author.sal,tid:x.author.tid,ec:x.ec,ep:x.ep,txt:x.txt});
+            }
+
+            report.past=report.past.sort((a,b)=>b.ci-a.ci || a.type.localeCompare(b.tid) || a.type.localeCompare(b.tid) );
+
+
+
+        }
+        
+
+
+
+        let row={sl:group.sl,ss:group.ss,sc:group.sc,g:group.g,col:col,pre:{A:f?f.A:0,B:f?f.B:0},report:report};
         data.table.push(row);
     }
 
@@ -400,20 +451,26 @@ onMount(async () => {
 
 {/if} <!--/ chances-->
 
+<!-- reports-->
 <div class="row">
     <div class="col">
         <table class="small">
             <tbody>
-                <tr>
-                    <td>
-                        Winter 2nd 2024
-                    </td>
-       
-                    <td>
-                        weffewf f fwef wfwe fewf ewf ewfwe fwef wefewf ewf ewf ew fewf ef wfew fewf ewf efe wefwe fwe fwef wef
-                    </td>
-
-                </tr>
+                {#each row.report.current as report,reportIndex}
+                    <tr>
+                        <td colspan=2>
+                        {#if reportIndex==0}
+                            <div>{report.title}</div>
+                        {/if}
+                        <div>{report.txt}</div>
+                        <div class="flex-row">
+                            <div>{report.sal}</div>
+                            <div>Effort Class {report.ec}</div>
+                            <div>Effort Prep {report.ep}</div>
+                        </div>
+                        </td>
+                    </tr>
+                {/each}
             </tbody>
         </table>
     </div>
@@ -426,12 +483,25 @@ onMount(async () => {
             <div>
                 <table class="small">
                     <tbody>
-                        <tr>
-                            Winter 1st 2024
-                        </tr>
-                        <tr>
-                            feffwf fewfwf ewfewf ewfwfwf ewfw fewfewf ewf ewfefewfew ewf efew fewfewf
-                        </tr>
+                        {#each row.report.past as report,reportIndex}
+                    <tr>
+                        <td colspan=2>
+                        {#if reportIndex==0 || reportIndex>0 && report.ci<row.report.past[reportIndex-1]}
+                            <div><span class="bold">{report.title}</span></div>
+                        {/if}
+                        <div>{report.txt}</div>
+                       
+                        <div class="flex-row">
+                            <div>{report.sal}</div>
+                            <div>{report.tid}</div>
+                            <div><span class="tag small">Effort&nbsp;&nbsp;Class&nbsp;{report.ec}Prep&nbsp;{report.ec}</span></div>
+                            <div>Effort Class {report.ec}</div>
+                            <div>Effort Prep {report.ep}</div>
+                        </div>
+                      
+                        </td>
+                    </tr>
+                {/each}
                     </tbody>
                 </table>
             </div>
@@ -463,6 +533,18 @@ onMount(async () => {
 
 .small {
     font-size:1.2rem;
+}
+
+.flex-row {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    width:100%;
+    padding-bottom:0.25rem;
+    padding-top:0.25rem;
+
+   
+   
 }
 
 
