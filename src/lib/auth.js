@@ -1,8 +1,10 @@
 import { PublicClientApplication } from "@azure/msal-browser";
 
 /* localhost:3000 */
+//let client_id='86ed050d-7a21-49ac-8e29-92b64dbcd97e';
 
-let client_id='86ed050d-7a21-49ac-8e29-92b64dbcd97e';
+/* halite1.vercel.app */
+let client_id='a635f154-7f77-4211-8953-24c63c1dc1df';
 let url='http://localhost:3000/';
 
 const msalConfig = {
