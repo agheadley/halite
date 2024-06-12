@@ -456,7 +456,7 @@ let blurGrade=async()=>{
         </div>
         <div class="row">
             <div class="col">
-                <span class="small bold">Chance Graphs</span>
+                <span class="small">Chance Graphs</span>
             </div>
             <div class="col">
                 <div>
@@ -506,7 +506,7 @@ let blurGrade=async()=>{
         }
 
         .small {
-            font-size:1.2rem;
+            font-size:1.6rem;
         }
     </style>
     

@@ -23,11 +23,14 @@
 
 
     $:{
+        /* moves focus to next record - switch off for a while! */
+        /*
         if(data.reports[data.next]) {
             if(data.reports[data.next].txt!==null) {
                     document.getElementById(`c|${String(data.next)}`)?.focus();
             } 
         }
+        */
 
         if(data.detail.txt!=='') {
             console.log('Detail.svelte has saved a report - update in Pastoral.svelte...',data.detail.txt);

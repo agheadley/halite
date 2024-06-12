@@ -27,12 +27,14 @@
 
     $:{
       
-
+        /* moves focus to next record - switch off for a while! */
+        /*
         if(data.reports[data.next]) {
             if(data.reports[data.next].txt!==null) {
                     document.getElementById(`c|${String(data.next)}`)?.focus();
             } 
         }
+        */
 
         
       
