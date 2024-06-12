@@ -50,9 +50,9 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Startup - /+page.svelte
 
-- checks for new groups, conduct and contacts (depends on config.update)
+- checks for new groups, teachers and contacts (depends on config.update)
 
-- $pupils (with conduct, pre, base, overall and tg, hse etc)
+- $pupils ( pre, base, overall and tg, hse , teachers)
 - $groups
 - $config
 
@@ -77,9 +77,7 @@ returns true for undefined (as undefined==null), null, [], ""
 - check with .map, .includes whether to filter in/out the result against aoid!
 - same for parent view, pupil view 
 
-- Clickable pupils to Detail.svelte modal (created on fly per pupil) - in Modal
-- Type for Detail.svelte e.h. hm/ttutor editable (others view only). 
-- When edited pass txt back, reactive change to populate data.reports
+
 
 - Add txt to cycle ! Sorry central message can be formed!. Use <PRE> !
 
@@ -98,7 +96,7 @@ returns true for undefined (as undefined==null), null, [], ""
 
 
 
-# pupil/ to do
+# pupil/ testing
 
 - +layout.js
  // testing
@@ -114,9 +112,7 @@ user.name='341311';
 
 # Parent - to do !
 
--- (reports/Detail.svelte for this below)
-- Pupil needs grab assessments, _id, tag.parent (can we go /page.svelte as place in store ?
-- check with .map, .includes whether to filter in/out the result against aoid!
+- copy /pupil !!!!
 
 
 # pupil store, created at startup from all groups, intake
