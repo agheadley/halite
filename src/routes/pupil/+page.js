@@ -18,7 +18,7 @@ export async function load() {
     console.log(user);
 
     // testing
-    user.name='341311';
+    //user.name='341311';
     
     /** @type {any} */
     let cfg={};
