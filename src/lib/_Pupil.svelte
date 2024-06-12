@@ -5,6 +5,7 @@ import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 
 import Cell from '$lib/_Cell.svelte';
 import Chance from '$lib/_Chance.svelte';
+import Report from '$lib/_Report.svelte';
 import {alert} from '$lib/store';
 import * as util from '$lib/util';
 
@@ -22,6 +23,7 @@ let data={
     table:[],
     std:{A:'',B:''},
     detail:{n:'',ds:'',gd:'',pc:0,scr:0,dt:0,tag:{},fb:'',grade:[],total:[]},
+    dIndex:0,
     view:{context:'',rag:false,chance:false,fb:false}
 };
 
@@ -41,6 +43,7 @@ let detail = false;
  */
 let showDetail=(rowIndex,colIndex)=>{
     data.detail=data.table[rowIndex].col[colIndex];
+    data.dIndex=rowIndex;
     detail=true;
 };
 
@@ -102,10 +105,12 @@ onMount(async () => {
         });
     let res= await response.json();
     console.log(res);
+
     let cycles=res[0] ? res.map((/** @type {{ index: any; }} */ el)=>el.index) :[];
     //console.log(cycles);
     cycles = cycles[0]!==undefined ? cycles.sort((/** @type { number} */ a,/** @type { number } */ b)=>b-a) : [];
     console.log('publish cycles',cycles);
+    let cycle
 
      /*get published reports for pupil*/
      response = await fetch('/edge/read', {
@@ -226,7 +231,7 @@ onMount(async () => {
         /* get academic reports */
 
         /**
-         * @typedef {{ci:number,title:string,type:'teacher'|'hod',sc:string,ss:string,sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}} Report 
+         * @typedef {{ci:number,title:string,type:'teacher'|'hod',sc:string,sl:string,ss:string,sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}} Report 
          * @type {{current:Report[],past:Report[]}}
          * */
         let report={current:[],past:[]};
@@ -239,25 +244,25 @@ onMount(async () => {
             let t=publishedReports.filter((/** @type {{ ci: any; ss: any; sc: any; author: { type: string; }; }} */ el)=>el.ci===cycles[0] && el.ss===group.ss && el.sc===group.sc && el.author.type==='teacher');
             //t=t[0] ? t.sort((a,b)=b.ci-a.ci || a.author.tid.localeCompare(b.author.tid)) : [];
             let h=publishedReports.find((/** @type {{ ci: any; ss: any; sc: any; author: { type: string; }; }} */ el)=>el.ci===cycles[0] && el.ss===group.ss && el.sc===group.sc && el.author.type==='hod');
-            if(h) report.current.push({ci:h.ci,title:`${h.tt} ${h.ts} ${h.y}`,type:'hod',sc:h.sc,ss:h.ss,sal:h.author.sal,tid:h.author.tid,ec:h.ec,ep:h.ep,txt:h.txt});
+            if(h) report.current.push({ci:h.ci,title:`${h.tt} ${h.ts} ${h.y}`,type:'hod',sl:group.sl,sc:h.sc,ss:h.ss,sal:h.author.sal,tid:h.author.tid,ec:h.ec,ep:h.ep,txt:h.txt});
             for(let x of t) {
-                report.current.push({ci:x.ci,title:`${x.tt} ${x.ts} ${x.y}`,type:'teacher',sc:x.sc,ss:x.ss,sal:x.author.sal,tid:x.author.tid,ec:x.ec,ep:x.ep,txt:x.txt});
+                report.current.push({ci:x.ci,title:`${x.tt} ${x.ts} ${x.y}`,type:'teacher',sl:group.sl,sc:x.sc,ss:x.ss,sal:x.author.sal,tid:x.author.tid,ec:x.ec,ep:x.ep,txt:x.txt});
             }
 
-            report.current=report.current.sort((a,b)=>a.type.localeCompare(b.tid) || a.type.localeCompare(b.tid) );
+            report.current=report.current.sort((a,b)=>a.type.localeCompare(b.type) || a.tid.localeCompare(b.tid) );
             
              // previous reports
             t=publishedReports.filter((/** @type {{ ci: any; ss: any; sc: any; author: { type: string; }; }} */ el)=>el.ci!==cycles[0] && el.ss===group.ss && el.sc===group.sc && el.author.type==='teacher');
             //t=t[0] ? t.sort((a,b)=b.ci-a.ci || a.author.tid.localeCompare(b.author.tid)) : [];
             h=publishedReports.filter((/** @type {{ ci: any; ss: any; sc: any; author: { type: string; }; }} */ el)=>el.ci!==cycles[0] && el.ss===group.ss && el.sc===group.sc && el.author.type==='hod');
             for(let x of h) {
-                report.past.push({ci:x.ci,title:`${x.tt} ${x.ts} ${x.y}`,type:'hod',sc:x.sc,ss:x.ss,sal:x.author.sal,tid:x.author.tid,ec:x.ec,ep:x.ep,txt:x.txt});
+                report.past.push({ci:x.ci,title:`${x.tt} ${x.ts} ${x.y}`,type:'hod',sl:group.sl,sc:x.sc,ss:x.ss,sal:x.author.sal,tid:x.author.tid,ec:x.ec,ep:x.ep,txt:x.txt});
             }
             for(let x of t) {
-                report.past.push({ci:x.ci,title:`${x.tt} ${x.ts} ${x.y}`,type:'teacher',sc:x.sc,ss:x.ss,sal:x.author.sal,tid:x.author.tid,ec:x.ec,ep:x.ep,txt:x.txt});
+                report.past.push({ci:x.ci,title:`${x.tt} ${x.ts} ${x.y}`,type:'teacher',sl:group.sl,sc:x.sc,ss:x.ss,sal:x.author.sal,tid:x.author.tid,ec:x.ec,ep:x.ep,txt:x.txt});
             }
 
-            report.past=report.past.sort((a,b)=>b.ci-a.ci || a.type.localeCompare(b.tid) || a.type.localeCompare(b.tid) );
+            report.past=report.past.sort((a,b)=>b.ci-a.ci || a.type.localeCompare(b.type) || a.tid.localeCompare(b.tid) );
 
 
 
@@ -289,7 +294,7 @@ onMount(async () => {
 
             <div class="row">
                 <div class="col">
-                    <h4>{data.detail.n} {data.detail.ds}</h4>
+                    <h4>{data.table[data.dIndex].sl} {data.detail.n} {data.detail.ds}</h4>
                 </div>
                 <div class="col">
                     <button class="button outline" on:click={()=>detail=false}>Back</button>
@@ -451,63 +456,7 @@ onMount(async () => {
 
 {/if} <!--/ chances-->
 
-<!-- reports-->
-<div class="row">
-    <div class="col">
-        <table class="small">
-            <tbody>
-                {#each row.report.current as report,reportIndex}
-                    <tr>
-                        <td colspan=2>
-                        {#if reportIndex==0}
-                            <div>{report.title}</div>
-                        {/if}
-                        <div>{report.txt}</div>
-                        <div class="flex-row">
-                            <div>{report.sal}</div>
-                            <div>Effort Class {report.ec}</div>
-                            <div>Effort Prep {report.ep}</div>
-                        </div>
-                        </td>
-                    </tr>
-                {/each}
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col">
-        <details>
-            <summary><span class="small bold">Previous Reports</span></summary>
-            <div>
-                <table class="small">
-                    <tbody>
-                        {#each row.report.past as report,reportIndex}
-                    <tr>
-                        <td colspan=2>
-                        {#if reportIndex==0 || reportIndex>0 && report.ci<row.report.past[reportIndex-1]}
-                            <div><span class="bold">{report.title}</span></div>
-                        {/if}
-                        <div>{report.txt}</div>
-                       
-                        <div class="flex-row">
-                            <div>{report.sal}</div>
-                            <div>{report.tid}</div>
-                            <div><span class="tag small">Effort&nbsp;&nbsp;Class&nbsp;{report.ec}Prep&nbsp;{report.ec}</span></div>
-                            <div>Effort Class {report.ec}</div>
-                            <div>Effort Prep {report.ep}</div>
-                        </div>
-                      
-                        </td>
-                    </tr>
-                {/each}
-                    </tbody>
-                </table>
-            </div>
-        </details>
-    </div>
-</div>
+<Report data={row.report}/>
 
 <hr/>
 {/each}
@@ -535,17 +484,7 @@ onMount(async () => {
     font-size:1.2rem;
 }
 
-.flex-row {
-    display:flex;
-    flex-direction:row;
-    justify-content:space-between;
-    width:100%;
-    padding-bottom:0.25rem;
-    padding-top:0.25rem;
 
-   
-   
-}
 
 
 
