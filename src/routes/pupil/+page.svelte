@@ -27,6 +27,8 @@
         detail:{n:'',ds:'',gd:'',pc:0,scr:0,dt:0,tag:{},fb:'',grade:[],total:[]},
         dIndex:0,
         dShow:false,
+        pn:'',
+        sn:''
     };
 
 
@@ -292,6 +294,20 @@ let blurGrade=async()=>{
 
         pupil.context='pupil';
 
+        /* get the pupil name from groups */
+        let response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'groups',filter:{"pupil.pid":data.pid} ,projection:{"pupil.$":1}}),
+            headers: {'content-type': 'application/json'}
+        });
+        let res= await response.json();
+        console.log(res);
+        console.log(res[0].pupil.sn,res[0].pupil.pn);
+        pupil.sn=res[0] && res[0].pupil?.[0] ? res[0].pupil[0].sn : '';
+        pupil.pn=res[0] && res[0].pupil?.[0] ? res[0].pupil[0].pn : '';
+
+
+
         pupil.table=[];
 
         //console.log(data);
@@ -411,6 +427,11 @@ let blurGrade=async()=>{
 
     
     {#if pupil.table[0]}
+        <div class="row">
+            <div class="col">
+                <h4>{pupil.pn} {pupil.sn}</h4>
+            </div>
+        </div>
         {#each pupil.table as row,rowIndex}
         <table>
             <tbody>

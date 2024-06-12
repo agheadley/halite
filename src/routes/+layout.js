@@ -48,9 +48,9 @@ export async function load({fetch}) {
     
 
     // testing
-    //user.tag.pupil=true;
-    //user.tag.admin=false;
-    //user.tag.teacher=false;
+    user.tag.pupil=true;
+    user.tag.admin=false;
+    user.tag.teacher=false;
 
 
     //console.log(user);
