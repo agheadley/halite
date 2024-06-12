@@ -155,12 +155,21 @@ onMount(async () => {
     /* get groups */
     response = await fetch('/edge/read', {
         method: 'POST',
-        body: JSON.stringify({collection:'groups',filter:{"pupil.pid":status.pid,lv:status.lv,yr:status.yr} ,projection:{g:1,sc:1,sl:1,ss:1}}),
+        body: JSON.stringify({collection:'groups',filter:{"pupil.pid":status.pid} ,projection:{g:1,sc:1,sl:1,ss:1,lv:1,yr:1}}),
         headers: {'content-type': 'application/json'}
     });
     res= await response.json();
     data.groups = res[0] ? res.sort((/** @type {{ sl: string; }} */ a,/** @type {{ sl: any; }} */ b)=>a.sl.localeCompare(b.sl)) : [];
     //console.log(data.groups);
+
+    // is the pupil in 2 chorts, e.g. F6 lessons, but in F6 (repeating)
+    /** @type {{lv:string,yr:number}[]}*/
+    let cohorts=[];
+    for(let gp of data.groups) {
+        if(!cohorts.find(el=>el.lv===gp.lv && el.yr===gp.yr)) cohorts.push({lv:gp.lv,yr:gp.yr});
+    }
+    console.log(cohorts);
+
 
     /* get assessments by status.context */
     
@@ -168,24 +177,28 @@ onMount(async () => {
     //status.context='parent';
     
     /** @type {any}*/
-    let filter={"tag.archive":false,lv:status.lv,yr:status.yr};
+    let filter={"tag.archive":false};
     if(status.context==='overview') filter["tag.overview"]=true;
     if(status.context==='pupil') filter["tag.pupil"]=true;
     if(status.context==='parent') filter["tag.parent"]=true;
     //console.log(filter);
     response = await fetch('/edge/read', {
         method: 'POST',
-        body: JSON.stringify({collection:'assessments',filter:filter ,projection:{g:1,sc:1,sl:1,ss:1,dt:1,ds:1,total:1,grade:1,n:1,tag:1}}),
+        body: JSON.stringify({collection:'assessments',filter:filter ,projection:{g:1,sc:1,sl:1,ss:1,dt:1,ds:1,total:1,grade:1,n:1,tag:1,lv:1,yr:1}}),
         headers: {'content-type': 'application/json'}
     });
     res= await response.json();
-    data.assessments=res[0] ? res.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt) : [];
-    //console.log(data.assessments);
+    console.log(res);
+    data.assessments=[];
+    for(let cohort of cohorts) data.assessments=data.assessments.concat(res.filter((/** @type {{ lv: string; yr: number; }} */ el)=>el.lv===cohort.lv && el.yr===cohort.yr));
+   
+    data.assessments=data.assessments.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
+    console.log(data.assessments);
     
     /* get results by status.pid */
     response = await fetch('/edge/read', {
         method: 'POST',
-        body: JSON.stringify({collection:'results',filter:{pid:status.pid,lv:status.lv,yr:status.yr} ,projection:{_id:1,pid:1,aoid:1,sc:1,sl:1,ss:1,gd:1,scr:1,pc:1,t:1,fb:1}}),
+        body: JSON.stringify({collection:'results',filter:{pid:status.pid} ,projection:{_id:1,pid:1,aoid:1,sc:1,sl:1,ss:1,gd:1,scr:1,pc:1,t:1,fb:1,lv:1,yr:1}}),
         headers: {'content-type': 'application/json'}
     });
     data.results= await response.json();
@@ -193,11 +206,21 @@ onMount(async () => {
      /* get intake by status.pid */
      response = await fetch('/edge/read', {
         method: 'POST',
-        body: JSON.stringify({collection:'intake',filter:{pid:status.pid,lv:status.lv,yr:status.yr} ,projection:{pid:1,base:1,pre:1}}),
+        body: JSON.stringify({collection:'intake',filter:{pid:status.pid} ,projection:{pid:1,base:1,pre:1,lv:1,yr:1}}),
         headers: {'content-type': 'application/json'}
     });
     res= await response.json();
-    data.intake=res[0] && res[0].pre ? res[0].pre : [];
+    //data.intake=res[0] && res[0].pre ? res[0].pre : [];
+    data.intake=[];
+    for(let cohort of cohorts) {
+        let x=res.find((/** @type {{ lv: string; yr: number; }} */ el)=>el.lv===cohort.lv && el.yr===cohort.yr);
+        //console.log(cohort.lv,cohort.yr,x,res);
+        if(x && x.pre) {
+            let out=[];
+            for(let y of x.pre) out.push({lv:x.lv,yr:x.yr,ss:y.ss,sc:y.sc,A:y.A,B:y.B});
+            data.intake=data.intake.concat(out);
+        } 
+    }
 
     console.log(data.intake);
     /* build table with n,ds,gd,pc, grade (assesment.grade),total (t,assessment totals) vs ss,sl,sc from groups */
@@ -206,7 +229,7 @@ onMount(async () => {
        
 
         let col=[];
-        for(let assessment of data.assessments.filter((/** @type {{ sc: any; ss: any; }} */ el)=>el.sc===group.sc && el.ss===group.ss)) {
+        for(let assessment of data.assessments.filter((/** @type {{ sc: any; ss: any; yr: any; lv: any; }} */ el)=>el.sc===group.sc && el.ss===group.ss && el.yr===group.yr && el.lv===group.lv)) {
             let f=data.results.find((/** @type {{ aoid: any; }} */ el)=>el.aoid===assessment._id);
             
             /** @type {any[]} */
@@ -216,7 +239,7 @@ onMount(async () => {
             
             col.push(a);
         }
-        let f=data.intake.find((/** @type {{ sc: any; ss: any; }} */ el)=>el.sc===group.sc && el.ss===group.ss);
+        let f=data.intake.find((/** @type {{ sc: any; ss: any; lv: any; yr: any; }} */ el)=>el.sc===group.sc && el.ss===group.ss && el.lv===group.lv && el.yr===group.yr);
 
         let gds=cfg.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===group.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
        
