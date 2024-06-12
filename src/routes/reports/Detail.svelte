@@ -105,7 +105,7 @@ onMount(async () => {
     }
 
     // add academic reports
-    for(let report of res.filter((/** @type {{ type: string; }} */ el)=>el.type==='A').sort((/** @type {{ sc: string; sl: string; author: { tid: string; }; }} */ a,/** @type {{ sc: any; sl: any; author: { tid: any; }; }} */ b)=>a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl) || a.author.tid.localeCompare(b.author.tid) )) {
+    for(let report of res.filter((/** @type {{ type: string; author: { type: string; }; }} */ el)=>el.type==='A' && el.author.type==='teacher').sort((/** @type {{ sc: string; sl: string; author: { tid: string; }; }} */ a,/** @type {{ sc: any; sl: any; author: { tid: any; }; }} */ b)=>a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl) || a.author.tid.localeCompare(b.author.tid) )) {
         
         // add hod comment
         let h=res.find((/** @type {{ author: { type: string; }; sl: any; sc: any; }} */ el)=>el.author.type==='hod' && el.sl===report.sl && el.sc===report.sc);

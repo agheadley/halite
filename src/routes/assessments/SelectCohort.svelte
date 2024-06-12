@@ -129,6 +129,8 @@
 
         console.log('status.table',status.table);
 
+        status.table=status.table.sort((/** @type {{ g: string; }} */ a,/** @type {{ g: any; }} */ b)=>a.g.localeCompare(b.g));
+
         /* reactive for parent +page.js  $:{} */
         status.select=true;
     };

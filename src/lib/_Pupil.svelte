@@ -91,14 +91,38 @@ let blurGrade=async()=>{
 
 onMount(async () => {
     
+    console.log('_Pupil.svelte mounted');
+    /*get published report cycles*/
+    let response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'cycles',filter:{publish:true},projection:{}}),
+            headers: {'content-type': 'application/json'}
+        });
+    let res= await response.json();
+    let cycles=res[0] ? res.map((/** @type {{ index: any; }} */ el)=>el.index) :[];
+    console.log('publish cycles',cycles);
 
+     /*get published reports for pupil*/
+     response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'reports',filter:{"pupil.pid":status.pid},projection:{}}),
+            headers: {'content-type': 'application/json'}
+        });
+     res= await response.json();
+     console.log('found reports',res);
+
+     let reports=res[0] && cycles[0]!==undefined ? res.filter((/** @type {{ ci: any; }} */ el)=>cycles.includes(el.ci)) : [];
+     console.log('published reports',reports);
+     for(let item of reports) console.log('xxx',item.ci);
+     
+   
      /* get cfg */
-     let response = await fetch('/edge/read', {
+     response = await fetch('/edge/read', {
         method: 'POST',
         body: JSON.stringify({collection:'config',filter:{},projection:{_id:0}}),
         headers: {'content-type': 'application/json'}
     });
-    let res= await response.json();
+    res= await response.json();
     
     cfg=res[0] ? res[0] : [];
 

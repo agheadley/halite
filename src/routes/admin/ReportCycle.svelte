@@ -132,6 +132,39 @@
         
     };
 
+      /**
+     * 
+     * @param {number} index
+     */
+     let changePublish=async(index)=>{
+       
+     
+
+        let response = await fetch('/edge/update', {
+		    method: 'POST',
+		    body: JSON.stringify({
+                collection:'cycles',
+                filter:{"_id": { "$oid": data.rows[index]._id } },
+                update:{publish:data.rows[index].publish}
+            }),
+		    headers: {'content-type': 'application/json'}
+	    });
+
+        let res= await response.json();
+        console.log(res);
+
+        if(res.matchedCount>=1) {
+           $alert.msg='publish status updated';
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error updating publish status`;
+        }
+
+    
+        
+    };
+
+
    
     let changeYearTerm=()=>{
         data.cycle.y  =  data.cycle.y > 0 ? parseInt( data.cycle.y) : 0;
@@ -407,7 +440,7 @@
                 <td>{row.tt}</td>
                 <td>{row.ts}</td>
                 <td><input type=checkbox bind:checked={row.active}  on:change={()=>changeActive(rowIndex)}></td>
-                <td><input type=checkbox bind:checked={row.publish}  on:change={()=>changeActive(rowIndex)}></td>
+                <td><input type=checkbox bind:checked={row.publish}  on:change={()=>changePublish(rowIndex)}></td>
             
             </tr>
         {/each}
