@@ -46,6 +46,13 @@ export async function load({fetch}) {
     user.tag.teacher = t.includes(user.name) || user.tag.admin ? true : false;
     user.tag.pupil = p.includes(Number(user.name)) && !user.tag.teacher ? true : false;
     
+
+    // testing
+    user.tag.pupil=true;
+    user.tag.admin=false;
+    user.tag.teacher=false;
+
+
     //console.log(user);
     if (user.name=='' || (!user.tag.teacher && !user.tag.pupil)) {
 		error(404, {

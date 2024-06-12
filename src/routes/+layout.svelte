@@ -53,10 +53,12 @@
 		  </div>
 		</div>
 		<div class="nav-right">
+			{#if data.user.tag.teacher}
 			{#if status.menu==='internal'}
 			<button class="button outline" on:click={gotoExams}>Exams</button>
 			{:else}
 			<button class="button outline" on:click={gotoInternal}>Internal</button>
+			{/if}
 			{/if}
 		
 		  <a href={'/logout'} class="button outline icon-only">

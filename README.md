@@ -98,15 +98,18 @@ returns true for undefined (as undefined==null), null, [], ""
 
 
 
-# _Pupil.svelte
+# pupil/ to do
 
-- need to display reports past and present too!
-- export let open - closes modal - but not shown if user type pupil - as single page - so no modal used for display !
-- need to check this for parent, pupil and teachers !!!!
+- +layout.js
+ // testing
+  user.tag.pupil=true;
+  user.tag.admin=false;
+  user.tag.teacher=false;
+  
+- pupil/+page.js
+// testing
+user.name='341311';
 
-- (reports/Detail.svelte for this below)
-- Pupil needs grab assessments, _id, tag.pupil (can we go /page.svelte as place in store ?
-- check with .map, .includes whether to filter in/out the result against aoid!
 
 
 # Parent - to do !

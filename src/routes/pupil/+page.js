@@ -1,27 +1,75 @@
-//import * as auth from '$lib/auth';
-//import { redirect } from '@sveltejs/kit';
+import * as auth from '$lib/auth';
+import { error } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
+import {config,groups} from '$lib/store';
+
+/* execute layout.js only in the browser - msal browser! */ 
+export const ssr = false;
 
 /** @type {import('./$types').PageLoad} */
 export async function load() {
 
 
-    //console.log('pupil/+page.js load ...');
-    //let user=await auth.login();
     
+    /** @type {{name:string,homeAccountId:string,tag:{teacher:boolean,admin:boolean,pupil:boolean}}} */
+    let user=await auth.login();
     
+    console.log('/pupil');
+    console.log(user);
+
+    // testing
+    user.name='341311';
+    
+    /** @type {any} */
+    let cfg={};
+    config.subscribe((/** @type {any} */ value) => {cfg=value;});
+    /** @type {any} */
+    let gps=[];
+    groups.subscribe((value) => {gps=value;});
+    //console.log(gps,cfg);
+
+
+    // checks if store data loaded as redirects 
+    if(!gps[0] || gps[0]?.g==='' || !cfg.subject || cfg.subject[0]?.ss==='') throw redirect(302, '/');
+
+
+    //console.log(cfg,gps);
+
+    /* map to find pid, tid and add $config.subject HoD tid in to check for non-teaching staff */
+    
+    let p=gps.map((/** @type {{ pupil: any[]; }} */ el)=>el.pupil.map((/** @type {{ pid: any; }} */ el)=>el.pid)).flat() ;
+
     /*
-    if(user.name==='' || !user.isPupil) {
-        console.log('User authentication - pupil not recognised');
-        throw redirect(302, '/');
-    }
+    let t=gps.map((el)=>el.teacher.map((el)=>el.tid)).flat();
+    let s=cfg.subject.map((el)=>el.tid);
+    t=t.concat(s);
+    // check admin
+    let a=cfg.admin.map((el)=>el.tid);
+    //console.log(p,t,a,user);
+    user.tag.admin = a.includes(user.name) ? true : false;
+    user.tag.teacher = t.includes(user.name) || user.tag.admin ? true : false;
     */
+    user.tag.pupil = p.includes(Number(user.name)) && !user.tag.teacher ? true : false;
+    
+    console.log(user);
 
     
+    if (user.name=='' || (!user.tag.pupil)) {
+		error(404, {
+			message: 'User not authorised!'
+		});
+        
+	}
     
-   
+    
+    console.log(user);
 
+    
 
+    return {user:user};
     
       
-};
+}
+	
+
 	
