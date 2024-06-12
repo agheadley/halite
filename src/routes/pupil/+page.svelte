@@ -1,9 +1,16 @@
 <script>
 
     import { onMount } from 'svelte';
-    import {config,location} from '$lib/store';
-	import { getAssessmentCols } from '$lib/util.js';
-    
+    import {config,location,alert} from '$lib/store';
+	import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
+    import Cell  from '$lib/_Cell.svelte';
+    import Modal from '$lib/_Modal.svelte';
+    import Report from '$lib/_Report.svelte';
+    import Chance from '$lib/_Chance.svelte';
+    import * as util from '$lib/util';
+
+
+    /** @type {any}*/
     export let data;
 
     /** @type {any}*/
@@ -16,12 +23,15 @@
         assessments:[],
         results:[],
         intake:[],
-        table:[]
+        table:[],
+        detail:{n:'',ds:'',gd:'',pc:0,scr:0,dt:0,tag:{},fb:'',grade:[],total:[]},
+        dIndex:0,
+        dShow:false,
     };
 
 
     let getReports=async()=>{
-        console.log('getReports() ...');
+        //console.log('getReports() ...');
          /*get published report cycles*/
          let response = await fetch('/edge/read', {
                 method: 'POST',
@@ -35,7 +45,7 @@
         pupil.report.cycles=res.map((/** @type {{ index: any; }} */ el)=>el.index);
         //console.log(pupil.report.cycles);
         pupil.report.cycles = pupil.report.cycles.sort((/** @type { number} */ a,/** @type { number } */ b)=>b-a);
-        console.log('publish cycles',pupil.report.cycles);
+        //console.log('publish cycles',pupil.report.cycles);
 
         /*get published reports for pupil*/
         response = await fetch('/edge/read', {
@@ -47,7 +57,7 @@
         //console.log('found reports',res);
  
         pupil.report.data=res.filter((/** @type {{ ci: any; }} */ el)=>pupil.report.cycles.includes(el.ci));
-        console.log('published reports',pupil.report.data);
+        //console.log('published reports',pupil.report.data);
     };
 
     let getGroups=async()=>{
@@ -59,7 +69,7 @@
         });
         let res= await response.json();
         pupil.groups = res[0] ? res.sort((/** @type {{ sl: string; }} */ a,/** @type {{ sl: any; }} */ b)=>a.sl.localeCompare(b.sl)) : [];
-        console.log(pupil.groups);
+        //console.log(pupil.groups);
 
     };
 
@@ -108,7 +118,7 @@
     
 
     pupil.assessments= pupil.assessments.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
-    console.log(pupil.assessments);
+    //console.log(pupil.assessments);
     
     /* get results by status.pid */
     response = await fetch('/edge/read', {
@@ -129,7 +139,7 @@
     pupil.intake=[];
     for(let cohort of cohorts) {
         let x=res.find((/** @type {{ lv: string; yr: number; }} */ el)=>el.lv===cohort.lv && el.yr===cohort.yr);
-        console.log(cohort.lv,cohort.yr,x,res);
+        //console.log(cohort.lv,cohort.yr,x,res);
         if(x && x.pre) {
             let out=[];
             for(let y of x.pre) out.push({lv:x.lv,yr:x.yr,ss:y.ss,sc:y.sc,A:y.A,B:y.B});
@@ -214,10 +224,67 @@
             pupil.table.push(row);
         }
 
-        console.log(pupil.table);
+        //console.log(pupil.table);
 
         pupil.table=pupil.table;
     };
+
+ 
+/**
+ * 
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ */
+let showDetail=(rowIndex,colIndex)=>{
+    pupil.detail=pupil.table[rowIndex].col[colIndex];
+    pupil.dIndex=rowIndex;
+    pupil.dShow=true;
+};
+
+let validateGrade=()=>{
+    console.log(pupil.detail);
+    if(!pupil.detail.grade.find((/** @type {{ gd: any; }} */ el)=>el.gd===pupil.detail.gd)) {
+        pupil.detail.gd='';
+    }
+};
+
+let blurGrade=async()=>{
+    let x={gd:'X',scr:0,pc:0};
+    if(pupil.detail.gd!=='') {
+        let f=pupil.detail.grade.find((/** @type {{ gd: any; }} */ el)=>el.gd===pupil.detail.gd);
+        if(f) {
+            x.gd=pupil.detail.gd;
+            x.scr=f.scr;
+            x.pc=x.pc;
+        }
+    } 
+
+    console.log('blurGrade',x);
+
+    let response = await fetch('/edge/update', {
+		    method: 'POST',
+		    body: JSON.stringify({
+                collection:'results',
+                filter:{"_id":{"$oid": pupil.detail._id}},
+                update:{
+                    gd:pupil.detail.gd,
+                    scr:x.scr,
+                    pc:x.pc,
+                    log:`${data.pid}|${util.getDateTime()}`
+                }
+            }),
+		    headers: {'content-type': 'application/json'}
+	    });
+        let res= await response.json();
+        console.log(res);
+        if(res.matchedCount!==1) {
+            $alert.type='error';
+            $alert.msg=`Error updating result`;
+        } else  $alert.msg=`Modified ${res.modifiedCount} result`; 
+
+};
+
+
 
 
     onMount(async () => {
@@ -249,10 +316,172 @@
         <title>Pupil</title>
         <meta name="description" content="Svelte demo app" />
     </svelte:head>
+
+
+    {#if pupil.dShow}
+        <Modal  bind:open={pupil.dShow}>
+            <div class="row">
+                <div class="col">
+                    <h4>{pupil.table[pupil.dIndex].sl} {pupil.detail.n} {pupil.detail.ds}</h4>
+                </div>
+                <div class="col is-right">
+                    <button class="button outline" on:click={()=>pupil.dShow=false}>Close</button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    Grade 
+                        {#if pupil.detail.tag.grade && pupil.detail.tag.open && pupil.detail.tag.pupiledit}
+                        <input  type=text bind:value={pupil.detail.gd} on:input={validateGrade} on:blur={blurGrade}/>
+                        {:else}
+                            <span class="bold">{pupil.detail.gd}</span>
+                        {/if}
+                        
+                        
+                </div>
+                {#if !pupil.detail.tag.grade && pupil.detail.gd!=='X'}
+                    <div class="col">
+                        {pupil.detail.pc}%
+                    </div>
+                {/if}
+            </div>
+
+            {#if pupil.detail.fb!=='' && pupil.view.fb}
+            <div class="row">
+                <fieldset id="fb" class="is-full-width">
+                    <legend>Feedback</legend>
+                        <textarea disabled>{data.detail.fb}</textarea>
+                    </fieldset>
+            </div>
+            {/if}
+
+            {#if !pupil.detail.tag.grade}
+            <div class="row">
+                <div class="col">
+                    <table class="striped small">
+                        <thead>
+                            <tr>
+                                <th>Section</th>
+                                <th>Score</th>
+                                <th>Weighting</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {#each pupil.detail.total as row,rowIndex}
+                            <tr>
+                                <td>{row.n}</td>
+                                <td>{row.scr}/{row.t}</td>
+                                <td>{row.w}</td>
+                            </tr>
+                            {/each}
+                          
+                        </tbody>
+                    </table>
+                </div>
+           
+                <div class="col">
+                    <table class="striped small">
+                        <thead>
+                            <tr>
+                                <th>Grade</th>
+                                <th> % </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {#each pupil.detail.grade as row,rowIndex}
+                            <tr>
+                                <td>{row.gd}</td>
+                                <td>{row.pc}</td>
+                              
+                            </tr>
+                            {/each}
+                          
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {/if}
+
+        </Modal>
+    {/if}   <!-- /show detail -->
+
+
+
     
     {#if pupil.table[0]}
+        {#each pupil.table as row,rowIndex}
+        <table>
+            <tbody>
+                <tr>
+                    <th></th>
+                    {#each row.col as col,colIndex}
+                    <td> <AssessmentTitle title={col.n} subtitle={col.ds}/></td>
+                    {/each}
+                </tr>
+                <tr>
+                    <td><span class="bold">{row.sl} ({row.sc})</span></td>
+                    {#each row.col as col,colIndex}
+        
+                    <td>
+                        <div>
+                            <!--<button on:click={()=>showDetail(rowIndex,colIndex)}></button>-->
+                            {#if col.tag.pupiledit && col.tag.grade && col.tag.open}
+                            <a href={'#'} on:click={()=>showDetail(rowIndex,colIndex)} on:keydown={()=>showDetail(rowIndex,colIndex)} class="button clear icon-only">
+                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                              </a>
+                            {:else}
+                              <a href={'#'} on:click={()=>showDetail(rowIndex,colIndex)} on:keydown={()=>showDetail(rowIndex,colIndex)} class="button clear icon-only">
+                             
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                            </a>
+                            {/if}
+                            </div>
+                        <div>
+                            <Cell color={pupil.view.rag} residual={col.r}>{col.gd}</Cell>
+                        </div>
+                    </td>
+                    {/each}
+                </tr>
+            
+            </tbody>
+        </table>
 
-    Hello
+        {#if pupil.view.chance}
+
+
+        <div class="row">
+            &nbsp;
+        </div>
+        <div class="row">
+            <div class="col">
+                <span class="small bold">Chance Graphs</span>
+            </div>
+            <div class="col">
+                <div>
+                    <span class="tag small">{pupil.std.A}</span>
+                </div>
+                <div>
+                
+                    <Chance grades={$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===row.sc)} score={row.pre.A ? row.pre.A : 0}/>
+                </div>
+                </div>
+        
+            <div class="col">
+                <div>
+                    <span class="tag small">{pupil.std.B}</span>
+                </div>
+                <div>
+                    <Chance grades={$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===row.sc)} score={row.pre.B ? row.pre.B : 0}/>
+                </div>
+            </div>
+        </div>
+
+        {/if} <!--/ chances-->
+
+
+
+        {/each}     <!-- / pupil.table-->
     {/if}
 
 
