@@ -110,7 +110,6 @@ onMount(async () => {
     //console.log(cycles);
     cycles = cycles[0]!==undefined ? cycles.sort((/** @type { number} */ a,/** @type { number } */ b)=>b-a) : [];
     console.log('publish cycles',cycles);
-    let cycle
 
      /*get published reports for pupil*/
      response = await fetch('/edge/read', {
@@ -145,7 +144,7 @@ onMount(async () => {
     /* get CEM stds */
     if(status.lv==='US') data.std={A:cfg.std.US.A,B:cfg.std.US.B};
     else if (status.lv==='MS') data.std={A:cfg.std.MS.A,B:cfg.std.MS.B};
-    else if (status.lv==='L1') data.std={A:cfg.std.L1.A,B:cfg.std.L1.B};
+    else if (status.lv==='LS') data.std={A:cfg.std.LS.A,B:cfg.std.LS.B};
 
     /* set context for rag and chances graphs view */
     let c=cfg.view.find((/** @type {{ context: string; }} */ el)=>el.context===status.context);

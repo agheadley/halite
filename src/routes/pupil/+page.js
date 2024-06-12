@@ -61,12 +61,12 @@ export async function load() {
         
 	}
     
-    
+
     console.log(user);
 
     
 
-    return {user:user};
+    return {user:user,pid:Number(user.name)};
     
       
 }
