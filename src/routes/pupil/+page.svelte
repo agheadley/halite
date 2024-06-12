@@ -279,8 +279,8 @@ let blurGrade=async()=>{
         console.log(res);
         if(res.matchedCount!==1) {
             $alert.type='error';
-            $alert.msg=`Error updating result`;
-        } else  $alert.msg=`Modified ${res.modifiedCount} result`; 
+            $alert.msg=`Error updating grade`;
+        } else  $alert.msg=`Modified ${res.modifiedCount} grade`; 
 
 };
 
@@ -317,9 +317,10 @@ let blurGrade=async()=>{
         <meta name="description" content="Svelte demo app" />
     </svelte:head>
 
+    <div class="container">
 
     {#if pupil.dShow}
-        <Modal  bind:open={pupil.dShow}>
+        <Modal bind:open={pupil.dShow}>
             <div class="row">
                 <div class="col">
                     <h4>{pupil.table[pupil.dIndex].sl} {pupil.detail.n} {pupil.detail.ds}</h4>
@@ -479,6 +480,9 @@ let blurGrade=async()=>{
 
         {/if} <!--/ chances-->
 
+        <Report data={row.report}/>
+
+        <hr/>
 
 
         {/each}     <!-- / pupil.table-->
@@ -492,7 +496,17 @@ let blurGrade=async()=>{
         </div>
     </div>
     {/if}
+
+    </div>
     
     <style>
+
+        .bold {
+            font-weight:600;
+        }
+
+        .small {
+            font-size:1.2rem;
+        }
     </style>
     
