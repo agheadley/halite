@@ -1,12 +1,12 @@
 import { PublicClientApplication } from "@azure/msal-browser";
 
 /* localhost:3000 */
-//let client_id='86ed050d-7a21-49ac-8e29-92b64dbcd97e';
-//let url='http://localhost:3000/';
+let client_id='86ed050d-7a21-49ac-8e29-92b64dbcd97e';
+let url='http://localhost:3000/';
 
 /* halite1.vercel.app (halite-testing app registration - portal.azure.com) */
-let client_id='05169dc5-e18b-4193-8426-dde8fb7b9094';
-let url='https://halite1.vercel.app/';
+//let client_id='05169dc5-e18b-4193-8426-dde8fb7b9094';
+//let url='https://halite1.vercel.app/';
 
 const msalConfig = {
     auth: {

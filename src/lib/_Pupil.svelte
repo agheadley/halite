@@ -9,6 +9,7 @@ import {alert} from '$lib/store';
 import * as util from '$lib/util';
 
 
+
 /** @type {{pid:number,sn:string,pn:string,gnd:string,hse:string,tg:string,lv:string,yr:number,context:string}}*/ 
 export let status;
 
@@ -23,7 +24,6 @@ let data={
     detail:{n:'',ds:'',gd:'',pc:0,scr:0,dt:0,tag:{},fb:'',grade:[],total:[]},
     view:{context:'',rag:false,chance:false,fb:false}
 };
-import {fade} from 'svelte/transition';
 
 /* inner modal for boundaries/totals/feedback */
 /** @type {boolean} */
