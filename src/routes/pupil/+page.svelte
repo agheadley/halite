@@ -378,7 +378,7 @@ let blurGrade=async()=>{
             <div class="row">
                 <fieldset id="fb" class="is-full-width">
                     <legend>Feedback</legend>
-                        <textarea disabled>{data.detail.fb}</textarea>
+                        <textarea disabled>{pupil.detail.fb}</textarea>
                     </fieldset>
             </div>
             {/if}

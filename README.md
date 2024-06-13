@@ -1,6 +1,7 @@
 # Setup
 
 - npm create svelte@latest halite
+- npm install
 - npm install --save chota
 - +layout.svelte ``` import 'chota/dist/chota.css'; ```
 - npm install --save @sveltejs/adapter-vercel

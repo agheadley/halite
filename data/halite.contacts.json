@@ -1,0 +1,16 @@
+[{
+  "_id": {
+    "$oid": "666aabb37dbb9e8388513c08"
+  },
+  "id": "3565729127221610",
+  "email": "agh@oakham.rutland.sch.uk",
+  "log": "2024-06-13"
+},
+{
+  "_id": {
+    "$oid": "666aabeb7dbb9e8388513c09"
+  },
+  "id": "3573940362871040",
+  "email": "agh@oakham.rutland.sch.uk",
+  "log": "2024-06-13"
+}]
