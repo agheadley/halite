@@ -15,11 +15,9 @@ git remote add origin https://github.com/agheadley/halite.git
 git push -u origin main
 ```
 
-- npm install --save @auth/core
-- entra/microsoft.com
-- [@auth/core](https://stackoverflow.com/questions/75063006/sveltekit-hooks-and-msal-js-using-azure-ad-b2c-results-in-non-browser-environm)
+- npm install --save @azure/msal-browser
 
-- npm install --save @auth/sveltekit
+
 
 
 
