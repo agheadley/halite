@@ -28,9 +28,9 @@
       "A": "NAT",
       "B": "IND"
     },
-    "L1": {
-      "A": "",
-      "B": ""
+    "LS": {
+      "A": "NAT",
+      "B": "IND"
     }
   },
   "grade": [
@@ -500,13 +500,13 @@
       "x": 2
     },
     {
-      "lv": "MS",
+      "lv": "LS",
       "fm": 2,
       "nc": 8,
       "x": 3
     },
     {
-      "lv": "MS",
+      "lv": "LS",
       "fm": 1,
       "nc": 7,
       "x": 4
@@ -5073,7 +5073,7 @@
     {
       "chance": true,
       "context": "pupil",
-      "rag": false,
+      "rag": true,
       "fb": false
     },
     {
@@ -5222,5 +5222,9 @@
         "g": ""
       }
     ]
+  },
+  "test": {
+    "pupil": false,
+    "user": "341311"
   }
 }]
