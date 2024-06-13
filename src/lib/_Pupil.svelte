@@ -19,6 +19,8 @@ let data={
     groups:[],
     assessments:[],
     results:[],
+    pastoral:[],
+    enrichment:[],
     intake:{},
     table:[],
     std:{A:'',B:''},
@@ -123,7 +125,13 @@ onMount(async () => {
      let publishedReports=res[0] && cycles[0]!==undefined ? res.filter((/** @type {{ ci: any; }} */ el)=>cycles.includes(el.ci)) : [];
      console.log('published reports',publishedReports);
      
-
+     /* get enrichment reports (current) */
+     data.enrichment=publishedReports.filter((/** @type {{ ci: any; type: string; }} */ el)=>el.ci===cycles[0] && el.type==='E');
+    data.enrichment=data.enrichment.sort((/** @type {{ sl: string; }} */ a,/** @type {{ sl: any; }} */ b)=>a.sl.localeCompare(b.sl));
+        /* get pastoral reports (current) */
+        data.pastoral=publishedReports.filter((/** @type {{ ci: any; type: string; }} */ el)=>el.ci===cycles[0] && el.type==='P');
+        data.pastoral=data.pastoral.sort((/** @type {{ author: { type: any; }; }} */ a,/** @type {{ author: { type: string; }; }} */ b)=>b.author.type.localeCompare(a.author.type));
+       
 
 
 
@@ -478,12 +486,92 @@ onMount(async () => {
 
 {/if} <!--/ chances-->
 
-<Report data={row.report}/>
+<Report data={row.report} text={'small'}/>
 
 <hr/>
 {/each}
 
+
+  <!-- enrichment reports-->
+  <table class="small">
+    <tbody>
+        <tr>
+            <td>
+                <span class="bold">Enrichment Reports</span>
+            </td>
+        </tr>
+        {#each data.enrichment as row,rowIndex}
+            <tr>
+                <td>
+                <div class="flex-row">
+                    <div class='bold'>{row.tt} {row.ts} {row.y}</div>
+                    <div class='bold'>{row.sl}</div>
+                    
+                </div>
+                {#if row.txt!=='' && row.txt!==null}
+                
+                <div class="report-txt">
+                    
+                    {row.txt}
+                </div>
+                {/if}
+                <div class="flex-row">
+                    <div>{row.author.sal}</div>
+                    <div>{row.author.tid}</div>
+                </div>
+                </td>
+            </tr>
+        {/each}
+
+    </tbody>
+ </table>
+
+ <hr/>
+
+ <!-- pastoral reports-->
+ <table class="small">
+    <tbody>
+        <tr>
+            <td>
+                <span class="bold">Pastoral Reports</span>
+            </td>
+        </tr>
+        {#each data.pastoral as row,rowIndex}
+            <tr>
+                <td>
+                <div class="flex-row">
+                    <div class='bold'>{row.tt} {row.ts} {row.y}</div>
+                    <div class='bold'>{row.author.type.toUpperCase()}</div>
+                    
+                </div>
+                {#if row.txt!=='' && row.txt!==null}
+                <div class="report-txt">
+                    {row.txt}
+                </div>
+                {/if}
+                <div class="flex-row">
+                    <div>{row.author.sal}</div>
+                    <div>{row.author.tid}</div>
+                </div>
+                </td>
+            </tr>
+        {/each}
+
+    </tbody>
+ </table>
+
+
+
+
+
+
+
 {/if}  <!-- /  !detail-->
+
+
+
+
+
 </div>
 {:else}
 <p>harvesting data ...</p>
@@ -507,6 +595,21 @@ onMount(async () => {
 }
 
 
+.flex-row {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    width:100%;
+    padding-bottom:0.25rem;
+    padding-top:0.25rem;  
+}
+
+.report-txt {
+    background: rgba(51,51,51,0.05);
+    padding:0.2rem;
+    border-radius:0.5rem;
+   
+}
 
 
 

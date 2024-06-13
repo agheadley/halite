@@ -62,7 +62,9 @@ returns true for undefined (as undefined==null), null, [], ""
 - change $config subject to pull groups into sc L, lv LS
 - change $config.years to set to LS (relate yr to GCSE exam)
 
+# testing 
 
+- $config.test - set pupil to true, add pid as string to test pupil!!!!
 
 # mis 
 

@@ -16,6 +16,8 @@
     /** @type {any}*/
     let pupil={
         report:{cycles:[],data:[]},
+        enrichment:[],
+        pastoral:[],
         groups:[],
         std:{A:'',B:''},
         context:'pupil',
@@ -60,6 +62,14 @@
  
         pupil.report.data=res.filter((/** @type {{ ci: any; }} */ el)=>pupil.report.cycles.includes(el.ci));
         //console.log('published reports',pupil.report.data);
+
+        /* get enrichment reports (current) */
+        pupil.enrichment=pupil.report.data.filter((/** @type {{ ci: any; type: string; }} */ el)=>el.ci===pupil.report.cycles[0] && el.type==='E');
+        pupil.enrichment=pupil.enrichment.sort((/** @type {{ sl: string; }} */ a,/** @type {{ sl: any; }} */ b)=>a.sl.localeCompare(b.sl));
+        /* get pastoral reports (current) */
+        pupil.pastoral=pupil.report.data.filter((/** @type {{ ci: any; type: string; }} */ el)=>el.ci===pupil.report.cycles[0] && el.type==='P');
+        pupil.pastoral=pupil.pastoral.sort((/** @type {{ author: { type: any; }; }} */ a,/** @type {{ author: { type: string; }; }} */ b)=>b.author.type.localeCompare(a.author.type));
+        
     };
 
     let getGroups=async()=>{
@@ -501,12 +511,85 @@ let blurGrade=async()=>{
 
         {/if} <!--/ chances-->
 
-        <Report data={row.report}/>
+        <Report data={row.report} text={'normal'}/>
 
         <hr/>
 
 
         {/each}     <!-- / pupil.table-->
+
+
+        <!-- enrichment reports-->
+         <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <span class="bold">Enrichment Reports</span>
+                    </td>
+                </tr>
+                {#each pupil.enrichment as row,rowIndex}
+                    <tr>
+                        <td>
+                        <div class="flex-row">
+                            <div class='bold'>{row.tt} {row.ts} {row.y}</div>
+                            <div class='bold'>{row.sl}</div>
+                            
+                        </div>
+                        {#if row.txt!=='' && row.txt!==null}
+                        
+                        <div class="report-txt">
+                            
+                            {row.txt}
+                        </div>
+                        {/if}
+                        <div class="flex-row">
+                            <div>{row.author.sal}</div>
+                            <div>{row.author.tid}</div>
+                        </div>
+                        </td>
+                    </tr>
+                {/each}
+
+            </tbody>
+         </table>
+
+         <hr/>
+
+         <!-- pastoral reports-->
+         <table>
+            <tbody>
+                <tr>
+                    <td>
+                        <span class="bold">Pastoral Reports</span>
+                    </td>
+                </tr>
+                {#each pupil.pastoral as row,rowIndex}
+                    <tr>
+                        <td>
+                        <div class="flex-row">
+                            <div class='bold'>{row.tt} {row.ts} {row.y}</div>
+                            <div class='bold'>{row.author.type.toUpperCase()}</div>
+                            
+                        </div>
+                        {#if row.txt!=='' && row.txt!==null}
+                        <div class="report-txt">
+                            {row.txt}
+                        </div>
+                        {/if}
+                        <div class="flex-row">
+                            <div>{row.author.sal}</div>
+                            <div>{row.author.tid}</div>
+                        </div>
+                        </td>
+                    </tr>
+                {/each}
+
+            </tbody>
+         </table>
+        
+
+        
+
     {/if}
 
 
@@ -521,13 +604,29 @@ let blurGrade=async()=>{
     </div>
     
     <style>
+.flex-row {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    width:100%;
+    padding-bottom:0.25rem;
+    padding-top:0.25rem;  
+}
 
-        .bold {
-            font-weight:600;
-        }
+.report-txt {
+    background: rgba(51,51,51,0.05);
+    padding:0.2rem;
+    border-radius:0.5rem;
+   
+}
 
-        .small {
-            font-size:1.6rem;
-        }
+.bold {
+    font-weight:600;
+
+}
+
+.small {
+    font-size:1.2rem;
+}
     </style>
     

@@ -34,7 +34,8 @@ export let config=writable({
         hm:[{hse:'',tid:'',sal:''}],
         hoy:[],
         enrichment:[{sl:'',sc:'E',ss:'',g:''}]
-    }
+    },
+    test:{pupil:false,user:''}
 
 
 });

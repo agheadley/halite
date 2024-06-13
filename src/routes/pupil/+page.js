@@ -33,6 +33,13 @@ export async function load() {
     if(!gps[0] || gps[0]?.g==='' || !cfg.subject || cfg.subject[0]?.ss==='') throw redirect(302, '/');
 
 
+
+    // testing
+    if(cfg.test.pupil===true) {
+        user.name=cfg.test.user;
+    }
+
+
     //console.log(cfg,gps);
 
     /* map to find pid, tid and add $config.subject HoD tid in to check for non-teaching staff */

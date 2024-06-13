@@ -48,10 +48,12 @@ export async function load({fetch}) {
     
 
     // testing
-    //user.tag.pupil=true;
-    //user.tag.admin=false;
-    //user.tag.teacher=false;
-
+    if(cfg.test.pupil===true) {
+        user.tag.pupil=true;
+        user.tag.admin=false;
+        user.tag.teacher=false;
+    }
+    
 
     //console.log(user);
     if (user.name=='' || (!user.tag.teacher && !user.tag.pupil)) {

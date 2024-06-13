@@ -7,6 +7,10 @@ import {config} from '$lib/store';
  * */
 export let data;
 
+/** @type {string}*/
+export let text;    // normal or small
+
+
 console.log(data);
 </script>
 
@@ -17,7 +21,7 @@ console.log(data);
 <!-- reports-->
 <div class="row">
     <div class="col">
-        <table class="small">
+        <table class={text==='small' ? 'small' :''}>
             <tbody>
                 {#each data.current as report,reportIndex}
                     <tr>
@@ -42,7 +46,7 @@ console.log(data);
                         <div class="flex-row">
                             <div>{report.sal}</div>
                             <div>{report.tid}</div>
-                            <div>EFFORT <span class="tag small">
+                            <div>EFFORT <span class={text==='small' ? 'small tag' :'tag'}>
                                 {#if report.ec!==null ||  report.ep!==null}
                             
                                     {#if report.ec!==null}Class <span class="bold">{report.ec}</span>/{$config.report.e.list[0]}{/if}
@@ -81,9 +85,9 @@ console.log(data);
 <div class="row">
     <div class="col">
         <details>
-            <summary><span class="small bold">Previous Reports</span></summary>
+            <summary><span class={text==='small' ? 'small bold' :'bold'}>Previous Reports</span></summary>
             <div>
-                <table class="small">
+                <table class={text==='small' ? 'small' :''}>
                     <tbody>
                         {#each data.past as report,reportIndex}
                     <tr>
@@ -107,7 +111,7 @@ console.log(data);
                         <div class="flex-row">
                             <div>{report.sal}</div>
                             <div>{report.tid}</div>
-                            <div>EFFORT <span class="tag small">
+                            <div>EFFORT <span class={text==='small' ? 'small tag' :'tag'}>
                                 {#if report.ec!==null ||  report.ep!==null}
                             
                                     {#if report.ec!==null}Class <span class="bold">{report.ec}</span>/{$config.report.e.list[0]}{/if}
