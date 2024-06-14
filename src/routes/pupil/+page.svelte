@@ -86,7 +86,7 @@
     };
 
     let getConfig=()=>{
-        $config.gradee=$config.grade.sort((/** @type {{ sc: string; pre: number; }} */ a,/** @type {{ sc: any; pre: number; }} */ b)=>a.sc.localeCompare(b.sc) || b.pre-a.pre);
+        $config.grade=$config.grade.sort((/** @type {{ sc: string; pre: number; }} */ a,/** @type {{ sc: any; pre: number; }} */ b)=>a.sc.localeCompare(b.sc) || b.pre-a.pre);
 
          /* get CEM stds - assume even F7 pupils doing F6 courses have same lv! */
         if(pupil.groups[0].lv==='US') pupil.std={A:$config.std.US.A,B:$config.std.US.B};

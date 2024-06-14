@@ -14,7 +14,10 @@ let data={
     pupils:[],
     all:false,
     cycles:[],
-    cIndex:0
+    cIndex:0,
+    std:{A:'',B:{}},
+    view:{context:'parent',rag:false,chance:false,fb:false},
+    context:'parent'
 };
 
 let selectAll=()=>{
@@ -65,10 +68,53 @@ let update=async()=>{
         console.log(data);
     };
 
+
+    /**
+     * 
+     * @param {number} pid
+     */
+    let getReport=async(pid)=> {
+        console.log('building report for ',pid);
+
+        // get reports
+        let response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'reports',filter:{coid:data.cycles[data.cIndex]._id,"pupil.pid":pid},projection:{}}),
+            headers: {'content-type': 'application/json'}
+        });
+        let reports= await response.json();
+        
+        // get groups
+        response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'groups',filter:{"pupil.pid":pid} ,projection:{_id:0,g:1,sc:1,sl:1,ss:1,lv:1,yr:1}}),
+            headers: {'content-type': 'application/json'}
+        });
+        let groups= await response.json();
+        groups=groups.sort((/** @type {{ sl: string; }} */ a,/** @type {{ sl: any; }} */ b)=>a.sl.localeCompare(b.sl));
+        // get config
+        $config.grade=$config.grade.sort((/** @type {{ sc: string; pre: number; }} */ a,/** @type {{ sc: any; pre: number; }} */ b)=>a.sc.localeCompare(b.sc) || b.pre-a.pre);
+
+        let c=$config.view.find((/** @type {{ context: string; }} */ el)=>el.context===data.context);
+        if(c) data.view=c;
+
+        //report data structure to build !
+        /* @param {{title:string,col:{ds:string,txt:string,gd:string,r:number}[],statement:string,report:{sal:string,tid:string,ec:string,ep:string,txt:string}[]}[]} arr */
+ 
+        // get assessments
+
+        //build report data
+
+        // use html.js functions to generate reports!!!!
+
+    };
+
     let printSelected=async()=>{
 
+        for(let item of data.pupils) {
+            if(item.select) await getReport(item.pid);
+        }
         // analsyse each report on the fly and add to a count, to decide when to break page, if commnets, length can be thought about the break can be calculated ?
-
 
         let content='<p>Hello!</p>'
         const url = URL.createObjectURL(new Blob([html.start+content+html.end], { type: "text/html" }));
