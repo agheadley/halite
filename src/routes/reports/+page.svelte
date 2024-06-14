@@ -7,6 +7,7 @@
     import Pastoral from './Pastoral.svelte';
     import Teacher from './Teacher.svelte';
     import Enrichment from './Enrichment.svelte';
+    import View from './View.svelte';
 
     /** @type {any}*/
     export let data;
@@ -61,6 +62,7 @@
                 <a class={status.tab==='tutor' ? 'active' :''} href={'#'} on:click={()=>status.tab='tutor'} on:keydown={()=>status.tab='tutor'}>Tutor</a>
                 <a class={status.tab==='hm' ? 'active' :''} href={'#'} on:click={()=>status.tab='hm'} on:keydown={()=>status.tab='hm'}>HM</a>
                 <a class={status.tab==='enrichment' ? 'active' :''} href={'#'} on:click={()=>status.tab='enrichment'} on:keydown={()=>status.tab='enrichment'}>Enrichment</a>
+                <a class={status.tab==='view' ? 'active' :''} href={'#'} on:click={()=>status.tab='view'} on:keydown={()=>status.tab='view'}>View</a>
          
             </div>
         
@@ -83,6 +85,7 @@
         {#if status.tab==='tutor'}<Pastoral bind:status={status} type={'tutor'}/> {/if}
         {#if status.tab==='hm'}<Pastoral bind:status={status} type={'hm'}/> {/if}
         {#if status.tab==='enrichment'}<Enrichment bind:status={status}/> {/if}
+        {#if status.tab==='view'}<View bind:status={status}/> {/if}
     {:else}
         <span class="tab">No active report cycle found.</span>
     {/if}

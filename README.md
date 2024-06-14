@@ -71,7 +71,10 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Reports
 
-- extra tab - exports/previous ?
+- analsyse each report on the fly and add to a count, to decide when to break page, if commnets, length can be thought about the break can be calculated ?
+- // build reports through building html (halout)
+- use {@html data} to display - so only build once ?
+- script to generate data for puppeteer export ?
 
 
 
