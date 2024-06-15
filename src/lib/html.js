@@ -1,4 +1,16 @@
 
+/** @type {{view:{context:string,rag:boolean,chance:boolean,fb:boolean},rag:{red:number,green:number}}} */
+let cfg = {
+    view:{context:'',rag:false,chance:false,fb:false},
+    rag:{red:-1,green:1}
+};
+
+export let setCfg=(/** @type {{ context: string; rag: boolean; chance: boolean; fb: boolean; }} */ view,/** @type {{ red: number; green: number; }} */ rag)=>{
+    cfg.view=view,
+    cfg.rag=rag;
+};
+
+
 /**
  * @typedef {{
  * cycle:{tt:string,ts:string,y:number,txt:string},
@@ -11,11 +23,10 @@
  * E:{title:string,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[],
  * P:{title:string,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[]}} Report
  * @param {Report[]} reports 
- * @param {{context:string,rag:boolean,chance:boolean,fb:boolean}} view
  * @returns {string}
  */
-export let generate=(reports,view)=>{
-    console.log(reports,view);
+export let generate=(reports)=>{
+    console.log(reports);
     let txt='';
 
     for(let report of reports) {
@@ -24,6 +35,16 @@ export let generate=(reports,view)=>{
         for(let subject of report.A) {
             txt+=getSubject(subject);
         };
+        
+        for(let item of report.E) {
+            txt+=getItem(item);
+        };
+        if(report.E[0]) txt+=`<hr/>`;
+
+        for(let item of report.P) {
+            txt+=getItem(item);
+        };
+        
 
         txt+=`</section>`;
     }
@@ -35,12 +56,36 @@ export let generate=(reports,view)=>{
 /**
  * 
  * @param {{ds:string,txt:string,gd:string,r:number}[]} arr
+ * @returns {string}
  */
 let getGrade=(arr)=>{
-	let tab='';
-	for(let item of arr) {
-		tab+=`<td><div><span class="small">${item.ds}</span></div><div class="report-cell">${item.gd}</div></td>`;
-	}
+
+    // testing
+    cfg.view.rag=true;
+
+    let maxGrades=10;
+    let min=0.1;
+    let max=0.9;
+    
+    let r={r:178,g:34,b:34,p:0.3};
+    let g={r:34,g:139,b:34,p:0.3};
+    //style={`background:rgba(${r.r},${r.g},${r.b},${p})
+
+	let tab='<td>GRADES</td>';
+    for(let item of arr) {
+        if(cfg.view.rag) {
+            let p=min+(max-min)*Math.abs(item.r)/maxGrades;
+
+            let sty='';
+            if(item.r<cfg.rag.red) sty=`background:rgba(${r.r},${r.g},${r.b},${p})`;
+            else if(item.r>=cfg.rag.green) sty=`background:rgba(${g.r},${g.g},${g.b},${p})`;
+
+                tab+=`<td><div><span class="small">${item.ds}</span></div><div class="report-cell" style="${sty}">${item.gd}</div></td>`;
+           
+        } else {
+            tab+=`<td><div><span class="small">${item.ds}</span></div><div class="report-cell">${item.gd}</div></td>`;
+        }
+    }
 	let res=`<table><tbody><tr>${tab}</tr></tbody></table>`;
 	return res;
 
@@ -49,8 +94,36 @@ let getGrade=(arr)=>{
 
 /**
  * 
+ * @param {{title:string,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}} report 
+ * @returns {string}
+ */
+let getItem=(report)=>{
+    let txt=``;
+    txt+=`<section style="break-inside:avoid;">`;
+	
+    txt+=`<div class="row"><div class="col">`;
+
+    txt+=`<div class="report-information">
+        <div><span class="bold">${report.title}<span></div>
+        <div></div>
+    </div>`;
+	
+    for(let item of report.report) {
+		if(item.txt!==null && item.txt!=='') {
+				txt+=`<div class="report-txt">${item.txt}</div>`;
+		}
+		txt+=`<div class="report-information"><div>${item.sal}</div><div></div></div>`;
+	}
+	txt+='</div></div>';
+	txt+=`</section>`;
+	
+    return txt;
+};
+
+/**
+ * 
  * @param {any} subject
-* @returns {string}
+ * @returns {string}
  */
 let getSubject=(subject)=>{
     console.log(subject);

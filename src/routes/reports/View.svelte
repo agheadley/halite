@@ -89,7 +89,7 @@ let update=async()=>{
         }}*/
         let out={
             cycle:{tt:data.cycles[data.cIndex].tt,ts:data.cycles[data.cIndex].ts,y:data.cycles[data.cIndex].y,txt:''},
-            pupil:{sn:detail.sn,pn:detail.sn,pid:pid,tg:detail.tg,hse:detail.hse,fm:detail.fm},
+            pupil:{sn:detail.sn,pn:detail.pn,pid:pid,tg:detail.tg,hse:detail.hse,fm:detail.fm},
             A:[],
             E:[],
             P:[]
@@ -260,7 +260,9 @@ let update=async()=>{
         $alert.msg=`built ${count} reports`;
         data.print=false;
 
-        let markup=html.generate(data.reports,data.view);
+        html.setCfg(data.view,$config.rag);
+
+        let markup=html.generate(data.reports);
 
         const url = URL.createObjectURL(new Blob([markup], { type: "text/html" }));
         const win = window.open(url);
