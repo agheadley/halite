@@ -3,7 +3,7 @@
 import { onMount } from 'svelte';
 import {groups,teachers,config,alert,pupils} from '$lib/store';
 import * as html from '$lib/html';
-
+import * as util from '$lib/util';
 /** @type {any}*/
 export let status;
 
@@ -17,7 +17,9 @@ let data={
     cIndex:0,
     view:{context:'parent',rag:false,chance:false,fb:false},
     context:'parent',
-    assessments:[]
+    assessments:[],
+    reports:[],
+    print:false
 };
 
 let selectAll=()=>{
@@ -149,7 +151,7 @@ let update=async()=>{
             let r=[];
             for(let item of res) {
                 r.push(
-                    {sal:item.author.sal,tid:item.author.tid,ec:item.ec,ep:item.ep,txt:item.txt}
+                    {sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}
                 );
             }
 
@@ -212,7 +214,7 @@ let update=async()=>{
         let p=reports.filter((/** @type {{ type: string; }} */ el)=>el.type==='E');
         for(let item of p) {
             out.E.push({
-                title:item.sl,report:[{sal:item.author.sal,tid:item.author.tid,ec:item.sc,ep:item.ep,txt:item.txt}]
+                title:item.sl,report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}]
             });
         }
         out.E=out.E.sort((a,b)=>a.title.localeCompare(b.title));
@@ -221,7 +223,7 @@ let update=async()=>{
         p=reports.filter((/** @type {{ type: string; }} */ el)=>el.type==='P');
         for(let item of p) {
             out.P.push({
-                title:(item.author.type==='hm' ? 'housemaster' : item.author.type).toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.sc,ep:item.ep,txt:item.txt}]
+                title:(item.author.type==='hm' ? 'housemaster' : item.author.type).toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}]
             });
         }
         out.P=out.P.sort((a,b)=>a.title.localeCompare(b.title));
@@ -231,21 +233,39 @@ let update=async()=>{
 
         // use html.js functions to generate reports!!!!
 
-        console.log(out);
+        return out;
 
     };
 
     let printSelected=async()=>{
 
+        // disbale button whilst in progress,
+        // progress alerts
+        // ec/4 etc
+        data.print=true;
+        $alert.msg='building reports...';
+        let count=0;
+        data.reports=[];
         for(let item of data.pupils) {
-            if(item.select) await getReport(item.pid,{pn:item.pn,sn:item.sn,tg:item.tg,hse:item.hse,fm:item.fm});
+            if(item.select) {
+                let r=await getReport(item.pid,{pn:item.pn,sn:item.sn,tg:item.tg,hse:item.hse,fm:item.fm});
+                data.reports.push(r);
+                count+=1;
+                $alert.msg=`${item.pn} ${item.sn}`;
+            }
         }
-        // analsyse each report on the fly and add to a count, to decide when to break page, if commnets, length can be thought about the break can be calculated ?
 
-        let content='<p>Hello!</p>'
-        
-        //const url = URL.createObjectURL(new Blob([html.start+content+html.end], { type: "text/html" }));
-        //const win = window.open(url);	
+        console.log(data.reports);
+        await util.wait(2000);
+        $alert.msg=`built ${count} reports`;
+        data.print=false;
+
+        let markup=html.generate(data.reports,data.view);
+
+        const url = URL.createObjectURL(new Blob([markup], { type: "text/html" }));
+        const win = window.open(url);	
+       
+
 
     };
     
@@ -289,10 +309,17 @@ let update=async()=>{
 </script>
 
 
+<div class="row">
+    <div class="col">
+        <h4>Individual Pupils</h4>
+    </div>
+</div>
+
+<hr/>
 
 <div class="row">
     <div class="col is-vertical-align">
-        <h4>View / Print Reports</h4>
+        <h4>Tutor Reports</h4>
     </div>
     <div class="col is-vertical-align">
         <fieldset>
@@ -321,7 +348,7 @@ let update=async()=>{
         </fieldset>
     </div>
     <div class="col is-vertical-align">
-        <button class="button dark" on:click={printSelected}>Print View</button>
+        <button disabled={data.print} class="button dark" on:click={printSelected}>Print View</button>
     </div>
 </div>
 
