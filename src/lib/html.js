@@ -18,10 +18,79 @@ export let generate=(reports,view)=>{
     console.log(reports,view);
     let txt='';
 
+    for(let report of reports) {
+        let title=getTitle(report.cycle,report.pupil);
+        txt+=`<section style="break-after:page;">${title}`;
+        for(let subject of report.A) {
+            txt+=getSubject(subject);
+        };
+
+        txt+=`</section>`;
+    }
+
+
+    return start+txt+end;
+};
+
+/**
+ * 
+ * @param {{ds:string,txt:string,gd:string,r:number}[]} arr
+ */
+let getGrade=(arr)=>{
+	let tab='';
+	for(let item of arr) {
+		tab+=`<td><div><span class="small">${item.ds}</span></div><div class="report-cell">${item.gd}</div></td>`;
+	}
+	let res=`<table><tbody><tr>${tab}</tr></tbody></table>`;
+	return res;
+
+	
+};
+
+/**
+ * 
+ * @param {any} subject
+* @returns {string}
+ */
+let getSubject=(subject)=>{
+    console.log(subject);
+    let txt=``;
+    txt+=`<section style="break-inside:avoid;">`;
+	
+    txt+=`<div class="row"><div class="col">`;
+
+    txt+=`<div class="report-information">
+        <div><span class="bold">${subject.title}<span></div>
+        <div>${getGrade(subject.col)}</div>
+    </div>`;
+	
+    txt+=`<div class="statement-txt small">${subject.statement}</div>`;
+	for(let item of subject.report) {
+		if(item.txt!==null && item.txt!=='') {
+				txt+=`<div class="report-txt">${item.txt}</div>`;
+		}
+		txt+=`<div class="report-information"><div>${item.sal}</div><div>(EFFORT) CLASS ${item.ec} PREP ${item.ep}</div></div>`;
+	}
+	txt+='</div></div><hr/>';
+	txt+=`</section>`;
+		
+
     return txt;
 };
 
+/**
+ * 
+ * @param {{tt:string,ts:string,y:number,txt:string}} cycle 
+ * @param {{sn:string,pn:string,pid:number,hse:string,tg:string,fm:number}} pupil
+ * @returns {string}
+ */
+let getTitle=(cycle,pupil)=>{
 
+    let image=`[IMAGE]`;
+    let title=`<div><h4>${pupil.pn} ${pupil.sn} (Form ${pupil.fm})</h4></div><div><h4>${cycle.tt} ${cycle.ts} ${cycle.y}</h4></div>`;
+    let txt=`<section style="break-inside:avoid;"><div class="row"><div class="col">${image}</div><div class="col">${title}</div></div></section>`;
+    return txt;
+};
 
 export let start =`
 <!DOCTYPE html>
@@ -61,6 +130,7 @@ width:3rem;
 text-align: center;
 overflow:hidden;
 padding:0.1rem;
+font-weight:600;
 
 }
 

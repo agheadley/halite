@@ -263,7 +263,8 @@ let update=async()=>{
         let markup=html.generate(data.reports,data.view);
 
         const url = URL.createObjectURL(new Blob([markup], { type: "text/html" }));
-        const win = window.open(url);	
+        const win = window.open(url);
+        win?.print();	
        
 
 
