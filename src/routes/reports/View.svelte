@@ -15,7 +15,6 @@ let data={
     all:false,
     cycles:[],
     cIndex:0,
-    std:{A:'',B:''},
     view:{context:'parent',rag:false,chance:false,fb:false},
     context:'parent',
     assessments:[]
@@ -81,7 +80,7 @@ let update=async()=>{
         /** @type {{
          cycle:{tt:string,ts:string,y:number,txt:string},
          pupil:{sn:string,pn:string,pid:number,hse:string,tg:string,fm:number},
-         A:{title:string,col:{ds:string,txt:string,gd:string,r:number}[],statement:string|null,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[]
+         A:{title:string,chance:{A:{std:string,grade:{pre:number,gd:string}[],pre:number},B:{std:string,grade:{pre:number,gd:string}[],pre:number}},col:{ds:string,txt:string,gd:string,r:number}[],statement:string|null,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[]
          E:{title:string,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[],
          P:{title:string,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[]
          }
@@ -139,9 +138,6 @@ let update=async()=>{
         $config.grade=$config.grade.sort((/** @type {{ sc: string; pre: number; }} */ a,/** @type {{ sc: any; pre: number; }} */ b)=>a.sc.localeCompare(b.sc) || b.pre-a.pre);
         let c=$config.view.find((/** @type {{ context: string; }} */ el)=>el.context===data.context);
         if(c) data.view=c;
-        data.std=gps[0] && gps[0].lv==='US' ? {A:$config.std.US.A,B:$config.std.US.B} : {A:'',B:''};
-        data.std=gps[0] && gps[0].lv==='MS' ? {A:$config.std.MS.A,B:$config.std.MS.B} : {A:'',B:''};
-        data.std=gps[0] && gps[0].lv==='LS' ? {A:$config.std.LS.A,B:$config.std.LS.B} : {A:'',B:''};
         
         // build academic reports
 
@@ -157,9 +153,53 @@ let update=async()=>{
                 );
             }
 
+
+            let col=[];
+            let a=data.assessments.filter((/** @type {{ sc: any; ss: any; yr: any; lv: any; }} */ el)=>el.sc===gp.sc && el.ss===gp.ss && el.yr===gp.yr && el.lv===gp.lv)
+                .sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
+            for(let assessment of a) {
+                //console.log(a);
+                let f=results.find((/** @type {{ aoid: any; }} */ el)=>el.aoid===assessment._id); 
+                col.push({txt:assessment.n,ds:assessment.ds,gd:f?f.gd:'X',r:0});
+            }
+            let gds=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===gp.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
+       
+        
+            let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col[0].gd);
+            for(let c of col) {
+                let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===c.gd); 
+                c.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+            }
+
+            let std={A:'',B:''};
+            if(gp.lv==='US') std=$config.std.US;
+            else if(gp.lv==='MS') std=$config.std.MS;
+            else if(gp.lv==='LS') std=$config.std.LS;
+            
+            
+            let chance={
+                A:{std:std.A,grade:gds.map((/** @type {{ gd: any; pre: any; }} */ el)=>({gd:el.gd,pre:el.pre})),pre:0},
+                B:{std:std.B,grade:gds.map((/** @type {{ gd: any; pre: any; }} */ el)=>({gd:el.gd,pre:el.pre})),pre:0}
+            };
+
+
+            let f=intake.find((/** @type {{ lv: string; yr: number; }} */ el)=>el.lv===gp.lv && el.yr===gp.yr);
+            if(f) {
+                let i=f.pre.find((/** @type {{ ss: string; sc: string; }} */ el)=>el.ss===gp.ss && el.sc===gp.sc);
+                if(i) {
+                    chance.A.pre=i.A;
+                    chance.B.pre=i.B;
+                }
+
+            }
+        
+            
+        
+
             out.A.push({
                 title:`${gp.sl} (${gp.sc})`,
-                col:[],
+                col:col,
+                chance:chance,
                 statement:s,
                 report:r
             });
