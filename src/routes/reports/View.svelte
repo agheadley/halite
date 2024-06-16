@@ -314,11 +314,19 @@ let update=async()=>{
 
 <div class="row">
     <div class="col">
-        <h4>Individual Pupils</h4>
+        <h4>Print Individual Pupils (To be completed)</h4>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col">
+        <h4>Print Teaching Groups (To be completed)</h4>
     </div>
 </div>
 
 <hr/>
+
 
 <div class="row">
     <div class="col is-vertical-align">

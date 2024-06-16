@@ -1,3 +1,11 @@
+/**
+     * 
+     * @param {number} n
+     * @returns {boolean}
+     */
+export let isNumeric=(n)=>{
+  return !isNaN(parseFloat(String(n))) && isFinite(n);
+}
 
 
 

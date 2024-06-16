@@ -8,6 +8,7 @@ import Chance from '$lib/_Chance.svelte';
 import Report from '$lib/_Report.svelte';
 import {alert} from '$lib/store';
 import * as util from '$lib/util';
+import * as html from '$lib/html';
 
 
 
@@ -469,8 +470,11 @@ onMount(async () => {
             <span class="tag small">{data.std.A}</span>
         </div>
         <div>
-           
+            {@html html.getChance({std:data.std.A,pre:row.pre.A ? row.pre.A : 0,grade:cfg.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===row.sc)})}
+            
+            <!--
             <Chance grades={cfg.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===row.sc)} score={row.pre.A ? row.pre.A : 0}/>
+            -->
         </div>
         </div>
    
@@ -479,8 +483,12 @@ onMount(async () => {
             <span class="tag small">{data.std.B}</span>
         </div>
         <div>
+            {@html html.getChance({std:data.std.A,pre:row.pre.B ? row.pre.B : 0,grade:cfg.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===row.sc)})}
+            
+            <!--
             <Chance grades={cfg.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===row.sc)} score={row.pre.B ? row.pre.B : 0}/>
-        </div>
+            -->
+            </div>
     </div>
 </div>
 

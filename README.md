@@ -71,16 +71,15 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Reports
 
-- analsyse each report on the fly and add to a count, to decide when to break page, if commnets, length can be thought about the break can be calculated ?
-- // build reports through building html (halout)
 - use {@html data} to display - so only build once ?
-- script to generate data for puppeteer export ?
+- {@html html.getChance() } see _Pupil.svelte 
 
+- add reports print/export for pupils and for teaching groups
+- document documention for break-inside and break-after css for report priting.
 
+-Pupil view from pupil/ , assessments and overview and parent to simply use the same data structure and therefore the same display component. The print view needs the html generation method, the others don't!
 
-- check with .map, .includes whether to filter in/out the result against aoid!
-- same for parent view, pupil view 
-
+- Generate html with assessment name as well as ds only or without - cfg choice ? , offer the option. Build in self assessments too.
 
 
 - Add txt to cycle ! Sorry central message can be formed!. Use <PRE> !

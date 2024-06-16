@@ -1,4 +1,6 @@
 
+import * as util from '$lib/util';
+
 /** @type {{view:{context:string,rag:boolean,chance:boolean,fb:boolean},rag:{red:number,green:number}}} */
 let cfg = {
     view:{context:'',rag:false,chance:false,fb:false},
@@ -71,7 +73,7 @@ let getGrade=(arr)=>{
     let g={r:34,g:139,b:34,p:0.3};
     //style={`background:rgba(${r.r},${r.g},${r.b},${p})
 
-	let tab='<td valign="top"><span class="bold">GRADES</span>&nbsp;&nbsp;</td>';
+	let tab='';
     for(let item of arr) {
         if(cfg.view.rag) {
             let p=min+(max-min)*Math.abs(item.r)/maxGrades;
@@ -90,6 +92,70 @@ let getGrade=(arr)=>{
 	return res;
 
 	
+};
+
+/**
+ * 
+ * @param {{grade:{gd:string,pre:number}[],std:string,pre:number}} chance 
+ * @returns {string}
+ */
+export let getChance=(chance)=>{
+
+    
+    
+    let w=100;
+    let startY=15;
+    let maxH=50;
+    
+    
+
+
+    let txt=``;
+
+    let s=chance.grade[0] ? chance.grade[0].pre/5 : 0;
+    let points=chance.grade.map(el=>({gd:el.gd,pre:el.pre,h:0,p:0,residual:0,w:0,x:0,y:0})).sort((a,b)=> a.pre-b.pre);
+    let itemW= points[0] ? w/points.length : 0;   
+    let datum=util.isNumeric(chance.pre) && chance.pre>0 ? chance.pre : 0;
+    if(datum>0) {
+        for(let item of points) {
+            item['residual']=datum>0 ? Math.abs(item.pre-datum) : 0 ;
+            let h=s>0 ? Math.exp(-(item['residual']*item['residual'])/(2*s*s))*1/(2*Math.PI*s) : 0;
+            item['p']=h;
+        }
+        let total=points.map(el=>el['p']).reduce((partialSum, a) => partialSum + a, 0);
+        for(let i=0;i<points.length;i++) {
+            let item=points[i];
+            item['p']=Math.floor(100*item['p']/total);
+            item['y']=startY+maxH-item['h'];
+            item['x']=i*itemW+itemW/10;
+            item['w']=0.8*itemW;
+        }
+        let max=Math.max(...points.map(el=>el['p']));
+        for(let item of points) {
+            item['h'] = maxH*item['p']/max;
+            item['y']=startY+maxH-item['h'];
+        }
+
+
+    }
+
+    txt+=`<svg width="10rem" height="8rem" viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">`;
+    txt+=`<g>`;
+    for(let p of points) {
+        txt+=`<rect x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" fill="rgba(0,128,255,0.5)"></rect>`;
+        if(p.p>15) {
+            txt+=`<text x="${p.x}" y="${p.y-2}" font-size="10" fill="#333">${p.gd}</text>`;
+        }
+    }
+    txt+=`</g>`;
+    txt+=`<svg>`;
+
+    console.log(points);
+
+    return txt;
+        
+        
+
 };
 
 /**
@@ -132,11 +198,33 @@ let getSubject=(subject)=>{
 	
     txt+=`<div class="row"><div class="col">`;
 
-    txt+=`<div class="report-information">
+    txt+=`<div class="report-information-left">
         <div><span class="bold">${subject.title}<span></div>
-        <div>${getGrade(subject.col)}</div>
     </div>`;
-	
+
+    txt+=`<div class="report-information">`;
+    txt+=`<div>${getGrade(subject.col)}</div>`;
+    
+    // testing
+    //cfg.view.chance=true;
+
+    if(cfg.view.chance){    
+        txt+=`<div>`;
+        txt+=`<div class="report-information-left">
+            <div><span class="tag">${subject.chance.A.std}</span></div>
+            <div>${getChance(subject.chance.A)}</div>
+            <div><span class="tag">${subject.chance.B.std}</span></div>
+            <div>${getChance(subject.chance.B)}</div>
+            </div>`;
+        txt+=`</div>`;
+    }
+
+    
+    txt+=`</div>`;
+
+
+
+    
     txt+=`<div class="statement-txt">${subject.statement}</div>`;
 	for(let item of subject.report) {
 		if(item.txt!==null && item.txt!=='') {
@@ -180,6 +268,15 @@ export let start =`
     display:flex;
     flex-direction:row;
     justify-content:space-between;
+    width:100%;
+    padding-bottom:0.25rem;
+    padding-top:0.25rem;  
+}
+
+.report-information-left {
+    display:flex;
+    flex-direction:row;
+    justify-content:start;
     width:100%;
     padding-bottom:0.25rem;
     padding-top:0.25rem;  
