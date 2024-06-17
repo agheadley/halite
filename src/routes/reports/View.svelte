@@ -4,6 +4,9 @@ import { onMount } from 'svelte';
 import {groups,teachers,config,alert,pupils} from '$lib/store';
 import * as html from '$lib/html';
 import * as util from '$lib/util';
+import * as file from '$lib/file';
+
+
 /** @type {any}*/
 export let status;
 
@@ -263,6 +266,9 @@ let update=async()=>{
         html.setCfg(data.view,$config.rag);
 
         let markup=html.generate(data.reports);
+
+
+        file.download(JSON.stringify(data.reports),'test.json');
 
         const url = URL.createObjectURL(new Blob([markup], { type: "text/html" }));
         const win = window.open(url);
