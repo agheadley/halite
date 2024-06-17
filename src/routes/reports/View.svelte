@@ -22,7 +22,9 @@ let data={
     context:'parent',
     assessments:[],
     reports:[],
-    print:false
+    print:false,
+    pupil:{list:[],index:0},
+    group:{list:[],index:0}
 };
 
 let selectAll=()=>{
@@ -47,7 +49,7 @@ let update=async()=>{
             data.pupils=[];
             for(let item of res) {
                 if(!data.pupils.find((/** @type {{ fm: any; pid: any; }} */ el)=>el.fm===item.fm && el.pid===item.pupil.pid)) {
-                    data.pupils.push({pid:item.pupil.pid,sn:item.pupil.sn,pn:item.pupil.pn,tg:item.pupil.tg,hse:item.pupil.hse,fm:item.fm,select:false,report:{}});
+                    data.pupils.push({pid:item.pupil.pid,sn:item.pupil.sn,pn:item.pupil.pn,tg:item.pupil.tg,hse:item.pupil.hse,fm:item.fm,select:true,report:{}});
                 }
             }
             data.pupils=data.pupils.sort((/** @type {{ sn: string; pn: string; }} */ a,/** @type {{ sn: any; pn: any; }} */ b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn) );
@@ -73,6 +75,14 @@ let update=async()=>{
         console.log(data);
     };
 
+
+    /**
+     * 
+     * @param {{g:string,sc:string,sl:string,ss:string,lv:string,yr:number,pupil:{pid:number,sn:string,pn:string}[]}} detail
+     */
+    let getGroupReports=(detail)=>{
+
+    };
 
     /**
      * 
@@ -240,11 +250,56 @@ let update=async()=>{
 
     };
 
+    let printSelectedPupil=async()=>{
+        data.print=true;
+        $alert.msg='building reports...';
+        let count=0;
+        data.reports=[];
+       
+        let item=data.pupil.list[data.pupil.index];
+        let r=await getReport(item.pid,{pn:item.pn,sn:item.sn,tg:item.tg,hse:item.hse,fm:item.fm});
+        data.reports.push(r);
+        count+=1;
+        $alert.msg=`${item.pn} ${item.sn}`;
+         
+
+        console.log(data.reports);
+        await util.wait(2000);
+        $alert.msg=`built ${count} reports`;
+        data.print=false;
+
+        html.setCfg(data.view,$config.rag);
+
+        let markup=html.generate(data.reports);
+
+
+        //file.download(JSON.stringify(data.reports),'test.json');
+
+        const url = URL.createObjectURL(new Blob([markup], { type: "text/html" }));
+        const win = window.open(url);
+        win?.print();	
+    };
+
+    let printSelectedGroup=async()=>{
+        let f=$groups.find(el=>el.g===data.group.list[data.group.index].g);
+        
+        if(f) {
+            data.print=true;
+            $alert.msg='building reports...';
+            let count=0;
+            data.reports=[];
+            console.log(f.pupil);
+
+            let detail={g:f.g,sc:f.sc,sl:f.sl,ss:f.ss,lv:f.lv,yr:f.yr,pupil:f.pupil.map(el=>({pid:el.pid,sn:el.sn,pn:el.pn}))}
+            let report=getGroupReports(detail);
+
+        }
+    };
+
+
     let printSelected=async()=>{
 
-        // disbale button whilst in progress,
-        // progress alerts
-        // ec/4 etc
+        
         data.print=true;
         $alert.msg='building reports...';
         let count=0;
@@ -267,7 +322,7 @@ let update=async()=>{
 
         let markup=html.generate(data.reports);
 
-
+        // testing !
         file.download(JSON.stringify(data.reports),'test.json');
 
         const url = URL.createObjectURL(new Blob([markup], { type: "text/html" }));
@@ -308,7 +363,13 @@ let update=async()=>{
     console.log(data.assessments);
 
 
-
+    // pupil select
+    data.pupil.list=$pupils.map(el=>({id:el.id,pid:el.pid,sn:el.sn,pn:el.pn,hse:el.hse})).sort((a,b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));
+    data.pupil.index=0;
+    //group.select
+    data.group.list=$groups.map(el=>({g:el.g,sl:el.sl,ss:el.ss,sc:el.sc,fm:el.fm})).sort((a,b)=>a.sl.localeCompare(b.sl) || a.sc.localeCompare(b.sc) || a.g.localeCompare(b.g));
+    data.group.index=0;
+  
 
     await update();
 
@@ -320,14 +381,72 @@ let update=async()=>{
 
 <div class="row">
     <div class="col">
-        <h4>Print Individual Pupils (To be completed)</h4>
+        <h4>Pupil</h4>
+    </div>
+    <div class="col is-vertical-align">
+        <fieldset>
+            <legend>Select Pupil</legend>
+           
+        <select  id="Tutor" bind:value={data.pupil.index}>
+            <optgroup label="Tutor">
+                    {#each data.pupil.list as item,index}
+                        <option value={index}> {item.pn} {item.sn} ({item.hse})</option>
+                    {/each}
+            </optgroup>
+          </select>
+          </fieldset>
+ 
+    </div>
+    <div class="col is-vertical-align">
+        <fieldset>
+            <legend>Cycle</legend>           
+            <select  id="Cycle" bind:value={data.cIndex}>
+            <optgroup label="Cycle">
+                    {#each data.cycles as item,index}
+                        <option value={index}>{item.tt} {item.ts} {item.y}</option>
+                    {/each}
+            </optgroup>
+            </select>
+        </fieldset>
+    </div>
+    <div class="col is-vertical-align">
+        <button disabled={data.print} class="button dark" on:click={printSelectedPupil}>Print View</button>
     </div>
 </div>
 
 
 <div class="row">
     <div class="col">
-        <h4>Print Teaching Groups (To be completed)</h4>
+        <h4>Teaching Group</h4>
+    </div>
+    <div class="col is-vertical-align">
+        <fieldset>
+            <legend>Select Group</legend>
+           
+        <select  id="Tutor" bind:value={data.group.index}>
+            <optgroup label="Tutor">
+                    {#each data.group.list as item,index}
+                        <option value={index}> {item.g} {item.sl} ({item.sc})</option>
+                    {/each}
+            </optgroup>
+          </select>
+          </fieldset>
+ 
+    </div>
+    <div class="col is-vertical-align">
+        <fieldset>
+            <legend>Cycle</legend>           
+            <select  id="Cycle" bind:value={data.cIndex}>
+            <optgroup label="Cycle">
+                    {#each data.cycles as item,index}
+                        <option value={index}>{item.tt} {item.ts} {item.y}</option>
+                    {/each}
+            </optgroup>
+            </select>
+        </fieldset>
+    </div>
+    <div class="col is-vertical-align">
+        <button disabled={data.print} class="button dark" on:click={printSelectedGroup}>Print View</button>
     </div>
 </div>
 
@@ -336,7 +455,7 @@ let update=async()=>{
 
 <div class="row">
     <div class="col is-vertical-align">
-        <h4>Tutor Reports</h4>
+        <h4>Tutor Review</h4>
     </div>
     <div class="col is-vertical-align">
         <fieldset>
