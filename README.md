@@ -71,10 +71,11 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Reports
 
+- in play View.svelte line 283 - group reports generate.
+
 - use {@html data} to display - so only build once ?
 - {@html html.getChance() } see _Pupil.svelte 
 
-- add reports print/export for pupils and for teaching groups
 - document documention for break-inside and break-after css for report priting.
 
 -Pupil view from pupil/ , assessments and overview and parent to simply use the same data structure and therefore the same display component. The print view needs the html generation method, the others don't!
