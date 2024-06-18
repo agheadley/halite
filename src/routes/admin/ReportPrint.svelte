@@ -21,7 +21,8 @@ let data={
     reports:[],
     results:[],
     print:false,
-    fm:7
+    fm:7,
+    out:[]
 
 };
 
@@ -46,21 +47,131 @@ let generate=async()=>{
         data.results= await response.json();
 
     }
+
     
 
+    for(let pupil of $pupils.filter(el=>el.fm===data.fm)) {
+       
+        
+        /** @type {{
+         cycle:{tt:string,ts:string,y:number,txt:string},
+         pupil:{sn:string,pn:string,pid:number,id:string,hse:string,tg:string,fm:number},
+         A:{title:string,chance:{A:{std:string,grade:{pre:number,gd:string}[],pre:number},B:{std:string,grade:{pre:number,gd:string}[],pre:number}},col:{ds:string,txt:string,gd:string,r:number}[],statement:string|null,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[]
+         E:{title:string,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[],
+         P:{title:string,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[]
+         }
+        }}*/
+        let out={
+            cycle:{tt:data.cycles[data.cIndex].tt,ts:data.cycles[data.cIndex].ts,y:data.cycles[data.cIndex].y,txt:''},
+            pupil:{id:pupil.id,sn:pupil.sn,pn:pupil.pn,pid:pupil.pid,tg:pupil.tg,hse:pupil.hse,fm:pupil.fm},
+            A:[],
+            E:[],
+            P:[]
+        };
+
+        //console.log(pupil.sn);
+        /** @type {any} */
+        let gps=pupil.groups.sort((a,b)=>a.sl.localeCompare(b.sl));
+
+
+        // add assessments and comments
+        for(let gp of gps) {
+            let line={title:`${gp.sl} (${gp.sc})`};
+            let res=data.reports.find((/** @type {{ pupil: { pid: number; }; ss: any; sc: any; ci: any; author: { type: string; }; }} */ el)=>el.pupil.pid===pupil.pid && el.ss===gp.ss && el.sc===gp.sc && el.ci===data.cycles[data.cIndex].index && el.author.type==='hod');
+            let s=res ? res.txt : '';
+            res=data.reports.filter((/** @type {{ pupil: { pid: number; }; ss: any; sc: any; ci: any; author: { type: string; }; }} */ el)=>el.pupil.pid===pupil.pid && el.ss===gp.ss && el.sc===gp.sc && el.ci===data.cycles[data.cIndex].index && el.author.type==='teacher');
+            let r=[];
+            for(let item of res) {
+                r.push(
+                    {sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}
+                );
+            }
+
+            let group=$groups.find(el=>el.sc===gp.sc && el.ss===gp.ss && el.g===gp.g);
+            let std={A:'',B:''};
+            if(group) {
+                if(group.lv==='US') std=$config.std.US;
+                else if(group.lv==='MS') std=$config.std.MS;
+                else if(group.lv==='LS') std=$config.std.LS;
+            }
+           
+            
+            let gds=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===gp.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
+       
+
+            let chance={
+                A:{std:std.A,grade:gds.map((/** @type {{ gd: any; pre: any; }} */ el)=>({gd:el.gd,pre:el.pre})),pre:0},
+                B:{std:std.B,grade:gds.map((/** @type {{ gd: any; pre: any; }} */ el)=>({gd:el.gd,pre:el.pre})),pre:0}
+            };
+
+            if(gp?.pre?.A>0) chance.A.pre=gp.pre.A;
+            if(gp?.pre?.B>0) chance.A.pre=gp.pre.B;
+
+
+
+            let col=[];
+
+            if(group) {
+                let a=data.assessments.filter((/** @type {{ sc: any; ss: any; yr: any; lv: any; }} */ el)=>el.sc===gp.sc && el.ss===gp.ss && el.yr===group.yr && el.lv===group.lv)
+                .sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
+                for(let assessment of a) {
+                    //console.log(a);
+                    let f=data.results.find((/** @type {{ aoid: any; }} */ el)=>el.aoid===assessment._id); 
+                    col.push({txt:assessment.n,ds:assessment.ds,gd:f?f.gd:'X',r:0});
+                }
+          
+                let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col[0].gd);
+                for(let c of col) {
+                    let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===c.gd); 
+                    c.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+                }
 
 
 
 
-    /*
-    response = await fetch('/edge/read', {
-        method: 'POST',
-        body: JSON.stringify({collection:'results',filter:{coid:data.cycles[data.cIndex]._id,fm:data.fm},projection:{}}),
-        headers: {'content-type': 'application/json'}
-    });
-    data.reports= await response.json();
-    */
+            }
+          
 
+            out.A.push({
+                title:`${gp.sl} (${gp.sc})`,
+                col:col,
+                chance:chance,
+                statement:s,
+                report:r
+            });
+
+
+        } // end of group for
+
+
+        // add enrichment reports
+        let p=data.reports.filter((/** @type {{ type: string; pupil: { pid: number; }; }} */ el)=>el.type==='E' && el.pupil.pid===pupil.pid);
+        for(let item of p) {
+            out.E.push({
+                title:item.sl,report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}]
+            });
+        }
+        out.E=out.E.sort((a,b)=>a.title.localeCompare(b.title));
+
+        // add pastoral reports
+        p=data.reports.filter((/** @type {{ type: string; pupil: { pid: number; }; }} */ el)=>el.type==='P' && el.pupil.pid===pupil.pid);
+        for(let item of p) {
+            out.P.push({
+                title:(item.author.type==='hm' ? 'housemaster' : item.author.type).toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}]
+            });
+        }
+        out.P=out.P.sort((a,b)=>a.title.localeCompare(b.title));
+
+        //console.log(pupil.sn,out.P.length,out.E.length);
+        data.out.push(out);
+
+
+    } // end of pupil
+    
+    // testing !
+    file.download(JSON.stringify(data.out),'report-data.json');
+
+    console.log(data.out);
 
 
 };
