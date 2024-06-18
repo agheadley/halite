@@ -71,6 +71,10 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Reports
 
+- $assessments and $cycles in store
+- adjust _Pupil.svelte, report printing, to all use same functions for data display?
+
+
 - use {@html data} to display - so only build once ?
 - {@html html.getChance() } see _Pupil.svelte 
 
