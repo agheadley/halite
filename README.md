@@ -71,8 +71,6 @@ returns true for undefined (as undefined==null), null, [], ""
 
 # Reports
 
-- in play View.svelte line 283 - group reports generate.
-
 - use {@html data} to display - so only build once ?
 - {@html html.getChance() } see _Pupil.svelte 
 
