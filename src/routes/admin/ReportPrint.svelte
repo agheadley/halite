@@ -208,12 +208,14 @@ onMount(async () => {
     data.assessments= await response.json();
     console.log(data.assessments);
 
+    /*
     response = await fetch('/edge/read', {
         method: 'POST',
         body: JSON.stringify({collection:'reports',filter:{coid:data.cycles[data.cIndex]._id},projection:{}}),
         headers: {'content-type': 'application/json'}
     });
     let reports= await response.json();
+    */
    
 });
 

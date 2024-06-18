@@ -81,6 +81,23 @@ export let groups=writable([
 
 export let teachers=writable([{id:'',pn:'',sn:'',sal:'',tid:''}]);
 
+
+export let assessments=writable([{_id:'',sc:'',ss:'',sl:'',dt:0,dl:'',ds:'',n:'',lv:'',yr:0}]);
+
+export let cycles=writable([{
+    _id:'',
+    index:0,
+    active:false,
+    publish:false,
+    tt:'',
+    ts:'',
+    y:0,
+    ay:'',
+    length:{A:{min:0,max:0},E:{min:0,max:0},P:{min:0,max:0}},
+    detail:[{fm:0,hod:true,teacher:true,ec:true,ep:true,enrichment:true,tutor:true,hm:true,hoy:true,slt:true}]
+
+}]);
+
 /** @type {any} */
 export let cohorts=writable({
     assessments:{

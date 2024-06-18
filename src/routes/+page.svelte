@@ -1,7 +1,7 @@
 <script>
 
 import { onMount } from 'svelte';
-import {config,location,pupils,groups,cohorts,teachers} from '$lib/store';
+import {config,location,pupils,groups,cohorts,teachers,assessments,cycles} from '$lib/store';
 import { goto } from '$app/navigation';
 
 export let data ;
@@ -187,7 +187,28 @@ let getArchiveCohorts=async()=>{
 	$cohorts.archive.years.index=0;
 };
 
+let getAssessments=async()=>{
 
+    let response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'assessments',filter:{},projection:{_id:1,sc:1,sl:1,ss:1,dt:1,dl:1,ds:1,n:1,tag:1,lv:1,yr:1}}),
+        headers: {'content-type': 'application/json'}
+    });
+    $assessments= await response.json();
+};
+
+let getCycles=async()=>{
+	let response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'cycles',filter:{},projection:{}}),
+        headers: {'content-type': 'application/json'}
+    });
+    let res= await response.json();
+    //console.log(res);
+
+    $cycles=res.sort((/** @type {{ index: number; }} */ a,/** @type {{ index: number; }} */ b)=>b.index-a.index);
+ 
+};
 
 
 onMount(async () => {
@@ -254,6 +275,9 @@ onMount(async () => {
 
 	//testing - remove goto !
 	if(data.user.tag.teacher) goto('/assessments');
+
+	await getAssessments();
+	await getCycles();
 	
 });
 
