@@ -7,6 +7,7 @@
     // @ts-ignore
     import ReportCycle from './ReportCycle.svelte';
     import ReportCreate from './ReportCreate.svelte';
+    import ReportPrint from './ReportPrint.svelte';
 
     /** @type {any}*/
     export let status;
@@ -14,7 +15,7 @@
     /** @type {any}*/
     let data={
   
-        tabs:['Cycle','Create','Edit'],
+        tabs:['Cycle','Create','Edit','Print'],
         tabIndex:0,
        
     };
@@ -78,6 +79,10 @@
 
     {#if data.tabs[data.tabIndex]==='Cycle'}
         <ReportCycle bind:status={status}/>
+    {/if}
+
+    {#if data.tabs[data.tabIndex]==='Print'}
+        <ReportPrint bind:status={status}/>
     {/if}
 
     

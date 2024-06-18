@@ -199,7 +199,7 @@ let getItem=(report)=>{
 		if(item.txt!==null && item.txt!=='') {
 				txt+=`<div class="report-txt">${item.txt}</div>`;
 		}
-		txt+=`<div class="report-information"><div>${item.sal}</div><div></div></div>`;
+		txt+=`<div class="report-information"><div><span class="bold">${item.sal}</span></div><div></div></div>`;
 	}
 	txt+='</div></div>';
 	txt+=`</section>`;
@@ -254,7 +254,7 @@ let getSubject=(subject)=>{
         item.ec = item.ec===null ? '' : `CLASS ${item.ec}`;
         item.ep = item.ep===null ? '' : `PREP ${item.ep}`;
         
-		txt+=`<div class="report-information"><div>${item.sal}</div><div><span class="bold">EFFORT</span> ${item.ec} ${item.ep}</div></div>`;
+		txt+=`<div class="report-information"><div><span class="bold">${item.sal}</span></div><div><span class="tag">EFFORT ${item.ec} ${item.ep}</span></div></div>`;
 	}
 	txt+='</div></div><hr/>';
 	txt+=`</section>`;
