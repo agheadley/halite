@@ -84,12 +84,12 @@ let update=async()=>{
 
 
 
-        let out=[];
+
 
         // get reports
         let response = await fetch('/edge/read', {
             method: 'POST',
-            body: JSON.stringify({collection:'reports',filter:{coid:data.cycles[data.cIndex]._id,g:detail.g},projection:{}}),
+            body: JSON.stringify({collection:'reports',filter:{coid:data.cycles[data.cIndex]._id,ss:detail.ss,sc:detail.sc},projection:{}}),
             headers: {'content-type': 'application/json'}
         });
         let reports= await response.json();
@@ -115,12 +115,15 @@ let update=async()=>{
         console.log(col,results);
         col=col.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
 
-        
+        let A=[];
+
         for(let pupil of detail.pupil) {
+            console.log(pupil.pid,pupil.sn);
             let cols=[];
             for(let assessment of col) {
                 //console.log(a);
-                let f=results.find((/** @type {{ pid: number; aoid: any; }} */ el)=>el.pid===pupil.pid && el.aoid===assessment._id); 
+                let f=results.find((/** @type {{ pid: number; aoid: any; }} */ el)=>el.pid===pupil.pid && el.aoid===assessment.aoid);
+                //console.log(assessment.aoid,pupil.pid,f);
                 cols.push({txt:assessment.n,ds:assessment.ds,gd:f?f.gd:'X',r:0});
             }
 
@@ -156,30 +159,42 @@ let update=async()=>{
                 }
             }
 
-            let staement=reports.find((/** @type {{ ss: string; sc: string; author: { type: string; }; }} */ el)=>el.ss===detail.ss && el.sc===detail.sc && el.author.type==='hod');
+            let statement=reports.find((/** @type {{ author: { type: string; }; pupil: { pid: number; }; }} */ el)=> el.author.type==='hod' && el.pupil.pid===pupil.pid);
+            //console.log(statement);
             let r=[];
-            let res=reports.filter((/** @type {{ ss: string; sc: string; pupil: { pid: number; }; author: { type: string; }; }} */ el)=>el.ss===detail.ss && el.sc===detail.sc && el.pupil.pid===pupil.pid && el.author.type==='teacher');
+            let res=reports.filter((/** @type {{ ss: string; sc: string; pupil: { pid: number; }; author: { type: string; }; }} */ el)=>el.pupil.pid===pupil.pid && el.author.type==='teacher');
+            console.log(res);
             for(let item of res) {
                 r.push(
                     {sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}
                 );
             }
+            //console.log(r);
 
 
-
-            out.push({
-                pupil:{},
-                cycle:{},
+            A.push({
+                title:`${pupil.pn} ${pupil.sn}`,
+                chance:chance,
+                col:cols,
+                statement:statement?statement.txt:null,
+                report:r
 
             });
 
-
-
+          
 
    
         }
         
 
+        
+        let out={
+                subject:{g:detail.g,ss:detail.ss,sc:detail.sc,sl:detail.sl,lv:detail.lv,yr:detail.yr},
+                cycle:{tt:data.cycles[data.cIndex].tt,ts:data.cycles[data.cIndex].ts,y:data.cycles[data.cIndex].y,txt:''},
+                A:A
+        };
+
+        return out;
 
     };
 
@@ -408,6 +423,13 @@ let update=async()=>{
 
             let detail={g:f.g,sc:f.sc,sl:f.sl,ss:f.ss,lv:f.lv,yr:f.yr,pupil:f.pupil.map(el=>({pid:el.pid,sn:el.sn,pn:el.pn}))}
             let report=await getGroupReports(detail);
+            console.log(report);
+            let markup=html.generateGroup(report);
+            console.log(markup);
+
+            const url = URL.createObjectURL(new Blob([markup], { type: "text/html" }));
+            const win = window.open(url);
+            win?.print();	
 
         }
     };

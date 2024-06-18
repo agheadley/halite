@@ -57,6 +57,27 @@ export let generate=(reports)=>{
 
 /**
  * 
+ * @param {any} report 
+ */
+export let generateGroup=(report)=>{
+    let txt='<section style="break-inside:avoid;">';
+    txt+`<div class="row"><div class="col">`;
+    txt+=`<h4>${report.subject.g} ${report.cycle.tt} ${report.cycle.ts} ${report.cycle.y}</h4>`;
+    txt+=``;
+    txt+=`</div></div>`;
+    
+    txt+=`</section>`;
+    for(let item of report.A) {
+         txt+=`<section style="break-inside:avoid;">`;
+        txt+=getSubject(item);
+        txt+=`</section>`;
+    }
+
+    return start+txt+end;
+};
+
+/**
+ * 
  * @param {{ds:string,txt:string,gd:string,r:number}[]} arr
  * @returns {string}
  */
