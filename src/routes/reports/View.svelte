@@ -237,6 +237,7 @@ let update=async()=>{
 
         
 
+
         // get cohorts (in case of F7 pupil retaking F6 etc)
         /** @type {{lv:string,yr:number}[]}*/
         let cohorts=[];
