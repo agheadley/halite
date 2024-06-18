@@ -5,7 +5,7 @@ import {groups,teachers,config,alert,pupils} from '$lib/store';
 import * as html from '$lib/html';
 import * as util from '$lib/util';
 import * as file from '$lib/file';
-
+	
 
 /** @type {any}*/
 export let status;
@@ -49,7 +49,7 @@ let update=async()=>{
             data.pupils=[];
             for(let item of res) {
                 if(!data.pupils.find((/** @type {{ fm: any; pid: any; }} */ el)=>el.fm===item.fm && el.pid===item.pupil.pid)) {
-                    data.pupils.push({pid:item.pupil.pid,sn:item.pupil.sn,pn:item.pupil.pn,tg:item.pupil.tg,hse:item.pupil.hse,fm:item.fm,select:true,report:{}});
+                    data.pupils.push({id:item.pupil.id,pid:item.pupil.pid,sn:item.pupil.sn,pn:item.pupil.pn,tg:item.pupil.tg,hse:item.pupil.hse,fm:item.fm,select:true,report:{}});
                 }
             }
             data.pupils=data.pupils.sort((/** @type {{ sn: string; pn: string; }} */ a,/** @type {{ sn: any; pn: any; }} */ b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn) );
@@ -80,21 +80,120 @@ let update=async()=>{
      * 
      * @param {{g:string,sc:string,sl:string,ss:string,lv:string,yr:number,pupil:{pid:number,sn:string,pn:string}[]}} detail
      */
-    let getGroupReports=(detail)=>{
+    let getGroupReports=async(detail)=>{
+
+
+
+        let out=[];
+
+        // get reports
+        let response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'reports',filter:{coid:data.cycles[data.cIndex]._id,g:detail.g},projection:{}}),
+            headers: {'content-type': 'application/json'}
+        });
+        let reports= await response.json();
+
+        response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'results',filter:{sc:detail.sc,ss:detail.ss,lv:detail.lv,yr:detail.yr} ,projection:{_id:1,pid:1,aoid:1,n:1,dl:1,sc:1,sl:1,ss:1,gd:1,scr:1,pc:1,t:1,fb:1,lv:1,yr:1}}),
+            headers: {'content-type': 'application/json'}
+        });
+        let results= await response.json();
+
+        /** @type {any}*/
+        let col=[];
+        for(let item of results) {
+            if(!col.find((/** @type {{ aoid: any; }} */ el)=>el.aoid===item.aoid)) {
+                let ds=item.dl?.length===10 ? item.dl[5]+item.dl[6]+"/" +item.dl[2]+item.dl[3]: '00/00';
+                let dt=new Date(item.dl).getTime();
+    
+                col.push({aoid:item.aoid,n:item.n,dl:item.dl,ds:ds,dt:dt});
+            }
+        }
+
+        console.log(col,results);
+        col=col.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
+
+        
+        for(let pupil of detail.pupil) {
+            let cols=[];
+            for(let assessment of col) {
+                //console.log(a);
+                let f=results.find((/** @type {{ pid: number; aoid: any; }} */ el)=>el.pid===pupil.pid && el.aoid===assessment._id); 
+                cols.push({txt:assessment.n,ds:assessment.ds,gd:f?f.gd:'X',r:0});
+            }
+
+            let gds=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===detail.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
+       
+        
+            let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===cols[0].gd);
+            for(let c of cols) {
+                let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===c.gd); 
+                c.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+            }
+
+            let std={A:'',B:''};
+            if(detail.lv==='US') std=$config.std.US;
+            else if(detail.lv==='MS') std=$config.std.MS;
+            else if(detail.lv==='LS') std=$config.std.LS;
+            
+            
+            let chance={
+                A:{std:std.A,grade:gds.map((/** @type {{ gd: any; pre: any; }} */ el)=>({gd:el.gd,pre:el.pre})),pre:0},
+                B:{std:std.B,grade:gds.map((/** @type {{ gd: any; pre: any; }} */ el)=>({gd:el.gd,pre:el.pre})),pre:0}
+            };
+
+
+            /** @type {any}*/
+            let f=$pupils.find(el=>el.pid===pupil.pid);
+            if(f) {
+                /** @type {any}*/
+                let x=f.groups.find((/** @type {{ g: string; }} */ el)=>el.g===detail.g);
+                if(x && x.pre) {
+                    chance.A.pre=x.pre.A;
+                    chance.B.pre=x.pre.B;
+                }
+            }
+
+            let staement=reports.find((/** @type {{ ss: string; sc: string; author: { type: string; }; }} */ el)=>el.ss===detail.ss && el.sc===detail.sc && el.author.type==='hod');
+            let r=[];
+            let res=reports.filter((/** @type {{ ss: string; sc: string; pupil: { pid: number; }; author: { type: string; }; }} */ el)=>el.ss===detail.ss && el.sc===detail.sc && el.pupil.pid===pupil.pid && el.author.type==='teacher');
+            for(let item of res) {
+                r.push(
+                    {sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}
+                );
+            }
+
+
+
+            out.push({
+                pupil:{},
+                cycle:{},
+
+            });
+
+
+
+
+   
+        }
+        
+
 
     };
 
     /**
      * 
      * @param {number} pid
-     * @param {{pn:string,sn:string,fm:number,hse:string,tg:string}} detail
+     * @param {{id:string,pn:string,sn:string,fm:number,hse:string,tg:string}} detail
      */
     let getReport=async(pid,detail)=> {
         console.log('building report for ',pid);
 
         /** @type {{
          cycle:{tt:string,ts:string,y:number,txt:string},
-         pupil:{sn:string,pn:string,pid:number,hse:string,tg:string,fm:number},
+         pupil:{sn:string,pn:string,pid:number,id:string,hse:string,tg:string,fm:number},
          A:{title:string,chance:{A:{std:string,grade:{pre:number,gd:string}[],pre:number},B:{std:string,grade:{pre:number,gd:string}[],pre:number}},col:{ds:string,txt:string,gd:string,r:number}[],statement:string|null,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[]
          E:{title:string,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[],
          P:{title:string,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[]
@@ -102,7 +201,7 @@ let update=async()=>{
         }}*/
         let out={
             cycle:{tt:data.cycles[data.cIndex].tt,ts:data.cycles[data.cIndex].ts,y:data.cycles[data.cIndex].y,txt:''},
-            pupil:{sn:detail.sn,pn:detail.pn,pid:pid,tg:detail.tg,hse:detail.hse,fm:detail.fm},
+            pupil:{id:detail.id,sn:detail.sn,pn:detail.pn,pid:pid,tg:detail.tg,hse:detail.hse,fm:detail.fm},
             A:[],
             E:[],
             P:[]
@@ -139,12 +238,14 @@ let update=async()=>{
         });
         let results= await response.json();
 
+        /*
          response = await fetch('/edge/read', {
             method: 'POST',
             body: JSON.stringify({collection:'intake',filter:{pid:status.pid} ,projection:{pid:1,base:1,pre:1,lv:1,yr:1}}),
             headers: {'content-type': 'application/json'}
         });
         let intake= await response.json();
+        */
     
 
         //groups=groups.sort((/** @type {{ sl: string; }} */ a,/** @type {{ sl: any; }} */ b)=>a.sl.localeCompare(b.sl));
@@ -198,15 +299,28 @@ let update=async()=>{
             };
 
 
-            let f=intake.find((/** @type {{ lv: string; yr: number; }} */ el)=>el.lv===gp.lv && el.yr===gp.yr);
+            /** @type {any}*/
+            let f=$pupils.find(el=>el.pid===pid);
             if(f) {
-                let i=f.pre.find((/** @type {{ ss: string; sc: string; }} */ el)=>el.ss===gp.ss && el.sc===gp.sc);
+                /** @type {any}*/
+                let x=f.groups.find((/** @type {{ g: string; }} */ el)=>el.g===gp.g);
+                if(x && x.pre) {
+                    chance.A.pre=x.pre.A;
+                    chance.B.pre=x.pre.B;
+                }
+            }
+
+            /*
+            let f=intake.find((el)=>el.lv===gp.lv && el.yr===gp.yr);
+            if(f) {
+                let i=f.pre.find((el)=>el.ss===gp.ss && el.sc===gp.sc);
                 if(i) {
                     chance.A.pre=i.A;
                     chance.B.pre=i.B;
                 }
 
             }
+            */
         
             
         
@@ -257,7 +371,7 @@ let update=async()=>{
         data.reports=[];
        
         let item=data.pupil.list[data.pupil.index];
-        let r=await getReport(item.pid,{pn:item.pn,sn:item.sn,tg:item.tg,hse:item.hse,fm:item.fm});
+        let r=await getReport(item.pid,{id:item.id,pn:item.pn,sn:item.sn,tg:item.tg,hse:item.hse,fm:item.fm});
         data.reports.push(r);
         count+=1;
         $alert.msg=`${item.pn} ${item.sn}`;
@@ -282,6 +396,8 @@ let update=async()=>{
 
     let printSelectedGroup=async()=>{
         let f=$groups.find(el=>el.g===data.group.list[data.group.index].g);
+
+        console.log($pupils);
         
         if(f) {
             data.print=true;
@@ -291,7 +407,7 @@ let update=async()=>{
             console.log(f.pupil);
 
             let detail={g:f.g,sc:f.sc,sl:f.sl,ss:f.ss,lv:f.lv,yr:f.yr,pupil:f.pupil.map(el=>({pid:el.pid,sn:el.sn,pn:el.pn}))}
-            let report=getGroupReports(detail);
+            let report=await getGroupReports(detail);
 
         }
     };
@@ -306,7 +422,7 @@ let update=async()=>{
         data.reports=[];
         for(let item of data.pupils) {
             if(item.select) {
-                let r=await getReport(item.pid,{pn:item.pn,sn:item.sn,tg:item.tg,hse:item.hse,fm:item.fm});
+                let r=await getReport(item.pid,{id:item.id,pn:item.pn,sn:item.sn,tg:item.tg,hse:item.hse,fm:item.fm});
                 data.reports.push(r);
                 count+=1;
                 $alert.msg=`${item.pn} ${item.sn}`;
