@@ -189,7 +189,7 @@
                     let f=$teachers.find((el)=>el.tid===pupil.tg);
                     let tut=f? {tid:f.tid,sal:f.sal} :{tid:'',sal:''};
                     // testing
-                    tut={tid:'AGH',sal:'Dr H'}
+                    //tut={tid:'AGH',sal:'Dr H'}
 
 
                     let report={

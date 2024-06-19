@@ -39,6 +39,9 @@ let getPupils=async()=>{
 	});
     let intake= await response.json();
 	//console.log('intake',intake);
+	for(let item of intake) {
+		if(item.yr===2026) console.log(item);
+	}
     
 
 	let gps=data.groups.map((/** @type {{ lv: any; yr: any; g: any; sc: any; ss: any;sl: any; pupil: any[]; }} */ el)=>({lv:el.lv,yr:el.yr,g:el.g,sc:el.sc,sl:el.sl,ss:el.ss,pid:el.pupil.map((/** @type {{ pid: any; }} */ el)=>el.pid)}));
@@ -52,7 +55,9 @@ let getPupils=async()=>{
 		g.pupil=g.pupil.sort((/** @type {{ sn: string; pn: string; }} */ a,/** @type {{ sn: any; pn: any; }} */ b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn) )
 		for(let p of g.pupil) {
 			if(!$pupils.find(el=>el.pid===p.pid && el.lv===g.lv && el.yr===g.yr)) {
+				//console.log(g.yr,g.lv);
 				let i=intake.find((/** @type {{ pid: any; yr: any; lv: any; }} */ el)=>el.pid===p.pid && el.yr===g.yr && el.lv===g.lv);
+				//console.log(i);
 				let overall={A:0,B:0};
 				/** @type {{g:string,sc:string,sl:string,ss:string,pre:{A:number,B:number}}[]}*/
 				let groups=[];

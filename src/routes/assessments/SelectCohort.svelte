@@ -11,18 +11,21 @@
     
     let update=async()=>{
         let y=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
+        console.log(y);
         let s=$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index];
+        console.log(s);
        
         /* adjust subjects.index if necessary */
         if(!(y.lv===s.lv && y.yr===s.yr)) $cohorts.assessments.subjects.index=$cohorts.assessments.subjects.list.findIndex((/** @type {{ lv: any; yr: any; }} */ el)=>el.lv===y.lv && el.yr===y.yr);
         s=$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index];
        
-        status.std.A=(y.lv==='US' || y.lv==='MS' || y.lv==='L1') ? $config.std[y.lv].A : '';
-        status.std.B=(y.lv==='US' || y.lv==='MS' || y.lv==='L1') ? $config.std[y.lv].B : '';
+        status.std.A=(y.lv==='US' || y.lv==='MS' || y.lv==='LS') ? $config.std[y.lv].A : '';
+        status.std.B=(y.lv==='US' || y.lv==='MS' || y.lv==='LS') ? $config.std[y.lv].B : '';
 
         
         let gps=$groups.filter(el=>el.lv===y.lv && el.yr===y.yr && el.sc===s.sc && el.ss===s.ss );
       
+        console.log(gps);
 
         /* get assessments */
 
@@ -43,7 +46,7 @@
 	    });
 
         let results= await response.json();
-        console.log(results);
+        //console.log(results);
 
         /* find all teachers for editing - check groups, admin and HoDs in $config.subject*/
         /** @type {string[]}*/
@@ -74,15 +77,19 @@
             let pup=[];
             for(let p of g.pupil) {
                 let f=$pupils.find(el=>el.pid==p.pid);
+                //console.log(f);
                 /**@type {any[]}*/
                 let pcols=[];
                 for(let col of cols) {
+                  
                     let f=results.find( (/** @type {{ aoid: any; pid: number; }} */ el)=>el.aoid===col._id && el.pid===p.pid);
+                    //console.log(col,f);
                     pcols.push(f ? {gd:f.gd,pc:col.tag.grade ? null :f.pc,scr:f.scr} : {gd:'X',pc:0,scr:0,r:0});
 
                 }
                 /* populate grade residuals cf first col grade */
                 let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===g.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
+                //console.log(g.sc,gds);
                 let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===pcols[0].gd);
                 for(let col of pcols) {
                     let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd); 
