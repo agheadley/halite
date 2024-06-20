@@ -68,7 +68,7 @@
         
            
         </div>
-        <div class="col">
+        <div class="col is-right">
           
             <h4>{status.cycle.tt} {status.cycle.ts} {status.cycle.y}</h4>
         </div>

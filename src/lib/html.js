@@ -96,6 +96,17 @@ let getGrade=(arr)=>{
 
 	let tab='';
     for(let item of arr) {
+        let title='';
+        if(cfg.view.n) {
+            title=`<div class="assessment-title-p">
+                    <div class="assessment-title-c">
+                        <div class="bold">${item.txt}</div>
+                        <div>${item.ds}</div>
+                    </div>
+                </div>`;
+        } else {
+            title=`<span class="small">${item.ds}</span>`;
+        }
         if(cfg.view.rag) {
             let p=min+(max-min)*Math.abs(item.r)/maxGrades;
 
@@ -103,10 +114,10 @@ let getGrade=(arr)=>{
             if(item.r<cfg.rag.red) sty=`background:rgba(${r.r},${r.g},${r.b},${p})`;
             else if(item.r>=cfg.rag.green) sty=`background:rgba(${g.r},${g.g},${g.b},${p})`;
 
-                tab+=`<td valign="top"><div><span class="small">${item.ds}</span></div><div class="report-cell" style="${sty}">${item.gd}</div></td>`;
+                tab+=`<td valign="top"><div>${title}</div><div class="report-cell" style="${sty}">${item.gd}</div></td>`;
            
         } else {
-            tab+=`<td><div><span class="small">${item.ds}</span></div><div class="report-cell">${item.gd}</div></td>`;
+            tab+=`<td><div>${title}</div><div class="report-cell">${item.gd}</div></td>`;
         }
     }
 	let res=`<table><tbody><tr>${tab}</tr></tbody></table>`;
@@ -199,7 +210,7 @@ let getItem=(report)=>{
 		if(item.txt!==null && item.txt!=='') {
 				txt+=`<div class="report-txt">${item.txt}</div>`;
 		}
-		txt+=`<div class="report-information"><div><span class="bold">${item.sal}</span></div><div></div></div>`;
+		txt+=`<div class="report-information"><div><span>${item.sal}</span></div><div></div></div>`;
 	}
 	txt+='</div></div>';
 	txt+=`</section>`;
@@ -254,7 +265,7 @@ let getSubject=(subject)=>{
         item.ec = item.ec===null ? '' : `CLASS ${item.ec}`;
         item.ep = item.ep===null ? '' : `PREP ${item.ep}`;
         
-		txt+=`<div class="report-information"><div><span class="bold">${item.sal}</span></div><div><span class="tag">EFFORT ${item.ec} ${item.ep}</span></div></div>`;
+		txt+=`<div class="report-information"><div><span>${item.sal}</span></div><div><span class="tag">EFFORT ${item.ec} ${item.ep}</span></div></div>`;
 	}
 	txt+='</div></div><hr/>';
 	txt+=`</section>`;
@@ -326,6 +337,28 @@ padding:0.1rem;
 font-weight:600;
 
 }
+
+  .assessment-title-c {
+      position:absolute;
+      top:6rem;
+      width:10rem;
+      height:4rem;
+      border:0;
+      overflow:hidden;
+      font-size:1rem;
+      transform: translate(-2rem,-3rem) rotate(-80deg);
+      line-height:1rem;
+  }
+
+
+
+  .assessment-title-p {
+    position:relative;
+    width:3rem;
+    height:10rem;
+    border:0px solid #333;
+    overflow:hidden;
+  }
 
 .bold {
     font-weight:600;

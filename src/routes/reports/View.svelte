@@ -268,8 +268,7 @@ let update=async()=>{
         
         // get grades,view context and standards (assume same lv even if two cohorts!)
         $config.grade=$config.grade.sort((/** @type {{ sc: string; pre: number; }} */ a,/** @type {{ sc: any; pre: number; }} */ b)=>a.sc.localeCompare(b.sc) || b.pre-a.pre);
-        let c=$config.view.find((/** @type {{ context: string; }} */ el)=>el.context===data.context);
-        if(c) data.view=c;
+      
         
         // build academic reports
 
@@ -392,14 +391,14 @@ let update=async()=>{
         count+=1;
         $alert.msg=`${item.pn} ${item.sn}`;
          
+        console.log(data.reports);
 
         console.log(data.reports);
         await util.wait(2000);
         $alert.msg=`built ${count} reports`;
         data.print=false;
 
-        html.setCfg(data.view,$config.rag);
-
+        
         let markup=html.generate(data.reports);
 
 
@@ -457,7 +456,7 @@ let update=async()=>{
         $alert.msg=`built ${count} reports`;
         data.print=false;
 
-        html.setCfg(data.view,$config.rag);
+       
 
         let markup=html.generate(data.reports);
 
@@ -504,12 +503,26 @@ let update=async()=>{
 
 
     // pupil select
-    data.pupil.list=$pupils.map(el=>({id:el.id,pid:el.pid,sn:el.sn,pn:el.pn,hse:el.hse})).sort((a,b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));
+    data.pupil.list=$pupils.map(el=>({id:el.id,pid:el.pid,sn:el.sn,pn:el.pn,hse:el.hse,fm:el.fm,tg:el.tg})).sort((a,b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));
     data.pupil.index=0;
     //group.select
     data.group.list=$groups.map(el=>({g:el.g,sl:el.sl,ss:el.ss,sc:el.sc,fm:el.fm})).sort((a,b)=>a.sl.localeCompare(b.sl) || a.sc.localeCompare(b.sc) || a.g.localeCompare(b.g));
     data.group.index=0;
   
+
+    // get view from $config
+    let c=$config.view.find((/** @type {{ context: string; }} */ el)=>el.context===data.context);
+    if(c) data.view=c;
+
+    html.setCfg(data.view,$config.rag);
+
+    // testing
+    //data.view.chance=true;
+    //data.view.n=true;
+    //data.view.rag=true;
+
+    // for printed reports
+    data.view.n=false;
 
     await update();
 
