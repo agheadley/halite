@@ -1,12 +1,15 @@
 <script>
+// @ts-nocheck
+
 import {cycles,assessments,groups,config,pupils,alert} from '$lib/store';
 import { onMount } from 'svelte';
 import * as html from '$lib/html.js';
+import * as util from '$lib/util.js';
 import Cell from '$lib/_Cell.svelte';
 import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 
 
-/** @type {{cIndex:number,view:{context:'overview'|'parent'|'pupil',chance:boolean,fb:boolean,rag:boolean,n:boolean},data:any,detail:{r:number,c:number,show:boolean,gd:string}}}*/
+/** @type {{cIndex:number,view:{context:'overview'|'parent'|'pupil',chance:boolean,fb:boolean,rag:boolean,n:boolean},data:any,detail:{show:boolean,gd:string,assessment:any,_id:string,pc:number,t:number[]}}}*/
 let status= {
     cIndex:0,
     view:{context:'overview',chance:true,fb:true,rag:true,n:true},
@@ -17,11 +20,15 @@ let status= {
         E:[],
         P:[]
     },
-    detail:{r:0,c:0,show:false,gd:''}
+    detail:{show:false,gd:'',assessment:{},_id:'',pc:0,t:[]}
 };
 
 /** @type {{pid:number,id:string,pn:string,sn:string,fm:number|null,hse:string,tg:string}}*/
 export let data;
+
+/** @type {string} */
+export let user;
+
 
 
 let getReport=async()=> {
@@ -108,10 +115,10 @@ for(let gp of gps) {
     for(let assessment of a) {
         //console.log(a);
         let f=results.find((/** @type {{ aoid: any; }} */ el)=>el.aoid===assessment._id); 
-        col.push({txt:assessment.n,ds:assessment.ds,gd:f?f.gd:'X',r:0,_id:f?f._id:'',aoid:f?f.aoid:'',edit:assessment.tag.pupiledit && assessment.tag.open?true:false});
+        col.push({txt:assessment.n,ds:assessment.ds,t:f?f.t:[],pc:f?f.pc:0,gd:f?f.gd:'X',r:0,_id:f?f._id:'',aoid:f?f.aoid:'',edit:assessment.tag.pupiledit && assessment.tag.open?true:false});
     }
     let gds=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===gp.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
-    console.log(gp,gds,col);
+    //console.log(gp,gds,col);
     if(col[0]) {
         let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col[0].gd);
         for(let c of col) {
@@ -199,25 +206,35 @@ for(let gp of gps) {
  * @param {number} rowIndex
  * @param {number} colIndex
  */
- let showDetail=(rowIndex,colIndex)=>{
-    status.detail.r=rowIndex;
-    status.detail.c=colIndex;
+ let showDetail=async(rowIndex,colIndex)=>{
+    console.log(status.data.A[rowIndex].col[colIndex]);
+    status.detail.assessment=$assessments.find(el=>el._id===status.data.A[rowIndex].col[colIndex].aoid);
+    console.log(status.detail);
+    status.detail.gd=status.data.A[rowIndex].col[colIndex].gd;
+    status.detail.pc=status.data.A[rowIndex].col[colIndex].pc;
+    status.detail.t=status.data.A[rowIndex].col[colIndex].t;
+    
+    status.detail._id=status.data.A[rowIndex].col[colIndex]._id;
     status.detail.show=true;
 };
 
+
 let validateGrade=()=>{
-    console.log(data.detail);
-    if(!data.detail.grade.find((/** @type {{ gd: any; }} */ el)=>el.gd===data.detail.gd)) {
-        data.detail.gd='';
+    if(status.detail?.assessment?.sc!=='') {
+        let gds=$config.grade.filter(el=>el.sc===status.detail.assessment.sc).map(el=>el.gd);
+        if(!gds.includes(status.detail.gd)) status.detail.gd='';
     }
+    
 };
 
 let blurGrade=async()=>{
     let x={gd:'X',scr:0,pc:0};
-    if(data.detail.gd!=='') {
-        let f=data.detail.grade.find((/** @type {{ gd: any; }} */ el)=>el.gd===data.detail.gd);
+    if(status.detail.gd!=='') {
+        let gds=$config.grade.filter(el=>el.sc===status.detail.assessment.sc);
+        let f=gds.find(el=>el.gd===status.detail.gd);
+       
         if(f) {
-            x.gd=data.detail.gd;
+            x.gd=status.detail.gd;
             x.scr=f.scr;
             x.pc=x.pc;
         }
@@ -229,22 +246,22 @@ let blurGrade=async()=>{
 		    method: 'POST',
 		    body: JSON.stringify({
                 collection:'results',
-                filter:{"_id":{"$oid": data.detail._id}},
+                filter:{"_id":{"$oid":status.detail._id }},
                 update:{
-                    gd:data.detail.gd,
+                    gd:status.detail.gd,
                     scr:x.scr,
                     pc:x.pc,
-                    log:`${status.pid}|${util.getDate()}`
+                    log:`${user}|${util.getDate()}`
                 }
             }),
 		    headers: {'content-type': 'application/json'}
 	    });
-    let res= await response.json();
-    console.log(res);
-    if(res.matchedCount!==1) {
-        $alert.type='error';
-        $alert.msg=`Error updating result`;
-    } else  $alert.msg=`Modified ${res.modifiedCount} result`; 
+        let res= await response.json();
+        console.log(res);
+        if(res.matchedCount!==1) {
+            $alert.type='error';
+            $alert.msg=`Error updating result`;
+        } else  $alert.msg=`Modified ${res.modifiedCount} result`; 
 
 };
 
@@ -275,6 +292,31 @@ onMount(async () => {
 </div>
 <hr/>
 
+{#if status.detail.show}
+    <div class="row">
+        <div class="col">
+            <h4>{status.detail.assessment.sl}{status.detail.assessment.n} {status.detail.assessment.ds}</h4>
+        </div>
+        <div class="col">
+            <button class="button outline" on:click={()=>status.detail.show=false}>Back</button>
+        </div>
+        
+    </div>
+    <div class="row">
+        <div class="col">
+            {#if status.detail.assessment.tag.grade}
+                <span class="bold">{status.detail.gd}</span>
+            {:else}
+                <span class="bold">{status.detail.gd}</span>
+                (<span class="bold">{status.detail.pc}</span>%)
+            {/if}
+        </div>
+        
+    </div>
+{/if}
+
+
+{#if !status.detail.show}
 
 {#each status.data.A as row,rowIndex}
     <section style="break-inside:avoid;">
@@ -390,6 +432,8 @@ onMount(async () => {
         </section>
 	
 {/each}
+
+{/if}
 
 <style>
 

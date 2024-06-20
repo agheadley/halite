@@ -183,7 +183,7 @@
                         </div>
                         <hr/>
                         -->
-                        <PupilInformation data={{pid:row.pid,id:row.id,pn:row.pn,sn:row.sn,fm:row.fm,hse:row.hse,tg:row.tg}}/>
+                        <PupilInformation user={status.user} data={{pid:row.pid,id:row.id,pn:row.pn,sn:row.sn,fm:row.fm,hse:row.hse,tg:row.tg}}/>
                         <!--
                         <Pupil 
                          

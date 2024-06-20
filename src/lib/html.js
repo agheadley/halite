@@ -182,7 +182,7 @@ export let getChance=(chance)=>{
     txt+=`</g>`;
     txt+=`<svg>`;
 
-    console.log(points);
+    //console.log(points);
 
     return txt;
         
