@@ -38,11 +38,7 @@ let getPupils=async()=>{
 		headers: {'content-type': 'application/json'}
 	});
     let intake= await response.json();
-	//console.log('intake',intake);
-	for(let item of intake) {
-		if(item.yr===2026) console.log(item);
-	}
-    
+	
 
 	let gps=data.groups.map((/** @type {{ lv: any; yr: any; g: any; sc: any; ss: any;sl: any; pupil: any[]; }} */ el)=>({lv:el.lv,yr:el.yr,g:el.g,sc:el.sc,sl:el.sl,ss:el.ss,pid:el.pupil.map((/** @type {{ pid: any; }} */ el)=>el.pid)}));
 	//console.log(gps);
@@ -160,6 +156,7 @@ let getOverviewCohorts=()=>{
 		if(!$cohorts.overview.years.list.find((/** @type {{ yr: any; lv: any; }} */ el)=>el.yr==item.yr && el.lv==item.lv))
 			$cohorts.overview.years.list.push({lv:item.lv,yr:item.yr,fm:fm});
 	}
+	$cohorts.overview.years.list=$cohorts.overview.years.list.sort((/** @type {{ fm: number; }} */ a,/** @type {{ fm: number; }} */ b)=>b.fm-a.fm);
 
 	$cohorts.overview.list={name:'',pid:[]};
 	
