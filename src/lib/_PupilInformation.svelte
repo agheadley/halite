@@ -6,7 +6,7 @@ import Cell from '$lib/_Cell.svelte';
 import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 
 
-/** @type {{cIndex:number,view:{context:'overview'|'parent'|'pupil',chance:boolean,fb:boolean,rag:boolean,n:boolean},data:any,detail:boolean}}*/
+/** @type {{cIndex:number,view:{context:'overview'|'parent'|'pupil',chance:boolean,fb:boolean,rag:boolean,n:boolean},data:any,detail:{r:number,c:number,show:boolean,gd:string}}}*/
 let status= {
     cIndex:0,
     view:{context:'overview',chance:true,fb:true,rag:true,n:true},
@@ -17,7 +17,7 @@ let status= {
         E:[],
         P:[]
     },
-    detail:false
+    detail:{r:0,c:0,show:false,gd:''}
 };
 
 /** @type {{pid:number,id:string,pn:string,sn:string,fm:number|null,hse:string,tg:string}}*/
@@ -200,9 +200,9 @@ for(let gp of gps) {
  * @param {number} colIndex
  */
  let showDetail=(rowIndex,colIndex)=>{
-    data.detail=data.table[rowIndex].col[colIndex];
-    data.dIndex=rowIndex;
-    detail=true;
+    status.detail.r=rowIndex;
+    status.detail.c=colIndex;
+    status.detail.show=true;
 };
 
 let validateGrade=()=>{
