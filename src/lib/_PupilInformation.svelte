@@ -4,10 +4,17 @@ import { onMount } from 'svelte';
 
 
 
-/** @type {{cIndex:number,view:{context:'overview'|'parent'|'pupil',chance:boolean,fb:boolean,rag:boolean,n:boolean}}}*/
+/** @type {{cIndex:number,view:{context:'overview'|'parent'|'pupil',chance:boolean,fb:boolean,rag:boolean,n:boolean},data:any}}*/
 let status= {
     cIndex:0,
-    view:{context:'overview',chance:true,fb:true,rag:true,n:true}
+    view:{context:'overview',chance:true,fb:true,rag:true,n:true},
+    data:{
+        cycle:{tt:'',ts:'',y:0,txt:''},
+        pupil:{id:0,sn:'',pn:'',pid:0,tg:'',hse:'',fm:null},
+        A:[],
+        E:[],
+        P:[]
+    }
 };
 
 /** @type {{pid:number,id:string,pn:string,sn:string,fm:number|null,hse:string,tg:string}}*/
@@ -21,7 +28,7 @@ console.log('building report for ',data.pid);
 /** @type {{
  cycle:{tt:string,ts:string,y:number,txt:string},
     pupil:{sn:string,pn:string,pid:number,id:string,hse:string,tg:string,fm:number|null},
-    A:{title:string,chance:{A:{std:string,grade:{pre:number,gd:string}[],pre:number},B:{std:string,grade:{pre:number,gd:string}[],pre:number}},col:{ds:string,txt:string,gd:string,r:number}[],statement:string|null,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[]
+    A:{title:string,chance:{A:{std:string,grade:{pre:number,gd:string}[],pre:number},B:{std:string,grade:{pre:number,gd:string}[],pre:number}},col:{_id:string,aoid:string,edit:boolean,ds:string,txt:string,gd:string,r:number}[],statement:string|null,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[]
     E:{title:string,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[],
     P:{title:string,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}[]
     }
@@ -98,7 +105,7 @@ for(let gp of gps) {
     for(let assessment of a) {
         //console.log(a);
         let f=results.find((/** @type {{ aoid: any; }} */ el)=>el.aoid===assessment._id); 
-        col.push({txt:assessment.n,ds:assessment.ds,gd:f?f.gd:'X',r:0});
+        col.push({txt:assessment.n,ds:assessment.ds,gd:f?f.gd:'X',r:0,_id:f?f._id:'',aoid:f?f.aoid:'',edit:assessment.tag.pupiledit && assessment.tag.open?true:false});
     }
     let gds=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===gp.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
     console.log(gp,gds,col);
@@ -190,13 +197,21 @@ for(let gp of gps) {
         let cycs=$cycles.filter((el)=>el.publish===true).sort((/** @type {{ index: number; }} */ a,/** @type {{ index: number; }} */ b)=>b.index-a.index);
         status.cIndex = cycs[0]? cycs[0].index : null; 
         
-        await getReport();
+        status.data=await getReport();
     });
 
 </script>
 
+<div class="row">
+    <div class="col">
+        {status.data.pupil.pn} {status.data.pupil.sn}
+    </div>
+    <div class="col">
+        {status.data.pupil.fm!==null ? 'F'+status.data.pupil.fm : ''} {status.data.pupil.hse}
+    </div>
+</div>
 
-<p>{JSON.stringify(data)}</p>
+<p>{JSON.stringify(status.data)}</p>
 <style>
 
 </style>
