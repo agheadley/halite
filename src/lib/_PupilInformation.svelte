@@ -9,7 +9,7 @@ import Cell from '$lib/_Cell.svelte';
 import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 
 
-/** @type {{cIndex:number,view:{context:'overview'|'parent'|'pupil',chance:boolean,fb:boolean,rag:boolean,n:boolean},data:any,detail:{show:boolean,gd:string,assessment:any,_id:string,pc:number,t:number[]}}}*/
+/** @type {{cIndex:number,view:{context:'overview'|'parent'|'pupil',chance:boolean,fb:boolean,rag:boolean,n:boolean},data:any,detail:{r:number,c:number,edit:boolean,show:boolean,gd:string,assessment:any,_id:string,pc:number,t:number[]}}}*/
 let status= {
     cIndex:0,
     view:{context:'overview',chance:true,fb:true,rag:true,n:true},
@@ -20,7 +20,7 @@ let status= {
         E:[],
         P:[]
     },
-    detail:{show:false,gd:'',assessment:{},_id:'',pc:0,t:[]}
+    detail:{show:false,gd:'',assessment:{},_id:'',pc:0,t:[],edit:false}
 };
 
 /** @type {{pid:number,id:string,pn:string,sn:string,fm:number|null,hse:string,tg:string}}*/
@@ -208,14 +208,32 @@ for(let gp of gps) {
  */
  let showDetail=async(rowIndex,colIndex)=>{
     console.log(status.data.A[rowIndex].col[colIndex]);
-    status.detail.assessment=$assessments.find(el=>el._id===status.data.A[rowIndex].col[colIndex].aoid);
+    status.detail.r=rowIndex;
+    status.detail.c=colIndex;
+
+    //status.detail.assessment=$assessments.find(el=>el._id===status.data.A[rowIndex].col[colIndex].aoid);
+
+    let response = await fetch('/edge/read', {
+    method: 'POST',
+    body: JSON.stringify({collection:'assessments',filter:{"_id":{"$oid":status.data.A[rowIndex].col[colIndex].aoid}} ,projection:{}}),
+    headers: {'content-type': 'application/json'}
+    });
+    let res= await response.json();
+    if(res[0]) status.detail.assessment=res[0];
+
+    console.log(res);
+
     console.log(status.detail);
+
+    status.detail.edit=status.data.A[rowIndex].col[colIndex].edit;
     status.detail.gd=status.data.A[rowIndex].col[colIndex].gd;
     status.detail.pc=status.data.A[rowIndex].col[colIndex].pc;
     status.detail.t=status.data.A[rowIndex].col[colIndex].t;
     
     status.detail._id=status.data.A[rowIndex].col[colIndex]._id;
     status.detail.show=true;
+
+
 };
 
 
@@ -238,7 +256,9 @@ let blurGrade=async()=>{
             x.scr=f.scr;
             x.pc=x.pc;
         }
-    } 
+    }
+    status.data.A[status.detail.r].col[status.detail.c].gd=status.detail.gd;
+    status.data=status.data;
 
     console.log('blurGrade',x);
 
@@ -295,7 +315,7 @@ onMount(async () => {
 {#if status.detail.show}
     <div class="row">
         <div class="col">
-            <h4>{status.detail.assessment.sl}{status.detail.assessment.n} {status.detail.assessment.ds}</h4>
+            <h4>{status.detail.assessment.sl} <span class="tag">{status.detail.assessment.n} {status.detail.assessment.ds}</span></h4>
         </div>
         <div class="col">
             <button class="button outline" on:click={()=>status.detail.show=false}>Back</button>
@@ -305,14 +325,69 @@ onMount(async () => {
     <div class="row">
         <div class="col">
             {#if status.detail.assessment.tag.grade}
-                <span class="bold">{status.detail.gd}</span>
+            {#if status.detail.edit}
+
+                GRADE <input  type=text bind:value={status.detail.gd} on:input={validateGrade} on:blur={blurGrade}/>
+           
             {:else}
-                <span class="bold">{status.detail.gd}</span>
+                GRADE <span class="bold">{status.detail.gd}</span>
+            {/if}
+            
+            {:else}
+            GRADE <span class="bold">{status.detail.gd}</span>
                 (<span class="bold">{status.detail.pc}</span>%)
             {/if}
         </div>
-        
     </div>
+
+    {#if !status.detail.assessment.tag.grade}
+           
+    <div class="row">
+        <div class="col">
+            <table class="striped small">
+                <thead>
+                    <tr>
+                        <th>Section</th>
+                        <th>Score</th>
+                        <th>Weighting</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each status.detail.assessment.total as row,rowIndex}
+                    <tr>
+                        <td>{row.n}</td>
+                        <td>{status.detail.t[rowIndex]}/{row.t}</td>
+                        <td>{row.w}</td>
+                    </tr>
+                    {/each}
+                  
+                </tbody>
+            </table>
+
+        </div>
+        <div class="col">
+            <table class="striped small">
+                <thead>
+                    <tr>
+                        <th>Grade</th>
+                        <th> % </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each status.detail.assessment.grade as row,rowIndex}
+                    <tr>
+                        <td>{row.gd}</td>
+                        <td>{row.pc}</td>
+                      
+                    </tr>
+                    {/each}
+                  
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {/if}
+
 {/if}
 
 
