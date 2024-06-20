@@ -21,10 +21,10 @@ export let config=writable({
     regression:[{lv:'',sc:'',ss:'',regressionYear:0,gradient:0,intercept:0,std:''}],
     tips:[''],
     view:[
-        {context:'parent',rag:false,chance:false,fb:false},
-        {context:'pupil',rag:false,chance:true,fb:false},
-        {context:'assessments',rag:true,chance:true,fb:true},
-        {context:'overview',rag:true,chance:true,fb:true}
+        {context:'parent',rag:false,chance:false,fb:false,n:true},
+        {context:'pupil',rag:false,chance:true,fb:false,n:true},
+        {context:'assessments',rag:true,chance:true,fb:true,n:true},
+        {context:'overview',rag:true,chance:true,fb:true,n:true}
         
     ],
     report:{

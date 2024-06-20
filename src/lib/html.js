@@ -1,13 +1,13 @@
 
 import * as util from '$lib/util';
 
-/** @type {{view:{context:string,rag:boolean,chance:boolean,fb:boolean},rag:{red:number,green:number}}} */
+/** @type {{view:{context:string,rag:boolean,chance:boolean,fb:boolean,n:boolean},rag:{red:number,green:number}}} */
 let cfg = {
-    view:{context:'',rag:false,chance:false,fb:false},
+    view:{context:'',rag:false,chance:false,fb:false,n:true},
     rag:{red:-1,green:1}
 };
 
-export let setCfg=(/** @type {{ context: string; rag: boolean; chance: boolean; fb: boolean; }} */ view,/** @type {{ red: number; green: number; }} */ rag)=>{
+export let setCfg=(/** @type {{ context: string; rag: boolean; chance: boolean; fb: boolean;n:boolean }} */ view,/** @type {{ red: number; green: number; }} */ rag)=>{
     cfg.view=view,
     cfg.rag=rag;
 };
@@ -84,7 +84,7 @@ export let generateGroup=(report)=>{
 let getGrade=(arr)=>{
 
     // testing
-    cfg.view.rag=true;
+    //cfg.view.rag=true;
 
     let maxGrades=10;
     let min=0.1;

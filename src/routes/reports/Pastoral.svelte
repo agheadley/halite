@@ -65,7 +65,7 @@
             headers: {'content-type': 'application/json'}
         });
         let res= await response.json();
-        data.reports=res[0] ? res.sort((/** @type {{ pupil: { sn: string; pn: string; }; }} */ a,/** @type {{ pupil: { sn: any; pn: any; }; }} */ b)=>a.pupil.sn.localeCompare(b.pupil.sn) || a.pupil.pn.localeCompare(b.pupil.pn) ) :[];
+        data.reports=res[0] ? res.sort((/** @type {{ fm: number; pupil: { sn: string; pn: string; }; }} */ a,/** @type {{ fm: number; pupil: { sn: any; pn: any; }; }} */ b)=>b.fm-a.fm || a.pupil.sn.localeCompare(b.pupil.sn) || a.pupil.pn.localeCompare(b.pupil.pn) ) :[];
 
         // add subject name to display.
         for(let item of data.reports) item.sl=type.toUpperCase();
@@ -132,7 +132,7 @@
         <select  id="Tutor" bind:value={data.tIndex} on:change={update}>
             <optgroup label="Tutor">
                     {#each status.teachers as item,index}
-                        <option value={index}>({item.tid}) {item.pn} {item.sn}</option>
+                        <option value={index}>{item.pn} {item.sn} ({item.tid})</option>
                     {/each}
             </optgroup>
           </select>
@@ -154,7 +154,7 @@
             <tr>
             <td>
                 <div>
-                    <a href={'#'} on:click={()=>openDetail(rowIndex)}>{row.pupil.pn} {row.pupil.sn}</a>
+                    <a href={'#'} on:click={()=>openDetail(rowIndex)}>{row.pupil.pn} {row.pupil.sn} (F{row.fm})</a>
                 </div>
                 <div><span class="bold">{row.sl}</span></div>
                 <div><span class="small">{row.author.tid}</span></div>

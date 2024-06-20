@@ -477,6 +477,7 @@ let update=async()=>{
     data.user=status.user;
     data.tIndex=status.teachers.findIndex((/** @type {{ tid: any; }} */ el)=>el.tid===data.user);
 
+   
     // get report cycles
     let response = await fetch('/edge/read', {
             method: 'POST',
@@ -517,84 +518,51 @@ let update=async()=>{
 
 </script>
 
-
 <div class="row">
-    <div class="col">
+    <div class="col is-vertical-align">
+        <h4>Select Cycle</h4>
+    </div>
+    <div class="col is-vertical-align">
+        <fieldset>
+            <legend>Cycle</legend>           
+            <select  id="Cycle" bind:value={data.cIndex}>
+            <optgroup label="Cycle">
+                    {#each data.cycles as item,index}
+                        <option value={index}>{item.tt} {item.ts} {item.y}</option>
+                    {/each}
+            </optgroup>
+            </select>
+        </fieldset>
+    </div>
+    <div class="col is-vertical-align">
+       &nbsp;
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div class="col is-vertical-align">
         <h4>Pupil</h4>
     </div>
     <div class="col is-vertical-align">
         <fieldset>
             <legend>Select Pupil</legend>
            
-        <select  id="Tutor" bind:value={data.pupil.index}>
-            <optgroup label="Tutor">
+        <select  id="Pupil" bind:value={data.pupil.index}>
+            <optgroup label="Pupil">
                     {#each data.pupil.list as item,index}
                         <option value={index}> {item.pn} {item.sn} ({item.hse})</option>
                     {/each}
             </optgroup>
           </select>
           </fieldset>
- 
     </div>
     <div class="col is-vertical-align">
-        <fieldset>
-            <legend>Cycle</legend>           
-            <select  id="Cycle" bind:value={data.cIndex}>
-            <optgroup label="Cycle">
-                    {#each data.cycles as item,index}
-                        <option value={index}>{item.tt} {item.ts} {item.y}</option>
-                    {/each}
-            </optgroup>
-            </select>
-        </fieldset>
-    </div>
-    <div class="col is-vertical-align">
-        <button disabled={data.print} class="button dark" on:click={printSelectedPupil}>Print View</button>
+        <button disabled={data.print} class="button dark" on:click={printSelectedPupil}>View Pupil Report</button>
     </div>
 </div>
-
-
-<div class="row">
-    <div class="col">
-        <h4>Teaching Group</h4>
-    </div>
-    <div class="col is-vertical-align">
-        <fieldset>
-            <legend>Select Group</legend>
-           
-        <select  id="Tutor" bind:value={data.group.index}>
-            <optgroup label="Tutor">
-                    {#each data.group.list as item,index}
-                        <option value={index}> {item.g} {item.sl} ({item.sc})</option>
-                    {/each}
-            </optgroup>
-          </select>
-          </fieldset>
- 
-    </div>
-    <div class="col is-vertical-align">
-        <fieldset>
-            <legend>Cycle</legend>           
-            <select  id="Cycle" bind:value={data.cIndex}>
-            <optgroup label="Cycle">
-                    {#each data.cycles as item,index}
-                        <option value={index}>{item.tt} {item.ts} {item.y}</option>
-                    {/each}
-            </optgroup>
-            </select>
-        </fieldset>
-    </div>
-    <div class="col is-vertical-align">
-        <button disabled={data.print} class="button dark" on:click={printSelectedGroup}>Print View</button>
-    </div>
-</div>
-
-<hr/>
-
-
 <div class="row">
     <div class="col is-vertical-align">
-        <h4>Tutor Review</h4>
+        <h4>Tutor</h4>
     </div>
     <div class="col is-vertical-align">
         <fieldset>
@@ -611,58 +579,36 @@ let update=async()=>{
  
     </div>
     <div class="col is-vertical-align">
-        <fieldset>
-            <legend>Cycle</legend>           
-            <select  id="Cycle" bind:value={data.cIndex}>
-            <optgroup label="Cycle">
-                    {#each data.cycles as item,index}
-                        <option value={index}>{item.tt} {item.ts} {item.y}</option>
-                    {/each}
-            </optgroup>
-            </select>
-        </fieldset>
-    </div>
-    <div class="col is-vertical-align">
-        <button disabled={data.print} class="button dark" on:click={printSelected}>Print View</button>
+        <button disabled={data.print} class="button dark" on:click={printSelected}>View Tutor Reports</button>
     </div>
 </div>
 
+<hr/>
 <div class="row">
     <div class="col is-vertical-align">
-        {#if data.pupils[0]}
-            <table>
-                <thead>
-                    <tr>
-                        <td><input type=checkbox bind:checked={data.all} on:change={selectAll}></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        
-                    </tr>
-                </thead>
-                <tbody>
-
-                
-            {#each data.pupils as row,rowIndex}
-                    <tr>
-                        <td><input type=checkbox bind:checked={row.select}></td>
-                       
-                        <td>{row.pn} {row.sn}</td>
-                        <td>{row.fm}</td>
-                        <td>{row.tg}</td>
-                        <td>{row.hse}</td>
-                    </tr>
-            {/each}
-            </tbody>
-            </table>
-            
-
-        {:else}
-            <p>No pupil reports found for this tutor</p>
-        {/if}
+        <h4>Teaching Group</h4>
+    </div>
+    <div class="col is-vertical-align">
+        <fieldset>
+            <legend>Select Group</legend>
+           
+        <select  id="Tutor" bind:value={data.group.index}>
+            <optgroup label="Tutor">
+                    {#each data.group.list as item,index}
+                        <option value={index}> {item.g} {item.sl} ({item.sc})</option>
+                    {/each}
+            </optgroup>
+          </select>
+          </fieldset>
+    </div>
+    <div class="col is-vertical-align">
+        <button disabled={data.print} class="button dark" on:click={printSelectedGroup}>View Group Reports</button>
     </div>
 </div>
+
+
+   
+
 
 
 <style>

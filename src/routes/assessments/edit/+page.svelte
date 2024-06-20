@@ -342,7 +342,7 @@ let handleKeydown=(event)=>{
 
 
 
-<p>{JSON.stringify(status.assessment.tag)}</p>
+
 {#each status.table as group,groupIndex}
 
 {#if !status.assessment.tag.grade}

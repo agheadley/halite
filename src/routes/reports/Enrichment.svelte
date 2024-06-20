@@ -10,11 +10,13 @@
 
 
     $:{
+        /*
         if(data.reports[data.next]) {
             if(data.reports[data.next].txt!==null) {
                     document.getElementById(`c|${String(data.next)}`)?.focus();
             } 
         }
+            */
 
     }
 
@@ -138,7 +140,7 @@
         {#each data.reports as row,rowIndex}
             <tr>
             <td>
-                <div>{row.pupil.pn} {row.pupil.pn}</div>
+                <div>{row.pupil.pn} {row.pupil.sn}</div>
                 <div><span class="bold">{row.sl}</span></div>
                 <div><span class="small">{row.author.tid}</span></div>
             </td>
