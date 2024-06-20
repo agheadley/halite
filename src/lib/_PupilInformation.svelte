@@ -1,6 +1,4 @@
 <script>
-// @ts-nocheck
-
 import {cycles,assessments,groups,config,pupils,alert} from '$lib/store';
 import { onMount } from 'svelte';
 import * as html from '$lib/html.js';
@@ -20,7 +18,7 @@ let status= {
         E:[],
         P:[]
     },
-    detail:{show:false,gd:'',assessment:{},_id:'',pc:0,t:[],edit:false}
+    detail:{show:false,gd:'',assessment:{},_id:'',pc:0,t:[],edit:false,r:0,c:0}
 };
 
 /** @type {{pid:number,id:string,pn:string,sn:string,fm:number|null,hse:string,tg:string}}*/
@@ -239,7 +237,7 @@ for(let gp of gps) {
 
 let validateGrade=()=>{
     if(status.detail?.assessment?.sc!=='') {
-        let gds=$config.grade.filter(el=>el.sc===status.detail.assessment.sc).map(el=>el.gd);
+        let gds=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===status.detail.assessment.sc).map((/** @type {{ gd: any; }} */ el)=>el.gd);
         if(!gds.includes(status.detail.gd)) status.detail.gd='';
     }
     
@@ -248,8 +246,8 @@ let validateGrade=()=>{
 let blurGrade=async()=>{
     let x={gd:'X',scr:0,pc:0};
     if(status.detail.gd!=='') {
-        let gds=$config.grade.filter(el=>el.sc===status.detail.assessment.sc);
-        let f=gds.find(el=>el.gd===status.detail.gd);
+        let gds=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===status.detail.assessment.sc);
+        let f=gds.find((/** @type {{ gd: string; }} */ el)=>el.gd===status.detail.gd);
        
         if(f) {
             x.gd=status.detail.gd;
