@@ -10,7 +10,7 @@
     import Modal from '$lib/_Modal.svelte';
     import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
     import Cell from '$lib/_Cell.svelte';
-    import Pupil from '$lib/_Pupil.svelte';
+    import PupilInformation from '$lib/_PupilInformation.svelte';
 
     /** @type {any}*/
     export let data;
@@ -248,21 +248,8 @@
                            
                         </div>
                         <hr/>
-                        
-                        <Pupil 
-                            status={{
-                                pid:row.pid,
-                                sn:row.sn,
-                                pn:row.pn,
-                                hse:row.hse,
-                                gnd:row.gnd,
-                                tg:row.tg,
-                                lv:$cohorts.overview.years.list[$cohorts.overview.years.index].lv,
-                                yr:$cohorts.overview.years.list[$cohorts.overview.years.index].yr,
-                                context:'overview'
-                            }}
-                            >
-                        </Pupil>
+                        <PupilInformation user={status.user} data={{pid:row.pid,id:row.id,pn:row.pn,sn:row.sn,fm:row.fm,hse:row.hse,tg:row.tg}}></PupilInformation>
+                      
                         <div class="row">
                             <div class="col is-right">
                                 <button class="button outline" on:click={()=>row.pupilShow=false}>Close</button>

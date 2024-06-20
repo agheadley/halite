@@ -173,35 +173,7 @@
                     </tr>
                     {#if row.show}
                     <Modal bind:open={row.show}>
-                        <!--
-                        <div class="row">
-                            <div class="col">
-                                <h4>{row.pn} {row.sn} ({row.hse})</h4>
-                              
-                            </div>
-                           
-                        </div>
-                        <hr/>
-                        -->
-                        <PupilInformation user={status.user} data={{pid:row.pid,id:row.id,pn:row.pn,sn:row.sn,fm:row.fm,hse:row.hse,tg:row.tg}}/>
-                        <!--
-                        <Pupil 
-                         
-
-                            status={{
-                                pid:row.pid,
-                                sn:row.sn,
-                                pn:row.pn,
-                                hse:row.hse,
-                                gnd:row.gnd,
-                                tg:row.tg,
-                                lv:$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].lv,
-                                yr:$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index].yr,
-                                context:'assessments'
-                            }}
-                            >
-                        </Pupil>
-                        -->
+                        <PupilInformation user={status.user} data={{pid:row.pid,id:row.id,pn:row.pn,sn:row.sn,fm:row.fm,hse:row.hse,tg:row.tg}}></PupilInformation>/>
                         <div class="row">
                             <div class="col is-right">
                                 <button class="button outline" on:click={()=>row.show=false}>Close</button>

@@ -199,6 +199,8 @@ let update=async()=>{
             show:true,
             select:true,
             pupilShow:false,
+            id:pupil.id,
+            fm:pupil.fm,
             sn:pupil.sn,
             pn:pupil.pn,
             pid:pupil.pid,
