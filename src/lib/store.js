@@ -82,7 +82,7 @@ export let groups=writable([
 export let teachers=writable([{id:'',pn:'',sn:'',sal:'',tid:''}]);
 
 
-export let assessments=writable([{_id:'',sc:'',ss:'',sl:'',dt:0,dl:'',ds:'',n:'',lv:'',yr:0}]);
+export let assessments=writable([{_id:'',sc:'',ss:'',sl:'',dt:0,dl:'',ds:'',n:'',lv:'',yr:0,tag:{open:false,archive:false,grade:false,exam:false,pupiledit:false,overview:false,parent:false,pupil:false}}]);
 
 export let cycles=writable([{
     _id:'',

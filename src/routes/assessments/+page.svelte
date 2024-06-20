@@ -9,6 +9,7 @@
     import Cell from '$lib/_Cell.svelte';
     import Modal from '$lib/_Modal.svelte';
     import Pupil from '$lib/_Pupil.svelte';
+    import PupilInformation from '$lib/_PupilInformation.svelte';
     import Export from './Export.svelte';
 
     export let data;
@@ -172,6 +173,7 @@
                     </tr>
                     {#if row.show}
                     <Modal bind:open={row.show}>
+                        <!--
                         <div class="row">
                             <div class="col">
                                 <h4>{row.pn} {row.sn} ({row.hse})</h4>
@@ -180,6 +182,9 @@
                            
                         </div>
                         <hr/>
+                        -->
+                        <PupilInformation data={{pid:row.pid,id:row.id,pn:row.pn,sn:row.sn,fm:row.fm,hse:row.hse,tg:row.tg}}/>
+                        <!--
                         <Pupil 
                          
 
@@ -196,6 +201,7 @@
                             }}
                             >
                         </Pupil>
+                        -->
                         <div class="row">
                             <div class="col is-right">
                                 <button class="button outline" on:click={()=>row.show=false}>Close</button>

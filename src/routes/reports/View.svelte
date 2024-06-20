@@ -1,7 +1,7 @@
 <script>
 
 import { onMount } from 'svelte';
-import {groups,teachers,config,alert,pupils} from '$lib/store';
+import {groups,teachers,config,alert,pupils,assessments,cycles} from '$lib/store';
 import * as html from '$lib/html';
 import * as util from '$lib/util';
 import * as file from '$lib/file';
@@ -478,6 +478,7 @@ let update=async()=>{
 
    
     // get report cycles
+    /*
     let response = await fetch('/edge/read', {
             method: 'POST',
             body: JSON.stringify({collection:'cycles',filter:{},projection:{}}),
@@ -486,11 +487,13 @@ let update=async()=>{
     let res= await response.json();
     //console.log(res);
 
-    data.cycles=res.sort((/** @type {{ index: number; }} */ a,/** @type {{ index: number; }} */ b)=>b.index-a.index);
+    data.cycles=res.sort((a,b)=>b.index-a.index);
+    */
+    data.cycles=$cycles.sort((/** @type {{ index: number; }} */ a,/** @type {{ index: number; }} */ b)=>b.index-a.index);
     data.cIndex=0;
 
     // get assessments
-    /** @type {any}*/
+    /*
     let filter={"tag.archive":false};
     filter["tag."+data.context]=true;
     response = await fetch('/edge/read', {
@@ -500,6 +503,9 @@ let update=async()=>{
     });
     data.assessments= await response.json();
     console.log(data.assessments);
+    */
+    // @ts-ignore
+    data.assessments=$assessments.filter(el=>el.tag[data.context]===true && el.tag.archive===false);
 
 
     // pupil select
