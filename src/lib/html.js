@@ -195,7 +195,7 @@ export let getChance=(chance)=>{
  * @param {{title:string,report:{sal:string,tid:string,ec:string|null,ep:string|null,txt:string|null}[]}} report 
  * @returns {string}
  */
-let getItem=(report)=>{
+export let getItem=(report)=>{
     let txt=``;
     txt+=`<section style="break-inside:avoid;">`;
 	

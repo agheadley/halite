@@ -1,10 +1,12 @@
 <script>
-import {cycles,assessments,groups,config,pupils} from '$lib/store';
+import {cycles,assessments,groups,config,pupils,alert} from '$lib/store';
 import { onMount } from 'svelte';
+import * as html from '$lib/html.js';
+import Cell from '$lib/_Cell.svelte';
+import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 
 
-
-/** @type {{cIndex:number,view:{context:'overview'|'parent'|'pupil',chance:boolean,fb:boolean,rag:boolean,n:boolean},data:any}}*/
+/** @type {{cIndex:number,view:{context:'overview'|'parent'|'pupil',chance:boolean,fb:boolean,rag:boolean,n:boolean},data:any,detail:boolean}}*/
 let status= {
     cIndex:0,
     view:{context:'overview',chance:true,fb:true,rag:true,n:true},
@@ -14,7 +16,8 @@ let status= {
         A:[],
         E:[],
         P:[]
-    }
+    },
+    detail:false
 };
 
 /** @type {{pid:number,id:string,pn:string,sn:string,fm:number|null,hse:string,tg:string}}*/
@@ -191,27 +194,249 @@ for(let gp of gps) {
 
 };
 
+/**
+ * 
+ * @param {number} rowIndex
+ * @param {number} colIndex
+ */
+ let showDetail=(rowIndex,colIndex)=>{
+    data.detail=data.table[rowIndex].col[colIndex];
+    data.dIndex=rowIndex;
+    detail=true;
+};
 
-    onMount(async () => {
-        /** @type {any}*/
-        let cycs=$cycles.filter((el)=>el.publish===true).sort((/** @type {{ index: number; }} */ a,/** @type {{ index: number; }} */ b)=>b.index-a.index);
-        status.cIndex = cycs[0]? cycs[0].index : null; 
-        
-        status.data=await getReport();
-    });
+let validateGrade=()=>{
+    console.log(data.detail);
+    if(!data.detail.grade.find((/** @type {{ gd: any; }} */ el)=>el.gd===data.detail.gd)) {
+        data.detail.gd='';
+    }
+};
+
+let blurGrade=async()=>{
+    let x={gd:'X',scr:0,pc:0};
+    if(data.detail.gd!=='') {
+        let f=data.detail.grade.find((/** @type {{ gd: any; }} */ el)=>el.gd===data.detail.gd);
+        if(f) {
+            x.gd=data.detail.gd;
+            x.scr=f.scr;
+            x.pc=x.pc;
+        }
+    } 
+
+    console.log('blurGrade',x);
+
+    let response = await fetch('/edge/update', {
+		    method: 'POST',
+		    body: JSON.stringify({
+                collection:'results',
+                filter:{"_id":{"$oid": data.detail._id}},
+                update:{
+                    gd:data.detail.gd,
+                    scr:x.scr,
+                    pc:x.pc,
+                    log:`${status.pid}|${util.getDate()}`
+                }
+            }),
+		    headers: {'content-type': 'application/json'}
+	    });
+    let res= await response.json();
+    console.log(res);
+    if(res.matchedCount!==1) {
+        $alert.type='error';
+        $alert.msg=`Error updating result`;
+    } else  $alert.msg=`Modified ${res.modifiedCount} result`; 
+
+};
+
+
+
+onMount(async () => {
+    /** @type {any}*/
+    let cycs=$cycles.filter((el)=>el.publish===true).sort((/** @type {{ index: number; }} */ a,/** @type {{ index: number; }} */ b)=>b.index-a.index);
+    status.cIndex = cycs[0]? cycs[0].index : null; 
+    
+
+    let f=$config.view.find((/** @type {{ context: string; }} */ el)=>el.context==='overview');
+    status.view={context:'overview',chance:f?f.chance:false,fb:f?f.fb:false,rag:f?f.rag:false,n:f?f.n:false};
+
+
+    status.data=await getReport();
+});
 
 </script>
 
 <div class="row">
-    <div class="col">
-        {status.data.pupil.pn} {status.data.pupil.sn}
+    <div class="col is-vertical-align">
+        <h4>{status.data.pupil.pn} {status.data.pupil.sn}</h4>
     </div>
-    <div class="col">
+    <div class="col is-vertical-align">
         {status.data.pupil.fm!==null ? 'F'+status.data.pupil.fm : ''} {status.data.pupil.hse}
     </div>
 </div>
+<hr/>
 
-<p>{JSON.stringify(status.data)}</p>
+
+{#each status.data.A as row,rowIndex}
+    <section style="break-inside:avoid;">
+	<div class="row"><div class="col">
+            <span class="bold">{row.title}<span>
+    </div></div>
+
+    <div class="row">
+        <div class="col">
+            <table><tbody><tr>
+            
+           {#each row.col as col,colIndex}
+           <td>
+                <div>
+                    {#if status.view.n}
+                        <AssessmentTitle title={col.txt} subtitle={col.ds}/>
+                    {:else}
+                    <span class="small">{col.ds}</span>
+                    {/if}    
+                </div>
+                <div>
+                    {#if col.edit}
+                        <a href={'#'} on:click={()=>showDetail(rowIndex,colIndex)} on:keydown={()=>showDetail(rowIndex,colIndex)} class="button clear icon-only">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                        </a>
+        
+                    {:else}
+
+                        <a href={'#'} on:click={()=>showDetail(rowIndex,colIndex)} on:keydown={()=>showDetail(rowIndex,colIndex)} class="button clear icon-only"> 
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                        </a>
+
+                    {/if}
+                </div>
+                <Cell color={status.view.rag} residual={col.r}>{col.gd}</Cell>
+            </td>
+           {/each}
+            </tr></tbody></table>
+        </div>
+        <div class="col">
+            {#if status.view.chance}
+            <div class="report-information-left">
+                <div><span class="tag">{row.chance.A.std}</span></div>
+                <div>{@html html.getChance(row.chance.A)}</div>
+                <div><span class="tag">{row.chance.B.std}</span></div>
+                <div>{@html html.getChance(row.chance.B)}</div>
+            </div>
+            {/if}
+        </div>
+            
+     
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <div class="report-information-right"><span class="bold">{status.data.cycle.tt} {status.data.cycle.ts} {status.data.cycle.y}</span></div>
+            <div class="statement-txt">{row.statement}</div>
+            {#each row.report as item,itemIndex}
+            {#if item.txt!==null && item.txt!==''}
+                <div class="report-txt">{item.txt}</div>
+
+            {/if}
+            <div class="report-information"><div><span>{item.sal}</span></div><div><span class="tag">EFFORT {item.ec===null ? '' : `CLASS ${item.ec}`} {item.ep===null ? '' : `PREP ${item.ep}`}</span></div></div>
+
+            {/each}
+ 
+        </div>
+	
+    </div>
+
+
+<hr/>
+</section>
+
+{/each}
+
+{#each status.data.E as row,rowIndex}
+    <section style="break-inside:avoid;">
+        <div class="row"><div class="col">
+
+        <div class="report-information">
+            <div><span class="bold">{row.title}<span></div>
+            <div></div>
+        </div>
+	
+        {#each row.report as col,colIndex}
+				<div class="report-txt">{#if col.txt!==null && col.txt!==''}{col.txt}{/if}</div>
+		        <div class="report-information"><div><span>{col.sal}</span></div><div></div></div>
+        {/each}
+	
+	    </div></div>
+        </section>
+	
+{/each}
+<hr/>
+	    
+
+{#each status.data.P as row,rowIndex}
+    <section style="break-inside:avoid;">
+        <div class="row"><div class="col">
+
+        <div class="report-information">
+            <div><span class="bold">{row.title}<span></div>
+            <div></div>
+        </div>
+	
+        {#each row.report as col,colIndex}
+				<div class="report-txt">{#if col.txt!==null && col.txt!==''}{col.txt}{/if}</div>
+		        <div class="report-information"><div><span>{col.sal}</span></div><div></div></div>
+        {/each}
+	
+	    </div></div>
+        </section>
+	
+{/each}
+
 <style>
 
+.report-information-left {
+    display:flex;
+    flex-direction:row;
+    justify-content:start;
+    width:100%;
+    padding-bottom:0.25rem;
+    padding-top:0.25rem;  
+}
+
+.report-information-right {
+    display:flex;
+    flex-direction:row;
+    justify-content:end;
+    width:100%;
+    padding-bottom:0.25rem;
+    padding-top:0.25rem;  
+}
+.statement-txt {
+    background: white;
+    padding:0.2rem;
+    border-radius:0.5rem;
+    
+}
+
+.report-txt {
+    background: rgba(51,51,51,0.1);
+    padding:0.2rem;
+    border-radius:0.5rem;
+    
+}
+
+.report-information {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    width:100%;
+    padding-bottom:0.25rem;
+    padding-top:0.25rem;  
+}
+
+
+.bold {font-weight:600;}
+
+.small {font-size:1.2rem;}
+
 </style>
+
