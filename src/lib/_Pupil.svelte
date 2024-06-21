@@ -458,6 +458,17 @@ onMount(async () => {
 <hr/>
 </section>
 {/each}
+
+{#each report.E as row,rowIndex}
+	{@html html.getItem(row)}
+{/each}
+<hr/>
+{#each report.P as row,rowIndex}
+	{@html html.getItem(row)}
+{/each}
+
+
+
 {/if}
 <!-- / end report view-->
 {:catch error}
