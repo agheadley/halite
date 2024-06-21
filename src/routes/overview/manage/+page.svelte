@@ -6,8 +6,7 @@
     import Modal from '$lib/_Modal.svelte';
     import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
     import Cell from '$lib/_Cell.svelte';
-    import Pupil from '$lib/_Pupil.svelte';
-
+    
     /** @type {any}*/
     export let data;
 
