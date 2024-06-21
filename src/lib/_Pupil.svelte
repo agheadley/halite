@@ -20,8 +20,8 @@ let report={
 let view;
 
 
-/** @type {boolean}*/
-let detail=false;
+/** @type {any}*/
+let detail={show:false,r:0,c:0,grade:[],total:[],sc:'',tag:{grade:false}};
 
 
 
@@ -104,7 +104,7 @@ for(let gp of gps) {
     for(let assessment of a) {
         //console.log(a);
         let f=results.find((/** @type {{ aoid: any; }} */ el)=>el.aoid===assessment._id); 
-        col.push({txt:assessment.n,ds:assessment.ds,t:f?f.t:[],pc:f?f.pc:0,gd:f?f.gd:'X',r:0,_id:f?f._id:'',aoid:f?f.aoid:'',edit:assessment.tag.pupiledit && assessment.tag.open?true:false});
+        col.push({txt:assessment.n,ds:assessment.ds,t:f?f.t:[],pc:f?f.pc:0,gd:f?f.gd:'X',r:0,_id:f?f._id:'',aoid:f?f.aoid:'',edit:assessment.tag.pupiledit && assessment.tag.open?true:false,fb:f?f.fb:''});
     }
     let gds=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===gp.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
     //console.log(gp,gds,col);
@@ -185,7 +185,7 @@ for(let gp of gps) {
 
    
     console.log(report);
-    detail=false;
+    detail.show=false;
 
 
 };
@@ -197,13 +197,83 @@ for(let gp of gps) {
  */
  let showDetail=(r,c)=>{
     console.log(report.A[r].col[c]);
-    detail=true;
+    detail.r=r;
+    detail.c=c;
+    detail.show=true;
 };
 
 let getDetail=async()=>{
+    console.log('getting details ...');
+    let aoid=report.A[detail.r].col[detail.c].aoid;
+   
+    let response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'assessments',filter:{"_id":{"$oid":aoid}} ,projection:{}}),
+        headers: {'content-type': 'application/json'}
+    });
+    let res= await response.json();
+    let assessment=res[0] ? res[0] : null;
+    if(assessment!==null) {
+        detail.grade=assessment.grade;
+        detail.total=assessment.total;
+        detail.tag.grade=assessment.tag.grade;
+        detail.sc=assessment.sc;
+
+    }
+
+    console.log(assessment);
+
+
 
 };
 
+let validateGrade=()=>{
+    if(detail.sc!=='') {
+        let gds=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===detail.sc).map((/** @type {{ gd: any; }} */ el)=>el.gd);
+        if(!gds.includes(report.A[detail.r].col[detail.c].gd)) report.A[detail.r].col[detail.c].gd='';
+    }
+    
+};
+
+let blurGrade=async()=>{
+    let x={gd:'X',scr:0,pc:0};
+    if(report.A[detail.r].col[detail.c].gd!=='') {
+        let gds=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===detail.sc);
+        let f=gds.find((/** @type {{ gd: string; }} */ el)=>el.gd===report.A[detail.r].col[detail.c].gd);
+       
+        if(f) {
+            x.gd=report.A[detail.r].col[detail.c].gd
+            x.scr=f.scr;
+            x.pc=x.pc;
+        }
+
+        let response = await fetch('/edge/update', {
+		    method: 'POST',
+		    body: JSON.stringify({
+                collection:'results',
+                filter:{"_id":{"$oid":report.A[detail.r].col[detail.c]._id }},
+                update:{
+                    gd:x.gd,
+                    scr:x.scr,
+                    pc:x.pc,
+                    log:`${pupil.user}|${util.getDate()}`
+                }
+            }),
+		    headers: {'content-type': 'application/json'}
+	    });
+        let res= await response.json();
+        console.log(res);
+        if(res.matchedCount!==1) {
+            $alert.type='error';
+            $alert.msg=`Error updating result`;
+        } else  $alert.msg=`Grade saved`; 
+
+
+
+
+    }
+
+};
 
 onMount(async () => {
     
@@ -230,17 +300,81 @@ onMount(async () => {
     </div>
 </div>
 <hr/>
-{#if detail}
+{#if detail.show}
 <div class="row">
-    <div class="col"></div>
-    <div class="col"><button class="button outline" on:click={()=>detail=false}>Back</button> </div>
+    <div class="col"><span class="tag">{report.A[detail.r].title}</span><span class="bold">{report.A[detail.r].col[detail.c].txt} {report.A[detail.r].col[detail.c].ds}</span></div>
+    <div class="col"><button class="button outline" on:click={()=>detail.show=false}>Back</button> </div>
 </div>
 {#await getDetail()}
 <div class="row">
     <div class="col">Finding assessment data</div>
 </div>
 {:then}
-    <div>Hello!</div>
+    <div class="row">
+        <div class="col">
+            GRADE
+        </div>
+        <div class="col">
+            {#if report.A[detail.r].col[detail.c].edit}
+            <input  type=text bind:value={report.A[detail.r].col[detail.c].gd} on:input={validateGrade} on:blur={blurGrade}/>
+            {:else}
+                <span class="bold">{report.A[detail.r].col[detail.c].gd}</span>{#if !detail.tag.grade}&nbsp;&nbsp;({report.A[detail.r].col[detail.c].pc} %){/if}
+            {/if}
+        </div>
+    </div>
+    {#if view.fb && report.A[detail.r].col[detail.c].fb}
+    <div class="row">
+        <div class="col">
+            <span class="tag">Feedback</span><p>{report.A[detail.r].col[detail.c].fb}</p>
+        </div>
+    </div>
+    {/if}
+    {#if !detail.tag.grade}
+    <div class="row">
+        <div class="col">
+            <table class="striped small">
+                <thead>
+                    <tr>
+                        <th>Section</th>
+                        <th>Score</th>
+                        <th>Weighting</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each detail.total as row,rowIndex}
+                    <tr>
+                        <td>{row.n}</td>
+                        <td>{report.A[detail.r].col[detail.c].t[rowIndex]}/{row.t}</td>
+                        <td>{row.w}</td>
+                    </tr>
+                    {/each}
+                  
+                </tbody>
+            </table>
+
+        </div>
+        <div class="col">
+            <table class="striped small">
+                <thead>
+                    <tr>
+                        <th>Grade</th>
+                        <th> % </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {#each detail.grade as row,rowIndex}
+                    <tr>
+                        <td>{row.gd}</td>
+                        <td>{row.pc}</td>
+                      
+                    </tr>
+                    {/each}
+                  
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {/if}
 {:catch error}
 <div class="row">
     <div class="col">Error finding assessment</div>
@@ -248,7 +382,7 @@ onMount(async () => {
 {/await}
 
 {/if}
-{#if !detail}
+{#if !detail.show}
 
 {#each report.A as row,rowIndex}
 
