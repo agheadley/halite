@@ -202,7 +202,7 @@ export let getItem=(report)=>{
     txt+=`<div class="row"><div class="col">`;
 
     txt+=`<div class="report-information">
-        <div><span class="bold">${report.title}<span></div>
+        <div><span style="font-weight:600;" class="bold">${report.title}<span></div>
         <div></div>
     </div>`;
 	
