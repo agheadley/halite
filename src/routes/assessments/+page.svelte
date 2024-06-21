@@ -8,7 +8,7 @@
     import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
     import Cell from '$lib/_Cell.svelte';
     import Modal from '$lib/_Modal.svelte';
-    import Pupil from '$lib/_PupilInformation.svelte';
+    import PupilReview from '$lib/_PupilReview.svelte';
     import Export from './Export.svelte';
 
     export let data;
@@ -172,7 +172,7 @@
                     </tr>
                     {#if row.show}
                     <Modal bind:open={row.show}>
-                        <Pupil user={status.user} data={{pid:row.pid,id:row.id,pn:row.pn,sn:row.sn,fm:row.fm,hse:row.hse,tg:row.tg}}></Pupil>
+                        <PupilReview pupil={{context:'overview',user:status.user,pid:row.pid,pn:row.pn,sn:row.sn,fm:row.fm,hse:row.hse,id:row.id,tg:row.tg}}/>
                         <div class="row">
                             <div class="col is-right">
                                 <button class="button outline" on:click={()=>row.show=false}>Close</button>

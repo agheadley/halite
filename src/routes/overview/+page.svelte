@@ -10,7 +10,7 @@
     import Modal from '$lib/_Modal.svelte';
     import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
     import Cell from '$lib/_Cell.svelte';
-    import Pupil from '$lib/_PupilInformation.svelte';
+    import PupilReview from '$lib/_PupilReview.svelte';
 
     /** @type {any}*/
     export let data;
@@ -248,7 +248,7 @@
                            
                         </div>
                         <hr/>
-                        <Pupil user={status.user} data={{pid:row.pid,id:row.id,pn:row.pn,sn:row.sn,fm:row.fm,hse:row.hse,tg:row.tg}}></Pupil>
+                        <PupilReview pupil={{context:'overview',user:status.user,pid:row.pid,id:row.id,pn:row.pn,sn:row.sn,fm:row.fm,hse:row.hse,tg:row.tg}}/>
                       
                         <div class="row">
                             <div class="col is-right">
