@@ -63,7 +63,7 @@ if(cycs[0]) {
 // get groups
 /** @type {{g:string,ss:string,sc:string,sl:string,lv:string,yr:number}[]}*/
 let gps=$groups.filter(el=>el.pupil.find(element=>(element.pid===pupil.pid))).map(el=>({g:el.g,ss:el.ss,sc:el.sc,sl:el.sl,lv:el.lv,yr:el.yr}));
-console.log(report,gps);
+console.log(reports,gps);
 
 
 // get results
@@ -95,7 +95,7 @@ for(let gp of gps) {
     }
    
 
-
+    console.log(gp,$assessments);
 
     let col=[];
     // @ts-ignore

@@ -272,14 +272,15 @@ onMount(async () => {
 
 	msg='Searching for user entry points ...';
 	
+	await getAssessments();
+	await getCycles();
 	
 	if(data.user.tag.pupil) goto('/pupil');
 
 	//testing - remove goto !
 	if(data.user.tag.teacher) goto('/assessments');
 
-	await getAssessments();
-	await getCycles();
+	
 	
 });
 
