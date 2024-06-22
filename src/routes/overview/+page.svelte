@@ -49,7 +49,8 @@
         if(!status.sort) {
             status.sort=true;
             // @ts-ignore
-            status.table=status.table.sort((/** @type {{ cols: { d: number; }[]; }} */ a,/** @type {{ cols: { d: number; }[]; }} */ b)=>b.cols[index].u-a.cols[index].u || a.cols[index].d-b.cols[index].d);
+            //status.table=status.table.sort((/** @type {{ cols: { d: number; }[]; }} */ a,/** @type {{ cols: { d: number; }[]; }} */ b)=>b.cols[index].u-a.cols[index].u || a.cols[index].d-b.cols[index].d);
+            status.table=status.table.sort((/** @type {{ cols: { d: number; }[]; }} */ a,/** @type {{ cols: { d: number; }[]; }} */ b)=>a.cols[index].d-b.cols[index].d);
         
         } else {
             status.sort=false;
