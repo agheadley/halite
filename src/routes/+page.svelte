@@ -219,6 +219,14 @@ onMount(async () => {
 	//console.log(data);
 	$config=data.config;
 	
+	await getAssessments();
+	await getCycles();
+	
+	console.log(data.user);
+	
+	
+
+
 	//if(data.config.update.groups || data.config.update.conduct || data.config.update.contacts) await updateGroupsContactsConduct();
 	if(data.config.update.groups || data.config.update.conduct || data.config.update.contacts) await updateGroupsContactsTeachers();
 	
@@ -251,6 +259,11 @@ onMount(async () => {
 		}
 
 
+	// head to pupil if necessary. 
+	if(data.user.tag.pupil) goto('/pupil');
+
+
+
 	msg='Building cohort data ...';
 	
 	getAssessmentsCohorts();
@@ -272,10 +285,7 @@ onMount(async () => {
 
 	msg='Searching for user entry points ...';
 	
-	await getAssessments();
-	await getCycles();
 	
-	if(data.user.tag.pupil) goto('/pupil');
 
 	//testing - remove goto !
 	if(data.user.tag.teacher) goto('/assessments');

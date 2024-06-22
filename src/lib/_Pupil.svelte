@@ -377,7 +377,7 @@ onMount(async () => {
     {/if}
 {:catch error}
 <div class="row">
-    <div class="col">Error finding assessment</div>
+    <div class="col">Error finding data</div>
 </div>
 {/await}
 
@@ -458,11 +458,12 @@ onMount(async () => {
 <hr/>
 </section>
 {/each}
-
+<div class="report-information-right"><span class="bold">{report.cycle.tt} {report.cycle.ts} {report.cycle.y}</span></div>        
 {#each report.E as row,rowIndex}
 	{@html html.getItem(row)}
 {/each}
 <hr/>
+<div class="report-information-right"><span class="bold">{report.cycle.tt} {report.cycle.ts} {report.cycle.y}</span></div>        
 {#each report.P as row,rowIndex}
 	{@html html.getItem(row)}
 {/each}
