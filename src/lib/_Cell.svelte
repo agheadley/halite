@@ -32,6 +32,7 @@
         p=min+(max-min)*Math.abs(residual)/maxGrades;  
     };
     
+    //console.log(color,residual);
     
     </script>
     <!--{d} {s1} {base} {s2} {grade}-->

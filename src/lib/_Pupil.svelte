@@ -439,7 +439,9 @@ onMount(async () => {
 
     <div class="row">
         <div class="col">
+            {#if row.report[0]}
             <div class="report-information-right"><span class="bold">{report.cycle.tt} {report.cycle.ts} {report.cycle.y}</span></div>
+            {/if}
             <div class="statement-txt">{row.statement}</div>
             {#each row.report as item,itemIndex}
             {#if item.txt!==null && item.txt!==''}
@@ -458,12 +460,17 @@ onMount(async () => {
 <hr/>
 </section>
 {/each}
-<div class="report-information-right"><span class="bold">{report.cycle.tt} {report.cycle.ts} {report.cycle.y}</span></div>        
+{#if report.E[0]}
+<div class="report-information-right"><span class="bold">{report.cycle.tt} {report.cycle.ts} {report.cycle.y}</span></div>   
+{/if}     
 {#each report.E as row,rowIndex}
 	{@html html.getItem(row)}
 {/each}
+
+{#if report.P[0]}
 <hr/>
 <div class="report-information-right"><span class="bold">{report.cycle.tt} {report.cycle.ts} {report.cycle.y}</span></div>        
+{/if}
 {#each report.P as row,rowIndex}
 	{@html html.getItem(row)}
 {/each}
