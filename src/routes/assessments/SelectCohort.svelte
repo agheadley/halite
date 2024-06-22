@@ -11,9 +11,9 @@
     
     let update=async()=>{
         let y=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
-        console.log(y);
+        //console.log(y);
         let s=$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index];
-        console.log(s);
+        //console.log(s);
        
         /* adjust subjects.index if necessary */
         if(!(y.lv===s.lv && y.yr===s.yr)) $cohorts.assessments.subjects.index=$cohorts.assessments.subjects.list.findIndex((/** @type {{ lv: any; yr: any; }} */ el)=>el.lv===y.lv && el.yr===y.yr);
@@ -25,19 +25,22 @@
         
         let gps=$groups.filter(el=>el.lv===y.lv && el.yr===y.yr && el.sc===s.sc && el.ss===s.ss );
       
-        console.log(gps);
+        //console.log(gps);
 
         /* get assessments */
 
-
+        
         let response = await fetch('/edge/read', {
 		    method: 'POST',
 		    body: JSON.stringify({collection:'assessments',filter:{lv:y.lv,yr:y.yr,sc:s.sc,ss:s.ss,"tag.archive":false},projection:{}}),
 		    headers: {'content-type': 'application/json'}
 	    });
+         let assessments= await response.json();
+  
 
-        let assessments= await response.json();
-        console.log(assessments);
+       
+       
+        //console.log(assessments);
 
         response = await fetch('/edge/read', {
 		    method: 'POST',
@@ -59,7 +62,8 @@
         let cols=util.getAssessmentCols(assessments,teachers,status.user);
         
 
-        console.log(cols);
+        //console.log(cols);
+        
         //let results=assessments.map((/** @type {{ pupil: any[]; _id: any; }} */ el)=>el.pupil.map((/** @type {{ pid: any; gd: any; scr: any; pc: any; }} */ cel)=>({_id:el._id,pid:cel.pid,gd:cel.gd,scr:cel.scr,pc:cel.pc}))).flat();
         //console.log('***',x);
         //let results=assessments.map((/** @type {{ _id: any; pupil: any[]; }} */ el)=>({_id:el._id,pupil:el.pupil.map((/** @type {{ pid: any; gd: any; pc: any; scr: any; }} */ el)=>({pid:el.pid,gd:el.gd,pc:el.pc,scr:el.scr}))}));
@@ -144,7 +148,7 @@
 
     onMount(async () => {
            console.log('SelectCohort.svelte mounted');
-           console.log($pupils);
+           //console.log($pupils);
            await update();
     });
     

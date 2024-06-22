@@ -47,8 +47,8 @@
     onMount(async () => {
         $location='/assessments';
         console.log(`${$location} mounted`);
-        console.log('pupils',$pupils);
-        console.log('groups',$groups);
+        //console.log('pupils',$pupils);
+        //console.log('groups',$groups);
         console.log('cohorts',$cohorts);
         status.user=data.user.name;
 

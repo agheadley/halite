@@ -20,7 +20,7 @@ let updateGroupsContactsTeachers=async()=>{
     });
     let res= await response.json();
     
-    console.log(res);
+    //console.log(res);
 
 };
 
@@ -281,7 +281,7 @@ onMount(async () => {
     $teachers= await response.json();
 	   
 
-	console.log('$cohorts',$cohorts);
+	//console.log('$cohorts',$cohorts);
 
 	msg='Searching for user entry points ...';
 	
