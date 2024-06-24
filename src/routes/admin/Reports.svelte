@@ -8,6 +8,7 @@
     import ReportCycle from './ReportCycle.svelte';
     import ReportCreate from './ReportCreate.svelte';
     import ReportPrint from './ReportPrint.svelte';
+    import ReportEdit from './ReportEdit.svelte';
 
     /** @type {any}*/
     export let status;
@@ -56,17 +57,7 @@
 
 
     {#if data.tabs[data.tabIndex]==='Edit'}
-    <div class="row">
-        <div class="col is-vertical-align"><h4>Edit Report Data</h4></div> 
-       
-    </div>
-
- 
-    <div class="row">
-        <div class="col">
-           &nbsp;
-        </div>
-    </div>
+        <ReportEdit bind:status={status}/>
 
     {/if} <!-- /tab==='Edit'-->
 
