@@ -25,7 +25,7 @@
         headers: {'content-type': 'application/json'}
         });
         data.reports= await response.json();
-        data.reports=data.reports.sort((a,b)=>b.fm - a.fm || a.type.localeCompare(b.type) || a.author.type.localeCompare(b.author.type) || a.sc.localeCompare(b.sc) || a.ss.localeCompare(b.ss) || a.g.localeCompare(b.g) || a.pupil.sn.localeCompare(b.pupil.sn) || a.pupil.pn.localeCompare(b.pupil.pn) || a.author.tid.localeCompare(b.author.tid) )
+        data.reports=data.reports.sort((/** @type {{ fm: number; type: string; author: { type: string; tid: string; }; sc: string; ss: string; g: string; pupil: { sn: string; pn: string; }; }} */ a,/** @type {{ fm: number; type: any; author: { type: any; tid: any; }; sc: any; ss: any; g: any; pupil: { sn: any; pn: any; }; }} */ b)=>b.fm - a.fm || a.type.localeCompare(b.type) || a.author.type.localeCompare(b.author.type) || a.sc.localeCompare(b.sc) || a.ss.localeCompare(b.ss) || a.g.localeCompare(b.g) || a.pupil.sn.localeCompare(b.pupil.sn) || a.pupil.pn.localeCompare(b.pupil.pn) || a.author.tid.localeCompare(b.author.tid) )
         console.log(data.reports);
     };
 
