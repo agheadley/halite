@@ -16,7 +16,7 @@
     /** @type {any}*/
     let data={
   
-        tabs:['Cycle','Create','Edit','Print'],
+        tabs:['Edit','Print','Cycle','Create'],
         tabIndex:0,
        
     };

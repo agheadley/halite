@@ -12,13 +12,21 @@
     let data={
        index:0,
        fm:0,
-       types:{A:true,E:false,P:false}
+       types:{A:true,E:false,P:false},
+       reports:[]
     };
     
     
     
     let update=async()=>{
-
+        let response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'reports',filter:{coid:$cycles[data.index]._id} ,projection:{}}),
+        headers: {'content-type': 'application/json'}
+        });
+        data.reports= await response.json();
+        data.reports=data.reports.sort((a,b)=>b.fm - a.fm || a.type.localeCompare(b.type) || a.author.type.localeCompare(b.author.type) || a.sc.localeCompare(b.sc) || a.ss.localeCompare(b.ss) || a.g.localeCompare(b.g) || a.pupil.sn.localeCompare(b.pupil.sn) || a.pupil.pn.localeCompare(b.pupil.pn) || a.author.tid.localeCompare(b.author.tid) )
+        console.log(data.reports);
     };
 
 
@@ -27,7 +35,8 @@
     onMount(async () => {
         console.log('/admin ReportEdit.svelte');
         console.log(status);
-
+        data.fm=$config.year[0].fm;
+        await update();
       
     });
      
@@ -79,9 +88,30 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col">
+        <table class="striped small">
+            <thead>
+
+            </thead>
+            <tbody>
+                {#each data.reports as row,rowIndex}
+                    <tr>
+                        <td>({row.type}) {row.author.type} {row.author.tid}</td>
+                        <td>{row.author.sal}</td>
+                        <td>{row.pupil.pn} {row.pupil.sn}</td>
+                        <td>{row.txt}</td>
+                    </tr>
+                {/each}
+            </tbody>
+        </table>
+    </div>
+</div>
     
     <style>
     
-  
+  .small {
+    font-size:1.2rem;
+  }
   
     </style>
