@@ -13,11 +13,9 @@
     let data={
        index:0,
        fm:0,
-       types:{A:true,E:false,P:false},
-       type:'A',
        reports:[],
-       edit:[],
-       open:false
+       open:false,
+       filter:{atype:'',hse:'',tid:'',ss:'',sc:'',g:'',txt:false},
     };
     
     
@@ -77,15 +75,6 @@
 
     };
 
-    /**
-     * 
-     * @param {string} type
-     * @param {number} index
-     */
-    let select=(type,index)=>{
-        console.log(type,data.reports[index]);
-        data.open=true;
-    };
         
     onMount(async () => {
         console.log('/admin ReportEdit.svelte');
@@ -120,7 +109,7 @@
     
 
 <div class="row">
-    <div class="col-6 is-vertical-align">
+    <div class="col is-vertical-align">
         <fieldset class="is-full-width">
             <legend>Cycle</legend>    
             <p class="grouped">       
@@ -137,7 +126,7 @@
         </fieldset>
       
     </div>
-    <div class="col-3 is-vertical-align">
+    <div class="col is-vertical-align">
         <fieldset>
             <legend>Year group</legend>           
             <select  id="Year" bind:value={data.fm}>
@@ -149,7 +138,9 @@
             </select>
         </fieldset>
     </div>
+    <!--
     <div class="col-3 is-vertical-align">
+    
         <fieldset>
             <legend>Retport Types</legend>
             <p class="grouped">
@@ -159,6 +150,7 @@
             </p>
         </fieldset>
     </div>
+    -->
 </div>
 
 
@@ -167,48 +159,55 @@
         <table class="striped small">
             <thead>
                 <tr>
-                    <th></th>
-                    <th>tid</th>
+                    <th>{$cycles[data.index].tt} {$cycles[data.index].ts} {$cycles[data.index].y}</th>
+                    <th><input type=text bind:value={data.filter.atype}/></th>
+                    <th><input type=text bind:value={data.filter.tid}/></th>
                     <th>sal</th>
                     <th>pupil</th>
-                    <th></th>
-                    <th>subject</th>
-                    <th>g</th>
-                    <th>ec</th>
-                    <th>ep</th>
+                    <th><input type=text bind:value={data.filter.hse}/></th>
+                    <th><input type=text bind:value={data.filter.ss}/></th>
+                    <th><input type=text bind:value={data.filter.sc}/></th>
                     <td></td>
-                    <th>txt</th>
-                    <th></th>
+                    <th><input type=text bind:value={data.filter.g}/></th>
+                    <th>efforts</th>
+                    <th>blank?<input type=checkbox bind:checked={data.filter.txt}/></th>
+                   
 
                 </tr>
             </thead>
             <tbody>
                 {#each data.reports as row,rowIndex}
                     {#if row.fm===data.fm}
-                    {#if data.type===row.type}
-                  
-                    <tr>
-                        <td>{row.author.type}</td>
-                        <td><a href={'#'} on:click={()=>select('t',rowIndex)}>{row.author.tid}</a></td>
-                        <td>{row.author.sal}</td>
-                        <td><a href={'#'} on:click={()=>select('p',rowIndex)}>{row.pupil.pn} {row.pupil.sn}</a></td>
-                        <td>{row.pupil.hse} / {row.pupil.tg}</td>
-                        <td><a href={'#'} on:click={()=>select('s',rowIndex)}>{row.sl} ({row.sc})</a></td>
-                        <td>{#if data.type==='A'}<a href={'#'} on:click={()=>select('g',rowIndex)}>{row.g}</a>{:else}{row.g}{/if}</td>
-                        <td>{row.ec}</td>
-                        <td>{row.ep}</td>
-                        <td>
-                            <a href={'#'} on:click={()=>select('i',rowIndex)} class="button clear icon-only"> 
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                    {#if 
+                        (row.author.tid===data.filter.tid || data.filter.tid==='') &&
+                        (row.ss===data.filter.ss || data.filter.ss==='') &&
+                        (row.sc===data.filter.sc || data.filter.sc==='') &&
+                        (row.author.type===data.filter.atype || data.filter.atype==='') &&
+                        (row.pupil.hse===data.filter.hse || data.filter.hse==='') &&
+                        (row.g===data.filter.g || data.filter.g==='') &&
+                        (data.filter.txt===true && row.txt==='' || data.filter.txt===false)
 
-                            </a>
-                        </td>
+                    }
+
+                    <tr>
+                        <td>{row.coid}</td>
+                        <td>{row.author.type}</td>
+                        <td>{row.author.tid}</td>
+                        <td>{row.author.sal}</td>
+                        <td>{row.pupil.pn} {row.pupil.sn}</td>
+                        <td>{row.pupil.hse}</td>
+                        <td>{row.ss}</td>
+                        <td>{row.sc}</td>
+                        <td>{row.sl}</td>
+                        <td>{row.g}</td>
+                        <td>{row.ec} {row.ep}</td>
                         <td>{row.txt}</td>
                     
 
                     </tr>
                     {/if}
                     {/if}
+            
                 {/each}
             </tbody>
         </table>
