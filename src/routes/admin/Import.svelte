@@ -31,11 +31,12 @@ let samples = {
   
     ],
     intake:[
-        ["123456789012","67891",'Abbott','Sarah','F','Grocer',"2012",'MS','M','math','B',"119.9",'*','*',"0"],
-            ["123456789012","67891",'Abbott','Sarah','F','Grocer',"2012",'MS','M','vocab','A',"109.3",'*','*',"0"],
-            ["123456789012","67891",'Abbott','Sarah','F','Grocer',"2012",'MS','M','vocab','B',"110.5",'*','*',"0"],
-            ["123456789012","67891",'Abbott','Sarah','F','Grocer',"2012",'MS','M','prediction','A',"0",'G','E',"7.8"],
-            ["123456789012","67891",'Abbott','Sarah','F','Grocer',"2012",'MS','M','prediction','B',"0",'G','Sp',"7.1"],
+        ['pid','sn','pn','gnd','hse','yr','lv','test','type','std','scr','sc','ss','pre'],
+            ["67891",'Abbott','Sarah','F','Grocer',"2012",'MS','M','math','B',"119.9",'*','*',"0"],
+            ["67891",'Abbott','Sarah','F','Grocer',"2012",'MS','M','vocab','A',"109.3",'*','*',"0"],
+            ["67891",'Abbott','Sarah','F','Grocer',"2012",'MS','M','vocab','B',"110.5",'*','*',"0"],
+            ["67891",'Abbott','Sarah','F','Grocer',"2012",'MS','M','prediction','A',"0",'G','E',"7.8"],
+            ["67891",'Abbott','Sarah','F','Grocer',"2012",'MS','M','prediction','B',"0",'G','Sp',"7.1"],
             ['MS predictions 0-9, US A 0-140, US I 0-7'],
             ['std A refers to National Data / GCSE mean, std B refers to ALIS / Independent'],
             ['missing scores or predictions set to 0'],
@@ -53,6 +54,79 @@ let download=()=>{
  * @param {any} results
  */
 let createIntake=async(results)=>{
+    /** @type {any}*/
+    let documents=[];
+    for(let row of results) {
+        if(!documents.find((/** @type {{ pid: any; lv: any; yr: any; }} */ el)=>el.pid===Number(row.pid) && el.lv===row.lv && el.yr===Number(row.yr))) {
+            /** @type {any}*/
+            let line={
+                id:'',
+                pid:Number(row.pid),
+                sn:row.sn,
+                hse:row.hse,
+                gnd:row.gnd,
+                lv:row.lv,
+                yr:Number(row.yr),
+                test:row.test,
+                base:[],
+                pre:[]
+                };
+
+                /** @type {any}*/
+                let f=results.filter((/** @type {{ pid: any; lv: any; yr: any; type: string; }} */ el)=>el.pid===row.pid && el.lv===row.lv && el.yr===row.yr && el.type==='prediction');
+                /** @type {{sc:string,ss:string,A:number,B:number}[]}*/
+                let pre=[];
+                for(let item of f) {
+                    if(!pre.find(el=>el.ss===item.ss && el.sc===item.sc)) {
+                        let a=f.find((/** @type {{ ss: any; sc: any; std: string; }} */ el)=>el.ss===item.ss && el.sc===item.sc && el.std==='A');
+                        let b=f.find((/** @type {{ ss: any; sc: any; std: string; }} */ el)=>el.ss===item.ss && el.sc===item.sc && el.std==='B');
+                        pre.push({ss:item.ss,sc:item.sc,A:a?Number(a.pre):0,B:b?Number(b.pre):0});
+                    };
+                }
+                line.pre=pre;
+
+                 /** @type {any}*/
+                f=results.filter((/** @type {{ pid: any; lv: any; yr: any; type: string; }} */ el)=>el.pid===row.pid && el.lv===row.lv && el.yr===row.yr && el.type!=='prediction');
+                //console.log(f);
+                /** @type {{type:string,A:number,B:number}[]}*/
+                let base=[];
+                for(let item of f) {
+                    if(!base.find(el=>el.type===item.type)) {
+
+                        let a=f.find((/** @type {{ type:any; std: string; }} */ el)=>el.type===item.type && el.std==='A');
+                        let b=f.find((/** @type {{ type: any;std:string; }} */ el)=>el.type===item.type && el.std==='B');
+                        base.push({type:item.type,A:a?Number(a.scr):0,B:b?Number(b.scr):0});
+                    };
+                }
+                line.base=base;
+
+
+        documents.push(line);
+          
+        }
+
+    }
+
+
+    console.log(documents);
+
+
+    let response = await fetch('/edge/insert', {
+        method: 'POST',
+        body: JSON.stringify({collection:'intake',documents:documents}),
+        headers: {'content-type': 'application/json'}
+    });
+
+    let res= await response.json();
+    console.log(res);
+
+        if(res.length && res.length>0) {
+                $alert.msg=`${res.length} 'intake' documents created`;
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error creating 'intake' documents`;
+        }
+
 
 };
 
