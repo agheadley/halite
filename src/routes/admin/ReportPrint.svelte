@@ -257,7 +257,7 @@ onMount(async () => {
 
 <div class="row">
     <div class="col is-vertical-align">
-        <h1>Output 30 odd records in a file for easy pdf generation?</h1>
+     &nbsp;
     </div>
 </div>
 <style>
