@@ -75,6 +75,14 @@
 
     };
 
+    /**
+     * 
+     * @param {number} index
+     */
+    let openEdit=(index)=>{
+        console.log('individual modal',data.reports[index]);
+    };
+
         
     onMount(async () => {
         console.log('/admin ReportEdit.svelte');
@@ -120,13 +128,14 @@
                     {/each}
             </optgroup>
             </select>
+            <span class="tag">{$cycles[data.index].index}</span>&nbsp;
             {#if $cycles[data.index].active}<span class="tag text-error">ACTIVE</span>{/if}
             {#if $cycles[data.index].publish}<span class="tag text-error">PUBLISHED</span>{/if}
             </p>
         </fieldset>
       
     </div>
-    <div class="col is-vertical-align">
+    <div class="col-3 is-vertical-align">
         <fieldset>
             <legend>Year group</legend>           
             <select  id="Year" bind:value={data.fm}>
@@ -138,19 +147,10 @@
             </select>
         </fieldset>
     </div>
-    <!--
     <div class="col-3 is-vertical-align">
-    
-        <fieldset>
-            <legend>Retport Types</legend>
-            <p class="grouped">
-                {#each Object.keys(data.types) as col}
-                    {col} <input type=radio value={col} bind:group={data.type} on:change={order}/>
-                {/each}
-            </p>
-        </fieldset>
+        <button class="button dark" on:click={()=>openEdit(-1)}>Update Selected</button>
     </div>
-    -->
+   
 </div>
 
 
@@ -159,17 +159,35 @@
         <table class="striped small">
             <thead>
                 <tr>
-                    <th>{$cycles[data.index].tt} {$cycles[data.index].ts} {$cycles[data.index].y}</th>
-                    <th><input type=text bind:value={data.filter.atype}/></th>
-                    <th><input type=text bind:value={data.filter.tid}/></th>
+                    <th></th>
+                    <th>cycle</th>
+                    <th>type</th>
+                    <th>tid</th>
                     <th>sal</th>
                     <th>pupil</th>
+                    <th>hse</th>
+                    <th>sc</th>
+                    <th>ss</th>
+                    <th>sl</th>
+                    <th>g</th>
+                    <th>efforts</th>
+                    <th>txt</th>
+
+                    
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th><input type=text bind:value={data.filter.atype}/></th>
+                    <th><input type=text bind:value={data.filter.tid}/></th>
+                    <th></th>
+                    <th></th>
                     <th><input type=text bind:value={data.filter.hse}/></th>
                     <th><input type=text bind:value={data.filter.ss}/></th>
                     <th><input type=text bind:value={data.filter.sc}/></th>
                     <td></td>
                     <th><input type=text bind:value={data.filter.g}/></th>
-                    <th>efforts</th>
+                    <th></th>
                     <th>blank?<input type=checkbox bind:checked={data.filter.txt}/></th>
                    
 
@@ -190,7 +208,12 @@
                     }
 
                     <tr>
-                        <td>{row.coid}</td>
+                        <td>
+                            <a href={'#'} on:click={()=>openEdit(rowIndex)} on:keydown={()=>openEdit(rowIndex)} class="button clear icon-only">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                                </a>
+                        </td>
+                        <td>{row.ci}</td>
                         <td>{row.author.type}</td>
                         <td>{row.author.tid}</td>
                         <td>{row.author.sal}</td>
@@ -200,7 +223,7 @@
                         <td>{row.sc}</td>
                         <td>{row.sl}</td>
                         <td>{row.g}</td>
-                        <td>{row.ec} {row.ep}</td>
+                        <td>{row.ec} / {row.ep}</td>
                         <td>{row.txt}</td>
                     
 
