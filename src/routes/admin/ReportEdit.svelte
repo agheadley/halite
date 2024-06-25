@@ -95,7 +95,11 @@
             console.log('updateMany()');
             for(let item of Object.keys(data.filter)) {
                 if(item==='atype' && data.filter[item]!=='') filter["author.type"]=data.filter[item];
-                if(item==='tid' && data.filter[item]!=='') filter["author.tid"]=data.filter[item];
+                // not specified hod, hm, tutor but have specified tid - then assume teacher
+                if(item==='tid' && data.filter[item]!=='') {
+                    filter["author.tid"]=data.filter[item];
+                    if(data.filter.atype==='') data.filter.atype='teacher';
+                }
                 if(item==='hse' && data.filter[item]!=='') filter["pupil.hse"]=data.filter[item];
                 if(item==='ss' && data.filter[item]!=='') filter.ss=data.filter[item];
                 if(item==='sc' && data.filter[item]!=='') filter.sc=data.filter[item];
@@ -122,9 +126,9 @@
         data.update.update={coid:$cycles[data.index]._id};
         if(data.update.tid!=='') {
             data.update.tid=data.update.tid.toUpperCase().trim();
-            data.update.update['"author.tid"']= data.update.tid;
+            data.update.update["author.tid"]= data.update.tid;
         }
-        if(data.update.sal!=='')  data.update.update['"author.sal"']= data.update.sal;
+        if(data.update.sal!=='')  data.update.update["author.sal"]= data.update.sal;
         if(data.update.ec!=='')  data.update.update.ec= data.update.ec;
         if(data.update.ep!=='')  data.update.update.ep= data.update.ep;
         if(data.update.txt!=='')  data.update.update.txt= data.update.txt;
@@ -148,6 +152,7 @@
         if(res.matchedCount>=1) {
             $alert.msg=`updated ${res.matchedCount} reports. ${res.modifiedCount} changes made`;
             await update();
+            data.open=false;
    
         } else {
             console.log(res);
@@ -158,7 +163,24 @@
     };
 
     let deleteDocuments=async()=>{
+        console.log('deleting',data.update.query);
+        let response = await fetch('/edge/delete', {
+		    method: 'POST',
+		    body: JSON.stringify({collection:'reports',filter:data.update.query}),
+		    headers: {'content-type': 'application/json'}
+	    });
 
+        let res= await response.json();
+        console.log(res);
+        if(res.deletedCount && res.deletedCount>=1 ) {
+            $alert.msg=`Deleted ${res.deletedCount} reports`;  
+            await update();
+            data.open=false;
+        } else {
+            console.log(res);
+            $alert.type='error';
+            $alert.msg=`Error deleting report`;
+        }
     };
 
 
