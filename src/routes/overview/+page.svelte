@@ -2,6 +2,7 @@
     import { onDestroy } from 'svelte';
     import { onMount } from 'svelte';
     import {config,location,pupils,groups,cohorts} from '$lib/store';
+    import * as file from '$lib/file';
     import SelectCohort from './SelectCohort.svelte';
     import IntakeBar from '$lib/_IntakeBar.svelte';
     import List from './List.svelte';
@@ -38,6 +39,73 @@
      * @param {number} index
      */
     let export2D=(index)=>{
+        console.log(status.table);
+        let out=[];
+        out[0]=['id','surname','preferredName','house','gender'];
+        out[0].push(`${status.cols[index].n} ${status.cols[index].ds}`);
+        console.log(out);
+        //file.csvDownload(out,"OVERVIEW2D.csv");
+         /** @type {{ss:string,sc:string}[]} */
+        let subjects=[];
+        for(let item of status.results) if(!subjects.find(el=>el.ss===item.ss && el.sc===item.sc)) subjects.push({ss:item.ss,sc:item.sc});
+        subjects.sort((a,b)=>a.sc.localeCompare(b.sc) || a.ss.localeCompare(b.ss));
+       
+        let courses=[... new Set(subjects.map(el=>el.sc))].sort();
+
+        console.log(subjects,courses);
+
+        for(let subject of subjects) out[0].push(`${subject.ss} / ${subject.sc}`);
+
+        for(let row of status.table.filter((/** @type {{ show: any; }} */ el)=>el.show)) {
+            let line=[];
+            line.push(row.pid);
+            line.push(row.sn);
+            line.push(row.pn);
+            line.push(row.hse);
+            line.push(row.gnd);
+            line.push('');
+            for(let subject of subjects) {
+                // @ts-ignore
+                let f=status.results.find((/** @type {{ pid: any; ss: string; sc: string; }} */ el)=>el.dt===status.cols[index].dt && el.n===status.cols[index].n && el.pid===row.pid && el.ss===subject.ss && el.sc===subject.sc);
+                line.push(f?f.gd:'');
+            }
+            out.push(line);
+        } // of of main pupil loop.
+
+        let totals=[];
+        for(let item of $config.grade) {
+            if(courses.includes(item.sc)) totals.push({sc:item.sc,gd:item.gd,scr:item.scr});
+        } 
+
+        
+        totals=totals.sort((a,b)=>a.sc.localeCompare(b.sc) || b.scr-a.scr);
+        console.log(totals);
+
+        let totalRow=['id','surname','preferredName','house','gender',`TOTALS`];
+        for(let item of totals) totalRow.push(`${item.gd} (${item.sc})`);
+        out.push(totalRow);
+
+        for(let row of status.table.filter((/** @type {{ show: any; }} */ el)=>el.show)) {
+            let line=[];
+            line.push(row.pid);
+            line.push(row.sn);
+            line.push(row.pn);
+            line.push(row.hse);
+            line.push(row.gnd);
+            line.push('');
+
+            for(let total of totals) {
+                let f=status.results.filter((/** @type {{ dt: any; n: any; pid: any; gd: string; }} */ el)=>el.dt===status.cols[index].dt && el.n===status.cols[index].n && el.pid===row.pid && el.gd===total.gd);
+                line.push(f?String(f.length):'0');
+            }
+            out.push(line);
+
+
+        }
+
+
+        file.csvDownload(out,"OVERVIEW2D.csv");
+
 
     };
 

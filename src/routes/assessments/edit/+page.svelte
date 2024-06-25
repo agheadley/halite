@@ -202,7 +202,7 @@ let calculate=async(groupIndex,pupilIndex)=>{
     if(res.matchedCount!==1) {
         $alert.type='error';
         $alert.msg=`Error updating result ${x.pid} ${x.sn} ${x.pn}`;
-    } else  $alert.msg=`Modified ${res.modifiedCount} result`; 
+    } else  $alert.msg=`Modified ${x.sn} ${x.pn} changes - ${res.modifiedCount}`; 
 
 };
 
