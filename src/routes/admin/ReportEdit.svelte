@@ -16,8 +16,13 @@
        reports:[],
        open:false,
        filter:{atype:'',hse:'',tid:'',ss:'',sc:'',g:'',txt:false},
+       update:{query:{},delete:'',txt:'',ec:'',ep:'',sal:'',tid:''}
     };
     
+
+    $ : {
+        if(data.open===false) updateCancel();
+    }
     
     
     let update=async()=>{
@@ -80,9 +85,85 @@
      * @param {number} index
      */
     let openEdit=(index)=>{
-        console.log('individual modal',data.reports[index]);
+        /** @type {any}*/
+        let filter={};
+        if(index>-1) {
+            console.log('updateBy_Id',data.reports[index]);
+            filter={_id:{$oid:data.reports[index]._id}}
+        }
+        else {
+            console.log('updateMany()');
+            for(let item of Object.keys(data.filter)) {
+                if(item==='atype' && data.filter[item]!=='') filter["author.type"]=data.filter[item];
+                if(item==='tid' && data.filter[item]!=='') filter["author.tid"]=data.filter[item];
+                if(item==='hse' && data.filter[item]!=='') filter["pupil.hse"]=data.filter[item];
+                if(item==='ss' && data.filter[item]!=='') filter.ss=data.filter[item];
+                if(item==='sc' && data.filter[item]!=='') filter.sc=data.filter[item];
+                if(item==='g' && data.filter[item]!=='') filter.g=data.filter[item];
+                if(item==='txt' && data.filter[item]===true) filter.txt="";
+                
+
+                
+            }   
+        }
+
+        data.update.query=filter;
+        data.open=true;
     };
 
+    let updateCancel=()=>{
+        data.update={query:{},delete:'',txt:'',ec:'',ep:'',sal:'',tid:''}
+        
+        data.open=false;
+    }
+
+    let updateDocuments=async()=>{
+
+        data.update.update={coid:$cycles[data.index]._id};
+        if(data.update.tid!=='') {
+            data.update.tid=data.update.tid.toUpperCase().trim();
+            data.update.update['"author.tid"']= data.update.tid;
+        }
+        if(data.update.sal!=='')  data.update.update['"author.sal"']= data.update.sal;
+        if(data.update.ec!=='')  data.update.update.ec= data.update.ec;
+        if(data.update.ep!=='')  data.update.update.ep= data.update.ep;
+        if(data.update.txt!=='')  data.update.update.txt= data.update.txt;
+
+
+        console.log(data.update.query,data.update.update);
+
+        let response = await fetch('/edge/update', {
+		    method: 'POST',
+		    body: JSON.stringify({
+                collection:'reports',
+                filter:data.update.query,
+                update:data.update.update
+                }),
+		    headers: {'content-type': 'application/json'}
+	    });
+
+        let res= await response.json();
+        console.log(res);
+
+        if(res.matchedCount>=1) {
+            $alert.msg=`updated ${res.matchedCount} reports. ${res.modifiedCount} changes made`;
+            await update();
+   
+        } else {
+            console.log(res);
+            $alert.type='error';
+            $alert.msg=`Error updating reports`;
+        }
+
+    };
+
+    let deleteDocuments=async()=>{
+
+    };
+
+
+
+   
         
     onMount(async () => {
         console.log('/admin ReportEdit.svelte');
@@ -100,7 +181,7 @@
 <Modal bind:open={data.open}>
     <div class="row">
         <div class="col">
-            Edit Data
+            <h4>Edit Data</h4>
         </div>
         <div class="col">
             <button class="button outline" on:click={()=>data.open=false}>Close</button>
@@ -108,10 +189,78 @@
     </div>
     <div class="row">
         <div class="col">
-            <p>Show data here and type of changes, e.g, all in subject, group, a pupil, teacher</p>
+            <span class="tag text-center is-full-width">Update</span>
         </div>
-      
     </div>
+
+    <div class="row">
+        <div class="col">
+            <span class="bold">{JSON.stringify(data.update.query)}</span>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <fieldset class="is-full-width">
+                <legend>{data.update.tid!=='' ? `tid (to be updated)` : `tid (no updates)`}</legend>
+                <input type=text class={data.update.tid!=='' ? 'ip-filter success' : 'ip-filter'} bind:value={data.update.tid} on:input={()=>data.update.tid=data.update.tid.toUpperCase()}/>
+            </fieldset>
+        </div>
+        <div class="col" >
+            <fieldset class="is-full-width">
+                <legend>{data.update.sal!=='' ? `sal (to be updated)` : `sal (no updates)`}</legend>
+                <input type=text class={data.update.sal!=='' ? 'ip-filter success' : 'ip-filter'} bind:value={data.update.sal}/>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <fieldset class="is-full-width">
+                <legend>{data.update.ec!=='' ? `ec (to be updated)` : `ec (no updates)`}</legend>
+                <input type=text class={data.update.ec!=='' ? 'ip-filter success' : 'ip-filter'} bind:value={data.update.ec}/>
+            </fieldset>
+        </div>
+        <div class="col">
+            <fieldset class="is-full-width">
+                <legend>{data.update.ep!=='' ? `ep (to be updated)` : `ep (no updates)`}</legend>
+                <input type=text class={data.update.ep!=='' ? 'ip-filter success' : 'ip-filter'} bind:value={data.update.ep}/>
+            </fieldset>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <fieldset>
+                <legend>{data.update.txt!=='' ? `txt (to be updated)` : `txt (no updates)`}</legend>
+                <textarea class={data.update.txt!=='' ? 'ip-comment small success' : 'ip-comment small'} bind:value={data.update.txt}/>
+
+            </fieldset>
+        </div>
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col">
+            <span class="tag text-center is-full-width">Watch out - you could delete all the report text!</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button class="button dark" on:click={updateDocuments}>Update</button>
+        </div>
+       
+       
+    </div>
+    <hr/>
+    <div class="row">
+        <div class="col">
+            <span class="tag text-center is-full-width">Be very careful. There is no going back from deletes</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <p class="grouped"><input class="ip-delete" type=text placeholder="DELETE FOUND" bind:value={data.update.delete}/>&nbsp;<button disabled={data.update.delete!=='DELETE FOUND'} on:click={deleteDocuments} class="button error">Delete</button></p>
+        </div>
+    </div>
+   
 </Modal>
 
     
@@ -178,15 +327,15 @@
                 <tr>
                     <th></th>
                     <th></th>
-                    <th><input type=text bind:value={data.filter.atype}/></th>
-                    <th><input type=text bind:value={data.filter.tid}/></th>
+                    <th><input class="ip-filter" type=text bind:value={data.filter.atype}/></th>
+                    <th><input class="ip-filter" type=text bind:value={data.filter.tid}/></th>
                     <th></th>
                     <th></th>
-                    <th><input type=text bind:value={data.filter.hse}/></th>
-                    <th><input type=text bind:value={data.filter.ss}/></th>
-                    <th><input type=text bind:value={data.filter.sc}/></th>
+                    <th><input class="ip-filter" type=text bind:value={data.filter.hse}/></th>
+                    <th><input class="ip-filter" type=text bind:value={data.filter.sc}/></th>
+                    <th><input class="ip-filter" type=text bind:value={data.filter.ss}/></th>
                     <td></td>
-                    <th><input type=text bind:value={data.filter.g}/></th>
+                    <th><input class="ip-filter" type=text bind:value={data.filter.g}/></th>
                     <th></th>
                     <th>blank?<input type=checkbox bind:checked={data.filter.txt}/></th>
                    
@@ -219,8 +368,8 @@
                         <td>{row.author.sal}</td>
                         <td>{row.pupil.pn} {row.pupil.sn}</td>
                         <td>{row.pupil.hse}</td>
-                        <td>{row.ss}</td>
                         <td>{row.sc}</td>
+                        <td>{row.ss}</td>
                         <td>{row.sl}</td>
                         <td>{row.g}</td>
                         <td>{row.ec} / {row.ep}</td>
@@ -241,6 +390,20 @@
     
   .small {
     font-size:1.2rem;
+  }
+  .ip-delete {
+    min-width:15rem;
+  }
+
+  .ip-filter {
+    width:8rem;
+    min-width:5rem;
+  }
+
+    
+  .ip-comment {
+    width:50rem;
+    height:10rem;
   }
   
     </style>
