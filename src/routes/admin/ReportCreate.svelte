@@ -177,6 +177,61 @@
         console.log(data.reports);
     };
 
+    let buildSAReports=()=>{
+        for(let row of data.cycle.detail) {
+            if(row.tutor) {
+            let pupils=data.pupils.filter((/** @type {{ fm: any; }} */ el)=>el.fm===row.fm);
+
+            console.log(`Self-Assessment build F${row.fm},found ${pupils.length} pupils`);
+            for(let pupil of pupils) {
+               
+                        
+                    let f=$teachers.find((el)=>el.tid===pupil.tg);
+                    let tut=f? {tid:f.tid,sal:f.sal} :{tid:'',sal:''};
+                    // testing
+                    //tut={tid:'AGH',sal:'Dr H'}
+
+
+                    let report={
+                        coid:data.cycle._id,
+                        ci:data.cycle.index,
+                        ay:data.cycle.ay,
+                        y:data.cycle.y,
+                        tt:data.cycle.tt,
+                        ts:data.cycle.ts,
+                        min:data.cycle.length.P.min,
+                        max:data.cycle.length.P.max,
+                        type:'P',
+                        author:{type:'xsa',tid:tut.tid,sal:`${pupil.pn} ${pupil.sn}`},
+                        ec:null,
+                        ep:null,
+                        txt:'',
+                        fm:row.fm,
+                        g:'',
+                        sc:'',
+                        ss:'',
+                        sl:'',
+                        lv:pupil.lv,
+                        yr:pupil.yr,
+                        log:`${status.user}|${util.getDate()}`,
+                        pupil:{pid:pupil.pid,sn:pupil.sn,pn:pupil.pn,hse:pupil.hse,tg:pupil.tg,gnd:pupil.gnd,id:pupil.id}
+                       
+                    };
+
+                    data.reports.push(report);
+                
+                    
+
+
+              
+            } // end of pupil for
+            }
+        } // end of detail for
+
+        console.log(data.reports);
+    };
+
+
     let buildTutorReports=()=>{
         for(let row of data.cycle.detail) {
             if(row.tutor) {
@@ -239,6 +294,7 @@
         buildTeacherReports();
         buildHMReports();
         buildTutorReports();
+        buildSAReports();
 
         let response = await fetch('/edge/insert', {
             method: 'POST',
@@ -361,7 +417,7 @@
                         <th>Enrichment</th>
                         <th>Tutor</th>
                         <th>HM</th>
-                        <th>HoS</th>
+                        <th>SA</th>
                         <th>SLT</th>
                     </tr>
                 </thead>
@@ -377,7 +433,7 @@
                             <td>{row.enrichment ? 'YES' : ''}</td>
                             <td>{row.tutor ? 'YES' : ''}</td>
                             <td>{row.hm ? 'YES' : ''}</td>
-                            <td>{row.hoy ? 'YES' : ''}</td>
+                            <td>{row.sa ? 'YES' : ''}</td>
                             <td>{row.slt ? 'YES' : ''}</td>
 
                            

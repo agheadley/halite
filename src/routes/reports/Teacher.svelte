@@ -276,9 +276,9 @@
                 <button class="button outline" on:click={()=>data.detail.open=false}>Close</button>
             </div>
         </div>
-        <div class="row">
+       
             <Detail  type={'teacher'} bind:detail={data.detail}/>
-        </div>
+       
         <div class="row">
             <div class="col">
                

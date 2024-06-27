@@ -32,7 +32,7 @@
 
         let index=data.rows.length && data.rows.length>0 ? data.rows[data.rows.length-1].index+1 : 0;
 
-        let detail=$config.year.map((/** @type {{ fm: any; }} */ el)=>({fm:el.fm,hod:true,teacher:false,ec:false,ep:false,enrichment:false,tutor:false,hm:false,hoy:false,slt:false}));
+        let detail=$config.year.map((/** @type {{ fm: any; }} */ el)=>({fm:el.fm,hod:true,teacher:false,ec:false,ep:false,enrichment:false,tutor:false,hm:false,sa:false,slt:false}));
 
         let y=new Date().getFullYear();
         let m=$config.report.tt[0]==='Winter' ? '12' :    $config.report.tt[0]==='Spring' ? '04' : '06';
@@ -349,7 +349,7 @@
                             <th>Enrichment</th>
                             <th>Tutor</th>
                             <th>HM</th>
-                            <th>HoS</th>
+                            <th>SA</th>
                             <th>SLT</th>
                         </tr>
                     </thead>
@@ -365,7 +365,7 @@
                                 <td><input type=checkbox bind:checked={row.enrichment}></td>
                                 <td><input type=checkbox bind:checked={row.tutor}></td>
                                 <td><input type=checkbox bind:checked={row.hm}></td>
-                                <td><input type=checkbox bind:checked={row.hoy}></td>
+                                <td><input type=checkbox bind:checked={row.sa}></td>
                                 <td><input type=checkbox bind:checked={row.slt}></td>
                             </tr>
                         {/each}

@@ -363,12 +363,18 @@ let update=async()=>{
 
         // add pastoral reports
         p=reports.filter((/** @type {{ type: string; }} */ el)=>el.type==='P');
+        //p=p.sort((a,b)=>b.author.type.localeCompare(a.author.type));
+        console.log(p);
         for(let item of p) {
+            let title='';
+            if(item.author.type==='hm') title='housemaster';
+            if(item.author.type==='tutor') title='tutor';
+            if(item.author.type==='xsa') title='pupil self-assessment';
             out.P.push({
-                title:(item.author.type==='hm' ? 'housemaster' : item.author.type).toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}]
+                title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}]
             });
         }
-        out.P=out.P.sort((a,b)=>a.title.localeCompare(b.title));
+        out.P=out.P.sort((a,b)=>b.title.localeCompare(a.title));
 
 
 
@@ -387,6 +393,7 @@ let update=async()=>{
        
         let item=data.pupil.list[data.pupil.index];
         let r=await getReport(item.pid,{id:item.id,pn:item.pn,sn:item.sn,tg:item.tg,hse:item.hse,fm:item.fm});
+        console.log(r);
         data.reports.push(r);
         count+=1;
         $alert.msg=`${item.pn} ${item.sn}`;
@@ -571,7 +578,7 @@ let update=async()=>{
         <select  id="Pupil" bind:value={data.pupil.index}>
             <optgroup label="Pupil">
                     {#each data.pupil.list as item,index}
-                        <option value={index}> {item.pn} {item.sn} ({item.hse})</option>
+                        <option value={index}> {item.pn} {item.sn} (F{item.fm}/{item.hse})</option>
                     {/each}
             </optgroup>
           </select>

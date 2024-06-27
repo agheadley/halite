@@ -167,6 +167,7 @@ onMount(async () => {
     // add pastoral reports
     for(let report of res.filter((/** @type {{ type: string; }} */ el)=>el.type==='P').sort((/** @type {{ author: { type: any; tid: string; }; }} */ a,/** @type {{ author: { type: string; tid: any; }; }} */ b)=>b.author.type.localeCompare(a.author.type) || a.author.tid.localeCompare(b.author.tid))) {
         report.sl=report.author.type.toUpperCase();
+        if(report.author.type==='xsa') report.sl='SA';
         data.reports.push(report);
     }
 
@@ -183,11 +184,15 @@ onMount(async () => {
 </script>
 
 {#if data.reports[0]}
-<table>
-    <tbody>
+
         {#each data.reports as row,rowIndex}
         {#if row.type==='A'}
+        <table>
+            <tbody>
+      
+       
         {#if rowIndex===0 || (data.reports[rowIndex-1] && (row.ss!==data.reports[rowIndex-1].ss || row.sc!==data.reports[rowIndex-1].sc)) }
+      
         <tr>
           
             <td>
@@ -219,17 +224,17 @@ onMount(async () => {
             </td>
         </tr>
         {/if}
-        {/if}
+          
         <tr>
             <td>
                 <div>
-                    {#if (type=='hm' || type==='tutor')}
+                 
                     {#if !row.edit}
-                    <button class="button outline small" on:click={()=>openEdit(rowIndex)}>Edit</button>
+                    <button  class="button outline small" on:click={()=>openEdit(rowIndex)}>Edit</button>
                     {:else}
                     <button disabled={row.txt.length<row.min || row.txt.length>row.max} class="button outline small" on:click={()=>save(rowIndex)}>Save</button>
                     {/if}
-                    {/if}
+                 
                 </div>
                 <div>
                     {#if row.type==='A'}
@@ -245,7 +250,7 @@ onMount(async () => {
                 </div>
             </td>
             <td>
-                {#if type==='hm' || type==='tutor'}
+               
                 {#if row.edit}
                 <textarea class={row.txt.length<row.min || row.txt.length>row.max ? 'red edit-comment' : 'green edit-comment'} bind:value={row.txt}/> 
               
@@ -253,17 +258,71 @@ onMount(async () => {
                 <textarea disabled class={row.txt.length<row.min || row.txt.length>row.max ? 'comment red small' : 'comment green small'} bind:value={row.txt}/> 
               
                 {/if}
-                  {:else}
-                <textarea disabled class={row.txt.length<row.min || row.txt.length>row.max ? 'comment red small' : 'comment green small'} bind:value={row.txt}/> 
-              
-                {/if}
-                <span class="small">{row.log}</span>
+                 
+                <div class="report-information">
+                    <div><span class="small">{row.log}</span></div>
+                    <div><span class="small">{row.author.sal}</span></div>
+                </div>
+                
                </td>
         </tr>
+        </tbody>
+        </table>
+        {/if}
         {/each}
- 
-    </tbody>
+
+            <hr/>
+
+{#each data.reports as row,rowIndex}
+{#if row.type==='P' || row.type==='E'}
+<table>
+    <tbody>
+
+<tr>
+    <td>
+        <div>
+          
+            {#if !row.edit}
+            <button class="button outline small" on:click={()=>openEdit(rowIndex)}>Edit</button>
+            {:else}
+            <button disabled={row.txt.length<row.min || row.txt.length>row.max} class="button outline small" on:click={()=>save(rowIndex)}>Save</button>
+            {/if}
+           
+        </div>
+        <div>
+            {#if row.type==='A'}
+            <span class="small">EC {row.ec!==null ? row.ec : '.'} / EP {row.ep!==null ? row.ep : '.'}</span>
+            {/if}
+            {#if row.type==='E' || row.type==='P'}
+                <span class="small bold">{row.sl}</span>
+            {/if}
+            
+        </div>
+        <div>
+            <span class="small">{row.author.tid}</span>
+        </div>
+    </td>
+    <td>
+       
+        {#if row.edit}
+        <textarea class={row.txt.length<row.min || row.txt.length>row.max ? 'red edit-comment' : 'green edit-comment'} bind:value={row.txt}/> 
+      
+        {:else}
+        <textarea disabled class={row.txt.length<row.min || row.txt.length>row.max ? 'comment red small' : 'comment green small'} bind:value={row.txt}/> 
+      
+        {/if}
+       
+        <div class="report-information">
+            <div><span class="small">{row.log}</span></div>
+            <div><span class="small">{row.author.sal}</span></div>
+        </div>
+        
+       </td>
+</tr>
+</tbody>
 </table>
+{/if}
+{/each}
 
 {:else}
 <div class="row">
@@ -317,6 +376,15 @@ onMount(async () => {
 
 .green {
     background:rgba(34,139,34,0.15);
+}
+
+.report-information {
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    width:100%;
+    padding-bottom:0.25rem;
+    padding-top:0.25rem;  
 }
 
 
