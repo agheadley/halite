@@ -33,6 +33,7 @@ export let data;
 
 let getReport=async()=>{
 
+    console.log(`getReports()`);
 
 selection.pid=Number(data.user.name);
 
@@ -45,7 +46,7 @@ let f=$config.view.find((/** @type {{ context: string; }} */ el)=>el.context===s
 view=f?{context:f.context,fb:f.fb,n:f.n,rag:f.rag,chance:f.chance}:{context:'pupil',fb:false,n:true,rag:false,chance:false};
 
 // populate cycle, pupil of report obj
-report.cycle={tt:cycs[0]?cycs[0].tt:'',ts:cycs[0]?cycs[0].ts:'',y:cycs[0]?cycs[0].y:0,txt:'',index:cycs[0].index};
+if(cycs[0]) report.cycle={tt:cycs[0]?cycs[0].tt:'',ts:cycs[0]?cycs[0].ts:'',y:cycs[0]?cycs[0].y:0,txt:'',index:cycs[0].index};
     
 
 
@@ -55,14 +56,14 @@ report.cycle={tt:cycs[0]?cycs[0].tt:'',ts:cycs[0]?cycs[0].ts:'',y:cycs[0]?cycs[0
 // get reports
 let reports=[];
 if(cycs[0]) {
-    //console.log('getting reports',cycs[0],cycs[0]._id,selection.pid);
+    console.log('getting reports',cycs[0],cycs[0]._id,selection.pid);
     let response = await fetch('/edge/read', {
         method: 'POST',
         body: JSON.stringify({collection:'reports',filter:{coid:cycs[0]._id,"pupil.pid":selection.pid},projection:{}}),
         headers: {'content-type': 'application/json'}
     });
     reports= await response.json();
-    //console.log(reports);
+    console.log(reports);
 };
 // get groups
 let response = await fetch('/edge/read', {
@@ -71,7 +72,7 @@ let response = await fetch('/edge/read', {
     headers: {'content-type': 'application/json'}
 });
 let groups= await response.json();
-//console.log(groups);
+console.log(groups);
 
 report.pupil=groups[0] ? {id:groups[0].pupil[0].id,sn:groups[0].pupil[0].sn,pn:groups[0].pupil[0].pn,pid:selection.pid,tg:groups[0].pupil[0].tg,hse:groups[0].pupil[0].hse,fm:''} : {id:'',sn:'',pn:'',pid:selection.pid,tg:'',hse:'',fm:''};
 /*
@@ -196,11 +197,16 @@ for(let gp of gps) {
         // add pastoral reports
         p=reports.filter((/** @type {{ type: string; }} */ el)=>el.type==='P');
         for(let item of p) {
+            let title='';
+            if(item.author.type==='hm') title='housemaster';
+            if(item.author.type==='tutor') title='tutor';
+            if(item.author.type==='xsa') title='pupil self-assessment';
             report.P.push({
-                title:(item.author.type==='hm' ? 'housemaster' : item.author.type).toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}]
+                
+                title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}]
             });
         }
-        report.P=report.P.sort((/** @type {{ title: string; }} */ a,/** @type {{ title: any; }} */ b)=>a.title.localeCompare(b.title));
+        report.P=report.P.sort((/** @type {{ title: string; }} */ a,/** @type {{ title: any; }} */ b)=>b.title.localeCompare(a.title));
 
 
 
@@ -306,7 +312,7 @@ let getDetail=async()=>{
 
 onMount(async () => {
     console.log(data.user);
-    
+    //await getReport();
 
 });
 </script>

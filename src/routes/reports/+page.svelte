@@ -70,7 +70,11 @@
         </div>
         <div class="col is-right">
           
-            <h4>{status.cycle.tt} {status.cycle.ts} {status.cycle.y}</h4>
+            
+                {#if status.cycle.tt && status.cycle.y}
+                <h4>{status.cycle.tt} {status.cycle.ts} {status.cycle.y} </h4>
+                {/if}
+           
         </div>
     </div>
     
