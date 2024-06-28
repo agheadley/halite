@@ -309,6 +309,7 @@
                     </tr>
                     {#if row.pupilShow}
                     <Modal bind:open={row.pupilShow}>
+                        <!--
                         <div class="row">
                             <div class="col">
                                 <h4>{row.pn} {row.sn} ({row.hse})</h4>
@@ -317,6 +318,7 @@
                            
                         </div>
                         <hr/>
+                        -->
                         <Pupil pupil={{context:'overview',user:status.user,pid:row.pid}}/>
                       
                         <div class="row">

@@ -211,6 +211,7 @@ let update=async()=>{
             cols:cols
         });
 
+       
 
         
     }
@@ -218,7 +219,8 @@ let update=async()=>{
 
    
 
-  
+    status.table=status.table.sort((/** @type {{ sn: string; pn: string; }} */ a,/** @type {{ sn: any; pn: any; }} */ b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn)); 
+
     console.log(status.table);
 
     updateDisplay();
