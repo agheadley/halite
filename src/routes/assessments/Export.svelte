@@ -21,6 +21,9 @@ let exportResults=()=>{
     }
 
     for(let group of status.table) {
+
+        console.log(group);
+
         let row=['[MEAN]','','','','',group.g,Math.round(100*group.overall.A)/100,Math.round(100*group.overall.B)/100];
         for(let col of group.cols) {
             row.push(`${col.gd}`);
@@ -30,7 +33,7 @@ let exportResults=()=>{
 
         for(let pupil of group.pupil) {
             let row=[pupil.pid,pupil.pn,pupil.sn,pupil.hse,pupil.gnd,pupil.g,Math.round(100*pupil.overall.A)/100,Math.round(100*pupil.overall.B)/100];
-            for(let col of group.cols) {
+            for(let col of pupil.cols) {
                 row.push(`${col.gd}`);
                 row.push(col.pc!==null ? `${Math.round(100*col.pc)/100}` : '');
             }
