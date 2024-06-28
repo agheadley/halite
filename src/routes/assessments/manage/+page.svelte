@@ -278,7 +278,7 @@
                 <!--<legend>Assessment Name (max {max})</legend>-->
                 <legend>Assessment Name ({data.assessment.n})</legend>
                 <p class="grouped">
-                <input disabled='{!$cohorts.assessments.edit.edit}' type=text size=10 bind:value={status.n} class={status.validName ? 'success' : 'error'} on:input={validateName}/>
+                <input disabled='{!$cohorts.assessments.edit.edit || status.tag.exam}' type=text size=10 bind:value={status.n} class={status.validName ? 'success' : 'error'} on:input={validateName}/>
                 </p>
             </fieldset>
           

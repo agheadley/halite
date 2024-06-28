@@ -169,11 +169,15 @@ for(let gp of gps) {
         // add pastoral reports
         p=reports.filter((/** @type {{ type: string; }} */ el)=>el.type==='P');
         for(let item of p) {
+            let title='';
+				if(item.author.type==='hm') title='housemaster';
+				if(item.author.type==='tutor') title='tutor';
+				if(item.author.type==='xsa') title='pupil self-assessment';
             report.P.push({
-                title:(item.author.type==='hm' ? 'housemaster' : item.author.type).toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}]
+                title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}]
             });
         }
-        report.P=report.P.sort((/** @type {{ title: string; }} */ a,/** @type {{ title: any; }} */ b)=>a.title.localeCompare(b.title));
+        report.P=report.P.sort((/** @type {{ title: string; }} */ a,/** @type {{ title: any; }} */ b)=>b.title.localeCompare(a.title));
 
 
 

@@ -34,20 +34,20 @@
 		  <div class="tabs">
 			{#if data.user.tag.teacher}
 			{#if status.menu==='internal'}
-			<a href={'/assessments'} class={$page.url.pathname==='/assessments' ? 'active' : ''}>Assessments</a>
-			<a href={'/overview'} class={$page.url.pathname==='/overview' ? 'active' : ''}>Overview</a>
-			<a href={'/reports'} class={$page.url.pathname==='/reports' ? 'active' : ''}>Reports</a>
+			<a href={'/assessments'} class={$page.url.pathname==='/assessments' || $page.url.pathname==='/assessments/' ? 'active' : ''}>Assessments</a>
+			<a href={'/overview'} class={$page.url.pathname==='/overview' || $page.url.pathname==='/overview/' ? 'active' : ''}>Overview</a>
+			<a href={'/reports'} class={$page.url.pathname==='/reports' || $page.url.pathname==='/reports/' ? 'active' : ''}>Reports</a>
 			{:else}
-			<a href={'/results'} class={$page.url.pathname==='/results' ? 'active' : ''}>Results</a>
-			<a href={'/totals'} class={$page.url.pathname==='/totals' ? 'active' : ''}>Totals</a>
-			<a href={'/va'} class={$page.url.pathname==='/va' ? 'active' : ''}>VA</a>
+			<a href={'/results'} class={$page.url.pathname==='/results' || $page.url.pathname==='/results/' ? 'active' : ''}>Results</a>
+			<a href={'/totals'} class={$page.url.pathname==='/totals' || $page.url.pathname==='/totals/' ? 'active' : ''}>Totals</a>
+			<a href={'/va'} class={$page.url.pathname==='/va' || $page.url.pathname==='/va/' ? 'active' : ''}>VA</a>
 			{/if}
 			{/if}
 			{#if data.user.tag.admin}
-			<a href={'/admin'} class={$page.url.pathname==='/admin' ? 'active' : ''}>Admin</a>
+			<a href={'/admin'} class={$page.url.pathname==='/admin' || $page.url.pathname==='/admin/' ? 'active' : ''}>Admin</a>
 			{/if}
 			{#if data.user.tag.pupil}
-			<a href={'/pupil'} class={$page.url.pathname==='/pupil' ? 'active' : ''}>Pupil</a>
+			<a href={'/pupil'} class={$page.url.pathname==='/pupil' || $page.url.pathname==='/pupil/' ? 'active' : ''}>Pupil</a>
 			{/if}
 			
 		  </div>
