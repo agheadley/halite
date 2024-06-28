@@ -291,7 +291,7 @@
                 <p class="grouped">
                 <input id="view" type=checkbox bind:checked={status.tag.open} />Open&nbsp&nbsp;
                 <input id="view" type=checkbox bind:checked={status.tag.overview} />Overview&nbsp&nbsp;
-                <input id="view" type=checkbox bind:checked={status.tag.pupil} />Pupil&nbsp&nbsp;
+                <input id="view" disabled={status.tag.exam}  type=checkbox bind:checked={status.tag.pupil} />Pupil&nbsp&nbsp;
                 <input id="view" disabled type=checkbox bind:checked={status.parent} />&nbsp;Parent&nbsp&nbsp;
             </fieldset>
         </div>
