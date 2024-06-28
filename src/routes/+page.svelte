@@ -20,7 +20,7 @@ let updateGroupsContactsTeachers=async()=>{
     });
     let res= await response.json();
     
-    //console.log(res);
+    console.log(res);
 
 };
 
