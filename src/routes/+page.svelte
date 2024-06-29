@@ -260,7 +260,7 @@ onMount(async () => {
 
 
 	// head to pupil if necessary. 
-	if(data.user.tag.pupil) goto('/pupil');
+	if(data.user.tag.pupil) goto('/pupil/');
 
 
 
@@ -288,7 +288,7 @@ onMount(async () => {
 	
 
 	//testing - remove goto !
-	if(data.user.tag.teacher) goto('/assessments');
+	if(data.user.tag.teacher) goto('/assessments/');
 
 	
 	

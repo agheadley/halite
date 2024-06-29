@@ -470,7 +470,7 @@ let update=async()=>{
         let markup=html.generate(data.reports);
 
         // testing !
-        file.download(JSON.stringify(data.reports),'test.json');
+        //file.download(JSON.stringify(data.reports),'test.json');
 
         const url = URL.createObjectURL(new Blob([markup], { type: "text/html" }));
         const win = window.open(url);
