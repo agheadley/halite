@@ -106,6 +106,10 @@
         for(let x of status.grade) status.valid = x.valid ? status.valid : false;
         status.valid = status.validName ? status.valid : false;
 
+
+        status.tag.pupil=status.tag.overview ? true : false;
+        
+
         status.isSave=true;
        
     };
@@ -289,10 +293,7 @@
                 <!--<legend>Assessment Name (max {max})</legend>-->
                 <legend>Viewable ?</legend>
                 <p class="grouped">
-                <input id="view" type=checkbox bind:checked={status.tag.open} />Open&nbsp&nbsp;
-                <input id="view" type=checkbox bind:checked={status.tag.overview} />Overview&nbsp&nbsp;
-                <input id="view" disabled={status.tag.exam}  type=checkbox bind:checked={status.tag.pupil} />Pupil&nbsp&nbsp;
-                <input id="view" disabled type=checkbox bind:checked={status.parent} />&nbsp;Parent&nbsp&nbsp;
+                <input id="view" disabled={status.tag.exam}  type=checkbox bind:checked={status.tag.overview} />Live to Overview/Pupils ?&nbsp&nbsp;
             </fieldset>
         </div>
         <div class="col is-vertical-align">
