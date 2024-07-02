@@ -308,5 +308,25 @@ onMount(async () => {
 	</div>
 </div>
 
+<div class="row">
+	<div class="col">
+		&nbsp;
+	</div>
+</div>
+<div class="row">
+	<div class="col">
+		&nbsp;
+	</div>
+</div>
+<div class="row">
+	<div class="col">
+		&nbsp;
+	</div>
+</div>
+<div class="row">
+	<div class="col">
+		<h4>Written by Dr A Headley using Sveltekit</h4>
+	</div>
+</div>
 <style>
 </style>
