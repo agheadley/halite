@@ -94,7 +94,7 @@
                 /* populate grade residuals cf first col grade */
                 let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===g.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
                 //console.log(g.sc,gds);
-                let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===pcols[0].gd);
+                let  s1=pcols[0] ? gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===pcols[0].gd) : -1;
                 for(let col of pcols) {
                     let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd); 
                     col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
@@ -123,7 +123,7 @@
 
             /* add grade residuals from first col of set averages */
             let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===g.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
-            let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===gcols[0].gd);
+            let  s1=gcols[0] ? gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===gcols[0].gd) : -1;
             for(let col of gcols) {
                 let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd); 
                 col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
