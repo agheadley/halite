@@ -154,12 +154,15 @@
                     cols.push({gd:a?a.gd:'X',pc:a?a.pc:0,r:0,ds:col.ds,n:col.n});
                 }
 
-                let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===gp.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
-                let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===cols[0].gd);
-                for(let col of cols) {
-                    let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd); 
-                    col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+                if(cols[0]) {
+                    let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===gp.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
+                    let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===cols[0].gd);
+                    for(let col of cols) {
+                        let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd); 
+                        col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+                    }
                 }
+             
                 
 
 

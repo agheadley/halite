@@ -129,11 +129,12 @@ let update=async()=>{
 
             let gds=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===detail.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
        
-        
-            let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===cols[0].gd);
-            for(let c of cols) {
-                let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===c.gd); 
-                c.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+            if(cols[0]) {
+                let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===cols[0].gd);
+                for(let c of cols) {
+                    let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===c.gd); 
+                    c.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+                }
             }
 
             let std={A:'',B:''};
@@ -295,11 +296,12 @@ let update=async()=>{
             }
             let gds=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===gp.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
        
-        
-            let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col[0].gd);
-            for(let c of col) {
-                let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===c.gd); 
-                c.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+            if(col[0]) {
+                let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col[0].gd);
+                for(let c of col) {
+                    let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===c.gd); 
+                    c.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+                }
             }
 
             let std={A:'',B:''};
