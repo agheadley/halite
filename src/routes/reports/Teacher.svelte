@@ -82,10 +82,11 @@
 
     let updateReports=async()=>{
         let g=data.groups[data.index];
-
+        console.log(data.groups,data.index);
         data.reports=[];
       
-        let gp=$groups.find(el=>el.ss===g.ss && el.sc===g.sc && el.g===g.g);
+        let gp;
+        if(data.groups[0] && g ) gp=$groups.find(el=>el.ss===g.ss && el.sc===g.sc && el.g===g.g);
 
         if(gp) {
 
@@ -352,6 +353,10 @@
     </tbody>
 </table>
 
+
+{:else}
+
+<p>No report found for this cycle</p>
 {/if}
 
 

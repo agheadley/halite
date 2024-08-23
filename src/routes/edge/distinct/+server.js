@@ -30,12 +30,12 @@ export async function POST({ request }) {
     let response = await fetch(url,{method: 'POST',headers: headers,body:JSON.stringify(body)});
 
     let res=await response.json();
-    console.log('/edge/distinct',res);
+    //console.log('/edge/distinct',res);
     let results=[];
     if(res.documents[0]) {
         for(let item of res.documents ) results.push({...item._id});
     }
    
-    console.log('/edge/distinct',results);
+    //console.log('/edge/distinct',results);
     return json(results);
 }

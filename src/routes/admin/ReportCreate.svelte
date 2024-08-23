@@ -296,6 +296,38 @@
         buildTutorReports();
         buildSAReports();
 
+        $alert.msg=`Planning to create ${data.reports[0] ? data.reports.length : '0'} reports`;
+        util.wait(3000);
+
+        for(let item of $config.year) {
+
+            let docs=data.reports.filter((/** @type {{ fm: any; }} */ el)=>el.fm===item.fm);
+            if(docs[0])  {
+                
+                $alert.msg=`F${item.fm} trying to create ${docs.length} reports`;
+
+                let response = await fetch('/edge/insert', {
+                    method: 'POST',
+                    body: JSON.stringify({collection:'reports',documents:docs}),
+                    headers: {'content-type': 'application/json'}
+                });
+                let res= await response.json();
+
+                if(res[0]) {
+                    $alert.msg=`F${item.fm} ${res.length} reports created`;
+                } else {
+                    $alert.type='error';
+                    $alert.msg=`F${item.fm} Error inserting reports`;
+                }
+
+
+            }
+            else $alert.msg=`F${item.fm} no reports to create`;
+           
+        }
+    
+
+        /*
         let response = await fetch('/edge/insert', {
             method: 'POST',
             body: JSON.stringify({collection:'reports',documents:data.reports}),
@@ -309,6 +341,7 @@
             $alert.type='error';
             $alert.msg=`Error inserting reports`;
         }
+        */
 
 
     };

@@ -331,6 +331,9 @@
    </tbody>
 
 </table>
+{:else}
+
+<p>No report found for this cycle</p>
 {/if}
 
 

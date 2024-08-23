@@ -16,7 +16,7 @@ export async function POST({request}) {
 
     const data = await request.json();
     
-    console.log('edge/read',data);
+    //console.log('edge/read',data);
     /** @type {any} */
     let body = {
     

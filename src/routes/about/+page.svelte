@@ -29,7 +29,7 @@
     </div>
     <div class="row">
         <div class="col">
-            <blockquote>Ostia Halite is written by Dr Anthony Headley using Sveltekit</blockquote>
+            <blockquote>Ostia Halite is written by Dr Anthony Headley using SvelteKit</blockquote>
         </div>
     </div>
     <div class="row">

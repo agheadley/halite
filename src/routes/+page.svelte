@@ -325,7 +325,7 @@ onMount(async () => {
 </div>
 <div class="row">
 	<div class="col">
-		<h4>Written by Dr A Headley using Sveltekit</h4>
+		<h4>Written by Dr A Headley , powered by SvelteKit</h4>
 	</div>
 </div>
 <style>
