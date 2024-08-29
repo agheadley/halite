@@ -198,7 +198,7 @@
             <div class="col">
                
                     <fieldset> 
-                        <legend>Assessment Name (max {control.max})</legend>
+                        <legend>List Name (max {control.max})</legend>
                         <p class="grouped">
                        
                         <input type=text bind:value={control.list.name} class={control.valid ? 'success' : 'error'} on:input={validate}/>
