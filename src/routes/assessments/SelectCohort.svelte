@@ -100,7 +100,7 @@
                     col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
                 }
                
-                pup.push({g:g.g,pid:p.pid,id:p.id,fm:f?f.fm:null,sn:p.sn,pn:p.pn,tg:p.tg,hse:p.hse,cols:pcols,overall:f?f.overall:{A:0,B:0},groups:f?f.groups:[],show:false})
+                pup.push({gnd:p.gnd,g:g.g,pid:p.pid,id:p.id,fm:f?f.fm:null,sn:p.sn,pn:p.pn,tg:p.tg,hse:p.hse,cols:pcols,overall:f?f.overall:{A:0,B:0},groups:f?f.groups:[],show:false})
             }
 
             let i=0;
