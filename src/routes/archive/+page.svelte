@@ -3,7 +3,7 @@ import { goto } from '$app/navigation';
 import { onMount } from 'svelte';
 import {assessments,location} from '$lib/store';
 import * as file from '$lib/file';
-
+import SelectCohort from './SelectCohort.svelte';
 
 /** @type {any}*/
 let cohorts={list:[],index:0,subjects:[],sIndex:0,results:[],total:[],grade:[]};
@@ -84,7 +84,7 @@ onMount(async () => {
     
 
 </script>
-
+<SelectCohort/>
 
 <div class="row">
     <div class="col">

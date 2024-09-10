@@ -13,13 +13,14 @@ onMount(async () => {
 
 
     console.log(list);
-    
-    cohorts.subjects=[];
-    for(let item of cohorts.list) {
-        if(!cohorts.subjects.find((/** @type {{ sc: any; ss: any; }} */ el)=>el.sc===item.sc && el.ss===item.ss)) cohorts.subjects.push({sc:item.sc,ss:item.ss,sl:item.sl});
+
+    $cohorts.archive.years.list=[];
+
+    for(let item of list) {
+        if(!$cohorts.archive.years.list.find((/** @type {{ yr: number; lv: string; }} */ el)=>el.yr===item.yr && el.lv===item.lv)) $cohorts.archive.years.list.push({yr:item.yr,lv:item.lv});
     }
 
-    console.log(cohorts);
+    console.log($cohorts.archive.years.list);
 });
 
 
