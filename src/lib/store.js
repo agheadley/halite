@@ -114,7 +114,8 @@ export let cohorts=writable({
         years:{list:[{yr:0,lv:''}],index:0}
     },
     archive:{
-        years:{list:[{yr:0,lv:''}],index:0}
+        years:{list:[{yr:0,lv:''}],index:0},
+        subjects:{list:[{yr:0,lv:'',ss:'',sc:'',sl:''}],index:0}
     }
 
 });
