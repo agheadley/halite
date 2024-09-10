@@ -2,7 +2,7 @@
 import { onMount } from 'svelte';
 import * as file from '$lib/file';
 import * as util from '$lib/util';
-import {alert} from '$lib/store';
+import {alert,config} from '$lib/store';
 
 /** @type {any}*/
 export let status;
@@ -56,6 +56,16 @@ let download=()=>{
 let createIntake=async(results)=>{
     /** @type {any}*/
     let documents=[];
+
+    // get subject list for creation of US pregs from $config.regressions
+     /** @type {any}*/
+    let subjects=[];
+    for(let reg of $config.regression.filter((/** @type {{ lv: string; }} */ el)=>el.lv==='US')) {
+        if(!subjects.find((/** @type {{ ss: any; sc: any; }} */ el)=>el.ss===reg.ss && el.sc===reg.sc)) subjects.push({ss:reg.ss,sc:reg.sc});
+    }
+
+    console.log(subjects);
+
     for(let row of results) {
         if(!documents.find((/** @type {{ pid: any; lv: any; yr: any; }} */ el)=>el.pid===Number(row.pid) && el.lv===row.lv && el.yr===Number(row.yr))) {
             /** @type {any}*/
@@ -63,6 +73,7 @@ let createIntake=async(results)=>{
                 id:'',
                 pid:Number(row.pid),
                 sn:row.sn,
+                pn:row.pn,
                 hse:row.hse,
                 gnd:row.gnd,
                 lv:row.lv,
@@ -83,6 +94,38 @@ let createIntake=async(results)=>{
                         pre.push({ss:item.ss,sc:item.sc,A:a?Number(a.pre):0,B:b?Number(b.pre):0});
                     };
                 }
+
+                
+                
+
+              
+
+                if(row.lv==='US') {
+
+
+                    // add US preds from $config.regression if not already in pre !
+                    console.log(row);
+                    let a=results.find((/** @type {{ pid: any; type: string; std: string; }} */ el)=>el.pid===row.pid && el.type==='overall' && el.std==='A');
+                    let b=results.find((/** @type {{ pid: any; type: string; std: string; }} */ el)=>el.pid===row.pid && el.type==='overall' && el.std==='B');
+                    let scrA=a && a.scr ? Number(a.scr) : 0;
+                    let scrB=b && b.scr ? Number(b.scr) : 0;
+                
+                console.log(a?.scr,b?.scr);
+                    for(let sub of subjects) {
+                        //console.log(reg.ss,reg.sc,reg.gradient,reg.intercept,reg.std);
+                        let regA=$config.regression.find((/** @type {{ sc: any; ss: any; std: string; }} */ el)=>el.sc===sub.sc && el.ss===sub.ss && el.std==="A");
+                        let regB=$config.regression.find((/** @type {{ sc: any; ss: any; std: string; }} */ el)=>el.sc===sub.sc && el.ss===sub.ss && el.std==="B");
+                        
+                        if(!pre.find(el=>el.ss===sub.ss && el.sc===sub.sc)) {
+                            let predA=scrA>0 && regA ? scrA*regA.gradient+regA.intercept : 0;
+                            let predB=scrB>0 && regB ? scrB*regB.gradient+regB.intercept : 0;
+                            pre.push({ss:sub.ss,sc:sub.sc,A:(predA),B:Number(predB)});
+                        }
+
+                    }
+                }
+
+
                 line.pre=pre;
 
                  /** @type {any}*/
