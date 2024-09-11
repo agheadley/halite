@@ -33,6 +33,7 @@ let updateAssessments=async()=>{
     //console.log(as);
 
     status.cols=as.map(el=>({n:el.n,ds:el.ds,dl:el.dl,grade:el.grade,total:el.total}));
+    status.cols.push({n:"FINAL EXAM",ds:'',dl:'',grade:[],total:[]});
 
     //console.log(status.cols);
 
@@ -52,6 +53,14 @@ let updateAssessments=async()=>{
     });
 
     let intake= await response.json();
+
+    response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'exams',filter:{lv:s.lv,yr:s.yr,sc:s.sc,ss:s.ss},projection:{}}),
+        headers: {'content-type': 'application/json'}
+    });
+
+    let exams= await response.json();
 
     /**
 	 * @type {{ pid: any; sn: any; pn: any; g: any; }[]}
@@ -93,6 +102,11 @@ let updateAssessments=async()=>{
                 let t=f?`[${f.t.toString()}]`:'[0]';
                 cols.push({n:a.n,ds:a.ds,gd:gd,t:t})
             };
+
+            let e=exams.find(el=>el.pid===p.pid);
+            cols.push({n:'FINAL EXAM',ds:'',gd:e?e.gd:'',t:'[0]'});
+
+
             let row={pn:p.pn,sn:p.sn,pid:p.pid,g:p.g,i:i,cols:cols};
             status.table.push(row);
 
