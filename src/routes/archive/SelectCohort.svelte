@@ -1,7 +1,7 @@
 <script>
 import { onMount } from 'svelte';
 import {cohorts,assessments} from '$lib/store';
-
+export let status;
 
 let updateSubjects=async()=>{
 
@@ -32,12 +32,38 @@ let updateAssessments=async()=>{
     let results= await response.json();
     console.log(results);
 
+    /**
+	 * @type {{ pid: any; sn: any; pn: any; g: any; }[]}
+	 */
     let ps=[];
     for(let item of results) {
-        
+        if(!ps.find(el=>el.pid===item.pid)) ps.push({pid:item.pid,sn:item.sn,pn:item.pn,g:item.g});
+    }
+    
+    ps=ps.sort((a,b)=>a.g.localeCompare(b.g) || a.sn.localeCompare(b.sn) ||  a.pn.localeCompare(b.pn));
+
+    console.log(ps);
+
+    status.table=[];
+    for(let p of ps) {
+            let i={overall:{A:0,B:0},pred:{A:0,B:0}};
+            let cols=[];
+            for(let a of as) {
+                let gd='X';
+                let t='';
+                cols.push({n:a.n,ds:a.ds,gd:gd,t:t})
+            };
+            let row={pn:p.pn,sn:p.sn,pid:p.pid,g:p.g,i:i,cols:cols};
+        status.table.push(row);
+
     }
 
 
+    console.log(status.table);
+
+
+    // let parent page react!
+    status.select=true;
     
 
 
