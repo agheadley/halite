@@ -7,7 +7,7 @@ import SelectCohort from './SelectCohort.svelte';
 import IntakeBar from '$lib/_IntakeBar.svelte';
 import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 import Cell from '$lib/_Cell.svelte';
-import Chance from '$lib/_Chance.svelte';
+
 
  /** @type {any}*/    
  let status={
@@ -60,12 +60,12 @@ let exportResults=(index)=>{
 
     for(let row of status.table) out.push([row.pid,row.g,row.pn,row.sn,row.i.overall.A,row.i.overall.B,row.i.pre.A,row.i.pre.B,row.cols[index].t.toString(),row.cols[index].gd]);
 
-    /*
+    
     out.push(['section','total','weight']);
-    for(let row of cohorts.total) out.push([row.n,row.t,row.w]);
+    for(let row of status.cols[index].total) out.push([row.n,row.t,row.w]);
     out.push(['grade','pc']);
-    for(let row of cohorts.grade) out.push([row.gd,row.pc]);
-    */
+    for(let row of status.cols[index].grade) out.push([row.gd,row.pc]);
+    
     console.log(out);
     
     file.csvDownload(out,"ARCHIVE.csv");
@@ -135,8 +135,8 @@ onMount(async () => {
                     <td>{pupil.g}</td>
                     <td><IntakeBar r={pupil.i.overall.A} std={status.std.A}/></td>
                     <td><IntakeBar r={pupil.i.overall.B} std={status.std.B}/></td>
-                    <td>{pupil.i.pre.A}</td>
-                    <td>{pupil.i.pre.B}</td>
+                    <td class="small bold">{pupil.i.pre.A}</td>
+                    <td class="small bold">{pupil.i.pre.B}</td>
                     {#each pupil.cols as col,colIndex}
                         <td> <Cell color={false} residual={0}>{col.gd}</Cell></td>
                     {/each}
