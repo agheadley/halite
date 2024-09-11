@@ -1,7 +1,7 @@
 <script>
 import { goto } from '$app/navigation';
 import { onMount } from 'svelte';
-import {assessments,location} from '$lib/store';
+import {assessments,location,cohorts,config} from '$lib/store';
 import * as file from '$lib/file';
 import SelectCohort from './SelectCohort.svelte';
 import IntakeBar from '$lib/_IntakeBar.svelte';
@@ -25,8 +25,16 @@ import Chance from '$lib/_Chance.svelte';
     $:{
         if(status.select) {
             console.log('changed cohort...');
-            status.select=false;
+
+           
+            let s=$cohorts.archive.subjects.list[$cohorts.archive.subjects.index];
+            console.log(s.sc);
+            status.grades=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===s.sc)
+                .map((/** @type {{ gd: any; pre: any; }} */ el)=>({gd:el.gd,pre:el.pre}));
+            console.log(status.grades);
             status.table=status.table;
+            status.select=false;
+         
         }
     }
 
@@ -44,20 +52,24 @@ let getData=async()=>{
  * @param {number} index
  */
 let exportResults=(index)=>{
-    /*
-    let l=cohorts.list[cohorts.index];
+    
+    let l=$cohorts.archive.subjects.list[$cohorts.archive.subjects.index];
+
     let out=[];
-    out[0]=['pid','g','pn','sn','scrs','gd','pc',`${l.lv} ${l.yr} ${l.ss} (${l.sc}) ${l.n} ${l.ds}`];
+    out[0]=['pid','g','pn','sn',`BASE ${status.std.A}`,`BASE ${status.std.B}`,`PRED ${status.std.A}`,`PRED ${status.std.B}`,'scrs','gd',`${l.lv} ${l.yr} ${l.ss} (${l.sc}) ${status.cols[index].n} ${status.cols[index].ds}`];
 
-    for(let row of cohorts.results) out.push([row.pid,row.g,row.pn,row.sn,row.t.toString(),row.gd,row.pc]);
+    for(let row of status.table) out.push([row.pid,row.g,row.pn,row.sn,row.i.overall.A,row.i.overall.B,row.i.pre.A,row.i.pre.B,row.cols[index].t.toString(),row.cols[index].gd]);
 
+    /*
     out.push(['section','total','weight']);
     for(let row of cohorts.total) out.push([row.n,row.t,row.w]);
     out.push(['grade','pc']);
     for(let row of cohorts.grade) out.push([row.gd,row.pc]);
-    console.log(out);
-    file.csvDownload(out,"ARCHIVE.csv");
     */
+    console.log(out);
+    
+    file.csvDownload(out,"ARCHIVE.csv");
+    
 
 
 
@@ -123,8 +135,8 @@ onMount(async () => {
                     <td>{pupil.g}</td>
                     <td><IntakeBar r={pupil.i.overall.A} std={status.std.A}/></td>
                     <td><IntakeBar r={pupil.i.overall.B} std={status.std.B}/></td>
-                    <td><Chance grades={status.grades} score={pupil.i.pre.A}/></td>
-                    <td><Chance grades={status.grades} score={pupil.i.pre.B}/></td>
+                    <td>{pupil.i.pre.A}</td>
+                    <td>{pupil.i.pre.B}</td>
                     {#each pupil.cols as col,colIndex}
                         <td> <Cell color={false} residual={0}>{col.gd}</Cell></td>
                     {/each}

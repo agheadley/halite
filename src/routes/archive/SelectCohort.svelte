@@ -22,14 +22,12 @@ let updateAssessments=async()=>{
     let s=$cohorts.archive.subjects.list[$cohorts.archive.subjects.index];
     let y=$cohorts.archive.years.list[$cohorts.archive.years.index];
 
-    console.log($config.grade);    
-    status.grades=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===s.sc);
-
+    console.log(status.grades);
     status.std.A=(y.lv==='US' || y.lv==='MS' || y.lv==='LS') ? $config.std[y.lv].A : '';
     status.std.B=(y.lv==='US' || y.lv==='MS' || y.lv==='LS') ? $config.std[y.lv].B : '';
 
 
-    let as=$assessments.filter(el=>el.tag.archive===true && el.yr===s.yr && el.lv===s.lv && el.sc===s.sc && el.ss===s.ss).sort((a,b)=>a.dt-b.dt);
+    let as=$assessments.filter(el=>el.tag.archive===true && el.yr===y.yr && el.lv===y.lv && el.sc===s.sc && el.ss===s.ss).sort((a,b)=>a.dt-b.dt);
     //console.log(as);
 
     status.cols=as.map(el=>({n:el.n,ds:el.ds,dl:el.dl,grade:el.grade,total:el.total}));
@@ -39,7 +37,7 @@ let updateAssessments=async()=>{
 
     let response = await fetch('/edge/read', {
         method: 'POST',
-        body: JSON.stringify({collection:'results',filter:{lv:s.lv,yr:s.yr,sc:s.sc,ss:s.ss},projection:{}}),
+        body: JSON.stringify({collection:'results',filter:{lv:y.lv,yr:y.yr,sc:s.sc,ss:s.ss},projection:{}}),
         headers: {'content-type': 'application/json'}
     });
 
@@ -48,7 +46,7 @@ let updateAssessments=async()=>{
 
     response = await fetch('/edge/read', {
         method: 'POST',
-        body: JSON.stringify({collection:'intake',filter:{lv:s.lv,yr:s.yr},projection:{}}),
+        body: JSON.stringify({collection:'intake',filter:{lv:y.lv,yr:y.yr},projection:{}}),
         headers: {'content-type': 'application/json'}
     });
 
@@ -103,7 +101,7 @@ let updateAssessments=async()=>{
                 cols.push({n:a.n,ds:a.ds,gd:gd,t:t})
             };
 
-            let e=exams.find(el=>el.pid===p.pid);
+            let e=exams.find((/** @type {{ pid: any; }} */ el)=>el.pid===p.pid);
             cols.push({n:'FINAL EXAM',ds:'',gd:e?e.gd:'',t:'[0]'});
 
 
