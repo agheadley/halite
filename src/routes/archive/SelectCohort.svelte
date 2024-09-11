@@ -1,6 +1,6 @@
 <script>
 import { onMount } from 'svelte';
-import {cohorts,assessments} from '$lib/store';
+import {cohorts,assessments,config} from '$lib/store';
 export let status;
 
 let updateSubjects=async()=>{
@@ -20,8 +20,21 @@ let updateSubjects=async()=>{
 
 let updateAssessments=async()=>{
     let s=$cohorts.archive.subjects.list[$cohorts.archive.subjects.index];
+    let y=$cohorts.archive.years.list[$cohorts.archive.years.index];
+
+    console.log($config.grade);    
+    status.grades=$config.grade.filter((/** @type {{ sc: any; }} */ el)=>el.sc===s.sc);
+
+    status.std.A=(y.lv==='US' || y.lv==='MS' || y.lv==='LS') ? $config.std[y.lv].A : '';
+    status.std.B=(y.lv==='US' || y.lv==='MS' || y.lv==='LS') ? $config.std[y.lv].B : '';
+
+
     let as=$assessments.filter(el=>el.tag.archive===true && el.yr===s.yr && el.lv===s.lv && el.sc===s.sc && el.ss===s.ss).sort((a,b)=>a.dt-b.dt);
-    console.log(as);
+    //console.log(as);
+
+    status.cols=as.map(el=>({n:el.n,ds:el.ds,dl:el.dl,grade:el.grade,total:el.total}));
+
+    //console.log(status.cols);
 
     let response = await fetch('/edge/read', {
         method: 'POST',
@@ -30,7 +43,15 @@ let updateAssessments=async()=>{
     });
 
     let results= await response.json();
-    console.log(results);
+    //console.log(results);
+
+    response = await fetch('/edge/read', {
+        method: 'POST',
+        body: JSON.stringify({collection:'intake',filter:{lv:s.lv,yr:s.yr},projection:{}}),
+        headers: {'content-type': 'application/json'}
+    });
+
+    let intake= await response.json();
 
     /**
 	 * @type {{ pid: any; sn: any; pn: any; g: any; }[]}
@@ -42,19 +63,38 @@ let updateAssessments=async()=>{
     
     ps=ps.sort((a,b)=>a.g.localeCompare(b.g) || a.sn.localeCompare(b.sn) ||  a.pn.localeCompare(b.pn));
 
-    console.log(ps);
+    //console.log(ps);
 
     status.table=[];
     for(let p of ps) {
-            let i={overall:{A:0,B:0},pred:{A:0,B:0}};
+            let i={overall:{A:0,B:0},pre:{A:0,B:0}};
+
+            let x=intake.find((/** @type {{ pid: any; }} */ el)=>el.pid===p.pid);
+            console.log(x);
+            if(x) {
+                let b=x.base.find((/** @type {{ type: string; }} */ el)=>el.type==='overall');
+                if(b) {
+                    i.overall.A=b.A;
+                    i.overall.B=b.B;
+                }
+                let pre=x.pre.find((/** @type {{ sc: any; ss: any; }} */ el)=>el.sc===s.sc && el.ss===s.ss);
+                if(pre) {
+                    i.pre.A=pre.A;
+                    i.pre.B=pre.B;
+                }
+            }
+
             let cols=[];
             for(let a of as) {
-                let gd='X';
-                let t='';
+
+                let f=results.find((/** @type {{ aoid: string; pid: any; }} */ el)=>el.aoid===a._id && el.pid===p.pid);
+                
+                let gd=f?f.gd :'X';
+                let t=f?`[${f.t.toString()}]`:'[0]';
                 cols.push({n:a.n,ds:a.ds,gd:gd,t:t})
             };
             let row={pn:p.pn,sn:p.sn,pid:p.pid,g:p.g,i:i,cols:cols};
-        status.table.push(row);
+            status.table.push(row);
 
     }
 
