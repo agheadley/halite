@@ -30,8 +30,15 @@ let updateAssessments=async()=>{
     });
 
     let results= await response.json();
-
     console.log(results);
+
+    let ps=[];
+    for(let item of results) {
+        
+    }
+
+
+    
 
 
 };
