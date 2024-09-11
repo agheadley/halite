@@ -177,16 +177,35 @@ let getOutcomeCohorts=async()=>{
 };
 
 let getArchiveCohorts=async()=>{
+	
 	let response = await fetch('/edge/distinct', {
 		method: 'POST',
-		body: JSON.stringify({collection:'assessments',match:{"tag.archive":true},aggregate:['yr','lv']}),
+		body: JSON.stringify({collection:'assessments',match:{"tag.archive":true},aggregate:['yr','lv','sc','sl','ss']}),
 		headers: {'content-type': 'application/json'}
 	});
     let res= await response.json();
-	res=res.sort((/** @type {{ yr: number; lv: any; }} */ a,/** @type {{ yr: number; lv: string; }} */ b)=>b.yr-a.yr || b.lv.localeCompare(a.lv));
+	
+	let list=res.sort((/** @type {{ sc: string; sl: string; lv: any; yr: number; }} */ a,/** @type {{ sc: any; sl: any; lv: string; yr: number; }} */ b)=>a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl) || b.lv.localeCompare(a.lv) || b.yr-a.yr);
 
-	$cohorts.archive.years.list=res;
 	$cohorts.archive.years.index=0;
+	$cohorts.archive.subjects.index=0;
+	$cohorts.archive.years.list=[];
+	$cohorts.archive.subjects.list=[];
+
+	
+    for(let item of list) {
+        if(!$cohorts.archive.subjects.list.find((/** @type {{ yr: number; lv: string; sc: string; ss: string; }} */ el)=>el.yr===item.yr && el.lv===item.lv && el.sc===item.sc && el.ss===item.ss)) $cohorts.archive.subjects.list.push({yr:item.yr,lv:item.lv,sc:item.sc,sl:item.sl,ss:item.ss});
+    }
+    
+    $cohorts.archive.years.list=[];
+
+    for(let item of $cohorts.archive.subjects.list) {
+        if(!$cohorts.archive.years.list.find((/** @type {{ yr: number; lv: string; }} */ el)=>el.yr===item.yr && el.lv===item.lv)) $cohorts.archive.years.list.push({yr:item.yr,lv:item.lv});
+    }
+    $cohorts.archive.years.list=$cohorts.archive.years.list.sort((/** @type {{ yr: number; lv: any; }} */ a,/** @type {{ yr: number; lv: string; }} */ b)=>b.yr-a.yr || b.lv.localeCompare(a.lv))
+
+    console.log($cohorts.archive.years.list);
+	console.log($cohorts.archive.subjects.list);
 };
 
 let getAssessments=async()=>{

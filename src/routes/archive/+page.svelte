@@ -84,7 +84,16 @@ onMount(async () => {
     
 
 </script>
-<SelectCohort/>
+<div class="row">
+    <div class="col is-vertical-align">
+        <h4>Archive</h4>
+    </div>
+    <SelectCohort/>
+    <div class="col is-vertical-align">
+        <a href={'/assessments'} class="button outline">Back</a>
+    </div>
+</div>
+
 
 <div class="row">
     <div class="col">
