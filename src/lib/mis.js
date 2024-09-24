@@ -117,8 +117,23 @@ export let getContactData=(mis)=>{
 export let getBasedata=(/** @type {{ iSAMS: { PupilManager: { CurrentPupils: { Pupil: any; }; }; TeachingManager: { Departments: { Department: any; }; }; HRManager: { CurrentStaff: { StaffMember: any; }; }; }; }} */ mis)=>{
     /** @type {any} */
     let data={pupils:[],subjects:[],staff:[]};
+
+
+    for(let item of mis.iSAMS.HRManager.CurrentStaff.StaffMember) {
+        // @ts-ignore
+        data.staff.push({id:item.UserCode,tid:item.Initials,staff_id:item['@Id'],sn:item.Surname,pn:item.PreferredName,sal:item.Salutation,teacher:item.TeachingStaff
+     });
+     }
+
+
     for(let item of mis.iSAMS.PupilManager.CurrentPupils.Pupil) {
         // @ts-ignore
+
+        //console.log(item.Tutor);
+        let f=data.staff.find((/** @type {{ id: any; }} */ el)=>el.id===item.Tutor);
+        let tg=f?f.tid:'';
+        //console.log(item.Tutor,tg);
+
         data.pupils.push({
             pupil_id:item['@Id'],
             sn:item.Surname,
@@ -127,7 +142,7 @@ export let getBasedata=(/** @type {{ iSAMS: { PupilManager: { CurrentPupils: { P
             id:item.SchoolId,
             gnd:item.Gender,
             hse:item.BoardingHouse,
-            tg:item.Form
+            tg:tg//item.Form
 
         });
     }
