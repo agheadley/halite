@@ -87,7 +87,7 @@
 
         status.table.subjects=[];
         for(let item of res) {
-            if(!status.table.subjects.find((/** @type {{ sc: any; ss: any; }} */ el)=>el.sc===item.sc && el.ss===item.ss)) status.table.subjects.push({sl:item.sl,ss:item.ss,sc:item.sc});
+            if(!status.table.subjects.find((/** @type {{ sc: any; ss: any;}} */ el)=>el.sc===item.sc && el.ss===item.ss)) status.table.subjects.push({sl:item.sl,ss:item.ss,sc:item.sc,sr:item.sr});
         }
         status.table.subjects=status.table.subjects.sort((/** @type {{ sc: string; sl: string; }} */ a,/** @type {{ sc: any; sl: any; }} */ b)=>a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl));
 
@@ -103,8 +103,21 @@
         for(let pupil of status.table.pupils) {
             let subjects=[];
             for(let subject of status.table.subjects) {
-                let f=status.results.find((/** @type {{ sc: any; ss: any; pid: any; }} */ el)=>el.sc===subject.sc && el.ss===subject.ss && el.pid===pupil.pid);
-                subjects.push(f?f.gd:'');
+                //let f=status.results.find((/** @type {{ sc: any; ss: any; pid: any;}} */ el)=>el.sc===subject.sc && el.ss===subject.ss && el.pid===pupil.pid);
+                //subjects.push(f?f.gd:'');
+
+                //multiple grades e.g. BTEC, Trilogy Science
+                let f=status.results.filter((/** @type {{ sc: any; ss: any; pid: any;}} */ el)=>el.sc===subject.sc && el.ss===subject.ss && el.pid===pupil.pid);
+                let arr=[];
+                let gd='';
+                if(f && f[0]) {
+                    for(let r of f) arr.push(String(r.gd));
+                }
+                arr=arr.sort((a,b)=>b.localeCompare(a));
+                for(let a of arr) gd+=a;
+                subjects.push(gd);
+                
+              
             }
             pupil.subjects=subjects;
 
@@ -203,7 +216,7 @@
                 <th></th>
                 <th></th>
                 {#each status.table.subjects as col}
-                <td><AssessmentTitle title={col.sl} subtitle={col.sc}/></td>
+                <td><AssessmentTitle title={col.sl} subtitle={`${col.sc}`}/></td>
                 {/each}
             </tr>
             {#each status.table.pupils as row,rowIndex}

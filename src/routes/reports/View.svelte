@@ -230,7 +230,7 @@ let update=async()=>{
             headers: {'content-type': 'application/json'}
         });
         let reports= await response.json();
-        
+        console.log(reports);
         // get groups
         /** @type {{g:string,ss:string,sc:string,sl:string,lv:string,yr:number}[]}*/
         let gps=$groups.filter(el=>el.pupil.find(element=>(element.pid===pid))).map(el=>({g:el.g,ss:el.ss,sc:el.sc,sl:el.sl,lv:el.lv,yr:el.yr}));
@@ -284,6 +284,8 @@ let update=async()=>{
                     {sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}
                 );
             }
+
+            console.log('gp.g reports',r);
 
 
             let col=[];
