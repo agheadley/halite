@@ -7,7 +7,7 @@
     import Detail from './Detail.svelte';
     import * as util from '$lib/util';
 
- 
+  
 
     /** @type {any}*/
     export let status;
@@ -26,26 +26,26 @@
     };
 
     $:{
-     
+      
         /* moves focus to next record - switch off for a while! */
         /*
         if(data.reports[data.next]) {
             if(data.reports[data.next].txt!==null) {
                     document.getElementById(`c|${String(data.next)}`)?.focus();
-            }
+            } 
         }
         */
 
-       
-     
+        
+      
 
        
-     
+      
     }
 
 
     /**
-     *
+     * 
      * @param {number} index
      */
     let openDetail=(index)=>{
@@ -55,7 +55,7 @@
         data.detail.open=true;
         data.detail.user=status.user;
         data.detail.cycleID=status.cycle._id;
-       
+        
     };
 
     let update=async()=>{
@@ -66,14 +66,14 @@
         // get groups for user
         let response = await fetch('/edge/distinct', {
                 method: 'POST',
-                body: JSON.stringify({collection:'reports',match:{coid:status.cycle._id,"author.type":"teacher","author.tid":data.user,type:"A"},aggregate:['fm','g','ss','sc','sl']}),
+                body: JSON.stringify({collection:'reports',match:{coid:status.cycle._id,"author.tid":data.user,type:"A"},aggregate:['fm','g','ss','sc','sl']}),
                 headers: {'content-type': 'application/json'}
             });
             let res= await response.json();
             data.groups=res[0] ? res.sort((/** @type {{ fm: number; g: string; }} */ a,/** @type {{ fm: number; g: any; }} */ b)=>b.fm-a.fm || a.g.localeCompare(b.g)) :[];
-           
+            
             console.log(data.groups);
-       
+        
 
        await updateReports();
      
@@ -84,7 +84,7 @@
         let g=data.groups[data.index];
         console.log(data.groups,data.index);
         data.reports=[];
-     
+      
         let gp;
         if(data.groups[0] && g ) gp=$groups.find(el=>el.ss===g.ss && el.sc===g.sc && el.g===g.g);
 
@@ -121,10 +121,9 @@
                 headers: {'content-type': 'application/json'}
             });
             let reports= await response.json();
-           
+            
             console.log('reports',reports);
 
-            console.log(reports.filter((/** @type {{ author: { tid: string; }; g: string; }} */ el)=>el.author.tid===data.user && el.g==='6/C/D'));
 
 
             /* build report data */
@@ -132,22 +131,22 @@
             data.reports=[];
 
             for(let pupil of gp.pupil) {
-                //console.log(data.user,gp.g,pupil.pn,pupil.sn);
+
                 // find the report
-                let f=reports.find((/** @type {{ author: { type: string; tid: any; }; pupil: { pid: number; }; g: any; ss: string; sc: string; }} */ el)=>el.author.type==='teacher' && el.author.tid===data.user && el.pupil.pid===pupil.pid && el.g===gp.g);
-                console.log(`*${data.user}*`,gp.g,pupil.pn,pupil.sn,`${f?'OK':'NOT FOUND'}`);
+                let f=reports.find((/** @type {{ author: { type: string; tid: any; }; pupil: { pid: number; }; g: any; ss: string; sc: string; }} */ el)=>el.author.type==='teacher' && el.author.tid===data.user && el.pupil.pid===pupil.pid && el.g===g.g && el.ss===gp.ss && el.sc===gp.sc);
+                
                 // associated hod statement
                 let h=reports.find((/** @type {{ author: { type: string; }; pupil: { pid: number; }; fm: number; ss: string; sc: string; }} */ el)=>el.author.type==='hod' && el.pupil.pid===pupil.pid && el.fm===gp.fm && el.ss===gp.ss && el.sc===gp.sc);
-               
+                
                 // associated reports from other staff
                 /** @type {any}*/
                 let t=reports.filter((/** @type {{ author: { type: string; tid: any; }; pupil: { pid: number; }; g: any; ss: string; sc: string; }} */ el)=>el.author.type==='teacher' && el.author.tid!==data.user && el.pupil.pid===pupil.pid && el.g===g.g && el.ss===gp.ss && el.sc===gp.sc);
-               
+                
                 /** @type {{tid:string,txt:string|null,ec:string|null,ep:string|null}[]}*/
                 let other=[];
                 if(t && t[0]) {
                     for(let item of t) other.push({tid:item.author.tid,txt:item.txt,ec:item.ec,ep:item.ep});
-                }
+                } 
                 // build assesmsent results and residuals re first assessment
                 let cols=[];
                 for(let col of data.cols) {
@@ -159,12 +158,12 @@
                     let gds=$config.grade.filter((/** @type {{ sc: string; }} */ el)=>el.sc===gp.sc).sort((/** @type {{ scr: number; }} */ a,/** @type {{ scr: number; }} */ b)=>b.scr-a.scr);
                     let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===cols[0].gd);
                     for(let col of cols) {
-                        let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd);
-                        col.r = s1>-1 && s2>-1 ? s1-s2 : 0;
+                        let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col.gd); 
+                        col.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
                     }
                 }
              
-               
+                
 
 
                 if(f) {     // found report, add to data.reports
@@ -175,14 +174,13 @@
 
                 } else {    // not found, create and then add to data.reports
 
-                    // get cycle ec,ep info for form
+                    // get cycle ec,ep info for form 
                     let d=status.cycle.detail.find((/** @type {{ fm: number; }} */ el)=>el.fm===gp.fm);
 
 
                     /** @type {any} */
                     let obj={
                                 coid:status.cycle._id,
-                                ci:status.cycle.index,
                                 ay:status.cycle.ay,
                                 y:status.cycle.y,
                                 tt:status.cycle.tt,
@@ -202,7 +200,10 @@
                                 lv:gp.lv,
                                 yr:gp.yr,
                                 log:`${status.user}|${util.getDateTime()}`,
-                                pupil:{pid:pupil.pid,sn:pupil.sn,pn:pupil.pn,hse:pupil.hse,tg:pupil.tg,gnd:pupil.gnd,id:pupil.id}
+                                pupil:{pid:pupil.pid,sn:pupil.sn,pn:pupil.pn,hse:pupil.hse,tg:pupil.tg,gnd:pupil.gnd,id:pupil.id},
+                                hod:h?h.txt:'',
+                                associated:other,
+                                cols:cols
                             };
 
                             let response = await fetch('/edge/insert', {
@@ -216,16 +217,12 @@
                                 $alert.msg=`Missing report created`;
                                 console.log(`Missing report created`);
                                 obj._id=res[0];
-                                obj.hod=h?h.txt:'';
-                                obj.associated=other;
-                                obj.cols=cols;
                                 data.reports.push(obj);
-                                obj={};
 
                             } else {
                                 $alert.type='error';
                                 $alert.msg=`Error inserting report`;
-   
+    
                                 console.log(`Error inserting report`);
                             }
 
@@ -235,18 +232,18 @@
 
 
                 }
-               
+                
             } // end of pupil loop
 
 
 
         } // end og gp
 
-       
-       
-       
+        
+        
+        
 
-        data.reports=data.reports.sort((/** @type {{ g: string; pupil: { sn: string; pn: string; }; }} */ a,/** @type {{ g: any; pupil: { sn: any; pn: any; }; }} */ b)=>a.g.localeCompare(b.g) || a.pupil.sn.localeCompare(b.pupil.sn) || a.pupil.pn.localeCompare(b.pupil.pn) );
+        //data.reports=data.reports.sort((/** @type {{ g: string; sn: string; pn: string; }} */ a,/** @type {{ g: any; sn: any; pn: any; }} */ b)=>a.g.localeCompare(b.g) || a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn) );
         console.log(data.reports);
 
 
@@ -264,7 +261,7 @@
        
        data.tIndex=status.teachers.findIndex((/** @type {{ tid: any; }} */ el)=>el.tid===data.user);
 
-     
+      
         await update();
 
     });
@@ -294,8 +291,8 @@
                 <button class="button outline" on:click={()=>data.detail.open=false}>Close</button>
             </div>
         </div>
-   
-       
+    
+        
        
     </Modal>
 {/if}
@@ -322,7 +319,7 @@
     <div class="col is-vertical-align">
         <fieldset>
             <legend>Select Group</legend>
-       
+        
         <select  id="Groups" bind:value={data.index} on:change={updateReports}>
             <optgroup label="Groups">
                     {#each data.groups as item,index}
