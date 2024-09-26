@@ -159,11 +159,7 @@ export let getBasedata=(/** @type {{ iSAMS: { PupilManager: { CurrentPupils: { P
 
     //for(let item of data.subjects) console.log(item);
 
-    for(let item of mis.iSAMS.HRManager.CurrentStaff.StaffMember) {
-       // @ts-ignore
-       data.staff.push({id:item.UserCode,tid:item.Initials,staff_id:item['@Id'],sn:item.Surname,pn:item.PreferredName,sal:item.Salutation,teacher:item.TeachingStaff
-    });
-    }
+   
 
    
     return data;

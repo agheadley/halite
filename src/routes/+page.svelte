@@ -298,7 +298,6 @@ onMount(async () => {
 		headers: {'content-type': 'application/json'}
 	});
     $teachers= await response.json();
-	   
 
 	//console.log('$cohorts',$cohorts);
 

@@ -92,7 +92,7 @@ export async function load() {
 
 
     let staff=tch.sort((/** @type {{ sn: string; pn: string; }} */ a,/** @type {{ sn: any; pn: any; }} */ b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));
-       
+   
     
 
 
