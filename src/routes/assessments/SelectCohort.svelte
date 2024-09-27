@@ -57,9 +57,12 @@
         for(let gp of gps) teachers=teachers.concat(gp.teacher.map(el=>el.tid))
         teachers=teachers.concat($config.admin.map((/** @type {{ tid: any; }} */ el)=>el.tid));
         teachers=teachers.concat($config.subject.filter((/** @type {{ ss: any; sc: any; }} */ el)=>el.ss===s.ss && el.sc===s.sc).map((/** @type {{ tid: any; }} */ el)=>el.tid));
-        
+        console.log(`${s.sc} ${s.ss} TEACHERS`,teachers);
         /** @type {any} */
+        console.log('USER',status.user);
         let cols=util.getAssessmentCols(assessments,teachers,status.user);
+       
+        console.log('COLS',cols);
         
 
         //console.log(cols);

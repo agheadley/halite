@@ -192,6 +192,7 @@
                 exam:data.assessment.tag.exam,
                 grade:data.assessment.tag.grade,
                 archive:data.assessment.tag.archive,
+                pupiledit:data.assessment.tag.pupiledit
             };
         }
         status.n=data.assessment.n ? data.assessment.n : '';
