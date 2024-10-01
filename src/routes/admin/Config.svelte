@@ -14,7 +14,8 @@
         lvs:[],
         lv:'',
         grades:[],
-        tab:'subject'   // subject, grade
+        regression:[],
+        tab:'subject'   // subject, grade,regression
     };
     
     let addSubjectRow=()=>{
@@ -25,6 +26,12 @@
     let addGradeRow=()=>{
         data.grades.push({sc:'',gd:'',pc:0,scr:0,pre:0});
         data.grades=data.grades;
+        
+    };
+
+    let addRegressionRow=()=>{
+        data.regression.push({lv:'',sc:'',ss:'',regressionYear:0,gradient:0,intercept:0,std:''});
+        data.regression=data.regression;
         
     };
 
@@ -47,6 +54,17 @@
      let removeGradeRow=(index)=>{
         data.grades.splice(index, 1);
         data.grades=data.grades;
+    
+        
+    };
+
+     /**
+     * 
+     * @param {number} index
+     */
+     let removeRegressionRow=(index)=>{
+        data.regression.splice(index, 1);
+        data.regression=data.regression;
     
         
     };
@@ -108,6 +126,31 @@
 
     };
 
+    let saveRegression=async()=>{
+        let response = await fetch('/edge/update', {
+		    method: 'POST',
+		    body: JSON.stringify({
+                collection:'config',
+                filter:{},
+                update:{regression:data.regression}
+                }),
+		    headers: {'content-type': 'application/json'}
+	    });
+
+        let res= await response.json();
+        console.log(res);
+
+        if(res.matchedCount===1) {
+            $alert.msg=`All saved ${res.modifiedCount===1 ? 'changes made' :'no changes'}`;
+            await update();
+   
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error saving regression`;
+        }
+
+    };
+
 
     let update=async()=>{
         /* get subject records */
@@ -139,6 +182,8 @@
             data.grades=data.grades.sort((/** @type {{ sc: string; pc: number; }} */ a,/** @type {{ sc: any; pc: number; }} */ b)=>a.sc.localeCompare(b.sc) || b.pc-a.pc);
         }
 
+        data.regression=$config.regression.sort((/** @type {{ sc: string; ss: string; regressionYear: number; }} */ a,/** @type {{ sc: any; ss: any; regressionYear: number; }} */ b)=>a.sc.localeCompare(b.sc) || a.ss.localeCompare(b.ss) || b.regressionYear-a.regressionYear);
+
         
     
     };
@@ -151,7 +196,7 @@
         
         await update();
        
-        //console.log($config.overview);
+        console.log(data.regression);
 
         
     });
@@ -165,10 +210,75 @@
             <div class="tabs">
                 <a href={'#'} on:click={()=>data.tab='subject'} on:keydown={()=>data.tab='subject'} class={data.tab==='subject'?'active':''}>Subjects</a>
                 <a href={'#'} on:click={()=>data.tab='grade'} on:keydown={()=>data.tab='grade'} class={data.tab==='grade'?'active':''}>Grades</a>
+                <a href={'#'} on:click={()=>data.tab='regression'} on:keydown={()=>data.tab='regression'} class={data.tab==='regression'?'active':''}>Regression</a>
             </div>
         </div>
     </div>
 
+    {#if data.tab==='regression'}
+
+    <div class="row">
+        <div class="col">
+            <h4>Edit Regression (US Chances Graphs only)</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+           &nbsp;
+        </div>
+    </div>
+
+    <table class="striped small">
+        <thead>
+            <tr>
+                <th></th>
+                <th>sc</th>
+                <th>ss</th>
+                <th>regressionYear</th>
+                <th>lv</th>
+                <th>gradient</th>
+                <th>intercept</th>
+                <th>std</th>
+              </tr>
+        </thead>
+        <tbody>
+            {#each data.regression as row,rowIndex}
+            <tr>
+                <td>
+                    <button class="button outline icon-only" on:click={()=>removeRegressionRow(rowIndex)}>         
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                    </button>
+                    
+                </td>
+                <td><input type=text bind:value={row.sc}/></td>
+                <td><input type=text bind:value={row.ss}/></td>
+                <td><input type=number bind:value={row.regressionYear}/></td>
+                <td><input type=text bind:value={row.lv}/></td>
+                <td><input type=number bind:value={row.gradient}/></td>
+                <td><input type=number bind:value={row.intercept}/></td>
+                <td><input type=text bind:value={row.std}/></td>
+            </tr>
+
+            {/each}
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col is-vertical-align">
+            <button class="button dark icon-only" on:click={addRegressionRow}>         
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+            </button>
+        </div>
+        <div class="col is-vertical-align">
+            <td>
+                <button class="button dark" on:click={saveRegression}>Save</button>
+            </td>
+        </div>
+  
+    </div>
+
+    {/if}   <!-- / enf of regression-->
 
     {#if data.tab==='grade'}
 

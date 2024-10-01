@@ -202,7 +202,7 @@ let calculate=async(groupIndex,pupilIndex)=>{
     if(res.matchedCount!==1) {
         $alert.type='error';
         $alert.msg=`Error updating result ${x.pid} ${x.sn} ${x.pn}`;
-    } else  $alert.msg=`Modified ${x.sn} ${x.pn} changes - ${res.modifiedCount}`; 
+    } else  $alert.msg=`Modified ${x.sn} ${x.pn}. Changes: ${res.modifiedCount}`; 
 
 };
 
@@ -437,7 +437,7 @@ let handleKeydown=(event)=>{
             </button></th>
         <th></th>
         <th>Grade</th>
-        <th>Absent</th>
+        <!--<th>Absent</th>-->
     </thead>
     <tbody>
        {#each group.pupil as row,rowIndex}
@@ -449,8 +449,9 @@ let handleKeydown=(event)=>{
                 </button>
             </td>
             <td>{group.g}</td>
-            <td><input disabled='{row.x}' type=text id={`G${groupIndex}R${rowIndex}C${0}`} bind:value={row.gd} on:input={()=>validateGrade(groupIndex,rowIndex)} on:blur={()=>blurGrade(groupIndex,rowIndex)}/></td>
-            <td><input type=checkbox bind:checked={row.x} on:change={()=>calculate(groupIndex,rowIndex)}/></td>
+            <!-- <td><input disabled='{row.x}' type=text id={`G${groupIndex}R${rowIndex}C${0}`} bind:value={row.gd} on:input={()=>validateGrade(groupIndex,rowIndex)} on:blur={()=>blurGrade(groupIndex,rowIndex)}/></td>-->
+            <td><input type=text id={`G${groupIndex}R${rowIndex}C${0}`} bind:value={row.gd} on:input={()=>validateGrade(groupIndex,rowIndex)} on:blur={()=>blurGrade(groupIndex,rowIndex)}/></td>
+            <!--<td><input type=checkbox bind:checked={row.x} on:change={()=>calculate(groupIndex,rowIndex)}/></td>-->
         </tr>
         {#if row.selected}
         <tr>
