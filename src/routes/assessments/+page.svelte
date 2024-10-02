@@ -21,7 +21,8 @@
         user:'',
         view:'grade', /* grade/percentage */
         download:false,
-        rag:false
+        rag:false,
+        create:false
     };
 
     $:{
@@ -81,7 +82,11 @@
             </div>
         </div>
         <div class="col-4 is-vertical-align">
+            {#if status.create}
             <a href={'/assessments/create/'} class="button dark">Create</a>
+            {:else}
+            <button class="button dark" disabled>Create</button>
+            {/if}
             <button on:click={()=>status.download=true} class="button icon-only outline">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
             </button>

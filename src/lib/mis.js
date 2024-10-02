@@ -121,7 +121,7 @@ export let getBasedata=(/** @type {{ iSAMS: { PupilManager: { CurrentPupils: { P
 
     for(let item of mis.iSAMS.HRManager.CurrentStaff.StaffMember) {
         // @ts-ignore
-        data.staff.push({id:item.UserCode,tid:item.Initials,staff_id:item['@Id'],sn:item.Surname,pn:item.PreferredName,sal:item.Salutation,teacher:item.TeachingStaff
+        data.staff.push({id:item.UserCode,tid:item.Initials[0] ? item.Initials.toUpperCase() : item.Initials ,staff_id:item['@Id'],sn:item.Surname,pn:item.PreferredName,sal:item.Salutation,teacher:item.TeachingStaff
      });
      }
 
@@ -235,6 +235,8 @@ export let getGroupData=(mis,cfg)=>{
                     }
                 }
             }
+
+            for(let item of teacherArr) item.tid=item.tid[0] ? item.tid.toUpperCase() : item.tid;
 
             groups.push({yr:examYear,lv:level,sc:subjectData.sc,sl:subject.sl,ss:subject.ss,g:item.SetCode,teacher:teacherArr,pupil:pupilArr,log:created});
         }

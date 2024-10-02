@@ -65,6 +65,11 @@
         console.log('COLS',cols);
         
 
+        // check whether you should be able to create (are you a teacher/admin)
+        let t=teachers.find(el=>el===status.user);
+        status.create = t ? true : false;
+        //status.create=false;
+
         //console.log(cols);
         
         //let results=assessments.map((/** @type {{ pupil: any[]; _id: any; }} */ el)=>el.pupil.map((/** @type {{ pid: any; gd: any; scr: any; pc: any; }} */ cel)=>({_id:el._id,pid:cel.pid,gd:cel.gd,scr:cel.scr,pc:cel.pc}))).flat();
