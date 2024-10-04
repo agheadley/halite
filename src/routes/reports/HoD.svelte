@@ -244,7 +244,7 @@
                     {/each}
             </optgroup>
           </select>
-          <input type=checkbox bind:checked={data.all} on:change={updateSubjects}/>
+          <!--<input type=checkbox bind:checked={data.all} on:change={updateSubjects}/>-->
         </p>
         </fieldset>
  
