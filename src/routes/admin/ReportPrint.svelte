@@ -119,11 +119,12 @@ let generate=async()=>{
                     let f=data.results.find((/** @type {{ aoid: any; }} */ el)=>el.aoid===assessment._id); 
                     col.push({txt:assessment.n,ds:assessment.ds,gd:f?f.gd:'X',r:0});
                 }
-          
-                let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col[0].gd);
-                for(let c of col) {
-                    let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===c.gd); 
-                    c.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+                if(col[0]) {   
+                    let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col[0].gd);
+                    for(let c of col) {
+                        let s2=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===c.gd); 
+                        c.r = s1>-1 && s2>-1 ? s1-s2 : 0; 
+                    }
                 }
 
 
