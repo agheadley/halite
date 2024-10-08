@@ -88,7 +88,7 @@ for(let gp of gps) {
         res=reports.filter((/** @type {{ ss: string; sc: string; ci: any; author: { type: string; }; }} */ el)=>el.ss===gp.ss && el.sc===gp.sc && el.ci===cycs[0].index && el.author.type==='teacher');
         for(let item of res) {
             r.push(
-                {sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}
+                {sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.list[0]}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}
             );
         }
 
@@ -161,7 +161,7 @@ for(let gp of gps) {
         let p=reports.filter((/** @type {{ type: string; }} */ el)=>el.type==='E');
         for(let item of p) {
             report.E.push({
-                title:item.sl,report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}]
+                title:item.sl,report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.list[0]}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}]
             });
         }
         report.E=report.E.sort((/** @type {{ title: string; }} */ a,/** @type {{ title: any; }} */ b)=>a.title.localeCompare(b.title));
@@ -174,7 +174,7 @@ for(let gp of gps) {
 				if(item.author.type==='tutor') title='tutor';
 				if(item.author.type==='xsa') title='pupil self-assessment';
             report.P.push({
-                title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}]
+                title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.list[0]}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}]
             });
         }
         report.P=report.P.sort((/** @type {{ title: string; }} */ a,/** @type {{ title: any; }} */ b)=>b.title.localeCompare(a.title));

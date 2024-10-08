@@ -167,7 +167,7 @@ let update=async()=>{
             console.log(res);
             for(let item of res) {
                 r.push(
-                    {sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}
+                    {sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.list[0]}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}
                 );
             }
             //console.log(r);
@@ -281,7 +281,7 @@ let update=async()=>{
             let r=[];
             for(let item of res) {
                 r.push(
-                    {sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}
+                    {sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.list[0]}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}
                 );
             }
 
@@ -360,7 +360,7 @@ let update=async()=>{
         let p=reports.filter((/** @type {{ type: string; }} */ el)=>el.type==='E');
         for(let item of p) {
             out.E.push({
-                title:item.sl,report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}]
+                title:item.sl,report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.list[0]}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}]
             });
         }
         out.E=out.E.sort((a,b)=>a.title.localeCompare(b.title));
@@ -375,7 +375,7 @@ let update=async()=>{
             if(item.author.type==='tutor') title='tutor';
             if(item.author.type==='xsa') title='pupil self-assessment';
             out.P.push({
-                title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.default}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.default}`:null,txt:item.txt}]
+                title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.list[0]}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}]
             });
         }
         out.P=out.P.sort((a,b)=>b.title.localeCompare(a.title));

@@ -148,7 +148,7 @@
         console.log(res);
 
         if(res.matchedCount===1) {
-            $alert.msg=`Row saved -  ${res.modifiedCount===1 ? 'changes made' :'no changes'}`;
+            $alert.msg=`Row saved`;
             data.confirm=false;
  
    
@@ -157,7 +157,7 @@
             $alert.msg=`Error updating row`;
         }
 
-
+        await util.wait(1500);
 
         // now update parent view for assessments tag.parent
         console.log('updating parent view for ',data.rows[index]);
@@ -172,7 +172,7 @@
         
         }
         
-        $alert.msg='Updating parent view, please wait...';
+        //$alert.msg='Updating parent view, please wait...';
         response = await fetch('/edge/update', {
 		    method: 'POST',
 		    body: JSON.stringify({
@@ -188,9 +188,12 @@
         console.log(filter);
         console.log('parent update...',res);
 
-        if(res.matchedCount>=1) {
-            $alert.msg=`Parent view matched ${res.matchedCount} modified ${res.modifiedCount}`;
-            
+        if(res.matchedCount>-1) {
+            console.log(`Found ${res.matchCount} matching assessments` );
+            if(res.matchedCount>0)
+                $alert.msg=`Parent view: Matched ${res.matchedCount} modified ${res.modifiedCount}`;
+            else 
+                $alert.msg=`Parent view :No assessments viewable to pupils. Nothing to change!`;
    
         } else {
             $alert.type='error';
@@ -304,6 +307,7 @@
                 <th>From</th>
                 <th>To</th>
                 <th>Parent View?</th>
+                <th></th>
             </tr>
         </thead>
    
@@ -318,9 +322,9 @@
             {row.lv} {row.yr} / {row.index}
             </td>
             <td>
-                <input type=checkbox bind:checked={row.exam}  on:change={()=>saveRow(rowIndex)}>
+                <input type=checkbox bind:checked={row.exam}>
                 {#if row.exam}
-                <select  id="cohort" bind:value={row.aIndex}  on:change={()=>saveRow(rowIndex)}>
+                <select  id="cohort" bind:value={row.aIndex}>
                     <optgroup label="Level ExamYear">
                             {#each data.assessments as item,index}
                                 {#if item.lv===data.cohorts[data.index].lv && item.yr===data.cohorts[data.index].yr}
@@ -332,15 +336,16 @@
                 {/if}
             </td>
             <td>
-                <input disabled={row.exam} style={'width:20rem;'}  on:change={()=>saveRow(rowIndex)} type=date bind:value={row.from} class={row.from==='' && !row.exam ? 'error' : ''}/>
+                <input disabled={row.exam} style={'width:20rem;'}   type=date bind:value={row.from} class={row.from==='' && !row.exam ? 'error' : ''}/>
                     
             </td>
             <td>
-                <input disabled={row.exam} style={'width:20rem;'}  on:change={()=>saveRow(rowIndex)} type=date bind:value={row.to} class={row.to==='' && !row.exam ? 'error' : ''}/>
+                <input disabled={row.exam} style={'width:20rem;'}   type=date bind:value={row.to} class={row.to==='' && !row.exam ? 'error' : ''}/>
             </td>
             <td>
-                <input type=checkbox bind:checked={row.parent} on:change={()=>saveRow(rowIndex)}> 
+                <input type=checkbox bind:checked={row.parent} > 
             </td>
+            <td><button class="button dark" on:click={()=>saveRow(rowIndex)}>Save</button></td>
         </tr>
         {/if}
         {/each}
