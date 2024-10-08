@@ -98,6 +98,33 @@
        
     };
 
+    let changeStatus=async()=>{
+        console.log('Changing live pupils/overview status to: ',status.tag.overview);
+
+        //console.log('saving ...',$cohorts.assessments.edit);
+        //console.log(status.total,status.grade,status.n);
+        //status.isSave=false;
+
+        status.tag.pupil=status.tag.overview;
+        
+        let response = await fetch('/edge/update', {
+		    method: 'POST',
+		    body: JSON.stringify({collection:'assessments',filter:{"_id":{"$oid": $cohorts.assessments.edit._id}},update:{n:status.n,grade:status.grade,total:status.total,tag:status.tag,log:`${status.user}|${util.getDateTime()}`}}),
+		    headers: {'content-type': 'application/json'}
+	    });
+
+        let res= await response.json();
+        console.log(res);
+
+        if(res.matchedCount===1 && res.modifiedCount===1) {
+            $alert.msg=`Live status updated`;
+           
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error updating live status, reload and check.`;
+        }
+    };
+
 
     let openSave=()=>{
       
@@ -294,7 +321,7 @@
                 <!--<legend>Assessment Name (max {max})</legend>-->
                 <legend>Viewable ?</legend>
                 <p class="grouped">
-                <input id="view" disabled={status.tag.exam}  type=checkbox bind:checked={status.tag.overview} />Live to Overview/Pupils ?&nbsp&nbsp;
+                <input id="view" disabled={status.tag.exam}  type=checkbox bind:checked={status.tag.overview} on:change={changeStatus} />Live to Overview/Pupils ?&nbsp&nbsp;
             </fieldset>
         </div>
         <div class="col is-vertical-align">

@@ -1,7 +1,7 @@
 <script>
 
     import { onMount } from 'svelte';
-    import {config,location,pupils,groups,cohorts} from '$lib/store';
+    import {config,location,pupils,groups,cohorts,assessments} from '$lib/store';
     import { goto } from '$app/navigation';
 	import HoD from './HoD.svelte';
     import Pastoral from './Pastoral.svelte';
@@ -33,6 +33,15 @@
         console.log('cohorts',$cohorts);
 
         
+        let response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'assessments',filter:{},projection:{_id:1,sc:1,sl:1,ss:1,dt:1,dl:1,ds:1,n:1,tag:1,lv:1,yr:1,grade:1,total:1}}),
+            headers: {'content-type': 'application/json'}
+        });
+        $assessments= await response.json();
+
+
+
         status.user=data.user.name;
         
         status.cycle=data.cycle;
