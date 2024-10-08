@@ -11,9 +11,9 @@
     
     let update=async()=>{
         let y=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
-        //console.log(y);
+        console.log(y);
         let s=$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index];
-        //console.log(s);
+        console.log(s);
        
         /* adjust subjects.index if necessary */
         if(!(y.lv===s.lv && y.yr===s.yr)) $cohorts.assessments.subjects.index=$cohorts.assessments.subjects.list.findIndex((/** @type {{ lv: any; yr: any; }} */ el)=>el.lv===y.lv && el.yr===y.yr);
