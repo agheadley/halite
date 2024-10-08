@@ -40,7 +40,7 @@
         /* get cohort assessments */
         let response = await fetch('/edge/read', {
             method: 'POST',
-            body: JSON.stringify({collection:'assessments',filter:{lv:status.lv,yr:status.yr,"tag.archive":false,"tag.overview":true},projection:{}}),
+            body: JSON.stringify({collection:'assessments',filter:{lv:status.lv,yr:status.yr,"tag.archive":false},projection:{}}),
             headers: {'content-type': 'application/json'}
         });
 
