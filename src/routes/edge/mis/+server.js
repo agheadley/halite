@@ -47,9 +47,9 @@ export async function POST({request}) {
     /** @type {any} */
     let contacts=[];
 
-
-    res=await fetch(`https://isams.oakham.rutland.sch.uk/api/batch/1.0/json.ashx?apiKey={${process.env.MIS_PEOPLE}}`);
-    let x=await res.json();
+    /** @type {any} */
+    let x={res:'no data'};
+   
    
     groups=mis.getGroupData(x,data.cfg);
 
@@ -58,6 +58,9 @@ export async function POST({request}) {
 
 
     if(isOld) {
+        
+        res=await fetch(`https://isams.oakham.rutland.sch.uk/api/batch/1.0/json.ashx?apiKey={${process.env.MIS_PEOPLE}}`);
+        x=await res.json();
 
         /* update teachers */
         let basedata=mis.getBasedata(x);
