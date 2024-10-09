@@ -228,11 +228,12 @@ onMount(async () => {
         <tr>
             <td>
                 <div>
-                 
+                    {#if row.txt && row.txt.length}
                     {#if !row.edit}
                     <button  class="button outline small" on:click={()=>openEdit(rowIndex)}>Edit</button>
                     {:else}
-                    <button disabled={row.txt.length<row.min || row.txt.length>row.max} class="button outline small" on:click={()=>save(rowIndex)}>Save</button>
+                    <button disabled={row.txt && row.txt.length && (row.txt.length<row.min || row.txt.length>row.max)} class="button outline small" on:click={()=>save(rowIndex)}>Save</button>
+                    {/if}
                     {/if}
                  
                 </div>
@@ -250,13 +251,14 @@ onMount(async () => {
                 </div>
             </td>
             <td>
-               
+                {#if row.txt && row.txt.length}
                 {#if row.edit}
                 <textarea class={row.txt.length<row.min || row.txt.length>row.max ? 'red edit-comment' : 'green edit-comment'} bind:value={row.txt}/> 
               
                 {:else}
                 <textarea disabled class={row.txt.length<row.min || row.txt.length>row.max ? 'comment red small' : 'comment green small'} bind:value={row.txt}/> 
               
+                {/if}
                 {/if}
                  
                 <div class="report-information">
@@ -281,11 +283,12 @@ onMount(async () => {
 <tr>
     <td>
         <div>
-          
+            {#if row.txt && row.txt.length}
             {#if !row.edit}
             <button class="button outline small" on:click={()=>openEdit(rowIndex)}>Edit</button>
             {:else}
-            <button disabled={row.txt.length<row.min || row.txt.length>row.max} class="button outline small" on:click={()=>save(rowIndex)}>Save</button>
+            <button disabled={row.txt && row.txt.length && (row.txt.length<row.min || row.txt.length>row.max)} class="button outline small" on:click={()=>save(rowIndex)}>Save</button>
+            {/if}
             {/if}
            
         </div>
@@ -303,13 +306,14 @@ onMount(async () => {
         </div>
     </td>
     <td>
-       
+       {#if row.txt && row.txt.length}
         {#if row.edit}
-        <textarea class={row.txt.length<row.min || row.txt.length>row.max ? 'red edit-comment' : 'green edit-comment'} bind:value={row.txt}/> 
+        <textarea class={row.txt && row.txt.length<row.min || row.txt.length>row.max ? 'red edit-comment' : 'green edit-comment'} bind:value={row.txt}/> 
       
         {:else}
         <textarea disabled class={row.txt.length<row.min || row.txt.length>row.max ? 'comment red small' : 'comment green small'} bind:value={row.txt}/> 
       
+        {/if}
         {/if}
        
         <div class="report-information">
