@@ -114,6 +114,9 @@
      * @param {number} index
      */
     let toggleSort=(index)=>{
+        //console.log(status.table);
+     
+        
         if(!status.sort) {
             status.sort=true;
             // @ts-ignore
@@ -123,6 +126,10 @@
         } else {
             status.sort=false;
             status.table=status.table.sort((/** @type {{ sn: string; pn: string; }} */ a,/** @type {{ sn: any; pn: any; }} */ b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));
+        }
+
+        for(let row of status.table) {
+            if(row.show===true) console.log(row.sn,row.pn,row.cols[index].d);
         }
     };
 
