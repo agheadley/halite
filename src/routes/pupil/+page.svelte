@@ -470,14 +470,14 @@ onMount(async () => {
         </tr></tbody></table>
     </div>
     <div class="col">
-        {#if view.chance}
+       <!--{#if view.chance}-->
         <div class="report-information-left">
             <div><span class="tag">{row.chance.A.std}</span></div>
             <div>{@html html.getChance(row.chance.A)}</div>
             <div><span class="tag">{row.chance.B.std}</span></div>
             <div>{@html html.getChance(row.chance.B)}</div>
         </div>
-        {/if}
+        <!--{/if}-->
     </div>
         
  
