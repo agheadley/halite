@@ -80,7 +80,7 @@ export async function load() {
         
         let response = await fetch('/edge/distinct', {
             method: 'POST',
-            body: JSON.stringify({collection:'reports',match:{coid:cycle._id,type:"A"},aggregate:['ss','sc','sl','fm','tid']}),
+            body: JSON.stringify({collection:'reports',match:{coid:cycle._id,type:"A"},aggregate:['ss','sc','sl','fm','tid','yr','lv']}),
             headers: {'content-type': 'application/json'}
         });
         let res= await response.json();

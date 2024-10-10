@@ -1,6 +1,6 @@
 <script>
     import {groups} from '$lib/store';
-    import {alert,config,teachers} from '$lib/store';
+    import {alert,config,teachers,assessments} from '$lib/store';
 	import { onMount } from 'svelte';
     import * as util from '$lib/util';
     import Modal from '$lib/_Modal.svelte';
@@ -15,6 +15,8 @@
         index:0,
         subjects:[],
         reports:[],
+        results:[],
+        cols:[],
         txt:'',
         all:false,
         detail:{open:false,txt:'',_id:'',type:'hod',pid:0,sn:'',pn:'',user:'',cycleID:''}
@@ -90,7 +92,38 @@
         let gps=$groups.filter(el=>el.ss===s.ss && el.sc===s.sc && el.fm===s.fm);
         console.log(gps);
 
+
         let response = await fetch('/edge/read', {
+                method: 'POST',
+                body: JSON.stringify({collection:'results',filter:{lv:s.lv,yr:s.yr,ss:s.ss,sc:s.sc},projection:{}}),
+                headers: {'content-type': 'application/json'}
+        });
+        data.results= await response.json();
+        console.log(data.results);
+        console.log(s);
+        data.cols=[];
+        for(let item of data.results) {
+            if(!data.cols.find((/** @type {{ n: any; dl: any; }} */ el)=>el.n===item.n && el.dl===item.dl)) {
+                
+                let f=$assessments.find(el=>el.yr===s.yr && el.lv===s.lv && el.ss===s.ss && el.sc===el.sc && el.n===item.n && el.dl===item.dl);
+                console.log(f);
+                let p=f?f.tag.pupil:false;
+                let o=f?f.tag.overview:false;
+                
+                data.cols.push({
+                        n:item.n,
+                        ds:item.dl?.length===10 ? item.dl[5]+item.dl[6]+"/" +item.dl[2]+item.dl[3]: '00/00',
+                        dt:new Date(item.dl).getTime(),
+                        dl:item.dl,
+                        pupil:p,
+                        overview:o
+                    });
+            }
+        }
+        data.cols=data.cols.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
+        console.log(data.cols);
+
+        response = await fetch('/edge/read', {
             method: 'POST',
             body: JSON.stringify({collection:'reports',filter:{coid:status.cycle._id,fm:s.fm,ss:s.ss,sc:s.sc},projection:{}}),
             headers: {'content-type': 'application/json'}
@@ -119,6 +152,7 @@
                     /** @type {any} */
                     let obj={
                                 coid:status.cycle._id,
+                                ci:status.cycle.index,
                                 ay:status.cycle.ay,
                                 y:status.cycle.y,
                                 tt:status.cycle.tt,
@@ -154,7 +188,7 @@
                                 $alert.msg=`Missing report created`;
     
                                 obj._id=res[0];
-                                data.reports.push[0];
+                                data.reports.push[obj];
 
                             } else {
                                 console.log(`Error inserting report`);
@@ -170,6 +204,15 @@
                
                 for(let item of tchs) data.reports.push(item);
 
+            }
+        }
+
+
+        // add cols to reports for data display
+        for (let row of data.reports) {
+            row.cols=[];
+            for(let col of data.cols) {
+                console.log(row.pupil.pid,col.n);
             }
         }
 
@@ -193,7 +236,14 @@
 
 
     onMount(async () => {
-       
+        /* update $assessments with changes */
+        let response = await fetch('/edge/read', {
+            method: 'POST',
+            body: JSON.stringify({collection:'assessments',filter:{},projection:{_id:1,sc:1,sl:1,ss:1,dt:1,dl:1,ds:1,n:1,tag:1,lv:1,yr:1,grade:1,total:1}}),
+            headers: {'content-type': 'application/json'}
+        });
+        $assessments= await response.json();
+
         updateSubjects();
     });
 
@@ -282,6 +332,7 @@
     </thead>
    <tbody>
     {#each data.reports as row,rowIndex}
+        <tr>{row.pupil.pid}</tr>
         <tr>
             {#if row.author.type==='hod'}
                 
