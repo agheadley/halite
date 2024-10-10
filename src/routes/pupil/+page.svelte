@@ -464,7 +464,7 @@ onMount(async () => {
 
                 {/if}
             </div>
-            <Cell color={view.rag} residual={col.r}>{col.gd}</Cell>
+            <Cell color={true} residual={col.r}>{col.gd}</Cell>
         </td>
        {/each}
         </tr></tbody></table>
