@@ -117,7 +117,7 @@ for(let gp of gps) {
 
     let col=[];
     // @ts-ignore
-    let a=$assessments.filter((el)=>el.tag.archive===false && el.tag[view.context]===true && el.sc===gp.sc && el.ss===gp.ss && el.yr===gp.yr && el.lv===gp.lv)
+    let a=$assessments.filter((el)=>el.tag.archive===false && (el.tag.pupiledit===true || el.tag[view.context]===true) && el.sc===gp.sc && el.ss===gp.ss && el.yr===gp.yr && el.lv===gp.lv)
         .sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
     for(let assessment of a) {
         //console.log(a);

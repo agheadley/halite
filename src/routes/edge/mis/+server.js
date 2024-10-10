@@ -51,7 +51,7 @@ export async function POST({request}) {
     let x={res:'no data'};
    
    
-    groups=mis.getGroupData(x,data.cfg);
+    
 
 
     
@@ -61,6 +61,8 @@ export async function POST({request}) {
         
         res=await fetch(`https://isams.oakham.rutland.sch.uk/api/batch/1.0/json.ashx?apiKey={${process.env.MIS_PEOPLE}}`);
         x=await res.json();
+
+        groups=mis.getGroupData(x,data.cfg);
 
         /* update teachers */
         let basedata=mis.getBasedata(x);
