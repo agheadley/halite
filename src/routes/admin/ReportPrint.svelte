@@ -177,7 +177,7 @@ let generate=async()=>{
             if(item.author.type==='tutor') title='tutor';
             if(item.author.type==='xsa') title='pupil self-assessment';
             out.P.push({
-                title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.list[0]}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}]
+                title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:(item.ec!==null  && item.ep!=='N/A')?`${item.ec}/${$config.report.e.list[0]}`:null,ep:(item.ep!==null && item.ep!=='N/A')?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}]
             });
         }
         out.P=out.P.sort((a,b)=>b.title.localeCompare(a.title));
