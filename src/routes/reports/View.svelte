@@ -5,6 +5,7 @@ import {groups,teachers,config,alert,pupils,assessments,cycles} from '$lib/store
 import * as html from '$lib/html';
 import * as util from '$lib/util';
 import * as file from '$lib/file';
+	import Report from '$lib/_Report.svelte';
 	
 
 /** @type {any}*/
@@ -207,6 +208,8 @@ let update=async()=>{
     let getReport=async(pid,detail)=> {
         console.log('building report for ',pid);
 
+
+       
         /** @type {{
          cycle:{tt:string,ts:string,y:number,txt:string},
          pupil:{sn:string,pn:string,pid:number,id:string,hse:string,tg:string,fm:number},
@@ -216,7 +219,7 @@ let update=async()=>{
          }
         }}*/
         let out={
-            cycle:{tt:data.cycles[data.cIndex].tt,ts:data.cycles[data.cIndex].ts,y:data.cycles[data.cIndex].y,txt:''},
+            cycle:{tt:data.cycles[data.cIndex].tt,ts:data.cycles[data.cIndex].ts,y:data.cycles[data.cIndex].y,txt:""},
             pupil:{id:detail.id,sn:detail.sn,pn:detail.pn,pid:pid,tg:detail.tg,hse:detail.hse,fm:detail.fm},
             A:[],
             E:[],

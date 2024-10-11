@@ -52,6 +52,21 @@ let generate=async()=>{
 
     for(let pupil of $pupils.filter(el=>el.fm===data.fm)) {
        
+        console.log(data.fm);
+         // LS reports need a key
+        /** @type {string}*/
+        let txt='';
+        if(data.fm<3) {
+            txt+=`<table class="small">`;
+            txt+=`<thead><tr><th>Lower School Grade</th><th>Description</th></tr></thead>`;
+            txt+=`<tbody><tr><td>M</td><td>Mastered</td></tr><tr><td>S</td><td>Secure</td></tr><tr><td>D</td><td>Demonstrating</td></tr><tr><tr><td>E</td><td>Emerging</td></tr><tr></tbody>`;
+            txt+=``;
+            txt+=``;
+            txt+=``;
+            
+            txt+=`</table>`;
+        }
+        console.log(data.fm,txt);
         
         /** @type {{
          cycle:{tt:string,ts:string,y:number,txt:string},
@@ -62,7 +77,7 @@ let generate=async()=>{
          }
         }}*/
         let out={
-            cycle:{tt:data.cycles[data.cIndex].tt,ts:data.cycles[data.cIndex].ts,y:data.cycles[data.cIndex].y,txt:''},
+            cycle:{tt:data.cycles[data.cIndex].tt,ts:data.cycles[data.cIndex].ts,y:data.cycles[data.cIndex].y,txt:txt},
             pupil:{id:pupil.id,sn:pupil.sn,pn:pupil.pn,pid:pupil.pid,tg:pupil.tg,hse:pupil.hse,fm:pupil.fm},
             A:[],
             E:[],
@@ -76,7 +91,7 @@ let generate=async()=>{
 
         // add assessments and comments
         for(let gp of gps) {
-            let line={title:`${gp.sl} (${gp.sc})`};
+            let line={title:`${gp.sl}`}; //(${gp.sc})`}
             let res=data.reports.find((/** @type {{ pupil: { pid: number; }; ss: any; sc: any; ci: any; author: { type: string; }; }} */ el)=>el.pupil.pid===pupil.pid && el.ss===gp.ss && el.sc===gp.sc && el.ci===data.cycles[data.cIndex].index && el.author.type==='hod');
             let s=res ? res.txt : '';
             res=data.reports.filter((/** @type {{ pupil: { pid: number; }; ss: any; sc: any; ci: any; author: { type: string; }; }} */ el)=>el.pupil.pid===pupil.pid && el.ss===gp.ss && el.sc===gp.sc && el.ci===data.cycles[data.cIndex].index && el.author.type==='teacher');
@@ -134,7 +149,7 @@ let generate=async()=>{
           
 
             out.A.push({
-                title:`${gp.sl} (${gp.sc})`,
+                title:`${gp.sl}`, //(${gp.sc})`
                 col:col,
                 chance:chance,
                 statement:s,

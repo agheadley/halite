@@ -110,7 +110,6 @@
         data.results= await response.json();
         console.log(data.results);
         console.log(s);
-        //data.cols=[];
         for(let item of data.results) {
             /*
             if(!data.cols.find((el)=>el.n===item.n && el.dl===item.dl)) {
@@ -131,9 +130,7 @@
             }
             */
         }
-        data.cols=data.cols.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
-        console.log(data.cols);
-
+       
         response = await fetch('/edge/read', {
             method: 'POST',
             body: JSON.stringify({collection:'reports',filter:{coid:status.cycle._id,fm:s.fm,ss:s.ss,sc:s.sc},projection:{}}),
