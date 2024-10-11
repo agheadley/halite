@@ -274,7 +274,7 @@ let update=async()=>{
         // build academic reports
 
         for(let gp of gps) {
-            let line={title:`${gp.sl} (${gp.sc})`};
+            let line={title:`${gp.sl}`}; // (${gp.sc})
             let res=reports.find((/** @type {{ ss: string; sc: string; ci: any; author: { type: string; }; }} */ el)=>el.ss===gp.ss && el.sc===gp.sc && el.ci===data.cycles[data.cIndex].index && el.author.type==='hod');
             let s=res ? res.txt : '';
             res=reports.filter((/** @type {{ ss: string; sc: string; ci: any; author: { type: string; }; }} */ el)=>el.ss===gp.ss && el.sc===gp.sc && el.ci===data.cycles[data.cIndex].index && el.author.type==='teacher');
@@ -345,7 +345,7 @@ let update=async()=>{
         
 
             out.A.push({
-                title:`${gp.sl} (${gp.sc})`,
+                title:`${gp.sl}`, //(${gp.sc})
                 col:col,
                 chance:chance,
                 statement:s,

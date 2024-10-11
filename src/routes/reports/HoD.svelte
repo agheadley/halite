@@ -5,6 +5,8 @@
     import * as util from '$lib/util';
     import Modal from '$lib/_Modal.svelte';
     import Detail from './Detail.svelte';
+    import Cell from '$lib/_Cell.svelte';
+    import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 
     /** @type {any}*/
     export let status;
@@ -92,6 +94,13 @@
         let gps=$groups.filter(el=>el.ss===s.ss && el.sc===s.sc && el.fm===s.fm);
         console.log(gps);
 
+        data.cols=$assessments.filter(el=>el.yr===s.yr && el.lv===s.lv && el.ss===s.ss && el.sc===el.sc);
+        data.cols=data.cols.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
+
+        console.log(data.cols);
+
+
+
 
         let response = await fetch('/edge/read', {
                 method: 'POST',
@@ -101,9 +110,10 @@
         data.results= await response.json();
         console.log(data.results);
         console.log(s);
-        data.cols=[];
+        //data.cols=[];
         for(let item of data.results) {
-            if(!data.cols.find((/** @type {{ n: any; dl: any; }} */ el)=>el.n===item.n && el.dl===item.dl)) {
+            /*
+            if(!data.cols.find((el)=>el.n===item.n && el.dl===item.dl)) {
                 
                 let f=$assessments.find(el=>el.yr===s.yr && el.lv===s.lv && el.ss===s.ss && el.sc===el.sc && el.n===item.n && el.dl===item.dl);
                 console.log(f);
@@ -119,6 +129,7 @@
                         overview:o
                     });
             }
+            */
         }
         data.cols=data.cols.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
         console.log(data.cols);
@@ -208,14 +219,7 @@
         }
 
 
-        // add cols to reports for data display
-        for (let row of data.reports) {
-            row.cols=[];
-            for(let col of data.cols) {
-                console.log(row.pupil.pid,col.n);
-            }
-        }
-
+       
         console.log(data.reports);
     };
 
@@ -304,6 +308,27 @@
     </div>
 
 </div>
+
+
+    <table>
+        <tbody>
+            <tr>
+                {#each data.cols as col,colIndex}
+                    <td><AssessmentTitle title={col.n} subtitle={col.ds}/></td>
+                {/each}
+            </tr>
+        <tr>
+            {#each data.cols as col,colIndex}
+                <td>
+                    {#if col.tag.pupil}
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                    {/if}
+                </td>
+            {/each}
+        </tr>
+    </tbody>
+    </table>
+
 
 
 {#if data.reports[0]}
