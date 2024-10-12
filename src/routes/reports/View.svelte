@@ -167,8 +167,12 @@ let update=async()=>{
             let res=reports.filter((/** @type {{ ss: string; sc: string; pupil: { pid: number; }; author: { type: string; }; }} */ el)=>el.pupil.pid===pupil.pid && el.author.type==='teacher');
             console.log(res);
             for(let item of res) {
+                let ec=item.ec!==null ? `${item.ec}/${$config.report.e.list[0]}` : '';
+                ec = item.ec==='N/A' ? 'N/A' : ec;
+                let ep=item.ep!==null ? `${item.ep}/${$config.report.e.list[0]}` : '';
+                ep = item.ep==='N/A' ? 'N/A' : ep;
                 r.push(
-                    {sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.list[0]}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}
+                    {sal:item.author.sal,tid:item.author.tid,ec:ec,ep:ep,txt:item.txt}
                 );
             }
             //console.log(r);
@@ -283,8 +287,12 @@ let update=async()=>{
             res=reports.filter((/** @type {{ ss: string; sc: string; ci: any; author: { type: string; }; }} */ el)=>el.ss===gp.ss && el.sc===gp.sc && el.ci===data.cycles[data.cIndex].index && el.author.type==='teacher');
             let r=[];
             for(let item of res) {
+              let ec=item.ec!==null ? `${item.ec}/${$config.report.e.list[0]}` : '';
+                ec = item.ec==='N/A' ? 'N/A' : ec;
+                let ep=item.ep!==null ? `${item.ep}/${$config.report.e.list[0]}` : '';
+                ep = item.ep==='N/A' ? 'N/A' : ep;
                 r.push(
-                    {sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.list[0]}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}
+                    {sal:item.author.sal,tid:item.author.tid,ec:ec,ep:ep,txt:item.txt}
                 );
             }
 
@@ -362,8 +370,12 @@ let update=async()=>{
         // add enrichment reports
         let p=reports.filter((/** @type {{ type: string; }} */ el)=>el.type==='E');
         for(let item of p) {
+            let ec=item.ec!==null ? `${item.ec}/${$config.report.e.list[0]}` : '';
+            ec = item.ec==='N/A' ? 'N/A' : ec;
+            let ep=item.ep!==null ? `${item.ep}/${$config.report.e.list[0]}` : '';
+            ep = item.ep==='N/A' ? 'N/A' : ep;
             out.E.push({
-                title:item.sl,report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.list[0]}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}]
+                title:item.sl,report:[{sal:item.author.sal,tid:item.author.tid,ec:ec,ep:ep,txt:item.txt}]
             });
         }
         out.E=out.E.sort((a,b)=>a.title.localeCompare(b.title));
@@ -377,8 +389,12 @@ let update=async()=>{
             if(item.author.type==='hm') title='housemaster';
             if(item.author.type==='tutor') title='tutor';
             if(item.author.type==='xsa') title='pupil self-assessment';
+            let ec=item.ec!==null ? `${item.ec}/${$config.report.e.list[0]}` : '';
+            ec = item.ec==='N/A' ? 'N/A' : ec;
+            let ep=item.ep!==null ? `${item.ep}/${$config.report.e.list[0]}` : '';
+            ep = item.ep==='N/A' ? 'N/A' : ep;
             out.P.push({
-                title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.list[0]}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}]
+                title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:ec,ep:ep,txt:item.txt}]
             });
         }
         out.P=out.P.sort((a,b)=>b.title.localeCompare(a.title));

@@ -37,7 +37,7 @@ let generate=async()=>{
 
     // ignore any F7 pupil in F6 - will have to manaully update this from the client and save the PDF as a correct ID.
     let f=$groups.find(el=>el.fm===data.fm);
-    console.log(f);
+    //console.log(f);
     if(f) {
         response = await fetch('/edge/read', {
             method: 'POST',
@@ -57,6 +57,28 @@ let generate=async()=>{
         /** @type {string}*/
         let txt='';
         if(data.fm<3) {
+            txt+=`<div class="tag">
+        <p><b>Grades</b></p>
+        <table>
+            <tr>
+                <td style="padding:0.2rem;"><b>M</b></td>
+                <td style="padding:0.2rem;">Mastered</td> 
+            </tr>
+            <tr>
+                <td style="padding:0.2rem;"><b>S</b></td>
+                <td style="padding:0.2rem;">Secure</td> 
+            </tr>
+            <tr>
+                <td style="padding:0.2rem;"><b>D</b></td>
+                <td style="padding:0.2rem;">Demonstrating</td> 
+            </tr>
+            <tr>
+                <td style="padding:0.2rem;"><b>E</b></td>
+                <td style="padding:0.2rem;">Emerging</td> 
+            </tr>
+        </table>
+    </div>`;
+        /*
             txt+=`<table class="small">`;
             txt+=`<thead><tr><th>Lower School Grade</th><th>Description</th></tr></thead>`;
             txt+=`<tbody><tr><td>M</td><td>Mastered</td></tr><tr><td>S</td><td>Secure</td></tr><tr><td>D</td><td>Demonstrating</td></tr><tr><tr><td>E</td><td>Emerging</td></tr><tr></tbody>`;
@@ -65,6 +87,7 @@ let generate=async()=>{
             txt+=``;
             
             txt+=`</table>`;
+        */
         }
         console.log(data.fm,txt);
         
@@ -97,8 +120,12 @@ let generate=async()=>{
             res=data.reports.filter((/** @type {{ pupil: { pid: number; }; ss: any; sc: any; ci: any; author: { type: string; }; }} */ el)=>el.pupil.pid===pupil.pid && el.ss===gp.ss && el.sc===gp.sc && el.ci===data.cycles[data.cIndex].index && el.author.type==='teacher');
             let r=[];
             for(let item of res) {
+            let ec=item.ec!==null ? `${item.ec}/${$config.report.e.list[0]}` : '';
+            ec = item.ec==='N/A' ? 'N/A' : ec;
+            let ep=item.ep!==null ? `${item.ep}/${$config.report.e.list[0]}` : '';
+            ep = item.ep==='N/A' ? 'N/A' : ep;
                 r.push(
-                    {sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.list[0]}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}
+                    {sal:item.author.sal,tid:item.author.tid,ec:ec,ep:ep,txt:item.txt}
                 );
             }
 
@@ -163,8 +190,12 @@ let generate=async()=>{
         // add enrichment reports
         let p=data.reports.filter((/** @type {{ type: string; pupil: { pid: number; }; }} */ el)=>el.type==='E' && el.pupil.pid===pupil.pid);
         for(let item of p) {
+            let ec=item.ec!==null ? `${item.ec}/${$config.report.e.list[0]}` : '';
+            ec = item.ec==='N/A' ? 'N/A' : ec;
+            let ep=item.ep!==null ? `${item.ep}/${$config.report.e.list[0]}` : '';
+            ep = item.ep==='N/A' ? 'N/A' : ep;
             out.E.push({
-                title:item.sl,report:[{sal:item.author.sal,tid:item.author.tid,ec:item.ec!==null?`${item.ec}/${$config.report.e.list[0]}`:null,ep:item.ep!==null?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}]
+                title:item.sl,report:[{sal:item.author.sal,tid:item.author.tid,ec:ec,ep:ep,txt:item.txt}]
             });
         }
         out.E=out.E.sort((a,b)=>a.title.localeCompare(b.title));
@@ -176,8 +207,12 @@ let generate=async()=>{
             if(item.author.type==='hm') title='housemaster';
             if(item.author.type==='tutor') title='tutor';
             if(item.author.type==='xsa') title='pupil self-assessment';
+            let ec=item.ec!==null ? `${item.ec}/${$config.report.e.list[0]}` : '';
+            ec = item.ec==='N/A' ? 'N/A' : ec;
+            let ep=item.ep!==null ? `${item.ep}/${$config.report.e.list[0]}` : '';
+            ep = item.ep==='N/A' ? 'N/A' : ep;
             out.P.push({
-                title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:(item.ec!==null  && item.ep!=='N/A')?`${item.ec}/${$config.report.e.list[0]}`:null,ep:(item.ep!==null && item.ep!=='N/A')?`${item.ep}/${$config.report.e.list[0]}`:null,txt:item.txt}]
+                title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:ec,ep:ep,txt:item.txt}]
             });
         }
         out.P=out.P.sort((a,b)=>b.title.localeCompare(a.title));
@@ -280,6 +315,36 @@ onMount(async () => {
      &nbsp;
     </div>
 </div>
+
+
+<div class="row">
+    <div class="tag">
+        <p><b>Grades</b></p>
+        <table>
+            <tr>
+                <td style="padding:0.2rem;"><b>M</b></td>
+                <td style="padding:0.2rem;">Mastered</td> 
+            </tr>
+            <tr>
+                <td style="padding:0.2rem;"><b>S</b></td>
+                <td style="padding:0.2rem;">Secure</td> 
+            </tr>
+            <tr>
+                <td style="padding:0.2rem;"><b>D</b></td>
+                <td style="padding:0.2rem;">Demonstrating</td> 
+            </tr>
+            <tr>
+                <td style="padding:0.2rem;"><b>E</b></td>
+                <td style="padding:0.2rem;">Emerging</td> 
+            </tr>
+        </table>
+    </div>
+</div>
+
+
+
+
+
 <style>
 
 </style>
