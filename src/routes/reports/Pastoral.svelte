@@ -160,7 +160,9 @@
                 <div><span class="small">{row.author.tid}</span></div>
             </td>
             <td>
-               <Edit index={rowIndex} bind:next={data.next} bind:data={row} user={status.user}/>
+                {#if row.txt!==null}
+                    <Edit index={rowIndex} bind:next={data.next} bind:data={row} user={status.user}/>
+                {/if}
             </td>
         </tr>  
         {/each}
