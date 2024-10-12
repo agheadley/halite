@@ -162,6 +162,8 @@
             <td>
                 {#if row.txt!==null}
                     <Edit index={rowIndex} bind:next={data.next} bind:data={row} user={status.user}/>
+                {:else}
+                    No reports to edit (select pupil to edit other comments).
                 {/if}
             </td>
         </tr>  
