@@ -287,7 +287,7 @@
     <Modal bind:open={data.overview.open}>
         <div class="row">
             <div class="col">
-                <h4>Assessment Status</h4>
+                <h4>Assessments Overview</h4>
             </div>
             <div class="col is-right">
                 <button class="button outline" on:click={()=>data.overview.open=false}>Close</button>
