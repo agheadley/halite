@@ -22,7 +22,7 @@
         txt:'',
         all:false,
         detail:{open:false,txt:'',_id:'',type:'hod',pid:0,sn:'',pn:'',user:'',cycleID:''},
-        overview:[]
+        overview:{open:false,rows:[]}
     };
 
      /**
@@ -113,20 +113,22 @@
 
         console.log(x);
 
+        data.overview.rows=[];
         for(let item of x) {
-            if(!data.overview.find((/** @type {{ yr: number; lv: string; ss: string; sc: string; }} */ el)=>el.yr===item.yr && el.lv===item.lv && el.ss===item.ss && el.sc===item.sc)) data.overview.push({lv:item.lv,yr:item.yr,sl:item.sl,sc:item.sc,ss:item.ss,cols:[]});
+            if(!data.overview.rows.find((/** @type {{ yr: number; lv: string; ss: string; sc: string; }} */ el)=>el.yr===item.yr && el.lv===item.lv && el.ss===item.ss && el.sc===item.sc)) 
+                data.overview.rows.push({lv:item.lv,yr:item.yr,sl:item.sl,sc:item.sc,ss:item.ss,cols:[]});
         }
-        data.overview=data.overview.sort((/** @type {{ lv: any; yr: number; }} */ a,/** @type {{ lv: string; yr: number; }} */ b)=>b.lv.localeCompare(a.lv) || b.yr-a.yr);
+        data.overview.rows=data.overview.rows.sort((/** @type {{ lv: any; yr: number; }} */ a,/** @type {{ lv: string; yr: number; }} */ b)=>b.lv.localeCompare(a.lv) || b.yr-a.yr);
         
         
-        for(let item of data.overview) {
+        for(let item of data.overview.rows) {
             let as=x.filter(el=>el.lv===item.lv && el.yr===item.yr && el.ss===item.ss);
             console.log(as);
             item.cols=as.sort((a,b)=>a.dt-b.dt);
         }
         
         
-        console.log(data.overview);
+        console.log(data.overview.rows);
 
 
 
@@ -281,6 +283,49 @@
 
 </script>
 
+{#if data.overview.open}
+    <Modal bind:open={data.overview.open}>
+        <div class="row">
+            <div class="col">
+                <h4>Assessment Status</h4>
+            </div>
+            <div class="col is-right">
+                <button class="button outline" on:click={()=>data.overview.open=false}>Close</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <table>
+                    <tbody>
+                        {#each data.overview.rows as row,rowIndex}
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                {#each row.cols as col,colIndex}
+                                <td><AssessmentTitle title={col.n} subtitle={col.ds}/></td>
+                                {/each}
+                            </tr>
+                            <tr>
+                                <td>{row.lv} {row.yr}</td>
+                                <td>{row.sl} ({row.sc})</td>
+                                {#each row.cols as col,colIndex}
+                                    <td>
+                                        {#if col.tag.pupil}
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                        {:else}
+                                        
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                                        {/if}
+                                    </td>
+                                {/each}
+                            </tr>
+                        {/each}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </Modal>
+{/if}
 
 {#if data.detail.open}
     <Modal bind:open={data.detail.open}>
@@ -331,7 +376,7 @@
  
     </div>
     <div class="col is-vertical-align">
-        &nbsp;
+        <button class="button dark" on:click={()=>data.overview.open=true}>Assessments Overview</button>
     </div>
 
 </div>
@@ -342,18 +387,20 @@
             <table>
                 <tbody>
                     <tr>
-                        <td></td>
+                      
                         {#each data.cols as col,colIndex}
                             <td><AssessmentTitle title={col.n} subtitle={col.ds}/></td>
                         {/each}
                     </tr>
                     <tr>
-                        <td><span class="text-error">STATUS</span></td>
                         {#each data.cols as col,colIndex}
                             <td>
                             
                                 {#if col.tag.pupil}
                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                {:else}
+                                
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                 {/if}
                             </td>
                         {/each}
