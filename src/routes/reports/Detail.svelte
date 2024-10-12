@@ -1,6 +1,6 @@
 <script>
 import { onMount } from 'svelte';
-import {config,alert} from '$lib/store';
+import {config,alert,assessments} from '$lib/store';
 import Cell from '$lib/_Cell.svelte';
 import * as util from '$lib/util';
 
@@ -82,7 +82,7 @@ onMount(async () => {
     /** @type {any}*/
     let results=[];
     /** @type {string[]}*/
-    let assessments=[];
+    let as=[];
 
     if(res[0]) {
         let response = await fetch('/edge/read', {
@@ -93,14 +93,17 @@ onMount(async () => {
         results= await response.json();
 
         // get assessments tag.overview=true , filter results based upon this!
+        /*
         response = await fetch('/edge/read', {
             method: 'POST',
-            body: JSON.stringify({collection:'assessments',filter:{lv:res[0].lv,yr:res[0].yr,"tag.overview":true},projection:{_id:1}}),
+            body: JSON.stringify({collection:'assessments',filter:{lv:res[0].lv,yr:res[0].yr,"tag.overview":true,"tag.archive":false},projection:{_id:1}}),
             headers: {'content-type': 'application/json'}
         });
         let x=await response.json();
-        assessments=x[0] ? x.map((/** @type {{ _id: any; }} */ el)=>el._id) : [];
-        results=results.filter((/** @type {{ aoid: string; }} */ el)=>assessments.includes(el.aoid));
+        */
+        let x=$assessments.filter(el=>el.lv===res[0].lv && el.yr===res[0].yr && el.tag.overview===true && el.tag.archive===false);
+        as=x[0] ? x.map((/** @type {{ _id: any; }} */ el)=>el._id) : [];
+        results=results.filter((/** @type {{ aoid: string; }} */ el)=>as.includes(el.aoid));
         
     }
 

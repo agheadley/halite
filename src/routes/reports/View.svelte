@@ -403,9 +403,12 @@ let update=async()=>{
             ec = item.ec==='N/A' ? 'N/A' : ec;
             let ep=item.ep!==null ? `${item.ep}/${$config.report.e.list[0]}` : '';
             ep = item.ep==='N/A' ? 'N/A' : ep;
-            out.P.push({
-                title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:ec,ep:ep,txt:item.txt}]
-            });
+            if(item.txt!==null) {
+                out.P.push({
+                    title:title.toUpperCase(),report:[{sal:item.author.sal,tid:item.author.tid,ec:ec,ep:ep,txt:item.txt}]
+                });
+            }
+           
         }
         out.P=out.P.sort((a,b)=>b.title.localeCompare(a.title));
 
