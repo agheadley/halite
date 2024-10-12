@@ -21,7 +21,8 @@
         cols:[],
         txt:'',
         all:false,
-        detail:{open:false,txt:'',_id:'',type:'hod',pid:0,sn:'',pn:'',user:'',cycleID:''}
+        detail:{open:false,txt:'',_id:'',type:'hod',pid:0,sn:'',pn:'',user:'',cycleID:''},
+        overview:[]
     };
 
      /**
@@ -94,10 +95,38 @@
         let gps=$groups.filter(el=>el.ss===s.ss && el.sc===s.sc && el.fm===s.fm);
         console.log(gps);
 
-        data.cols=$assessments.filter(el=>el.yr===s.yr && el.lv===s.lv && el.ss===s.ss && el.sc===el.sc);
+        // get assessments and live (pupil) status in data.cols
+        data.cols=$assessments.filter(el=>el.tag.archive===false && el.yr===s.yr && el.lv===s.lv && el.ss===s.ss && el.sc===el.sc);
         data.cols=data.cols.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
 
         console.log(data.cols);
+
+        // get related subjects, through hod
+        let rs=[];
+        let f=$config.subject.find((/** @type {{ lv: any; ss: any; sc: any; }} */ el)=>el.lv===s.lv && el.ss==s.ss && el.sc===s.sc);
+        if(f) {
+            rs=$config.subject.filter((/** @type {{ tid: any; }} */ el)=>el.tid===f.tid).map((/** @type {{ ss: any; }} */ el)=>el.ss);
+        }
+        console.log(rs);
+
+        let x=$assessments.filter(el=>el.tag.archive===false && rs.includes(el.ss));
+
+        console.log(x);
+
+        for(let item of x) {
+            if(!data.overview.find((/** @type {{ yr: number; lv: string; ss: string; sc: string; }} */ el)=>el.yr===item.yr && el.lv===item.lv && el.ss===item.ss && el.sc===item.sc)) data.overview.push({lv:item.lv,yr:item.yr,sl:item.sl,sc:item.sc,ss:item.ss,cols:[]});
+        }
+        data.overview=data.overview.sort((/** @type {{ lv: any; yr: number; }} */ a,/** @type {{ lv: string; yr: number; }} */ b)=>b.lv.localeCompare(a.lv) || b.yr-a.yr);
+        
+        
+        for(let item of data.overview) {
+            let as=x.filter(el=>el.lv===item.lv && el.yr===item.yr && el.ss===item.ss);
+            console.log(as);
+            item.cols=as.sort((a,b)=>a.dt-b.dt);
+        }
+        
+        
+        console.log(data.overview);
 
 
 
@@ -280,9 +309,10 @@
     </Modal>
 {/if}
 
+
 <div class="row">
     <div class="col is-vertical-align">
-        <h4>HoD Statement</h4>
+        <h4>HoD Reports</h4>
     </div>
     <div class="col is-vertical-align">
        <fieldset>
@@ -306,26 +336,37 @@
 
 </div>
 
+<div class="row">
+    <div class="col">
+        <div class="responsive">
+            <table>
+                <tbody>
+                    <tr>
+                        <td></td>
+                        {#each data.cols as col,colIndex}
+                            <td><AssessmentTitle title={col.n} subtitle={col.ds}/></td>
+                        {/each}
+                    </tr>
+                    <tr>
+                        <td><span class="text-error">STATUS</span></td>
+                        {#each data.cols as col,colIndex}
+                            <td>
+                            
+                                {#if col.tag.pupil}
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                                {/if}
+                            </td>
+                        {/each}
+                    </tr>
+                </tbody>
+            </table>
+            </div>
+    </div>
+</div>
 
-    <table>
-        <tbody>
-            <tr>
-                {#each data.cols as col,colIndex}
-                    <td><AssessmentTitle title={col.n} subtitle={col.ds}/></td>
-                {/each}
-            </tr>
-        <tr>
-            {#each data.cols as col,colIndex}
-                <td>
-                    {#if col.tag.pupil}
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                    {/if}
-                </td>
-            {/each}
-        </tr>
-    </tbody>
-    </table>
+    
 
+   
 
 
 {#if data.reports[0]}
@@ -354,7 +395,6 @@
     </thead>
    <tbody>
     {#each data.reports as row,rowIndex}
-        <tr>{row.pupil.pid}</tr>
         <tr>
             {#if row.author.type==='hod'}
                 
@@ -411,6 +451,9 @@
 
 
 <style>
+.responsive {
+        overflow-x:auto;
+    }
 
 .flex-row {
     display:flex;

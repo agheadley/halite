@@ -190,6 +190,7 @@ onMount(async () => {
 
         {#each data.reports as row,rowIndex}
         {#if row.type==='A'}
+      
         <table>
             <tbody>
       
@@ -203,6 +204,7 @@ onMount(async () => {
              
             </td>
             <td>
+                <div class="responsive">
                 <table>
                     <tbody>
                         <tr>
@@ -212,7 +214,7 @@ onMount(async () => {
                         </tr>
                     </tbody>
                 </table>
-              
+                </div>
             </td>
         </tr>
         <tr>
@@ -358,6 +360,9 @@ onMount(async () => {
 
 <style>
 
+.responsive {
+        overflow-x:auto;
+    }
 .small {
         font-size:1.2rem;
     }
