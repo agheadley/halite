@@ -57,37 +57,14 @@ let generate=async()=>{
         /** @type {string}*/
         let txt='';
         if(data.fm<3) {
-            txt+=`<div class="tag">
-        <p><b>Grades</b></p>
-        <table>
-            <tr>
-                <td style="padding:0.2rem;"><b>M</b></td>
-                <td style="padding:0.2rem;">Mastered</td> 
-            </tr>
-            <tr>
-                <td style="padding:0.2rem;"><b>S</b></td>
-                <td style="padding:0.2rem;">Secure</td> 
-            </tr>
-            <tr>
-                <td style="padding:0.2rem;"><b>D</b></td>
-                <td style="padding:0.2rem;">Demonstrating</td> 
-            </tr>
-            <tr>
-                <td style="padding:0.2rem;"><b>E</b></td>
-                <td style="padding:0.2rem;">Emerging</td> 
-            </tr>
-        </table>
-    </div>`;
-        /*
-            txt+=`<table class="small">`;
-            txt+=`<thead><tr><th>Lower School Grade</th><th>Description</th></tr></thead>`;
-            txt+=`<tbody><tr><td>M</td><td>Mastered</td></tr><tr><td>S</td><td>Secure</td></tr><tr><td>D</td><td>Demonstrating</td></tr><tr><tr><td>E</td><td>Emerging</td></tr><tr></tbody>`;
-            txt+=``;
-            txt+=``;
-            txt+=``;
-            
+            txt+=`<div class="tag"><p><b>Grades</b></p>`;
+            txt+=`<table>`;
+            txt+=`<tr><td style="padding:0.2rem;"><b>M</b></td><td style="padding:0.2rem;">Mastered</td></tr>`;
+            txt+=`<tr><td style="padding:0.2rem;"><b>S</b></td><td style="padding:0.2rem;">Secure</td></tr>`;
+            txt+=`<tr><td style="padding:0.2rem;"><b>D</b></td><td style="padding:0.2rem;">Demonstrating</td></tr>`;
+            txt+=`<tr><td style="padding:0.2rem;"><b>E</b></td><td style="padding:0.2rem;">Emerging</td></tr>`;
             txt+=`</table>`;
-        */
+            txt+=`</div>`;
         }
         console.log(data.fm,txt);
         

@@ -212,7 +212,17 @@ let update=async()=>{
     let getReport=async(pid,detail)=> {
         console.log('building report for ',pid);
 
-
+        let txt='';
+        if(detail.fm<3) {
+            txt+=`<div class="tag"><p><b>Grades</b></p>`;
+            txt+=`<table>`;
+            txt+=`<tr><td style="padding:0.2rem;"><b>M</b></td><td style="padding:0.2rem;">Mastered</td></tr>`;
+            txt+=`<tr><td style="padding:0.2rem;"><b>S</b></td><td style="padding:0.2rem;">Secure</td></tr>`;
+            txt+=`<tr><td style="padding:0.2rem;"><b>D</b></td><td style="padding:0.2rem;">Demonstrating</td></tr>`;
+            txt+=`<tr><td style="padding:0.2rem;"><b>E</b></td><td style="padding:0.2rem;">Emerging</td></tr>`;
+            txt+=`</table>`;
+            txt+=`</div>`;
+        }
        
         /** @type {{
          cycle:{tt:string,ts:string,y:number,txt:string},
@@ -223,7 +233,7 @@ let update=async()=>{
          }
         }}*/
         let out={
-            cycle:{tt:data.cycles[data.cIndex].tt,ts:data.cycles[data.cIndex].ts,y:data.cycles[data.cIndex].y,txt:""},
+            cycle:{tt:data.cycles[data.cIndex].tt,ts:data.cycles[data.cIndex].ts,y:data.cycles[data.cIndex].y,txt:txt},
             pupil:{id:detail.id,sn:detail.sn,pn:detail.pn,pid:pid,tg:detail.tg,hse:detail.hse,fm:detail.fm},
             A:[],
             E:[],
