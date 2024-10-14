@@ -218,7 +218,7 @@ let update=async()=>{
             txt+=`<table>`;
             txt+=`<tr><td style="padding:0.2rem;"><b>M</b></td><td style="padding:0.2rem;">Mastered</td></tr>`;
             txt+=`<tr><td style="padding:0.2rem;"><b>S</b></td><td style="padding:0.2rem;">Secure</td></tr>`;
-            txt+=`<tr><td style="padding:0.2rem;"><b>D</b></td><td style="padding:0.2rem;">Demonstrating</td></tr>`;
+            txt+=`<tr><td style="padding:0.2rem;"><b>D</b></td><td style="padding:0.2rem;">Developing</td></tr>`;
             txt+=`<tr><td style="padding:0.2rem;"><b>E</b></td><td style="padding:0.2rem;">Emerging</td></tr>`;
             txt+=`</table>`;
             txt+=`</div>`;
