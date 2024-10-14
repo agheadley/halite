@@ -296,6 +296,11 @@ export let start =`
 <meta charset='utf-8'>
 <link rel="stylesheet" href="https://unpkg.com/chota@latest">
 <style>
+
+table {
+    font-size:1.2rem;
+}
+
 .report-information {
     display:flex;
     flex-direction:row;
