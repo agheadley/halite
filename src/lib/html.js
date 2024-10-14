@@ -323,6 +323,7 @@ table {
     background: white;
     padding:0.2rem;
     border-radius:0.5rem;
+    font-size:1rem;
     
 }
 
@@ -330,6 +331,7 @@ table {
     background: rgba(51,51,51,0.1);
     padding:0.2rem;
     border-radius:0.5rem;
+    font-size:1.1rem;
     
 }
 
