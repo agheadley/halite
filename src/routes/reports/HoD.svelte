@@ -133,7 +133,7 @@
             }
                 
         }
-        data.overview.rows=data.overview.rows.sort((/** @type {{ lv: any; yr: number; }} */ a,/** @type {{ lv: string; yr: number; }} */ b)=>b.lv.localeCompare(a.lv) || b.yr-a.yr);
+        data.overview.rows=data.overview.rows.sort((/** @type {{ lv: any; yr: number; }} */ a,/** @type {{ lv: string; yr: number; }} */ b)=>b.lv.localeCompare(a.lv) || a.yr-b.yr);
         
         
         for(let item of data.overview.rows) {
@@ -321,7 +321,7 @@
                                 {/each}
                             </tr>
                             <tr>
-                                <td>{row.lv} {row.yr}</td>
+                                <td>F{row.fm} {row.lv} {row.yr}</td>
                                 <td>{row.sl} ({row.sc})</td>
                                 {#each row.cols as col,colIndex}
                                     <td>
