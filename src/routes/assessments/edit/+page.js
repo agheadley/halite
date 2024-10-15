@@ -104,7 +104,7 @@ export async function load({fetch}) {
                     g:g.g,
                     // eslint-disable-next-line no-unused-vars
                     t:res[0].total[0]?res[0].total.map((/** @type {any} */ el)=>0):[0],
-                    gd:'U',
+                    gd:'X',
                     pc:0,
                     scr:0,
                     fb:'',
