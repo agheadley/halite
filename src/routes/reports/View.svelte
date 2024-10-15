@@ -621,7 +621,10 @@ let update=async()=>{
           </fieldset>
     </div>
     <div class="col is-vertical-align">
-        <button disabled={data.print} class="button dark" on:click={printSelectedPupil}>View Pupil Report</button>
+        <button disabled={data.print} class="button outline icon-only" on:click={printSelectedPupil}>
+            
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        </button>
     </div>
 </div>
 <div class="row">
@@ -643,7 +646,10 @@ let update=async()=>{
  
     </div>
     <div class="col is-vertical-align">
-        <button disabled={data.print} class="button dark" on:click={printSelected}>View Tutor Reports</button>
+        <button disabled={data.print} class="button outline icon-only" on:click={printSelected}>
+            
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        </button>
     </div>
 </div>
 
@@ -666,7 +672,10 @@ let update=async()=>{
           </fieldset>
     </div>
     <div class="col is-vertical-align">
-        <button disabled={data.print} class="button dark" on:click={printSelectedGroup}>View Group Reports</button>
+        <button disabled={data.print} class="button outline icon-only" on:click={printSelectedGroup}>
+            
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        </button>
     </div>
 </div>
 

@@ -243,9 +243,9 @@ let getSubject=(subject)=>{
     if(cfg.view.chance){    
         txt+=`<div>`;
         txt+=`<div class="report-information-left">
-            <div><span class="tag is-small">${subject.chance.A.std}</span></div>
+            <div><span class="tag">${subject.chance.A.std}</span></div>
             <div>${getChance(subject.chance.A)}</div>
-            <div><span class="tag is-small">${subject.chance.B.std}</span></div>
+            <div><span class="tag">${subject.chance.B.std}</span></div>
             <div>${getChance(subject.chance.B)}</div>
             </div>`;
         txt+=`</div>`;
@@ -265,7 +265,7 @@ let getSubject=(subject)=>{
         item.ec = item.ec===null ? '' : `CLASS ${item.ec}`;
         item.ep = item.ep===null ? '' : `PREP ${item.ep}`;
         
-		txt+=`<div class="report-information"><div><span>${item.sal}</span></div><div><span class="tag is-small">EFFORT ${item.ec} ${item.ep}</span></div></div>`;
+		txt+=`<div class="report-information"><div><span>${item.sal}</span></div><div><span class="tag">EFFORT ${item.ec} ${item.ep}</span></div></div>`;
 	}
 	txt+='</div></div><hr/>';
 	txt+=`</section>`;
@@ -306,7 +306,6 @@ export let start =`
     width:100%;
     padding-bottom:0.25rem;
     padding-top:0.25rem;  
-    font-size:1rem;
 }
 
 .report-information-left {
@@ -315,8 +314,7 @@ export let start =`
     justify-content:start;
     width:100%;
     padding-bottom:0.25rem;
-    padding-top:0.25rem; 
-    font-size:1rem; 
+    padding-top:0.25rem;  
 }
 
 .statement-txt {
@@ -331,7 +329,7 @@ export let start =`
     background: rgba(51,51,51,0.1);
     padding:0.2rem;
     border-radius:0.5rem;
-    font-size:1rem;
+    font-size:1.1rem;
     
 }
 
