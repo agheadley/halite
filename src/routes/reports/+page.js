@@ -84,7 +84,10 @@ export async function load() {
             headers: {'content-type': 'application/json'}
         });
         let res= await response.json();
-        subjects=res.sort((/** @type {{ fm: number; sc: any; sl: any; }} */ a,/** @type {{ fm: number; sc: string; sl: string; }} */ b)=>b.fm-a.fm || a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl));
+
+        //subjects=res.sort((/** @type {{ fm: number; sc: any; sl: any; }} */ a,/** @type {{ fm: number; sc: string; sl: string; }} */ b)=>b.fm-a.fm || a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl));
+        
+        subjects=res.sort((/** @type {{ sl: string; sc: string; fm: number; }} */ a,/** @type {{ sl: any; sc: any; fm: number; }} */ b)=>a.sl.localeCompare(b.sl) || a.sc.localeCompare(b.sc) || b.fm-a.fm);
         
         
 
@@ -94,7 +97,7 @@ export async function load() {
     let staff=tch.sort((/** @type {{ sn: string; pn: string; }} */ a,/** @type {{ sn: any; pn: any; }} */ b)=>a.sn.localeCompare(b.sn) || a.pn.localeCompare(b.pn));
    
     
-
+    
 
 
     return {user:user,cycle:cycle,subjects:subjects,teachers:staff};
