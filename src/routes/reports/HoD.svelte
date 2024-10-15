@@ -113,10 +113,25 @@
 
         console.log(x);
 
+
+        // get form info
+        /* Assessments - refine for yr,lv only and add current fm*/
+        let d=new Date();
+        let m=d.getMonth()+1;
+        let currentYr=m>$config.rollover.month ? d.getFullYear()+1:d.getFullYear();
+	
+	
+	   
+
         data.overview.rows=[];
         for(let item of x) {
-            if(!data.overview.rows.find((/** @type {{ yr: number; lv: string; ss: string; sc: string; }} */ el)=>el.yr===item.yr && el.lv===item.lv && el.ss===item.ss && el.sc===item.sc)) 
-                data.overview.rows.push({lv:item.lv,yr:item.yr,sl:item.sl,sc:item.sc,ss:item.ss,cols:[]});
+            if(!data.overview.rows.find((/** @type {{ yr: number; lv: string; ss: string; sc: string; }} */ el)=>el.yr===item.yr && el.lv===item.lv && el.ss===item.ss && el.sc===item.sc)) {
+                let f=$config.year.find((/** @type {{ lv: any; x: number; }} */ el)=>el.lv===item.lv && el.x===(item.yr-currentYr));
+                let fm = f ? f.fm : -1;
+     
+                data.overview.rows.push({fm:fm,lv:item.lv,yr:item.yr,sl:item.sl,sc:item.sc,ss:item.ss,cols:[]});
+            }
+                
         }
         data.overview.rows=data.overview.rows.sort((/** @type {{ lv: any; yr: number; }} */ a,/** @type {{ lv: string; yr: number; }} */ b)=>b.lv.localeCompare(a.lv) || b.yr-a.yr);
         
