@@ -40,9 +40,10 @@
     };
 
     let save=async()=>{
-
+        
         let count=0;
-        let total=0;
+        let t=data.reports.filter((/** @type {{ author: { type: string; }; }} */ el)=>el.author.type==='hod');
+        let total=t[0] && t.length ? t.length : 0;
 
         let log=`${status.user}|${util.getDateTime()}`;
 
@@ -50,7 +51,7 @@
 
         for(let row of data.reports) {
             if(row.author.type==='hod') {
-                total+=1;
+                //total+=1;
                 let response = await fetch('/edge/update', {
                     method: 'POST',
                     body: JSON.stringify({
