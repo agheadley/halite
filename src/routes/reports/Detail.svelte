@@ -3,6 +3,7 @@ import { onMount } from 'svelte';
 import {config,alert,assessments} from '$lib/store';
 import Cell from '$lib/_Cell.svelte';
 import * as util from '$lib/util';
+import AssessmentTitle from '$lib/_AssessmentTitle.svelte';
 
 /** @type {string}*/
 export let type; // hm,tutor (editiable), teacher, enrichment, hod (read only)
@@ -209,7 +210,12 @@ onMount(async () => {
                     <tbody>
                         <tr>
                             {#each row.cols as col,colIndex}
-                                <td><span class="small">{col.ds}</span><Cell color={true} residual={col.r}>{col.gd}</Cell></td>
+                                <td><AssessmentTitle title={col.n} subtitle={col.ds}/></td>
+                            {/each}
+                        </tr>
+                        <tr>
+                            {#each row.cols as col,colIndex}
+                                <td><Cell color={true} residual={col.r}>{col.gd}</Cell></td>
                             {/each}
                         </tr>
                     </tbody>
@@ -221,10 +227,9 @@ onMount(async () => {
             <td></td>
             <td>
             <span class="small">
-            <details>
-                <summary>HoD Statement</summary>
-                <p>{row.hod}</p>
-                </details>
+           
+                <p><span class="tag is-small lowercase">HoD</span> {row.hod}</p>
+               
             </span>
             </td>
         </tr>
@@ -384,6 +389,10 @@ onMount(async () => {
     .red {
     background:rgba(178,34,34,0.15);
    
+}
+
+.lowercase {
+    text-transform: none;
 }
 
 .green {
