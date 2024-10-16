@@ -572,8 +572,8 @@ let update=async()=>{
     //data.view.n=true;
     //data.view.rag=true;
 
-    // for printed reports
-    data.view.n=false;
+    // test for printed reports
+    //data.view.n=false;
 
     await update();
 
