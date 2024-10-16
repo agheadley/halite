@@ -257,7 +257,7 @@ let getSubject=(subject)=>{
 
 
     
-    txt+=`<div class="statement-txt">${subject.statement}</div>`;
+    txt+=`<div class="statement-txt"><span class="tag is-small" style="text-transform:none;">Head of Department</span>&nbsp;${subject.statement}</div>`;
 	for(let item of subject.report) {
 		if(item.txt!==null && item.txt!=='') {
 				txt+=`<div class="report-txt">${item.txt}</div>`;

@@ -15,7 +15,7 @@ let data={
     all:false,
     cycles:[],
     cIndex:0,
-    view:{context:'parent',rag:false,chance:false,fb:false},
+    view:{context:'parent',rag:false,chance:false,fb:false,n:true},
     context:'parent',
     assessments:[],
     reports:[],
@@ -136,7 +136,7 @@ let generate=async()=>{
                 for(let assessment of a) {
                     //console.log(a);
                     let f=data.results.find((/** @type {{ aoid: any; }} */ el)=>el.aoid===assessment._id); 
-                    col.push({txt:assessment.n,ds:assessment.ds,gd:f?f.gd:'X',r:0});
+                    col.push({txt:data.view.n===true ? assessment.n : '',ds:assessment.ds,gd:f?f.gd:'X',r:0});
                 }
                 if(col[0]) {   
                     let  s1=gds.findIndex((/** @type {{ gd: any; }} */ el)=>el.gd===col[0].gd);
@@ -214,7 +214,7 @@ onMount(async () => {
 
 
     let f=$config.view.find((/** @type {{ context: any; }} */ el)=>el.context===data.view.context);
-    data.view={context:'parent',rag:f?f.rag:false,chance:f?f.chance:false,fb:f?f.fb:false};
+    data.view={context:'parent',rag:f?f.rag:false,chance:f?f.chance:false,fb:f?f.fb:false,n:f?f.n:false};
     console.log(f);
 
     // get report cycles
@@ -294,29 +294,7 @@ onMount(async () => {
 </div>
 
 
-<div class="row">
-    <div class="tag">
-        <p><b>Grades</b></p>
-        <table>
-            <tr>
-                <td style="padding:0.2rem;"><b>M</b></td>
-                <td style="padding:0.2rem;">Mastered</td> 
-            </tr>
-            <tr>
-                <td style="padding:0.2rem;"><b>S</b></td>
-                <td style="padding:0.2rem;">Secure</td> 
-            </tr>
-            <tr>
-                <td style="padding:0.2rem;"><b>D</b></td>
-                <td style="padding:0.2rem;">Demonstrating</td> 
-            </tr>
-            <tr>
-                <td style="padding:0.2rem;"><b>E</b></td>
-                <td style="padding:0.2rem;">Emerging</td> 
-            </tr>
-        </table>
-    </div>
-</div>
+
 
 
 
