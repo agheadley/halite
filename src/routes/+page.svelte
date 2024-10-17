@@ -66,16 +66,24 @@ let getPupils=async()=>{
 					//console.log(i);
 					for(let item of i.base) base.push({type:item.type,A:item.A,B:item.B});
 
-					let g=gps.filter((/** @type {{ pid: string | any[]; }} */ el)=>el.pid.includes(p.pid));
-					g=g.sort((/** @type {{ sc: string; sl: string; }} */ a,/** @type {{ sc: any; sl: any; }} */ b)=>a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl));
-					for(let item of g) {
+					let gx=gps.filter((/** @type {{ pid: string | any[]; }} */ el)=>el.pid.includes(p.pid));
+					gx=gx.sort((/** @type {{ sc: string; sl: string; }} */ a,/** @type {{ sc: any; sl: any; }} */ b)=>a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl));
+					for(let item of gx) {
 						let f=i.pre.find((/** @type {{ sc: any; ss: any; }} */ el)=>el.sc===item.sc && el.ss===item.ss);
 						//if(f) pre.push({ss:f.ss,sc:f.sc,A:f.A,B:f.B});
 						groups.push({g:item.g,sc:item.sc,sl:item.sl,ss:item.ss,pre:{A:f?f.A:0,B:f?f.B:0}});
 					}
 
-				}
+				} else {
+					let gx=gps.filter((/** @type {{ pid: string | any[]; }} */ el)=>el.pid.includes(p.pid));
+					for(let item of gx) {
+						groups.push({g:item.g,sc:item.sc,sl:item.sl,ss:item.ss,pre:{A:0,B:0}});
+					}
 				
+
+				}
+
+			
 				
 
 				$pupils.push({
@@ -98,6 +106,9 @@ let getPupils=async()=>{
 	}
 
 	$pupils=$pupils.sort((a,b)=>b.yr-a.yr || b.lv.localeCompare(a.lv) || a.pn.localeCompare(b.pn)  );
+
+	//console.log('**************',$pupils.find(el=>el.pid===455659));
+
 
 };
 

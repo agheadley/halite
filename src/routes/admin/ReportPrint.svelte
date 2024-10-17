@@ -52,7 +52,7 @@ let generate=async()=>{
 
     for(let pupil of $pupils.filter(el=>el.fm===data.fm)) {
        
-        console.log(data.fm);
+        //console.log(data.fm);
          // LS reports need a key
         /** @type {string}*/
         let txt='';
@@ -66,7 +66,7 @@ let generate=async()=>{
             txt+=`</table>`;
             txt+=`</div>`;
         }
-        console.log(data.fm,txt);
+        //console.log(data.fm,txt);
         
         /** @type {{
          cycle:{tt:string,ts:string,y:number,txt:string},
@@ -88,6 +88,7 @@ let generate=async()=>{
         /** @type {any} */
         let gps=pupil.groups.sort((a,b)=>a.sl.localeCompare(b.sl));
 
+        //if(out.pupil.pid===455659) console.log(out.pupil.pn,out.pupil.sn,gps);
 
         // add assessments and comments
         for(let gp of gps) {
@@ -131,11 +132,11 @@ let generate=async()=>{
             let col=[];
 
             if(group) {
-                let a=data.assessments.filter((/** @type {{ sc: any; ss: any; yr: any; lv: any; }} */ el)=>el.sc===gp.sc && el.ss===gp.ss && el.yr===group.yr && el.lv===group.lv)
+                let a=data.assessments.filter((/** @type {{  sc: any; ss: any; yr: number; lv: string; }} */ el)=>el.sc===gp.sc && el.ss===gp.ss && el.yr===group.yr && el.lv===group.lv)
                 .sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>a.dt-b.dt);
                 for(let assessment of a) {
                     //console.log(a);
-                    let f=data.results.find((/** @type {{ aoid: any; }} */ el)=>el.aoid===assessment._id); 
+                    let f=data.results.find((/** @type {{ aoid: any;pid:any; }} */ el)=>el.aoid===assessment._id && el.pid===out.pupil.pid); 
                     col.push({txt:data.view.n===true ? assessment.n : '',ds:assessment.ds,gd:f?f.gd:'X',r:0});
                 }
                 if(col[0]) {   
@@ -151,6 +152,7 @@ let generate=async()=>{
 
             }
           
+       
 
             out.A.push({
                 title:`${gp.sl}`, //(${gp.sc})`
@@ -162,6 +164,7 @@ let generate=async()=>{
 
 
         } // end of group for
+
 
 
         // add enrichment reports
