@@ -71,10 +71,10 @@ export let getDateTime=() =>{
  */
 export let getAssessmentCols=(assessments,teachers,user)=>{
   let cols=[];
-  console.log('CHECKING USER',user);
+  //console.log('CHECKING USER',user);
   for(let item of assessments) {
     let isEdit=teachers.find(el=>el===user) && item.tag.open ? true:false;
-    console.log(item.n,teachers,item.tag.open,isEdit);
+    //console.log(item.n,teachers,item.tag.open,isEdit);
     cols.push({_id:item._id,n:item.n,ds:item.ds,dl:item.dl,dt:item.dt,tag:{edit:isEdit,pupiledit:item.tag.pupiledit,open:item.tag.open,grade:item.tag.grade,overview:item.tag.overview,pupil:item.tag.pupil,parent:item.tag.parent,exam:item.tag.exam,archive:item.tag.archive},gd:'X'});
   }
   cols=cols.sort((a,b)=>a.dt-b.dt);

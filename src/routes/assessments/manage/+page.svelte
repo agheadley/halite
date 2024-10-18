@@ -106,6 +106,7 @@
         //status.isSave=false;
 
         status.tag.pupil=status.tag.overview;
+        if(status.tag.pupil===true) status.tag.open=false;
         
         let response = await fetch('/edge/update', {
 		    method: 'POST',

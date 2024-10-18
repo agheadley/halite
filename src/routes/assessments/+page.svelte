@@ -1,7 +1,7 @@
 <script>
 
     import { onMount } from 'svelte';
-    import {config,location,pupils,groups,cohorts} from '$lib/store';
+    import {config,location,pupils,groups,cohorts,alert} from '$lib/store';
     import { goto } from '$app/navigation';
     import SelectCohort from './SelectCohort.svelte';
     import IntakeBar from '$lib/_IntakeBar.svelte';
@@ -10,6 +10,7 @@
     import Modal from '$lib/_Modal.svelte';
     import Pupil from '$lib/_Pupil.svelte';
     import Export from './Export.svelte';
+    import * as util from '$lib/util';
 
     export let data;
 
@@ -43,7 +44,42 @@
         $cohorts.assessments.edit={_id:status.table[gpIndex].cols[colIndex]._id,g:status.table[gpIndex].g,edit:status.table[gpIndex].cols[colIndex].tag.edit,recalculate:false};
         goto('/assessments/edit/');
     };
+
+    /**
+     * 
+     * @param {number} colIndex
+     * @param {number} groupIndex
+     */
+    let unlock=async(colIndex,groupIndex)=>{
+        console.log(status.table[groupIndex].cols[colIndex]);
+
+       
+        let t=status.table[groupIndex].cols[colIndex].tag;
+        let tag = {open:true,grade:t.grade,overview:false,exam:t.exam,pupil:false,pupiledit:t.pupiledit,parent:false,archive:t.archive};
+        tag.open=true;
+
+        console.log('opening',status.table[groupIndex].cols[colIndex]._id,tag);
+        
+        let response = await fetch('/edge/update', {
+		    method: 'POST',
+		    body: JSON.stringify({collection:'assessments',filter:{"_id":{"$oid": status.table[groupIndex].cols[colIndex]._id}},update:{tag:tag,log:`${status.user}|${util.getDateTime()}`}}),
+		    headers: {'content-type': 'application/json'}
+	    });
+
+        let res= await response.json();
+        console.log(res);
+
+        if(res.matchedCount===1 && res.modifiedCount===1) {
+            $alert.msg=`Unlocked`;
+            status.table[groupIndex].cols[colIndex].tag.open=true;     
+        } else {
+            $alert.type='error';
+            $alert.msg=`Error unlocking!`;
+        }
+            
+    };
     
+    //{dt:{$lt:1729382400000},"tag.open":true,"tag.archive":false,"tag.exam":false}
     
     onMount(async () => {
         $location='/assessments';
@@ -52,6 +88,8 @@
         //console.log('groups',$groups);
         console.log('cohorts',$cohorts);
         status.user=data.user.name;
+
+        
 
         let f=$config.view.find((/** @type {{ context: string; }} */ el)=>el.context==='assessments');
         status.rag = f ? f.rag : false;
@@ -98,6 +136,27 @@
         {#each status.table as group,groupIndex}
         <table>
             <thead>
+                {#if data.user.tag.admin}
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    {#each group.cols as col,colIndex}
+                        <td>
+                            {#if !col.tag.open}
+                                <button class="button icon-only clear" on:click={()=>unlock(colIndex,groupIndex)}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-unlock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 9.9-1"></path></svg>
+                                </button>
+                            {/if}
+                        </td>
+                    {/each}
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  
+                    
+                </tr>
+                {/if}
                 <tr>
                     <td></td>
                     <td></td>

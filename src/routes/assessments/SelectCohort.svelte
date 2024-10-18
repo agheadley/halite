@@ -11,9 +11,9 @@
     
     let update=async()=>{
         let y=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
-        console.log(y);
+        //console.log(y);
         let s=$cohorts.assessments.subjects.list[$cohorts.assessments.subjects.index];
-        console.log(s);
+        //console.log(s);
        
         /* adjust subjects.index if necessary */
         if(!(y.lv===s.lv && y.yr===s.yr)) $cohorts.assessments.subjects.index=$cohorts.assessments.subjects.list.findIndex((/** @type {{ lv: any; yr: any; }} */ el)=>el.lv===y.lv && el.yr===y.yr);
@@ -57,12 +57,12 @@
         for(let gp of gps) teachers=teachers.concat(gp.teacher.map(el=>el.tid))
         teachers=teachers.concat($config.admin.map((/** @type {{ tid: any; }} */ el)=>el.tid));
         teachers=teachers.concat($config.subject.filter((/** @type {{ ss: any; sc: any; }} */ el)=>el.ss===s.ss && el.sc===s.sc).map((/** @type {{ tid: any; }} */ el)=>el.tid));
-        console.log(`${s.sc} ${s.ss} TEACHERS`,teachers);
+        //console.log(`${s.sc} ${s.ss} TEACHERS`,teachers);
         /** @type {any} */
         console.log('USER',status.user);
         let cols=util.getAssessmentCols(assessments,teachers,status.user);
        
-        console.log('COLS',cols);
+        //console.log('COLS',cols);
         
 
         // check whether you should be able to create (are you a teacher/admin)
