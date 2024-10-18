@@ -1,11 +1,11 @@
 <script>
 
 import { onMount } from 'svelte';
-import {groups,teachers,config,alert,pupils,assessments,cycles} from '$lib/store';
+import {groups,teachers,config,alert,pupils,assessments,cycles,cohorts} from '$lib/store';
 import * as html from '$lib/html';
 import * as util from '$lib/util';
 import * as file from '$lib/file';
-	import Report from '$lib/_Report.svelte';
+import Report from '$lib/_Report.svelte';
 	
 
 /** @type {any}*/
@@ -72,13 +72,7 @@ let update=async()=>{
         data.reports=res[0] ? res.sort((a,b)=>a.pupil.sn.localeCompare(b.pupil.sn) || a.pupil.pn.localeCompare(b.pupil.pn) ) :[];
         */
 
-        data.houses=[];
-        for(let item of data.pupils) {
-            if(!data.houses.find((/** @type {any} */ el)=>el===item.hse)) data.houses.push(item.hse);
-        }
-
-        data.houses=data.houses.sort();
-        console.log(data.houses);
+      
         
        
 
@@ -492,6 +486,51 @@ let update=async()=>{
 
     let printSelectedHouse=async()=>{
         console.log(data.houses[data.hIndex]);
+        data.print=true;
+        $alert.msg='building reports...';
+        let count=0;
+
+
+
+        let response = await fetch('/edge/distinct', {
+            method: 'POST',
+            body: JSON.stringify({collection:'reports',match:{coid:status.cycle._id,"pupil.hse":data.houses[data.hIndex]},aggregate:['fm','pupil']}),
+            headers: {'content-type': 'application/json'}
+        });
+        let res= await response.json();
+        
+        console.log('hse reports pupils aggregate',res);
+
+
+
+
+
+        data.reports=[];
+        for(let item of res.sort((/** @type {{ fm: number; pupil: { sn: string; pn: string; }; }} */ a,/** @type {{ fm: number; pupil: { sn: any; pn: any; }; }} */ b)=>b.fm-a.fm || a.pupil.sn.localeCompare(b.pupil.sn) || a.pupil.pn.localeCompare(b.pupil.pn))) {
+          
+        let r=await getReport(item.pupil.pid,{id:item.pupil.id,pn:item.pupil.pn,sn:item.pupil.sn,tg:item.pupil.tg,hse:item.pupil.hse,fm:item.fm});
+        data.reports.push(r);
+        count+=1;
+        $alert.msg=`${item.pupil.pn} ${item.pupil.sn}`;
+       
+        }
+
+        console.log(data.reports);
+        await util.wait(2000);
+        $alert.msg=`built ${count} reports`;
+        data.print=false;
+
+       
+
+        let markup=html.generate(data.reports);
+
+        // testing !
+        //file.download(JSON.stringify(data.reports),'test.json');
+
+        const url = URL.createObjectURL(new Blob([markup], { type: "text/html" }));
+        const win = window.open(url);
+        win?.print();	
+       
     };
 
     let printSelected=async()=>{
@@ -550,6 +589,16 @@ let update=async()=>{
     */
     data.cycles=$cycles.sort((/** @type {{ index: number; }} */ a,/** @type {{ index: number; }} */ b)=>b.index-a.index);
     data.cIndex=0;
+
+
+    console.log($cohorts);
+    data.houses=[];
+    for(let item of $cohorts.overview.houses.list) {
+        if(!data.houses.find((/** @type {any} */ el)=>el===item.hse)) data.houses.push(item.hse);
+    }
+
+    data.houses=data.houses.sort();
+    console.log(data.houses);
 
     // get assessments
     /*
