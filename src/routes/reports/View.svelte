@@ -15,7 +15,9 @@ export let status;
 let data={
     user:'',
     tIndex:0,
+    hIndex:0,
     pupils:[],
+    houses:[],
     all:false,
     cycles:[],
     cIndex:0,
@@ -69,6 +71,14 @@ let update=async()=>{
         let res= await response.json();
         data.reports=res[0] ? res.sort((a,b)=>a.pupil.sn.localeCompare(b.pupil.sn) || a.pupil.pn.localeCompare(b.pupil.pn) ) :[];
         */
+
+        data.houses=[];
+        for(let item of data.pupils) {
+            if(!data.houses.find((/** @type {any} */ el)=>el===item.hse)) data.houses.push(item.hse);
+        }
+
+        data.houses=data.houses.sort();
+        console.log(data.houses);
         
        
 
@@ -480,6 +490,10 @@ let update=async()=>{
     };
 
 
+    let printSelectedHouse=async()=>{
+        console.log(data.houses[data.hIndex]);
+    };
+
     let printSelected=async()=>{
 
         
@@ -647,6 +661,33 @@ let update=async()=>{
     </div>
     <div class="col is-vertical-align">
         <button disabled={data.print} class="button outline icon-only" on:click={printSelected}>
+            
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+        </button>
+    </div>
+</div>
+
+<hr/>
+<div class="row">
+    <div class="col is-vertical-align">
+        <h4>Tutor</h4>
+    </div>
+    <div class="col is-vertical-align">
+        <fieldset>
+            <legend>Select House</legend>
+           
+        <select  id="Hse" bind:value={data.hIndex}>
+            <optgroup label="House">
+                    {#each data.houses as item,index}
+                        <option value={index}>{item}</option>
+                    {/each}
+            </optgroup>
+          </select>
+          </fieldset>
+ 
+    </div>
+    <div class="col is-vertical-align">
+        <button disabled={data.print} class="button outline icon-only" on:click={printSelectedHouse}>
             
 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
         </button>

@@ -98,11 +98,11 @@
         {#if status.tab==='tutor'}<Pastoral bind:status={status} type={'tutor'}/> {/if}
         {#if status.tab==='hm'}<Pastoral bind:status={status} type={'hm'}/> {/if}
         {#if status.tab==='enrichment'}<Enrichment bind:status={status}/> {/if}
-        {#if status.tab==='view'}<View bind:status={status}/> {/if}
+        
     {:else}
         <span class="tab">No active report cycle found.</span>
     {/if}
-
+    {#if status.tab==='view'}<View bind:status={status}/> {/if}
     <style>
     
 
