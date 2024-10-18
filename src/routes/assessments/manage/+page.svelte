@@ -107,7 +107,7 @@
 
         status.tag.pupil=status.tag.overview;
         if(status.tag.pupil===true) status.tag.open=false;
-        
+
         let response = await fetch('/edge/update', {
 		    method: 'POST',
 		    body: JSON.stringify({collection:'assessments',filter:{"_id":{"$oid": $cohorts.assessments.edit._id}},update:{n:status.n,grade:status.grade,total:status.total,tag:status.tag,log:`${status.user}|${util.getDateTime()}`}}),
@@ -237,6 +237,9 @@
     
     </script>
     
+
+    <p>{JSON.stringify(status.tag)}</p>
+
     {#if status.delete}
         <Modal bind:open={status.delete}>
             <header>
@@ -322,7 +325,7 @@
                 <!--<legend>Assessment Name (max {max})</legend>-->
                 <legend>Viewable ?</legend>
                 <p class="grouped">
-                <input id="view" disabled={status.tag.exam}  type=checkbox bind:checked={status.tag.overview} on:change={changeStatus} />Live to Overview/Pupils ?&nbsp&nbsp;
+                <input id="view" disabled={status.tag.exam || !status.tag.open}  type=checkbox bind:checked={status.tag.overview} on:change={changeStatus} />Live to Overview/Pupils ?&nbsp&nbsp;
             </fieldset>
         </div>
         <div class="col is-vertical-align">
