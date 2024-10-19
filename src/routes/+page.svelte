@@ -115,7 +115,7 @@ let getPupils=async()=>{
 	$pupils=$pupils.sort((a,b)=>b.yr-a.yr || b.lv.localeCompare(a.lv) || a.pn.localeCompare(b.pn)  );
 
 	//console.log('**************',$pupils.find(el=>el.pid===455659));
-	console.log($pupils);
+	//console.log($pupils);
 
 };
 
