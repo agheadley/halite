@@ -15,6 +15,8 @@ let update=async()=>{
     if(!(y.lv===h.lv && y.yr===h.yr)) $cohorts.overview.houses.index=$cohorts.overview.houses.list.findIndex((/** @type {{ lv: any; yr: any; }} */ el)=>el.lv===y.lv && el.yr===y.yr);
     h=$cohorts.overview.houses.list[$cohorts.overview.houses.index];
 
+    //clear all checkbox
+    $cohorts.overview.houses.all=false;
 
     status.std.A=(y.lv==='US' || y.lv==='MS' || y.lv==='LS') ? $config.std[y.lv].A : '';
     status.std.B=(y.lv==='US' || y.lv==='MS' || y.lv==='LS') ? $config.std[y.lv].B : '';

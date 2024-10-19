@@ -102,7 +102,7 @@ onMount(async () => {
         });
         let x=await response.json();
         */
-        let x=$assessments.filter(el=>el.lv===res[0].lv && el.yr===res[0].yr && el.tag.overview===true && el.tag.archive===false);
+        let x=$assessments.filter(el=>el.lv===res[0].lv && el.yr===res[0].yr && el.tag.pupil===true && el.tag.archive===false);
         as=x[0] ? x.map((/** @type {{ _id: any; }} */ el)=>el._id) : [];
         results=results.filter((/** @type {{ aoid: string; }} */ el)=>as.includes(el.aoid));
         

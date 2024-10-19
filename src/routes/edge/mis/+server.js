@@ -51,9 +51,12 @@ export async function POST({request}) {
     let x={res:'no data'};
    
    
-    
-   
-
+    /* testing */
+    //res=await fetch(`https://isams.oakham.rutland.sch.uk/api/batch/1.0/json.ashx?apiKey={${process.env.MIS_PEOPLE}}`);
+    //x=await res.json();
+    //console.log(x);
+    //isOld=false;
+    /* end testing */
 
     if(isOld) {
         
