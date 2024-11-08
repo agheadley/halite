@@ -1,0 +1,316 @@
+[{
+  "_id": {
+    "$oid": "6672b2687904b1be4fde702d"
+  },
+  "index": 4,
+  "lv": "MS",
+  "yr": 2025,
+  "exam": true,
+  "from": "",
+  "to": "",
+  "n": "TIG",
+  "dl": "2023-08-30",
+  "dt": {
+    "$numberLong": "1693353600000"
+  },
+  "parent": false
+},
+{
+  "_id": {
+    "$oid": "6672b1716fa7c6110bba21d0"
+  },
+  "index": 3,
+  "lv": "US",
+  "yr": 2025,
+  "exam": true,
+  "from": "",
+  "to": "",
+  "n": "IntEx",
+  "dl": "2024-05-20",
+  "dt": {
+    "$numberLong": "1716163200000"
+  },
+  "parent": true
+},
+{
+  "_id": {
+    "$oid": "6672b12d8251bbc2aff9559d"
+  },
+  "index": 0,
+  "lv": "US",
+  "yr": 2025,
+  "exam": true,
+  "from": "",
+  "to": "",
+  "n": "TIG",
+  "dl": "2023-08-30",
+  "dt": {
+    "$numberLong": "1693353600000"
+  },
+  "parent": false
+},
+{
+  "_id": {
+    "$oid": "6672b13919b75548c2ff7e55"
+  },
+  "index": 1,
+  "lv": "US",
+  "yr": 2025,
+  "exam": false,
+  "from": "2023-09-01",
+  "to": "2023-12-31",
+  "n": "",
+  "dl": "",
+  "dt": null,
+  "parent": true
+},
+{
+  "_id": {
+    "$oid": "6672b15ee54c72c3a458d919"
+  },
+  "index": 2,
+  "lv": "US",
+  "yr": 2025,
+  "exam": false,
+  "from": "2024-01-01",
+  "to": "2024-04-30",
+  "n": "",
+  "dl": "",
+  "dt": null,
+  "parent": true
+},
+{
+  "_id": {
+    "$oid": "6672b26f57049795607d72e3"
+  },
+  "index": 5,
+  "lv": "MS",
+  "yr": 2025,
+  "exam": false,
+  "from": "2023-09-01",
+  "to": "2023-12-31",
+  "n": "",
+  "dl": "",
+  "dt": null,
+  "parent": true
+},
+{
+  "_id": {
+    "$oid": "6672b2801a4d2651d42754b3"
+  },
+  "index": 6,
+  "lv": "MS",
+  "yr": 2025,
+  "exam": false,
+  "from": "2024-01-01",
+  "to": "2024-05-31",
+  "n": "",
+  "dl": "",
+  "dt": null,
+  "parent": true
+},
+{
+  "_id": {
+    "$oid": "6672b2b81a4d2651d427b687"
+  },
+  "index": 7,
+  "lv": "MS",
+  "yr": 2025,
+  "exam": true,
+  "from": "",
+  "to": "",
+  "n": "IntEx",
+  "dl": "2024-06-15",
+  "dt": {
+    "$numberLong": "1718409600000"
+  },
+  "parent": true
+},
+{
+  "_id": {
+    "$oid": "668bf2784089a499fc956f5f"
+  },
+  "index": 8,
+  "lv": "MS",
+  "yr": 2024,
+  "exam": true,
+  "from": "",
+  "to": "",
+  "n": "TIG",
+  "dl": "2022-01-09",
+  "dt": {
+    "$numberLong": "1641686400000"
+  },
+  "parent": false
+},
+{
+  "_id": {
+    "$oid": "668bf2814089a499fc957aaf"
+  },
+  "index": 9,
+  "lv": "MS",
+  "yr": 2024,
+  "exam": true,
+  "from": "",
+  "to": "",
+  "n": "Jan Mock",
+  "dl": "2024-01-15",
+  "dt": {
+    "$numberLong": "1705276800000"
+  },
+  "parent": false
+},
+{
+  "_id": {
+    "$oid": "66d05320a3a333445708aab3"
+  },
+  "index": 10,
+  "lv": "MS",
+  "yr": 2026,
+  "exam": true,
+  "from": "",
+  "to": "",
+  "n": "TIG",
+  "dl": "2024-08-31",
+  "dt": {
+    "$numberLong": "1725062400000"
+  },
+  "parent": false
+},
+{
+  "_id": {
+    "$oid": "66d0532e5349ae643ee0cb62"
+  },
+  "index": 11,
+  "lv": "US",
+  "yr": 2026,
+  "exam": true,
+  "from": "",
+  "to": "",
+  "n": "TIG",
+  "dl": "2024-08-31",
+  "dt": {
+    "$numberLong": "1725062400000"
+  },
+  "parent": false
+},
+{
+  "_id": {
+    "$oid": "6704f1ea550f04d56cff4a1e"
+  },
+  "index": 12,
+  "lv": "US",
+  "yr": 2025,
+  "exam": false,
+  "from": "2024-08-01",
+  "to": "2024-10-31",
+  "n": "",
+  "dl": "",
+  "dt": null,
+  "parent": true
+},
+{
+  "_id": {
+    "$oid": "6704f24241a3ffabec92df04"
+  },
+  "index": 13,
+  "lv": "US",
+  "yr": 2026,
+  "exam": false,
+  "from": "2024-09-01",
+  "to": "2024-10-31",
+  "n": "",
+  "dl": "",
+  "dt": null,
+  "parent": true
+},
+{
+  "_id": {
+    "$oid": "6704f25a9515f356fe40ef25"
+  },
+  "index": 14,
+  "lv": "MS",
+  "yr": 2025,
+  "exam": false,
+  "from": "2024-09-01",
+  "to": "2024-10-31",
+  "n": "",
+  "dl": "",
+  "dt": null,
+  "parent": true
+},
+{
+  "_id": {
+    "$oid": "6704f27241a3ffabec92f768"
+  },
+  "index": 15,
+  "lv": "MS",
+  "yr": 2026,
+  "exam": false,
+  "from": "2024-09-01",
+  "to": "2024-10-31",
+  "n": "",
+  "dl": "",
+  "dt": null,
+  "parent": true
+},
+{
+  "_id": {
+    "$oid": "67053e222835272c531fe1df"
+  },
+  "index": 16,
+  "lv": "MS",
+  "yr": 2027,
+  "exam": false,
+  "from": "2024-09-01",
+  "to": "2024-10-31",
+  "n": "",
+  "dl": "",
+  "dt": null,
+  "parent": true
+},
+{
+  "_id": {
+    "$oid": "67053e33b12587dbccec0276"
+  },
+  "index": 17,
+  "lv": "LS",
+  "yr": 2028,
+  "exam": false,
+  "from": "2024-09-01",
+  "to": "2024-10-31",
+  "n": "",
+  "dl": "",
+  "dt": null,
+  "parent": true
+},
+{
+  "_id": {
+    "$oid": "67053e4141a3ffabec723287"
+  },
+  "index": 18,
+  "lv": "LS",
+  "yr": 2029,
+  "exam": false,
+  "from": "2024-09-01",
+  "to": "2024-10-31",
+  "n": "",
+  "dl": "",
+  "dt": null,
+  "parent": true
+},
+{
+  "_id": {
+    "$oid": "67053e66f53e734cc8117a0e"
+  },
+  "index": 19,
+  "lv": "LS",
+  "yr": 2030,
+  "exam": false,
+  "from": "2024-09-01",
+  "to": "2024-10-31",
+  "n": "",
+  "dl": "",
+  "dt": null,
+  "parent": true
+}]

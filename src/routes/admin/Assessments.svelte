@@ -303,13 +303,35 @@
                     if(f.gd==="U" || f.gd==='X') {
                         console.log(assessment.sl,p.pn,p.sn,f.gd, 'TO UPDATE ...');
                         let i=$pupils.find(el=>el.lv===assessment.lv && el.yr===assessment.yr && el.pid===p.pid);
+                        let prediction={gd:'X',scr:0};
                         if(i && (i.overall.A>0 || i.overall.B>0)) {
                             console.log(i.groups,f._id);
-                            let prediction = util.getTargetGrade(assessment.sc,assessment.ss,i.groups,$config.grade);
+                            prediction = util.getTargetGrade(assessment.sc,assessment.ss,i.groups,$config.grade);
                             console.log('PREDICTION',prediction);
                         } else {
                             console.log('(INTAKE DATA MISSING)');
                         }
+
+                        let response = await fetch('/edge/update', {
+		                    method: 'POST',
+		                    body: JSON.stringify({
+                                collection:'results',
+                                filter:{"_id":{"$oid": f._id}},
+                                update:{gd:prediction.gd,scr:prediction.scr,log:`${status.user}|${util.getDateTime()}`}
+                            }),
+		                    headers: {'content-type': 'application/json'}
+	                    });
+                        let res= await response.json();
+                        console.log(res);
+
+                        if(res.matchedCount!==1) {
+                            $alert.type='error';
+                            $alert.msg=`Error updating target drade ${p.pid} ${p.sn} ${p.pn}`;
+                        } else  $alert.msg=`Modified ${p.sn} ${p.pn} target grade. Changes: ${res.modifiedCount}`; 
+
+
+
+
                     } 
                 } else {
                     console.log(assessment.sl,p.pn,p.sn,'TO INSERT ...');
