@@ -301,18 +301,18 @@
                 let f=rs.find((/** @type {{ pid: number; }} */ el)=>el.pid===p.pid);
                 if(f) {
                     if(f.gd==="U" || f.gd==='X') {
-                        console.log(p.pn,p.sn,f.gd, 'TO UPDATE ...');
+                        console.log(assessment.sl,p.pn,p.sn,f.gd, 'TO UPDATE ...');
                         let i=$pupils.find(el=>el.lv===assessment.lv && el.yr===assessment.yr && el.pid===p.pid);
                         if(i && (i.overall.A>0 || i.overall.B>0)) {
                             console.log(i.groups,f._id);
-
-                            
+                            let prediction = util.getTargetGrade(assessment.sc,assessment.ss,i.groups,$config.grade);
+                            console.log('PREDICTION',prediction);
                         } else {
                             console.log('(INTAKE DATA MISSING)');
                         }
                     } 
                 } else {
-                    console.log(p.pn,p.sn,'TO INSERT ...');
+                    console.log(assessment.sl,p.pn,p.sn,'TO INSERT ...');
                     let i=$pupils.find(el=>el.lv===assessment.lv && el.yr===assessment.yr && el.pid===p.pid);
                     let g='';
                     if(i) {
@@ -342,7 +342,8 @@
 
                     if(i && (i.overall.A>0 || i.overall.B>0)) {
                         console.log(i.groups,doc);
-                        // generate grade and add to result
+                        let prediction = util.getTargetGrade(assessment.sc,assessment.ss,i.groups,$config.grade);
+                        console.log('PREDICTION',prediction);
                     } else {
                         console.log('(INTAKE DATA MISSING)');
                     }

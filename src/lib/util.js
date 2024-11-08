@@ -103,6 +103,26 @@ export let getClosestGrade=(score,course,grades)=>{
   return grade;
 };
 
+/**
+ * 
+ * @param {string} course 
+ * @param {number} pre
+ * @param {any[]} grades 
+ * @returns {{gd:string,scr:number}}
+ */
+export let getClosestPred=(pre,course,grades)=>{
+  grades=grades.filter(el=>el.sc===course).sort((a, b) => b.pre-a.pre);
+  let grade="U";
+  
+  //console.log(grades,score);
+  let difference=grades[0] ? grades[0].pre : 0;
+  for(let item of grades) {
+      grade=Math.abs(item.pre-pre)<difference ? item.gd : grade;
+      difference=Math.abs(item.pre-pre)<difference ? Math.abs(item.pre-pre) : difference;
+  }
+  let f=grades.find(el=>el.gd===grade);
+  return {gd:grade,scr:f?f.scr:0};
+};
 
     /** 
      * @param {any} grades
@@ -120,10 +140,31 @@ export let getClosestGrade=(score,course,grades)=>{
 
 /**
  * 
- * @param {string} ss 
  * @param {string} sc 
+ * @param {string} ss
  * @param {{g:string,sl:string,sc:string,ss:string,pre:{A:number,B:number}}[]} groups 
+ * @param {{sc:string,gd:string,pc:number,scr:number,prep:number}[]} grades
  */
-export let getTargetGrade=(ss,sc,groups)=>{
+export let getTargetGrade=(sc,ss,groups,grades)=>{
+  let out={gd:'X',scr:0};
+  let f=groups.find(el=>el.sc===sc && el.ss===ss);
+  console.log(ss,sc,groups,grades,f);
+  let pre =0;
+  if(f) {
+    pre = f.pre.A>0 ? f.pre.A : (f.pre.B > 0 ? f.pre.B : 0);
+    out=getClosestPred(pre,sc,grades);
+    if(pre===0) out.gd='X';
+  } 
 
+  if(!f || pre===0) {
+    let pres=groups.filter(el=>el.sc===sc)
+      .map(el=>el.pre.A>0 ? el.pre.A : (el.pre.B > 0 ? el.pre.B : 0))
+      .filter(el=>el>0);
+    pre=pres?.length>0?pres.reduce((/** @type {any} */ a,/** @type {any} */ v)=>a+v)/pres.length:0;
+    console.log('MISSING PRED, OTHERS...',pres,'PRE',pre);
+    out=getClosestPred(pre,sc,grades);
+    if(pre===0) out.gd='X';
+  }
+
+  return out;
 };
