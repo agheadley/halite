@@ -275,13 +275,39 @@
         let a=data.assessments.list[data.assessments.index];
         let c=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
         console.log('Populate all empty / missing TIGs...');
-        console.log(data.assessments.list[data.assessments.index]);
+        console.log(a);
     
     
-        console.log($pupils);
-        console.log($groups);
+        //console.log($pupils);
+        //console.log($groups);
     
-    
+        let as=$assessments.filter(el=>el.lv===a.lv && el.yr===a.yr && el.n===a.n && el.dl===a.dl && el.sc!=='X')
+            .sort((a,b)=>a.sc.localeCompare(b.sc) || a.sl.localeCompare(b.sl));
+
+        console.log('assessments...',as);
+
+        for(let assessment of as) {
+            let gs=$groups.filter(el=>el.sc===assessment.sc && el.ss===assessment.ss && el.lv===assessment.lv && el.yr===assessment.yr);
+            let ps=gs.flatMap(el=>el.pupil);
+            
+            console.log(assessment.sl);
+
+            let rs = data.assessments.results.filter((/** @type {{ aoid: string; }} */ el)=>el.aoid===assessment._id);
+
+            for(let p of ps) {
+                let f=rs.find((/** @type {{ pid: number; }} */ el)=>el.pid===p.pid);
+                if(f) {
+                    if(f.gd==="U" || f.gd==='X') {
+                        console.log(p.pn,p.sn,f.gd, 'TO UPDATE ...');
+                    } 
+                } else {
+                    console.log(p.pn,p.sn,'TO INSERT ...');
+                }
+
+            }
+        }
+
+        
     
     
     
