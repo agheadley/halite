@@ -115,3 +115,15 @@ export let getClosestGrade=(score,course,grades)=>{
       return (s1===-1 || s2===-1) ? 0 : (s1-s2);
       
 }
+
+
+
+/**
+ * 
+ * @param {string} ss 
+ * @param {string} sc 
+ * @param {{g:string,sl:string,sc:string,ss:string,pre:{A:number,B:number}}[]} groups 
+ */
+export let getTargetGrade=(ss,sc,groups)=>{
+
+};

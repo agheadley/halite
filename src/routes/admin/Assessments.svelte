@@ -272,6 +272,9 @@
     };
     
     let populateTIGs=async()=>{
+
+        let documents=[];
+
         let a=data.assessments.list[data.assessments.index];
         let c=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
         console.log('Populate all empty / missing TIGs...');
@@ -301,9 +304,9 @@
                         console.log(p.pn,p.sn,f.gd, 'TO UPDATE ...');
                         let i=$pupils.find(el=>el.lv===assessment.lv && el.yr===assessment.yr && el.pid===p.pid);
                         if(i && (i.overall.A>0 || i.overall.B>0)) {
-                            console.log(i.groups);
+                            console.log(i.groups,f._id);
 
-                            // generate grade and update record from f_id !
+                            
                         } else {
                             console.log('(INTAKE DATA MISSING)');
                         }
@@ -344,7 +347,7 @@
                         console.log('(INTAKE DATA MISSING)');
                     }
 
-                    // push to insert records
+                    documents.push(doc);
                 }
 
             }
