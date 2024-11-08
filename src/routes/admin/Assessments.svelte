@@ -1,9 +1,10 @@
 <script>
-import {cohorts,groups,config,alert} from '$lib/store';
+import {cohorts,groups,config,alert,pupils,assessments} from '$lib/store';
 import { onMount } from 'svelte';
 import * as util from '$lib/util';
 import * as file from '$lib/file';
 import Modal from '$lib/_Modal.svelte';
+
 	
 /** @type {any}*/
 export let status;
@@ -14,8 +15,8 @@ let data= {
     tabs:['Manage','Create'],
     tab:'Manage',
     create:{active:false,confirm:false,max:15,n:'',dl:'0000-00-00',ds:'',dt:0,lv:'',yr:0,tag:{open:true,grade:false,overview:false,pupil:false,parent:false,pupiledit:false,exam:true,archive:false}},
-    assessments:{txt:'',confirm:false,index:0,list:[],records:[],results:[],tag:{archive:false,grade:false,pupiledit:false,exam:false,open:false,overview:false,pupil:false,parent:false}}
-
+    assessments:{txt:'',confirm:false,index:0,list:[],records:[],results:[],tag:{archive:false,grade:false,pupiledit:false,exam:false,open:false,overview:false,pupil:false,parent:false}},
+    populate:{open:false}
 };
 
 
@@ -264,6 +265,28 @@ let update=async()=>{
     if(data.assessments.list[0]) await updateResults();
 };
 
+
+let populateTIGsOpen=()=>{
+    
+    data.populate.open=true;
+};
+
+let populateTIGs=async()=>{
+    let a=data.assessments.list[data.assessments.index];
+    let c=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
+    console.log('Populate all empty / missing TIGs...');
+    console.log(data.assessments.list[data.assessments.index]);
+
+
+    console.log($pupils);
+    console.log($groups);
+
+
+
+
+
+};
+
 let updateTag=async()=>{
     let a=data.assessments.list[data.assessments.index];
     let c=$cohorts.assessments.years.list[$cohorts.assessments.years.index];
@@ -394,6 +417,38 @@ onMount(async () => {
 </script>
 
 <hr/>
+
+{#if data.populate.open}
+<Modal bind:open={data.populate.open}>
+    <div class="row">
+        <div class="col"><h4>Populate TIGs from Intake Data</h4>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+         <span class="tag ">Selected assessment : {data.assessments.list[data.assessments.index].n} {data.assessments.list[data.assessments.index].dl}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            {#if data.assessments.list[data.assessments.index].n!=='TIG' }
+<p>This will only work for 'TIG' Assessements</p>
+            {:else}
+<p>Calculate TIGs from existing intake data and Populate. (Existing grades will not be overwritten.)</p>
+            {/if}
+            </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button disabled={data.assessments.list[data.assessments.index].n!=='TIG'} class="button error" on:click={populateTIGs}>Populate TIGs</button>
+        </div>
+        <div class="col">
+            <button class="button outline" on:click={()=>data.populate.open=false}>Cancel</button>
+        </div>
+    </div>
+</Modal>
+
+{/if}
 
 {#if data.create.confirm}
 <Modal bind:open={data.create.confirm}>
@@ -540,6 +595,7 @@ onMount(async () => {
     </div>
     <div class="col is-vertical-align">
         <button class="button dark" on:click={updateTag}>Update</button>
+        <button class="button dark"  on:click={populateTIGsOpen}>PopulateTIGs</button>
     </div>
 </div>
 <hr/>

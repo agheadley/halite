@@ -356,7 +356,7 @@ let handleKeydown=(event)=>{
             </button></th>
         <th></th>
         {#each status.assessment.total as col,colIndex}
-            <th>/{col.t}</th>
+            <th>{col.n.slice(0,5)}/{col.t}</th>
         {/each}
         <th>&nbsp;%&nbsp;</th>
         <th>Grade</th>
