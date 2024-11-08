@@ -327,7 +327,7 @@
                         if(res.matchedCount!==1) {
                             $alert.type='error';
                             $alert.msg=`Error updating target drade ${p.pid} ${p.sn} ${p.pn}`;
-                        } else  $alert.msg=`Modified ${p.sn} ${p.pn} target grade. Changes: ${res.modifiedCount}`; 
+                        } else  $alert.msg=`${assessment.sl}. Updated ${p.sn} ${p.pn} target grade. Changes: ${res.modifiedCount}`; 
 
 
 
@@ -337,6 +337,7 @@
                     console.log(assessment.sl,p.pn,p.sn,'TO INSERT ...');
                     let i=$pupils.find(el=>el.lv===assessment.lv && el.yr===assessment.yr && el.pid===p.pid);
                     let g='';
+                    let prediction={gd:'X',scr:0};
                     if(i) {
                         let x=i.groups.find(el=>el.sc===assessment.sc && el.ss===assessment.ss);
                         if(x) g=x.g;
@@ -364,8 +365,11 @@
 
                     if(i && (i.overall.A>0 || i.overall.B>0)) {
                         console.log(i.groups,doc);
-                        let prediction = util.getTargetGrade(assessment.sc,assessment.ss,i.groups,$config.grade);
+                        prediction = util.getTargetGrade(assessment.sc,assessment.ss,i.groups,$config.grade);
                         console.log('PREDICTION',prediction);
+                        doc.gd=prediction.gd;
+                        doc.scr=prediction.scr;
+                        
                     } else {
                         console.log('(INTAKE DATA MISSING)');
                     }
@@ -376,7 +380,24 @@
             }
         }
 
-        
+        console.log('DOCUMENTS TO INSERT ...',documents);
+        if(documents[0]) {
+            let response = await fetch('/edge/insert', {
+            method: 'POST',
+            body: JSON.stringify({collection:'results',documents:documents}),
+            headers: {'content-type': 'application/json'}
+            });
+            let res=await response.json();
+            //console.log(ires);
+            if(!res.length || res.length<1) {
+                $alert.type='error';
+                $alert.msg=`Error inserting missing target grades`;
+            }
+            else   $alert.msg=`Inserted ${res.length} target grades`;
+        }
+       
+
+
         console.log(status);
     
     
