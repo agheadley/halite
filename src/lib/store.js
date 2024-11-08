@@ -58,7 +58,7 @@ export let pupils=writable([
         fm:0,
         overall:{A:0,B:0},
         base:[{type:'',A:0,B:0}],
-        groups:[{sc:'',ss:'',sl:'',pre:{A:0,B:0}}]
+        groups:[{g:'',sc:'',ss:'',sl:'',pre:{A:0,B:0}}]
     
     }
 ]);

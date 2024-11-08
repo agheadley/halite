@@ -311,11 +311,34 @@
                 } else {
                     console.log(p.pn,p.sn,'TO INSERT ...');
                     let i=$pupils.find(el=>el.lv===assessment.lv && el.yr===assessment.yr && el.pid===p.pid);
+                    let g='';
+                    if(i) {
+                        let x=i.groups.find(el=>el.sc===assessment.sc && el.ss===assessment.ss);
+                        if(x) g=x.g;
+                    }
+                    let doc={
+                        aoid:assessment._id,
+                        lv:assessment.lv,
+                        yr:assessment.yr,
+                        ss:assessment.ss,
+                        sc:assessment.sc,
+                        g:g,
+                        n:assessment.n,
+                        dl:assessment.dl,
+                        gd:'X',
+                        t:[0],
+                        scr:0,
+                        pc:0,
+                        fb:'',
+                        pid:p.pid,
+                        sn:p.sn,
+                        pn:p.pn,
+                        log:`${status.user}|${util.getDateTime()}`
 
-                    // build result record for insert (grade 'X')
+                    }
 
                     if(i && (i.overall.A>0 || i.overall.B>0)) {
-                        console.log(i.groups);
+                        console.log(i.groups,doc);
                         // generate grade and add to result
                     } else {
                         console.log('(INTAKE DATA MISSING)');
@@ -328,7 +351,7 @@
         }
 
         
-    
+        console.log(status);
     
     
     };
