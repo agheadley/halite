@@ -85,9 +85,16 @@ let getPupils=async()=>{
 
 			
 				
+		
+				let fy=$config.year.find((/** @type {{ nc: any; }} */ el)=>el.nc===p.nc);
+		
+				let fm = fy ? fy.fm : -1;
+		
+	
+
 
 				$pupils.push({
-					fm:0,
+					fm:fm,
 					lv:g.lv,
 					yr:g.yr,
 					pid:p.pid,
@@ -108,7 +115,7 @@ let getPupils=async()=>{
 	$pupils=$pupils.sort((a,b)=>b.yr-a.yr || b.lv.localeCompare(a.lv) || a.pn.localeCompare(b.pn)  );
 
 	//console.log('**************',$pupils.find(el=>el.pid===455659));
-
+	//console.log($pupils);
 
 };
 
@@ -279,15 +286,7 @@ onMount(async () => {
 			//console.log(g.lv,g.yr,g.g,g.fm);
 		}
 
-		/* add fm to pupils */
-	 
-		for(let g of $pupils) {
-		
-			let f=$config.year.find((/** @type {{ lv: any; x: number; }} */ el)=>el.lv===g.lv && el.x===(g.yr-currentYr));
-			g.fm = f ? f.fm : -1;
-			
-		}
-
+	
 
 	// head to pupil if necessary. 
 	if(data.user.tag.pupil) goto('/pupil/');

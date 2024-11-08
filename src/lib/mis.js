@@ -140,6 +140,7 @@ export let getBasedata=(/** @type {{ iSAMS: { PupilManager: { CurrentPupils: { P
             pn:item.Preferredname,
             pid:Number(item.SchoolCode),
             id:item.SchoolId,
+            nc:Number(item.NCYear),
             gnd:item.Gender,
             hse:item.BoardingHouse,
             tg:tg//item.Form
@@ -231,7 +232,7 @@ export let getGroupData=(mis,cfg)=>{
                     let id=pupil.SchoolId['#text'];
                     let pupilDetails=basedata.pupils.find((/** @type {{ id: any; }} */ el)=>el.id===id);
                     if(pupilDetails) {
-                        pupilArr.push({id:pupilDetails.id,pid:pupilDetails.pid,sn:pupilDetails.sn,pn:pupilDetails.pn,gnd:pupilDetails.gnd,hse:pupilDetails.hse,tg:pupilDetails.tg});
+                        pupilArr.push({id:pupilDetails.id,pid:pupilDetails.pid,sn:pupilDetails.sn,pn:pupilDetails.pn,nc:pupilDetails.nc,gnd:pupilDetails.gnd,hse:pupilDetails.hse,tg:pupilDetails.tg});
                     }
                 }
             }

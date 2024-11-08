@@ -27,6 +27,9 @@ let data={
 };
 
 let generate=async()=>{
+
+    data.out=[];
+    
     let response = await fetch('/edge/read', {
         method: 'POST',
         body: JSON.stringify({collection:'reports',filter:{coid:data.cycles[data.cIndex]._id,fm:data.fm},projection:{}}),
