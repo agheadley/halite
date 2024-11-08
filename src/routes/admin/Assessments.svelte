@@ -302,6 +302,8 @@
                         let i=$pupils.find(el=>el.lv===assessment.lv && el.yr===assessment.yr && el.pid===p.pid);
                         if(i && (i.overall.A>0 || i.overall.B>0)) {
                             console.log(i.groups);
+
+                            // generate grade and update record from f_id !
                         } else {
                             console.log('(INTAKE DATA MISSING)');
                         }
@@ -309,11 +311,17 @@
                 } else {
                     console.log(p.pn,p.sn,'TO INSERT ...');
                     let i=$pupils.find(el=>el.lv===assessment.lv && el.yr===assessment.yr && el.pid===p.pid);
+
+                    // build result record for insert (grade 'X')
+
                     if(i && (i.overall.A>0 || i.overall.B>0)) {
                         console.log(i.groups);
+                        // generate grade and add to result
                     } else {
                         console.log('(INTAKE DATA MISSING)');
                     }
+
+                    // push to insert records
                 }
 
             }
