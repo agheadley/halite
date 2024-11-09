@@ -59,6 +59,8 @@ let update=async()=>{
 
         console.log(res);
         data.lists=res.sort((/** @type {{ dt: number; }} */ a,/** @type {{ dt: number; }} */ b)=>b.dt-a.dt);
+
+        console.log(data);
     
 };
 
@@ -91,6 +93,8 @@ let validate=()=>{
  * @param {number} index
  */
 let chooseList=(index)=>{
+        console.log('UPDATING...INDEX' ,data.lists[list.index]);
+        list.index=index;
         for(let item of data.pupils) {
                 if(data.lists[list.index].pid.includes(item.pid)) item.select=true;
                 else item.select=false;
@@ -136,6 +140,8 @@ let removeList=async()=>{
  * @param {number} index
  */
  let createOpen=(index)=>{
+        chooseList(index);
+        data.pupils=data.pupils;
         list.index=index;
         list.create=true;
 };
@@ -225,6 +231,8 @@ onMount(async () => {
         console.log('/reports Manage.svelte');
 
         await update();
+        data.pupils=data.pupils;
+
       
         
 });
@@ -392,9 +400,11 @@ onMount(async () => {
         </fieldset>
 </div>
 
+
 <table class="striped small">
         <tbody>
                 {#each data.pupils as row,rowIndex}
+                        
                         {#if data.gnds.filter((/** @type {{ filter: boolean; }} */ el)=>el.filter===true).map((/** @type {{ gnd: any; }} */ el)=>el.gnd).includes(row.gnd) && data.years.filter((/** @type {{ filter: boolean; }} */ el)=>el.filter===true).map((/** @type {{ fm: any; }} */ el)=>el.fm).includes(row.fm)}
                         <tr>
                                 <td><input type=checkbox bind:checked={row.select}/></td>
