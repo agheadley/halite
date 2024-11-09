@@ -135,6 +135,7 @@ let update=async()=>{
                 if(y.lv==='US' && sc.includes('I')) course='I';
                 if(y.lv==='US' && sc.includes('I') && !sc.includes('I') && !sc.includes('A')) course='B';
                 if(y.lv==='MS') course='G';
+                if(y.lv==='LS') course='L';
                 
                 col.sc=course;
 
