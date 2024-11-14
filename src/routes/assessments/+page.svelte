@@ -262,7 +262,7 @@
 
 .responsive {
         overflow-x:auto;
-    }
+}
 
     td {
         padding:0.2rem;

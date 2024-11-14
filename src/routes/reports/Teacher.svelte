@@ -1,7 +1,7 @@
 <script>
 
     import { onMount } from 'svelte';
-    import {groups,teachers,config,alert} from '$lib/store';
+    import {groups,teachers,config,alert,assessments} from '$lib/store';
     import Edit from './Edit.svelte';
     import Modal from '$lib/_Modal.svelte';
     import Detail from './Detail.svelte';
@@ -99,6 +99,9 @@
             });
             let res= await response.json();
             console.log(res);
+            let x=$assessments.filter(el=>el.lv===gp.lv && el.yr===gp.yr && el.tag.archive===false);
+            let as=x[0] ? x.map((/** @type {{ _id: any; }} */ el)=>el._id) : [];
+            res=res.filter((/** @type {{ aoid: string; }} */ el)=>as.includes(el.aoid));
 
             data.cols=[];
             for(let item of res) {
