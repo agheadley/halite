@@ -2,6 +2,7 @@ import * as auth from '$lib/auth';
 import { error } from '@sveltejs/kit';
 import { redirect } from '@sveltejs/kit';
 import {config,groups,cohorts,pupils} from '$lib/store';
+import * as util from '$lib/util';
 
 /* execute layout.js only in the browser - msal browser! */ 
 export const ssr = false;
@@ -112,7 +113,8 @@ export async function load({fetch}) {
                     sn:p.sn,
                     pn:p.pn,
                     n:res[0].n,
-                    dl:res[0].dl
+                    dl:res[0].dl,
+                    log:`${user.name}|${util.getDateTime()}`
                 };
 
                 console.log(document);

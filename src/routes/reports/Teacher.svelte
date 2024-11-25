@@ -99,7 +99,7 @@
             });
             let res= await response.json();
             console.log(res);
-            let x=$assessments.filter(el=>el.lv===gp.lv && el.yr===gp.yr && el.tag.archive===false);
+            let x=$assessments.filter(el=>el.lv===gp.lv && el.yr===gp.yr && el.ss===gp.ss && el.sc===gp.sc && el.tag.archive===false);
             let as=x[0] ? x.map((/** @type {{ _id: any; }} */ el)=>el._id) : [];
             res=res.filter((/** @type {{ aoid: string; }} */ el)=>as.includes(el.aoid));
 
