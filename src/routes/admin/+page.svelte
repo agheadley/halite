@@ -8,6 +8,7 @@
     import Reports from './Reports.svelte';
     import Config from './Config.svelte';
     import Assessments from './Assessments.svelte';
+    import Intake from './Intake.svelte';
     
 
     /** @type {any}*/
@@ -15,7 +16,7 @@
 
     let status={
         option:'Reports',
-        options:['Overview','Assessments','Reports','Config','Import'],
+        options:['Overview','Assessments','Reports','Config','Import','Intake'],
         user:''
     };
 
@@ -61,6 +62,7 @@
     {#if status.option==='Reports'}<Reports bind:status={status}/>{/if}
     {#if status.option==='Config'}<Config bind:status={status}/>{/if}
     {#if status.option==='Import'}<Import bind:status={status}/>{/if}
+    {#if status.option==='Intake'}<Intake bind:status={status}/>{/if}
     <style>
     </style>
     
